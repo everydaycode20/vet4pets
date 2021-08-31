@@ -37,7 +37,7 @@ create table petType(
 create table pet(
 	id int not null auto_increment primary key,
     idPetOwner int not null,
-    name varchar(50) not null,
+    namePet varchar(50) not null,
     age int not null,
     idType int,
 	foreign key (idPetOwner) references petOwner(id),

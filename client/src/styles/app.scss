@@ -1,0 +1,11 @@
+@import "global.scss";
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+
+    .content-container{
+        width: 100%;
+    }
+}
