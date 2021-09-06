@@ -16,7 +16,6 @@ const Main = () => {
                 <div className="charts-container">
                     <div className="charts-inner-container">
                         <HomeChart />
-                        {/* <PatientsStats /> */}
                         <section className="appointments-status">
                             <div className="patients-stats">
                                 <div>
@@ -34,10 +33,6 @@ const Main = () => {
                                 <h2>Upcoming appointments today</h2>
                                 <span>50</span>
                             </div>
-                            {/* <div className="upcoming-appointments">
-                                <h2>Upcoming appointments today</h2>
-                                <span>50</span>
-                            </div> */}
                             <div className="top-treatments">
                                 <h2>Top treatments</h2>
                                 <ul>

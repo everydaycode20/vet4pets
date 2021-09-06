@@ -50,6 +50,26 @@
                     flex-wrap: wrap;
                     column-gap: 20px;
 
+                    .patients-stats, .finished-appointments{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        h2{
+                            text-align: center;
+                        }
+
+                        div{
+                            text-align: center;
+                        }
+
+                        span{
+                            font-size: 2.2rem;
+                            color: $infoText;
+                        }
+                    }
+
                     .finished-appointments, .patients-stats, .top-treatments{
                         // border: 1px solid rgb(151, 151, 151);
                         padding: 20px;
