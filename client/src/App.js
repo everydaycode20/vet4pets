@@ -1,30 +1,30 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 import SideBar from "./components/sidebar.js/sidebar";
-import Main from "./components/main/main";
+import Main from "./components/home/home";
+import Appointments from "./components/appointments/appointments";
 
 import "./styles/app.scss";
 
 function App() {
 
+  let location = useLocation();
 
   return (
-    <Router>
       <main className="main-container">
         <SideBar />
-        <div className="content-container">
+        <section className="content-container">
           <Switch>
             <Route exact path="/">
               <Main />
             </Route>
             <Route path="/appointments">
-              <p>new route</p>
+              <Appointments />
             </Route>
           </Switch>
-        </div>
+        </section>
       </main>
-    </Router>
   );
 }
 

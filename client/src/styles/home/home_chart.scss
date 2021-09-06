@@ -1,0 +1,37 @@
+@import "../global.scss";
+
+.home-chart{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11);
+    row-gap: 20px;
+
+    .header-chart{
+        display: flex;
+        justify-content: space-between;
+
+        .control-chart{
+            display: flex;
+
+            & button:nth-child(1){
+                border-radius: 8px 0 0 8px;
+            }
+
+            & button:nth-child(3){
+                border-radius: 0 8px 8px 0;
+            }
+
+            button{
+                border: none;
+                font-size: 1rem;
+                padding: 5px;
+                background-color: $green1;
+                color: $greeLine;
+            }
+        }
+    }
+}
