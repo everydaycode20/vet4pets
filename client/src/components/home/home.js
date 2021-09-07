@@ -4,6 +4,10 @@ import React from "react";
 import HomeChart from "./home_chart";
 
 import "../../styles/home/home.scss";
+import Calendar from "../../assets/calendar_filled_btn.svg";
+import Medicine from "../../assets/medicine_filled_btn.svg";
+import Pet from "../../assets/pet_filled_btn.svg";
+import Profile from "../../assets/profile_filled_btn.svg";
 
 const Main = () => {
 
@@ -47,18 +51,35 @@ const Main = () => {
                         
                     </div>
                     
-                    <section className="button list">
-                        <button>Create new appointment</button>
-                        <button>Add new owner</button>
-                        <button>Add new pet</button>
-                        <button>Add new medicine</button>
+                    <section className="button-list">
+                        <div className="button-inner-list">
+                            <button><span>Create new appointment</span>  <img src={Calendar} alt="appointment" /></button>
+                            <button><span>Add new owner</span> <img src={Profile} alt="enw owner" /></button>
+                            <button><span>Add new pet</span> <img src={Pet} alt="new pet" /></button>
+                            <button><span>Add new medicine</span> <img src={Medicine} alt="new medicine  " /></button>
+                        </div>
                     </section>
                 </div>
                 
                 <section className="next-appointment-list">
                     <h2>Next appointments</h2>
                     <ul className="list-appointment">
-                        <span>appointment 1</span>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
+                        <li>appointment 1</li>
                         <li>appointment 1</li>
                         <li>appointment 1</li>
                         <li>appointment 1</li>
