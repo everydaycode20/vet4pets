@@ -71,6 +71,19 @@
                         }
                     }
 
+                    .top-treatments{
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 5px;
+
+                        & .top-treatments-list{
+                            display: flex;
+                            flex-direction: column;
+                            height: 100%;
+                            row-gap: 7px;
+                        }
+                    }
+
                     .finished-appointments, .patients-stats, .top-treatments{
                         // border: 1px solid rgb(151, 151, 151);
                         padding: 20px;

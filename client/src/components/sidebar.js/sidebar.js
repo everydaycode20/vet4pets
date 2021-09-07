@@ -35,7 +35,7 @@ const SideBar = () => {
 
     return (
         <nav className="sidebar" ref={sidebar} minimize={minimize.toString()}>
-            <div className="menu-control" onClick={ minimizeSidebar} minimize={minimize.toString()}>
+            <div className="menu-control" onClick={ minimizeSidebar} minimize={minimize.toString()} tabIndex="1">
                 <img src={ArrowRight} alt="minimize sidebar" />
             </div>
             <div className="link-container">

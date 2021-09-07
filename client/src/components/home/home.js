@@ -39,7 +39,7 @@ const Main = () => {
                             </div>
                             <div className="top-treatments">
                                 <h2>Top treatments</h2>
-                                <ul>
+                                <ul className="top-treatments-list">
                                     <li>Treatment 1</li>
                                     <li>Treatment 2</li>
                                     <li>Treatment 3</li>

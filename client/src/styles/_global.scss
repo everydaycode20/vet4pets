@@ -6,3 +6,33 @@ $greenBackground: #ECF9F7;
 $greeLine: #3A6351;
 $HomeBackground: #ECF9F7;
 $infoText: #919191;
+
+@mixin dotContainer {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    background-color: transparent;
+    column-gap: 2px;
+    position: absolute;
+    top: 45%;
+    right: 2%;
+}
+
+@mixin dot {
+    background-color: $greeLine;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+@mixin checkboxContainer {
+    position: absolute!important;
+    height: 1px;
+    width: 1px;
+    // overflow: hidden;
+    // clip: rect(1px, 1px, 1px, 1px);
+}
+
+@mixin name {
+    
+}
