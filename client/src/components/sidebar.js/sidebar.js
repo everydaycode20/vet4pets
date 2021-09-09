@@ -45,8 +45,8 @@ const SideBar = () => {
                     <li> <NavLink to="/records" className="link"> <img src={MedicalBook} alt="medical records"/> <span>Medical Records</span></NavLink> </li>
                     <li> <NavLink to="/owners" className="link"> <img src={Profile} alt="pet owners" /> <span>Pet Owners</span></NavLink> </li>
                     <li> <NavLink to="/pets" className="link"> <img src={Pet} alt="pets" /> <span>Pets</span></NavLink> </li>
-                    <li> <NavLink to="/medicine" className="link"> <img src={Medicine} alt="medicine"/> <span>Medicine</span></NavLink> </li>
                     <li> <NavLink to="/checkups" className="link"> <img src={Checkup} alt="checkups" /> <span>Checkups</span></NavLink> </li>
+                    <li> <NavLink to="/miscellaneous" className="link"> <img src={Medicine} alt="medicine"/> <span>Miscellaneous</span></NavLink> </li>
                     <li> <NavLink to="/settings" className="link settings"> <img src={Settings} alt="settings"/> <span>Settings</span></NavLink> </li>
                 </ul>
             </div>

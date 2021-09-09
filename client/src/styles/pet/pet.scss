@@ -62,7 +62,7 @@
 
     .categories-list{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         justify-items: center;
         grid-row: 1/2;
         grid-column: 2/3;
@@ -79,7 +79,7 @@
 
         .item-list{
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             background-color: white;
             width: 100%;
             justify-items: center;
@@ -108,7 +108,7 @@
                         margin-right: 10px;
                         width: 15px;
                         height: 15px;
-                        background: rgb(161, 161, 161);
+                        background: rgb(189, 188, 188);
                         border-radius: 2px;
                     }
 

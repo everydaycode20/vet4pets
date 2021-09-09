@@ -3,10 +3,10 @@
 
 const PetList = () => {
 
-    const arr = [{"name": "pet name", "ownerName": "owner name", "age": 10, "registerDate": "01-01-01"},
-                {"name": "pet name", "ownerName": "owner name", "age": 10, "registerDate": "01-01-01"}];
+    const arr = [{"name": "pet name", "ownerName": "owner name", "age": 10, "type": "dog", "registerDate": "01-01-01"},
+                {"name": "pet name", "ownerName": "owner name", "age": 10, "type": "cat", "registerDate": "01-01-01"}];
 
-    const categories = ["Name", "Owner Name", "Age", "Register Date"];
+    const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
 
     return (
         <section className="main-pet-list-container">
@@ -30,6 +30,7 @@ const PetList = () => {
                             <span>{elm.name}</span>
                             <span>{elm.ownerName}</span>
                             <span>{elm.age}</span>
+                            <span>{elm.type}</span>
                             <span>{elm.registerDate}</span>
                             <button className="dot-container">
                                 <div className="dot"/>

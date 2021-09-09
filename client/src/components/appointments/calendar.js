@@ -10,17 +10,17 @@ const Calendar = ({ week }) => {
         console.log(hour);
     };
 
-    useEffect(() => {
-        console.log("si");
-        fetch("/appointments", {method: "GET"}).then(res => res.json()).then(data => {
+    // useEffect(() => {
+    //     console.log("si");
+    //     fetch("/appointments", {method: "GET"}).then(res => res.json()).then(data => {
             
-            data.forEach(elm => {
-                const time = new Date(elm.fecha)
-                console.log(time.getHours(), time.getMinutes(), time.getSeconds());
-                console.log(new Date(elm.fecha).toLocaleDateString());
-            });
-        });
-    }, []);
+    //         data.forEach(elm => {
+    //             const time = new Date(elm.fecha)
+    //             console.log(time.getHours(), time.getMinutes(), time.getSeconds());
+    //             console.log(new Date(elm.fecha).toLocaleDateString());
+    //         });
+    //     });
+    // }, []);
 
     return (
         <div className="main-calendar-container">

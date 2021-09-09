@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
