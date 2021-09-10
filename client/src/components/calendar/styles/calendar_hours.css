@@ -1,0 +1,15 @@
+.calendar-hours-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 240px;
+}
+
+.btn-hour{
+    width: fit-content!important;
+    font-size: 1rem!important;
+}
+
+.btn-hour:hover{
+    background-color: rgb(212, 255, 255)!important;
+}

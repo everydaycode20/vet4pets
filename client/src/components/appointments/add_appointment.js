@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import Calendar from "../calendar/calendar";
+
 import "../../styles/appointment/add_appointment.scss";
 
 const AddAppointment = ({setMakeAppointment}) => {
@@ -54,6 +56,14 @@ const AddAppointment = ({setMakeAppointment}) => {
         setPetDropdown(false);
     };
 
+    const showCalendar = () => {
+        setCalendar(true)
+
+        if (calendar) {
+            setCalendar(false);
+        }
+    };
+    console.log(date);
     return (
 
         <div className="add-appointment-container" onClick={(e) => hideMenu(e.target)}>
@@ -62,7 +72,7 @@ const AddAppointment = ({setMakeAppointment}) => {
                 <div className="setup">
                     <div className="service-container">
                         {!service ? 
-                        <button type="button" btnClassService={dropdown.toString()} onClick={() => showDropdown()}>Add service</button> : 
+                        <button type="button" btnclassservice={dropdown.toString()} onClick={() => showDropdown()}>Add service</button> : 
                         <div className="service-selected">
                             <span>{service}</span>
                             <button type="button" onClick={() => showDropdown()}>Edit</button>
@@ -78,7 +88,7 @@ const AddAppointment = ({setMakeAppointment}) => {
                     </div>
                     <div className="pet-container">
                         {!pet ?
-                        <button type="button" btnClassPet={petDropdown.toString()} onClick={() => showPetDropdown()}>Add pet</button> : 
+                        <button type="button" btnclasspet={petDropdown.toString()} onClick={() => showPetDropdown()}>Add pet</button> : 
                         <div className="pet-selected">
                             <span>{pet}</span>
                             <button type="button" onClick={() => showPetDropdown()}>Edit</button>
@@ -95,12 +105,13 @@ const AddAppointment = ({setMakeAppointment}) => {
                     </div>
                     <div className="date-container">
                     {!date ?
-                        <button type="button" btnClassDate={calendar.toString()} >Add date</button> : 
+                        <button type="button" btnclassdate={calendar.toString()} onClick={() => showCalendar()}>Add date</button> : 
                         <div className="date-selected">
-                            <span>{pet}</span>
-                            <button type="button" onClick={() => showPetDropdown()}>Edit</button>
+                            <span>{date.day}, {date.date} {date.month.substring(0, 3)} {date.hour}</span>
+                            <button type="button" onClick={() => showCalendar()}>Edit</button>
                         </div>
                         }
+                        {calendar && <Calendar setDate={setDate} date={date} setCalendar={setCalendar}/>}
                     </div>
                 </div>
                 <div className="submit-btn">

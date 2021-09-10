@@ -7,6 +7,7 @@ import Appointments from "./components/appointments/appointments";
 import MedicalRecords from "./components/medical_records/medical_records";
 import Owner from "./components/owner/owner";
 import Pet from "./components/pet/pet";
+import Miscellaneous from "./components/miscellaneous/miscellaneous";
 
 import "./styles/app.scss";
 
@@ -31,6 +32,9 @@ function App() {
             </Route>
             <Route path="/pets">
               <Pet />
+            </Route>
+            <Route path="/miscellaneous">
+              <Miscellaneous />
             </Route>
           </Switch>
         </section>
