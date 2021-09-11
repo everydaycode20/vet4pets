@@ -8,7 +8,7 @@
  * 
  */
 
-export function addZeroToLeft(number) {
+module.exports.addZeroToLeft = (number) => {
     
     if (number.toString().length === 1) {
         return "0" + number;
@@ -25,7 +25,7 @@ export function addZeroToLeft(number) {
  * 
  */
 
-export function addZeroToRight(number) {
+module.exports.addZeroToRight = (number) => {
 
     if (number.toString().length === 1) {
         return number + "0";
