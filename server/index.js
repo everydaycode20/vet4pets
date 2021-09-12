@@ -2,21 +2,14 @@ const express = require("express");
 
 const app = express();
 
-const routes = require("./routes/routes");
+const appointment_router = require("./routes/appointments");
+const owner_router = require("./routes/owners");
+const pet_router = require("./routes/pet");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
-app.use(routes);
-
-function zero(hour) {
-    
-    if (hour.toString().length === 1) {
-        console.log("si");
-        return "0" + hour;
-    }
-    return `${hour}`;
-}
+app.use( appointment_router, owner_router, pet_router );
 
 const port = process.env.PORT || 8080;
 
