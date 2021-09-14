@@ -150,17 +150,54 @@
             background-color: white;
             -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
             box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11);
-            row-gap: 10px;
+            row-gap: 20px;
             padding: 20px;
             height: 850px;
 
+            .controls-appointment-list{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+
+                button{
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+                    
+                    img{
+                        width: 20px;
+                    }
+                }
+                
+                span{
+                    font-weight: 600;
+                }
+            }
+
             .list-appointment{
-                padding: 20px;
+                padding: 10px;
                 display: flex;
                 flex-direction: column;
                 row-gap: 20px;
                 overflow-y: scroll;
+                scrollbar-width: thin;
+                scrollbar-color: #70707080 rgb(245, 245, 245); 
+
+                &::-webkit-scrollbar {
+                    width: 12px;
+                }
                 
+                &::-webkit-scrollbar-track {
+                    background: rgb(245, 245, 245);
+                    border-radius: 5px;
+                }
+
+                
+                &::-webkit-scrollbar-thumb {
+                    background-color: #70707080;
+                    border-radius: 20px;
+                }
+
                 li{
                     background-color: #CDF0EA;
                     padding: 10px;
