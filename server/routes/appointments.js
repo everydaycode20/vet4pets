@@ -24,9 +24,23 @@ appointment_router.get("/appointments/day", (req, res, next) => {
         });
 
         let newArr = checkHours(arr);
-        console.log(newArr);
+        
         res.json({"hours": newArr});
     });
+
+});
+
+appointment_router.get("/appointments/week", (req, res, next) => {
+
+    const { date1, date2, date3, date4, date5} = req.body;
+
+    connection.query(`call getNumberAppointmentsByWeek(?, ?, ?, ? , ?)`, [date1, date2, date3, date4, date5],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json({"hours": rows[0]});
+    });
+
 });
 
 appointment_router.get("/appointments/owner", (req, res, next) => {
@@ -37,17 +51,27 @@ appointment_router.get("/appointments/owner", (req, res, next) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
 
-        let arr = [];
+        if(rows[0].length === 0) res.json({"status": false, "message": "no owner data with that identification"});
+        else{
+            res.json({"appointments": rows[0]});
+        }
+        
+    });
+});
 
-        rows[0].forEach(elm => {
-            
-            console.log(elm);
+appointment_router.get("/appointments/pet", (req, res, next) => {
 
-            arr.push(elm);
+    const {id_pet} = req.body;
 
-        });
+    connection.query(`call getAppointmentsByOwner(?)`, [id_pet],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
 
-        res.json({"appointments": arr});
+        if(rows[0].length === 0) res.json({"status": false, "message": "no pet data with that identification"});
+        else{
+            res.json({"appointments": rows[0]});
+        }
+        
     });
 });
 
@@ -55,7 +79,7 @@ appointment_router.post("/appointments", (req, res, next) => {
     
     const {date_appointment, id_pet, id_owner, appointment_type} = req.body;
 
-    connection.query("insert into appointment (dateAppointment, idPet, idOwner, apointmentType) values (?, ?, ?, ?)", [date_appointment, id_pet, id_owner, appointment_type], (err, results, fields) => {
+    connection.query("insert into appointments (dateAppointment, idPet, idOwner, appointmentType) values (?, ?, ?, ?)", [date_appointment, id_pet, id_owner, appointment_type], (err, results, fields) => {
         console.trace(err);
         if(err) res.json({"status": false, "message": "there was an error with the database"});
 
