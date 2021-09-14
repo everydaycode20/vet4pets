@@ -29,7 +29,7 @@ const MiscList = () => {
                 </div>
             </div>
             <div className="container">
-                <h2>Tests</h2>
+                <h2>Pet Type</h2>
                 <div>
                     <span>See all</span>
                     <span>Create new pet type</span>
