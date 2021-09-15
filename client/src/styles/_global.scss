@@ -19,12 +19,13 @@ $pink2: #F38BA0;
     position: absolute;
     top: 45%;
     right: 2%;
+    cursor: pointer;
 }
 
 @mixin dot {
     background-color: $greeLine;
-    width: 5px;
-    height: 5px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
 }
 

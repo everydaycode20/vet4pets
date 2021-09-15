@@ -8,8 +8,14 @@ import MedicalRecords from "./components/medical_records/medical_records";
 import Owner from "./components/owner/owner";
 import Pet from "./components/pet/pet";
 import Miscellaneous from "./components/miscellaneous/miscellaneous";
+import OwnerProfile from "./components/owner_profile/owner_profile";
+import PetProfile from "./components/pet_profile/pet_profile";
 
 import "./styles/app.scss";
+
+function Own(params) {
+  return <p>person</p>
+}
 
 function App() {
 
@@ -32,6 +38,10 @@ function App() {
             </Route>
             <Route path="/pets">
               <Pet />
+            </Route>
+            <Route path="/owner/:id" children={<OwnerProfile/>}>
+            </Route>
+            <Route path="/pet/:id" children={<PetProfile/>}>
             </Route>
             <Route path="/miscellaneous">
               <Miscellaneous />

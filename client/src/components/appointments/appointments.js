@@ -22,9 +22,8 @@ const Appointments = () => {
 
     useEffect(() => {
         
-        let objWeek = [{"day": "sunday", "date": 0, "month": ""}, {"day": "monday", "date": 0,  "month": ""}, {"day": "tuesday", "date": 0, "month": ""}, 
-        {"day": "wednesday", "date": 0, "month": ""}, {"day": "thursday", "date": 0, "month": ""}, {"day": "friday", "date": 0, "month": ""}, {"day": "saturday", "date": 0, "month": ""}];
-
+        let objWeek = [{"day": "monday", "date": 0,  "month": "", "year": ""}, {"day": "tuesday", "date": 0, "month": "", "year": ""}, {"day": "wednesday", "date": 0, "month": "", "year": ""}, {"day": "thursday", "date": 0, "month": "", "year": ""}, {"day": "friday", "date": 0, "month": "" ,"year": ""}];
+        console.log(objWeek);
         const currentDate = new Date();
 
         const year = currentDate.getFullYear();
@@ -32,13 +31,14 @@ const Appointments = () => {
         const month = currentDate.getMonth();
         
         if (newWeek.dayInWeek !== 0) {
-            let tempDay = newWeek.day - newWeek.dayInWeek;
+            let tempDay = newWeek.day - newWeek.dayInWeek + 1;
             const date = new Date(year, month, tempDay);
 
-            for (let i = 0; i < 7; i++) {
-            
+            for (let i = 0; i < 5; i++) {
+
                 objWeek[i].date = date.getDate();
                 objWeek[i].month = months[date.getMonth()];
+                objWeek[i].year = date.getFullYear();
                 date.setDate(date.getDate() + 1);
                 
             }
@@ -46,10 +46,11 @@ const Appointments = () => {
         }
         else{
             const date = new Date(year, month, newWeek.day);
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 5; i++) {
             
                 objWeek[i].date = date.getDate();
                 objWeek[i].month = months[date.getMonth()];
+                objWeek[i].year = date.getFullYear();
                 date.setDate(date.getDate() + 1);
             }
             setCurrentYear(date.getFullYear());

@@ -1,8 +1,11 @@
 import React, { useState, useEffect, memo } from "react";
 
 const Calendar = ({ week }) => {
+    
+    const arr = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 
-    const arr = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
 
     const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
 
@@ -22,14 +25,28 @@ const Calendar = ({ week }) => {
     //     });
     // }, []);
 
+
+    useEffect(() => {
+        
+        const times = [{"date": "2021-09-13", "time": "10:30", "appointment": "general", "ownerName": "name last name", "petName": "akira"}]
+
+
+
+        console.log(times);
+    }, []);
+
     return (
         <div className="main-calendar-container">
                 <div className="week-days">
                     {week && week.map((day, index) => {
 
+                        const condition = day.year === new Date().getFullYear() && day.date === new Date().getDate() && day.month === months[new Date().getMonth()];
+
                         return (
-                            <div key={index}>
-                                <span style={{}}>{day.date} {day.day}</span>
+                            <div key={index} className="date">
+                                {condition && <div className="current-day"></div>}
+                                <span >{day.date} </span>
+                                <span>{day.day}</span>
                             </div>
                         )
                     })}

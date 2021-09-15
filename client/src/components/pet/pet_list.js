@@ -1,5 +1,8 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-
+import Edit from "../../assets/edit_.svg";
+import Profile from "../../assets/profile_filled_black.svg";
 
 const PetList = () => {
 
@@ -7,6 +10,16 @@ const PetList = () => {
                 {"name": "pet name", "ownerName": "owner name", "age": 10, "type": "cat", "registerDate": "01-01-01"}];
 
     const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
+
+    const [showOptions, setShowOptions] = useState(null);
+
+    const getOptions = (index) => {
+        setShowOptions(index);
+
+        if (showOptions !== null) {
+            setShowOptions(null);
+        }
+    };
 
     return (
         <section className="main-pet-list-container">
@@ -32,11 +45,15 @@ const PetList = () => {
                             <span>{elm.age}</span>
                             <span>{elm.type}</span>
                             <span>{elm.registerDate}</span>
-                            <button className="dot-container">
+                            <button className="dot-container" onClick={() => getOptions(index)}>
                                 <div className="dot"/>
                                 <div className="dot"/>
                                 <div className="dot"/>
                             </button>
+                            { showOptions === index && <div className="pet-options">
+                                <Link to={`/pet/${index}`}> <img src={Profile} alt="profile" /> Pet profile</Link>
+                                <Link to={`/pet/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
+                            </div>}
                         </li>
                     )
                 })}
