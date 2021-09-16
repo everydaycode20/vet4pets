@@ -30,6 +30,52 @@ appointment_router.get("/appointments/day", (req, res, next) => {
 
 });
 
+appointment_router.get("/appointments/day-week", (req, res, next) => {
+
+    const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
+
+    let data = [{"Monday": []}, {"Tuesday": []}, {"Wednesday": []}, {"Thursday": []}, {"Friday": []}];
+
+    const {date1, date2} = req.body;
+
+    data.forEach((elm, i) => {
+        
+        hours.forEach(hour => {
+            elm[arr[i]].push({"time": hour, "day": arr[i], "dateDay": 0, "fullDate": "","appointmentName": "", "nameOwner": "", "namePet": ""});
+        })
+    });
+
+    connection.query(`call getAppointmentsByWeek(?, ?)`, [date1, date2], (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        data.forEach((a, i) => {
+
+            rows[0].forEach(elm => {
+                
+                a[arr[i]].find((prop, i) => {
+                    
+                    const t = addZeroToString.addZeroToLeft(elm.time.split(":")[0]) + ":" + elm.time.split(":")[1];
+
+                    if (prop.day === elm.day && prop.time === t) {
+                        prop.namePet = elm.namePet;
+                        prop.nameOwner = elm.nameOwner;
+                        prop.appointmentName = elm.appointmentName;
+                        prop.dateDay = elm.dateDay;
+                        prop.fullDate = elm.fullDate;
+                        return true;
+                    }
+                })
+            });
+        });
+        
+        res.json({"appointmentsWeek": data});
+    });
+    
+});
+
 appointment_router.get("/appointments/week", (req, res, next) => {
 
     const { date1, date2, date3, date4, date5} = req.body;
