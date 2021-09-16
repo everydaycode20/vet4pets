@@ -23,7 +23,7 @@ const Appointments = () => {
     useEffect(() => {
         
         let objWeek = [{"day": "monday", "date": 0,  "month": "", "year": ""}, {"day": "tuesday", "date": 0, "month": "", "year": ""}, {"day": "wednesday", "date": 0, "month": "", "year": ""}, {"day": "thursday", "date": 0, "month": "", "year": ""}, {"day": "friday", "date": 0, "month": "" ,"year": ""}];
-        console.log(objWeek);
+        
         const currentDate = new Date();
 
         const year = currentDate.getFullYear();
@@ -81,8 +81,11 @@ const Appointments = () => {
 
     return (
         <div className="main-appointment-container">
-            <Header/>
-            <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
+            <div>
+                <Header/>
+                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
+            </div>
+            
             <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear}/>
             {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment}/>}
         </div>

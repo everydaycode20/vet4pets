@@ -24,9 +24,12 @@ $pink2: #F38BA0;
 
 @mixin dot {
     background-color: $greeLine;
-    width: 7px;
-    height: 7px;
+    width: 6px!important;
+    height: 6px!important;
     border-radius: 50%;
+    padding: 0;
+    box-shadow: none;
+    border: none;
 }
 
 @mixin checkboxContainer {
