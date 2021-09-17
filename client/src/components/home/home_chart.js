@@ -3,26 +3,167 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 import "../../styles/home/home_chart.scss";
 
+const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
+
+  if (btnBackground === "weekly") {
+    return (
+      <ResponsiveContainer width="99%" height="100%">
+          <BarChart width={1000} height={300} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}} >
+              {/* <CartesianGrid strokeDasharray="5 5" /> */}
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip cursor={{fill: "transparent"}}/>
+              {/* <Legend /> */}
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+          </BarChart>
+      </ResponsiveContainer>
+    );
+  }
+
+  if (btnBackground === "monthly") {
+
+    return (
+      <ResponsiveContainer width="99%" height="100%">
+        <BarChart width={1000} height={300} data={monthlyData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
+            {/* <CartesianGrid strokeDasharray="5 5" /> */}
+            <XAxis dataKey="name" fontSize={16} interval={1} />
+            <YAxis />
+            <Tooltip cursor={{fill: "transparent"}}/>
+            {/* <Legend /> */}
+            <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+        </BarChart>
+      </ResponsiveContainer>
+    );
+  }
+
+  if (btnBackground === "yearly") {
+    
+    return (
+      <ResponsiveContainer width="99%" height="100%">
+          <BarChart width={1000} height={300} data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
+              {/* <CartesianGrid strokeDasharray="5 5" /> */}
+              <XAxis dataKey="year" fontSize={16} />
+              <YAxis />
+              <Tooltip cursor={{fill: "transparent"}}/>
+              {/* <Legend /> */}
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+          </BarChart>
+      </ResponsiveContainer>
+    );
+  }
+
+};
+
 const HomeChart = () => {
 
-  const [data, setData] = useState([{name: 'monday', pv: 5,},{name: 'tuesday',pv: 10},{name: "wednesday", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
+  const [data, setData] = useState( [ {name: 'monday', appointments: 0,}, {name: 'tuesday', appointments: 0},{name: "wednesday", appointments: 0}, {name: "thursday", appointments: 0}, {name: "friday", appointments: 0}]);
 
-    const [btnBackground, setBtnBackground] = useState("weekly");
+  const [monthlyData, setMonthlyData] = useState({ data: [ {name: "January", appointments: 0}, {name: "February", appointments: 0}, {name: "March", appointments: 0}, {name: "April", appointments: 0}, {name: "May", appointments: 0}, {name: "June", appointments: 0}, {name: "July", appointments: 0}, {name: "August", appointments: 0},
+  {name: "September", appointments: 0}, {name: "October", appointments: 0}, {name: "November", appointments: 0}, {name: "December", appointments: 0} ], status: false});
 
-    const getWeeklyData = () => {
-      setBtnBackground("weekly");
-      setData([{name: 'monday', pv: 5,},{name: 'tuesday',pv: 10},{name: "wednesday", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
-    };
+  const [yearlyData, setYearlyData] = useState([]);
 
-    const getMonthlyData = () => {
+  const [btnBackground, setBtnBackground] = useState("weekly");
+
+  const getWeeklyData = () => {
+
+    setBtnBackground("weekly");
+    
+  };
+
+  const getMonthlyData = () => {
+
+    const year = new Date().getFullYear();
+
+    if (monthlyData.status) {
       setBtnBackground("monthly");
-      setData([{name: 'january', pv: 25,},{name: 'february',pv: 30},{name: "march", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
-    };
+    }
+    else{
 
-    const getYearlyData = () => {
-      setBtnBackground("yearly");
-      setData([{name: '2021', pv: 155,},{name: '2020',pv: 200},{name: "2019", pv: 150}, {name: "2018", pv: 8}]);
-    };
+      setBtnBackground("monthly");
+
+      fetch("/appointments/months", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+      },
+        body: JSON.stringify({"year": year})
+      }).then(res => res.json()).then(d => {
+              
+        let state = JSON.parse(JSON.stringify(monthlyData.data));
+
+        state.forEach((elm, index) => {
+          elm.appointments = d[index].appointments;
+          
+        });
+
+        setMonthlyData(prev => ({...prev, data: state}));
+
+      }).catch(err => console.log(err));
+      
+      setMonthlyData(prev => ({...prev, status: true}))
+    }
+
+    
+
+  };
+
+  const getYearlyData = () => {
+    setBtnBackground("yearly");
+    
+    fetch("/appointments/years", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+    }
+    }).then(res => res.json()).then(d => {
+      
+      setYearlyData(d);
+
+    }).catch(err => console.log(err));
+
+  };
+
+  useEffect(() => {
+    
+    let datesWeek = {date1: "", date2: "", date3: "", date4: "", date5: ""};
+
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    
+    const month = currentDate.getMonth();
+
+    let tempDay = currentDate.getDate() - currentDate.getDay() + 1;
+    
+    let date = new Date(year, month, tempDay);
+
+    for (const key in datesWeek) {
+      
+      datesWeek[key] = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      date.setDate(date.getDate() + 1);
+
+    }
+
+    fetch("/appointments/week", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+    },
+      body: JSON.stringify({"date1": datesWeek.date1, "date2": datesWeek.date2, "date3": datesWeek.date3, "date4": datesWeek.date4, "date5": datesWeek.date5})
+    }).then(res => res.json()).then(d => {
+      
+      let state = JSON.parse(JSON.stringify(data));
+
+      state.forEach((elm, index) => {
+        elm.appointments = d[index][elm.name];
+      });
+      
+      setData(state);
+
+    }).catch(err => console.log(err));
+
+  }, []);
 
     return (
         <section className="home-chart">
@@ -34,27 +175,7 @@ const HomeChart = () => {
                     <button style={{backgroundColor: btnBackground === "yearly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "yearly" ? "white" : "#3A6351"}} onClick={() => getYearlyData()}>yearly</button>
                 </div>
             </div>
-            
-                <ResponsiveContainer width="99%" height="100%">
-                    <BarChart
-                        width={1000}
-                        height={300}
-                        data={data}
-                        margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                        }}
-                        >
-                        {/* <CartesianGrid strokeDasharray="5 5" /> */}
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip cursor={{fill: "transparent"}}/>
-                        {/* <Legend /> */}
-                        <Bar dataKey="pv" fill="#F38BA0" barSize={20}/>
-                    </BarChart>
-                </ResponsiveContainer>
+          <Chart btnBackground={btnBackground} data={data} monthlyData={monthlyData} yearlyData={yearlyData}/>
         </section>
     );
 };

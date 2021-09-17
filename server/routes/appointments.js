@@ -76,15 +76,70 @@ appointment_router.get("/appointments/day-week", (req, res, next) => {
     
 });
 
-appointment_router.get("/appointments/week", (req, res, next) => {
+appointment_router.post("/appointments/week", (req, res, next) => {
 
-    const { date1, date2, date3, date4, date5} = req.body;
-
+    const { date1, date2, date3, date4, date5 } = req.body;
+    
     connection.query(`call getNumberAppointmentsByWeek(?, ?, ?, ? , ?)`, [date1, date2, date3, date4, date5],(err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
         
-        res.json({"hours": rows[0]});
+        res.json([{"monday": rows[0][0].monday}, {"tuesday": rows[0][0].tuesday}, {"wednesday": rows[0][0].wednesday}, {"thursday": rows[0][0].thursday}, {"friday": rows[0][0].friday}]);
+        
+    });
+
+});
+
+appointment_router.post("/appointments/months", (req, res, next) => {
+
+    const { year } = req.body;
+    
+    const months = [ {name: "January", appointments: 0}, {name: "February", appointments: 0}, {name: "March", appointments: 0}, {name: "April", appointments: 0}, 
+    {name: "May", appointments: 0}, {name: "June", appointments: 0}, {name: "July", appointments: 0}, {name: "August", appointments: 0},
+    {name: "September", appointments: 0}, {name: "October", appointments: 0}, {name: "November", appointments: 0}, {name: "December", appointments: 0} ];
+
+    connection.query(`call getAppointmentsByMonth(?)`, [year],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        let i = 0;
+        let j = 0;
+
+        while (j < rows[0].length) {
+            
+            while (i < months.length) {
+
+                if (rows[0][j].month === months[i].name) {
+                    months[i].appointments = rows[0][j].appointments;
+                    if (j < rows[0].length-1) {
+                        j++;
+                        i++; 
+                    }
+                    else{
+                        i = months.length + 1;
+                        j = rows[0].length + 1;
+                    }
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+
+        res.json(months);
+        
+    });
+
+});
+
+appointment_router.get("/appointments/years", (req, res, next) => {
+    
+    connection.query(`call getAppointmentsByYear()`, (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        res.json(rows[0]);
+        
     });
 
 });
@@ -126,7 +181,7 @@ appointment_router.post("/appointments", (req, res, next) => {
     const {date_appointment, id_pet, id_owner, appointment_type} = req.body;
 
     connection.query("insert into appointments (dateAppointment, idPet, idOwner, appointmentType) values (?, ?, ?, ?)", [date_appointment, id_pet, id_owner, appointment_type], (err, results, fields) => {
-        console.trace(err);
+        
         if(err) res.json({"status": false, "message": "there was an error with the database"});
 
         res.json({"status": true, "message": "appointment added"});
