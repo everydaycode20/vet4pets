@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
-import Profile from "../../assets/profile_filled_black.svg";
+import Pet from "../../assets/pet_filled_black.svg";
 
 const PetList = () => {
 
@@ -51,7 +51,7 @@ const PetList = () => {
                                 <div className="dot"/>
                             </button>
                             { showOptions === index && <div className="pet-options">
-                                <Link to={`/pet/${index}`}> <img src={Profile} alt="profile" /> Pet profile</Link>
+                                <Link to={`/pet/${index}`}> <img src={Pet} alt="profile" /> Pet profile</Link>
                                 <Link to={`/pet/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
                             </div>}
                         </li>

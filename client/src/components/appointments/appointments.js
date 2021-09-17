@@ -17,6 +17,8 @@ const Appointments = () => {
 
     const [makeAppointment, setMakeAppointment] = useState(false);
 
+    const [date, setDate] = useState(null);
+
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
 
@@ -71,9 +73,17 @@ const Appointments = () => {
         setNewWeek(prev => ({...prev, day: newWeek.day + 7}));
     }
 
-    const addAppointment = () => {
+    const addAppointment = (e, time) => {
 
-        setMakeAppointment(true);
+        if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
+            setDate({date: 16, day: "thursday", hour: time, month: "September", monthIndex: 9, year: 2021});
+            setMakeAppointment(true);
+        }
+        else if (e.type === "submit" && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
+            setDate(null);
+            setMakeAppointment(true);
+        }
+        
 
         if(makeAppointment) setMakeAppointment(false);
 
@@ -86,8 +96,8 @@ const Appointments = () => {
                 <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
             </div>
             
-            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear}/>
-            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment}/>}
+            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointment={addAppointment}/>
+            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date}/>}
         </div>
     );
 

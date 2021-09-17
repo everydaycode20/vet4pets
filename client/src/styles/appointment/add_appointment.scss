@@ -29,6 +29,7 @@
     height: 100vh;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.137);
+    z-index: 50;
 
     .main-form-container{
         position: fixed;
@@ -146,12 +147,21 @@
                 }
             }
 
-            & button:nth-child(2){
+            .save-btn{
                 border: none;
                 padding: 10px;
                 background-color: $greeLine;
                 border-radius: 5px;
                 color: white;
+            }
+
+            .save-btn-dis{
+                border: none;
+                padding: 10px;
+                background-color: $infoText;
+                border-radius: 5px;
+                color: rgb(0, 0, 0);
+                cursor: not-allowed;
             }
         }
     }

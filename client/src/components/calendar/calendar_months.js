@@ -2,7 +2,7 @@ import React, {memo, useEffect, useState} from "react";
 
 import "./styles/calendar-months.css";
 
-const CalendarMonths = memo(({ setNewMonth, daysInMonth }) => {
+const CalendarMonths = memo(({ setNewMonth, daysInMonth, setBtnActive }) => {
 
     const months = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
@@ -19,7 +19,8 @@ const CalendarMonths = memo(({ setNewMonth, daysInMonth }) => {
     }, []);
 
     const getMonth = (index) => {
-        setNewMonth( prev => ({...prev, month: index, view: true}) )
+        setNewMonth( prev => ({...prev, month: index, view: true}) );
+        setBtnActive(prev => ({...prev, step2: true}));
     };
 
     return (
