@@ -1,63 +1,37 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import "../../styles/home/home_chart.scss";
 
 const HomeChart = () => {
 
-    useEffect(() => {
-        console.log("mounted");
-        return () => {
-            console.log("unmounted");
-        }
-    }, []);
+  const [data, setData] = useState([{name: 'monday', pv: 5,},{name: 'tuesday',pv: 10},{name: "wednesday", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
 
-    const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100,},];
+    const [btnBackground, setBtnBackground] = useState("weekly");
+
+    const getWeeklyData = () => {
+      setBtnBackground("weekly");
+      setData([{name: 'monday', pv: 5,},{name: 'tuesday',pv: 10},{name: "wednesday", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
+    };
+
+    const getMonthlyData = () => {
+      setBtnBackground("monthly");
+      setData([{name: 'january', pv: 25,},{name: 'february',pv: 30},{name: "march", pv: 10}, {name: "thursday", pv: 8}, {name: "friday", pv: 12}]);
+    };
+
+    const getYearlyData = () => {
+      setBtnBackground("yearly");
+      setData([{name: '2021', pv: 155,},{name: '2020',pv: 200},{name: "2019", pv: 150}, {name: "2018", pv: 8}]);
+    };
 
     return (
         <section className="home-chart">
             <div className="header-chart">
                 <h2>Appointments this week</h2>
                 <div className="control-chart">
-                    <button>monthly</button>
-                    <button>yearly</button>
-                    <button>weekly</button>
+                    <button style={{backgroundColor: btnBackground === "weekly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "weekly" ? "white" : "#3A6351"}} onClick={() => getWeeklyData()}>weekly</button>
+                    <button style={{backgroundColor: btnBackground === "monthly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "monthly" ? "white" : "#3A6351"}} onClick={() => getMonthlyData()}>monthly</button>
+                    <button style={{backgroundColor: btnBackground === "yearly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "yearly" ? "white" : "#3A6351"}} onClick={() => getYearlyData()}>yearly</button>
                 </div>
             </div>
             
@@ -78,7 +52,7 @@ const HomeChart = () => {
                         <YAxis />
                         <Tooltip cursor={{fill: "transparent"}}/>
                         {/* <Legend /> */}
-                        <Bar dataKey="pv" fill="#F38BA0" barSize={10}/>
+                        <Bar dataKey="pv" fill="#F38BA0" barSize={20}/>
                     </BarChart>
                 </ResponsiveContainer>
         </section>

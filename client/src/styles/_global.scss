@@ -9,6 +9,7 @@ $infoText: #919191;
 $lightGreenBackground: #e7fdf9;
 $pink1: #FFDFE6;
 $pink2: #F38BA0;
+$darkerGrey: #585858;
 
 @mixin dotContainer {
     display: flex;
@@ -19,13 +20,17 @@ $pink2: #F38BA0;
     position: absolute;
     top: 45%;
     right: 2%;
+    cursor: pointer;
 }
 
 @mixin dot {
     background-color: $greeLine;
-    width: 5px;
-    height: 5px;
+    width: 6px!important;
+    height: 6px!important;
     border-radius: 50%;
+    padding: 0;
+    box-shadow: none;
+    border: none;
 }
 
 @mixin checkboxContainer {

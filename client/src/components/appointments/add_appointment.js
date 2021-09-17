@@ -4,7 +4,7 @@ import Calendar from "../calendar/calendar";
 
 import "../../styles/appointment/add_appointment.scss";
 
-const AddAppointment = ({setMakeAppointment}) => {
+const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
 
     const [dropdown, setDropdown] = useState(false);
 
@@ -16,7 +16,7 @@ const AddAppointment = ({setMakeAppointment}) => {
 
     const [pet, setPet] = useState(null);
     
-    const [date, setDate] = useState(null);
+    const [btnActive, setBtnActive] = useState({step1: false, step2: false, step3: date !== null ? true : false});
 
     const arr = ["Vaccination", "General checkup", "Surgery"];
 
@@ -49,11 +49,13 @@ const AddAppointment = ({setMakeAppointment}) => {
     const getService = (item) => {
         setService(item);
         setDropdown(false);
+        setBtnActive(prev => ({...prev, step1: true}));
     }
 
     const getPet = (pet) => {
         setPet(pet);
         setPetDropdown(false);
+        setBtnActive(prev => ({...prev, step2: true}));
     };
 
     const showCalendar = () => {
@@ -63,7 +65,7 @@ const AddAppointment = ({setMakeAppointment}) => {
             setCalendar(false);
         }
     };
-    console.log(date);
+    
     return (
 
         <div className="add-appointment-container" onClick={(e) => hideMenu(e.target)}>
@@ -111,12 +113,16 @@ const AddAppointment = ({setMakeAppointment}) => {
                             <button type="button" onClick={() => showCalendar()}>Edit</button>
                         </div>
                         }
-                        {calendar && <Calendar setDate={setDate} date={date} setCalendar={setCalendar}/>}
+                        {calendar && <Calendar setDate={setDate} date={date} setCalendar={setCalendar} setBtnActive={setBtnActive} />}
                     </div>
                 </div>
                 <div className="submit-btn">
                     <button type="button" onClick={() => setMakeAppointment(false)}>Cancel</button>
-                    <button type="button">Save appointment</button>
+                    {btnActive.step1 && btnActive.step2 && btnActive.step3 ? 
+                        <button type="button" className="save-btn">Save appointment</button> :
+                        <button type="button" className="save-btn-dis">Save appointment</button> 
+                    }
+                    
                 </div>
             </form>
         </div>

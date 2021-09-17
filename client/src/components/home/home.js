@@ -8,6 +8,7 @@ import Calendar from "../../assets/calendar_filled_btn.svg";
 import Medicine from "../../assets/medicine_filled_btn.svg";
 import Pet from "../../assets/pet_filled_btn.svg";
 import Profile from "../../assets/profile_filled_btn.svg";
+import NextAppointments from "./next_appoinments";
 
 const Main = () => {
 
@@ -61,32 +62,7 @@ const Main = () => {
                     </section>
                 </div>
                 
-                <section className="next-appointment-list">
-                    <h2>Next appointments</h2>
-                    <ul className="list-appointment">
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                        <li>appointment 1</li>
-                    </ul>
-                </section>
+                <NextAppointments />
             </div>
         </div>
     );
