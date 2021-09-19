@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Calendar from "../calendar/calendar";
 
@@ -8,20 +8,49 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
 
     const [dropdown, setDropdown] = useState(false);
 
-    const [petDropdown, setPetDropdown] = useState(false);
+    const [ownerDropdown, setOwnerDropdown] = useState(false);
+
+    const [petDropDown, setPetDropDown] = useState(false);
 
     const [calendar, setCalendar] = useState(false);
 
     const [service, setService] = useState(null);
 
-    const [pet, setPet] = useState(null);
+    const [owner, setOwner] = useState(null);
     
-    const [btnActive, setBtnActive] = useState({step1: false, step2: false, step3: date !== null ? true : false});
+    const [pet, setPet] = useState(null);
+
+    const [btnActive, setBtnActive] = useState({step1: false, step2: false, step3: false,step4: date !== null ? true : false});
+
+    const [ownerList, setOwnerList] = useState([]);
+
+    const [petList, setPetList] = useState([]);
+
+    const [serviceList, setServiceList] = useState([]);
 
     const arr = ["Vaccination", "General checkup", "Surgery"];
 
-    const arrPet = ["pet 1", "pet 2", "pet 3"];
+    useEffect(() => {
+        
+        fetch("/owners",
+            {
+                method: "GET",
+            }
+        ).then(res => res.json()).then(data => {
+            setOwnerList(data);
+        });
 
+        fetch("/appointments/type",
+        {
+            method: "GET",
+        }
+    ).then(res => res.json()).then(data => {
+        console.log(data);
+        setServiceList(data)
+    });
+
+    }, []);
+    
     const hideMenu = (e) => {
 
         if (e.classList.contains("add-appointment-container")) {
@@ -38,11 +67,11 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
         }
     };
 
-    const showPetDropdown = () => {
-        setPetDropdown(true)
+    const showOwnerDropdown = () => {
+        setOwnerDropdown(true)
 
-        if (petDropdown) {
-            setPetDropdown(false);
+        if (ownerDropdown) {
+            setOwnerDropdown(false);
         }
     };
     
@@ -52,9 +81,22 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
         setBtnActive(prev => ({...prev, step1: true}));
     }
 
-    const getPet = (pet) => {
-        setPet(pet);
-        setPetDropdown(false);
+    const getOwnerPets = (owner, id) => {
+
+        fetch("/owner/pets",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"id": id})
+            }
+        ).then(res => res.json()).then(data => {
+            setPetList(data);
+        });
+
+        setOwner(owner);
+        setOwnerDropdown(false);
         setBtnActive(prev => ({...prev, step2: true}));
     };
 
@@ -66,6 +108,26 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
         }
     };
     
+    const showPetDropdown = () => {
+        setPetDropDown(true);
+
+        if (petDropDown) {
+            setPetDropDown(false);
+        }
+    };
+
+    const getPet = (petName) => {
+        setPet(petName);
+        setPetDropDown(false);
+        setBtnActive(prev => ({...prev, step3: true}));
+    };
+    console.log(btnActive);
+    const addAppointment = (date) => {
+
+    };
+
+    // console.log(date);
+
     return (
 
         <div className="add-appointment-container" onClick={(e) => hideMenu(e.target)}>
@@ -80,31 +142,48 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
                             <button type="button" onClick={() => showDropdown()}>Edit</button>
                         </div>}
                         {dropdown && <ul className="service-dropdown">
-                            {arr.map((item, index) => {
+                            {serviceList.map((item, index) => {
 
                                 return (
-                                    <li key={index} onClick={() => getService(item)}>{item}</li>
+                                    <li key={item.id} onClick={() => getService(item.appointmentName)}>{item.appointmentName}</li>
                                 )
                             })}
                         </ul>}
                     </div>
-                    <div className="pet-container">
-                        {!pet ?
-                        <button type="button" btnclasspet={petDropdown.toString()} onClick={() => showPetDropdown()}>Add pet</button> : 
+                    <div className="owner-container">
+                        {!owner ?
+                        <button type="button" btnclasspet={ownerDropdown.toString()} onClick={() => showOwnerDropdown()}>Add Owner</button> : 
+                        <div className="owner-selected">
+                            <span>{owner}</span>
+                            <button type="button" onClick={() => showOwnerDropdown()}>Edit</button>
+                        </div>
+                        }
+                        {ownerDropdown && <ul className="owner-dropdown">
+                            {ownerList.map((item, index) => {
+
+                                return (
+                                    <li key={item.id} onClick={() => getOwnerPets(item.nameOwner, item.id)}>{item.nameOwner}</li>
+                                )
+                            })}
+                        </ul>}
+                    </div>
+                    {btnActive.step2 && <div className="pet-container">
+                        {!pet? 
+                        <button type="button" btnclasspet={petDropDown.toString()} onClick={() => showPetDropdown()}>Add Pet</button> : 
                         <div className="pet-selected">
                             <span>{pet}</span>
                             <button type="button" onClick={() => showPetDropdown()}>Edit</button>
                         </div>
                         }
-                        {petDropdown && <ul className="pet-dropdown">
-                            {arrPet.map((item, index) => {
+                        {petDropDown && <ul className="pet-dropdown">
+                            {petList.map((item, index) => {
 
                                 return (
-                                    <li key={index} onClick={() => getPet(item)}>{item}</li>
+                                    <li key={item.id} onClick={() => getPet(item.namePet)}>{item.namePet}</li>
                                 )
                             })}
                         </ul>}
-                    </div>
+                    </div>}
                     <div className="date-container">
                     {!date ?
                         <button type="button" btnclassdate={calendar.toString()} onClick={() => showCalendar()}>Add date</button> : 
@@ -118,8 +197,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
                 </div>
                 <div className="submit-btn">
                     <button type="button" onClick={() => setMakeAppointment(false)}>Cancel</button>
-                    {btnActive.step1 && btnActive.step2 && btnActive.step3 ? 
-                        <button type="button" className="save-btn">Save appointment</button> :
+                    {btnActive.step1 && btnActive.step2 && btnActive.step3 && btnActive.step4 ? 
+                        <button type="button" className="save-btn" onClick={() => AddAppointment()}>Save appointment</button> :
                         <button type="button" className="save-btn-dis">Save appointment</button> 
                     }
                     

@@ -1,15 +1,32 @@
+import React, { useState, useEffect} from "react";
 
 import "./styles/calendar_hours.css";
 
-const CalendarHours = ({ setDate, setCalendar, setBtnActive }) => {
+const CalendarHours = ({ setDate, setCalendar, setBtnActive, date }) => {
 
-    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
+    const [hours, setHours] = useState([]);
 
     const setAppointment = (hour) => {
         setDate(prev => ({...prev, "hour": hour}));
         setCalendar(false);
-        setBtnActive(prev => ({...prev, step3: true}));
+        setBtnActive(prev => ({...prev, step4: true}));
     };
+
+    useEffect(() => {
+        
+        fetch("/appointments/day", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"date": `${date.year}-${date.monthIndex}-${date.date}`})
+        }).then(res => res.json()).then(data => {
+            
+            setHours(data.hours);
+            console.log(data.hours, "HOURS");
+        }).catch(err => console.log(err));
+
+    }, []);
 
     return (
         <div className="calendar-hours-container">

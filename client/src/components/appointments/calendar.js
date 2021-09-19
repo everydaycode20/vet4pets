@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 
-const AppointmentCard = ({ item, border, index, getOptions }) => {
+const AppointmentCard = ({ item, border, getOptions, index }) => {
 
     return (                 
         <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className="appointment-card">
@@ -12,7 +12,7 @@ const AppointmentCard = ({ item, border, index, getOptions }) => {
             <span>{item.namePet}</span>
             <span>{item.appointmentName}</span>
             <span>{item.time}</span>
-            <button className="dot-container" onClick={() => getOptions(item)}>
+            <button className="dot-container" onClick={() => getOptions(index)}>
                 <div className="dot"/>
                 <div className="dot"/>
                 <div className="dot"/>
@@ -23,7 +23,7 @@ const AppointmentCard = ({ item, border, index, getOptions }) => {
 
 const Calendar = ({ week, addAppointment }) => {
 
-    const [showOptions, setShowOptions] = useState({"dateDay": "", "day": "", "time": ""});
+    const [showOptions, setShowOptions] = useState(null);
 
     const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -32,29 +32,83 @@ const Calendar = ({ week, addAppointment }) => {
 
     const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
 
-    const obj = [{"Monday":[{"time":"08:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"08:30","day":"Monday","dateDay":13,"fullDate":"2021-09-13 8:30","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"09:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:00","day":"Monday","dateDay":13,"fullDate":"2021-09-13 10:00","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"10:30","day":"Monday","dateDay":13,"fullDate":"2021-09-13 10:30","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"11:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:00","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:30","day":"Monday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""}]},{"Tuesday":[{"time":"08:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"08:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:00","day":"Tuesday","dateDay":14,"fullDate":"2021-09-14 10:00","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"10:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:00","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:30","day":"Tuesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""}]},{"Wednesday":[{"time":"08:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"08:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:00","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:30","day":"Wednesday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""}]},{"Thursday":[{"time":"08:00","day":"Thursday","dateDay":16,"fullDate":"2021-09-16 8:00","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"08:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:00","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:30","day":"Thursday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""}]},{"Friday":[{"time":"08:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"08:30","day":"Friday","dateDay":17,"fullDate":"2021-09-17 8:30","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"09:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"09:30","day":"Friday","dateDay":17,"fullDate":"2021-09-17 9:30","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"10:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"10:30","day":"Friday","dateDay":17,"fullDate":"2021-09-17 10:30","appointmentName":"general checkup","nameOwner":"name lastname","namePet":"akira"},{"time":"11:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"11:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"12:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"01:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"02:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"03:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:00","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"","nameOwner":"","namePet":""},{"time":"04:30","day":"Friday","dateDay":0,"fullDate":"","appointmentName":"vaccine","nameOwner":"name last name","namePet":"akira"}]}];
+    const [appointmentsWeek, setAppointmentsWeek] = useState([]);
 
-    // useEffect(() => {
-    //     console.log("si");
-    //     fetch("/appointments", {method: "GET"}).then(res => res.json()).then(data => {
-            
-    //         data.forEach(elm => {
-    //             const time = new Date(elm.fecha)
-    //             console.log(time.getHours(), time.getMinutes(), time.getSeconds());
-    //             console.log(new Date(elm.fecha).toLocaleDateString());
-    //         });
-    //     });
-    // }, []);
+    useEffect(() => {
 
-    const getOptions = (item) => {
+        if (week) {
         
-        setShowOptions(prev => ({...prev, dateDay: item.dateDay, day: item.day, time: item.time}));
+            const currentDate = new Date();
 
-        if (showOptions.dateDay !== "") {
-            setShowOptions(prev => ({...prev, dateDay: "", day: "", time: ""}));
+            const year = currentDate.getFullYear();
+            
+            const month = currentDate.getMonth();
+        
+            let tempDay = currentDate.getDate() - currentDate.getDay() + 1;
+
+            let date = new Date(year, month, tempDay);
+
+            fetch("/appointments/day-week", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"date1": `${week[0].year}-${week[0].monthIndex}-${week[0].date}`, "date2": `${week[4].year}-${week[4].monthIndex}-${week[4].date}`})
+            }).then(res => res.json()).then(data => {
+                
+                setAppointmentsWeek(data.appointmentsWeek);
+                
+            }).catch(err => console.log(err));
+        }
+    }, [week]);
+    
+    const getOptions = (index) => {
+        
+        setShowOptions(index);
+
+        if (showOptions !== null) {
+            setShowOptions(null);
         }
     };
     
+    const deleteCard = (index, idDB) => {
+
+        let data = JSON.parse(JSON.stringify(appointmentsWeek));
+
+        let newObj = data.map((elm, i) => {
+            
+            return {[arr[i]]: elm[arr[i]].map(item => {
+                if (item.id === index) {
+                    item.appointmentName = "";
+                    item.dateDay = "";
+                    item.fullDate = "";
+                    item.idDB = "";
+                    item.nameOwner = "";
+                    item.namePet = "";
+                    item.time = "";
+                    
+                }
+                return item;
+            })};
+        });
+        
+        setAppointmentsWeek(newObj);
+
+        fetch("/appointment", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({id: idDB})
+        }).then(res => res.json()).then(data => {
+            
+            console.log(data);
+            
+        }).catch(err => console.log(err));
+
+        setShowOptions(null);
+    };
+
     return (
         <div className="main-calendar-container">
                 <div className="week-days">
@@ -80,27 +134,26 @@ const Calendar = ({ week, addAppointment }) => {
                             return <span key={index}>{hour}</span>
                         })}
                     </div>
-                    {obj.map((item, index) => {
-                        
+                    {appointmentsWeek.map((item, index) => {
                         
                         return (
-                            <div key={index} className="day-container">
+                            <div key={Math.random()} className="day-container">
                                 
                                 {item[arr[index]].map((item, index) => {
-                                    // console.log(item, index);
+                                    
                                     let border = null;
                                     
                                     if (item.appointmentName === "general checkup") border = "4px solid red";
                                     if (item.appointmentName === "vaccine") border = "4px solid blue";
 
                                     return (
-                                        <div key={index} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointment(e.target, item.time)} >
+                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointment(e.target, item.time, item.dateDay, item.day, item.month)} >
 
-                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={border} setShowOptions={setShowOptions} index={index} getOptions={getOptions}/>}
-                                            { (showOptions.dateDay === item.dateDay && showOptions.day === item.day && showOptions.time === item.time) && 
+                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={border} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id}/>}
+                                            { showOptions === item.id && 
                                                 <div className="app-options">
                                                     <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
-                                                    <button> <img src={Delete} alt="delete" />Delete</button>
+                                                    <button className="btn-delete-card" onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>
                                                 </div>}
                                         </div>
                                     )

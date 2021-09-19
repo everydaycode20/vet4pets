@@ -1,25 +1,27 @@
 const appointment_router = require("express").Router();
 
+const nanoid = require("nanoid");
+
 const addZeroToString = require("../utils/addZerosToString");
 const checkHours = require("../utils/checkHours").checkHours;
 
 const connection = require("../utils/database_connection");
 
-appointment_router.get("/appointments/day", (req, res, next) => {
+appointment_router.post("/appointments/day", (req, res, next) => {
 
     const {date} = req.body;
-
+    
     connection.query(`call getAppointmentsByDate(?)`, [date],(err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
-
+        
         let arr = [];
 
         rows[0].forEach(elm => {
             const time = new Date(elm.dateAppointment);
 
             let hour = `${addZeroToString.addZeroToLeft(time.getHours())}:${addZeroToString.addZeroToRight(time.getMinutes())}`;
-
+            
             arr.push(hour);
         });
 
@@ -30,20 +32,35 @@ appointment_router.get("/appointments/day", (req, res, next) => {
 
 });
 
-appointment_router.get("/appointments/day-week", (req, res, next) => {
+appointment_router.get("/appointments/type", (req, res, next) => {
+
+    connection.query("select id, appointmentName from appointmentType", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows);
+
+    });
+
+});
+
+appointment_router.post("/appointments/day-week", (req, res, next) => {
 
     const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
+    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
 
     let data = [{"Monday": []}, {"Tuesday": []}, {"Wednesday": []}, {"Thursday": []}, {"Friday": []}];
 
-    const {date1, date2} = req.body;
+    const months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
 
+    const {date1, date2} = req.body;
+    
     data.forEach((elm, i) => {
         
         hours.forEach(hour => {
-            elm[arr[i]].push({"time": hour, "day": arr[i], "dateDay": 0, "fullDate": "","appointmentName": "", "nameOwner": "", "namePet": ""});
+            elm[arr[i]].push({"id" : "", "time": hour, "day": arr[i], "dateDay": 0, "fullDate": "", "month": "","appointmentName": "", "nameOwner": "", "namePet": ""});
         })
     });
 
@@ -51,26 +68,58 @@ appointment_router.get("/appointments/day-week", (req, res, next) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
 
-        data.forEach((a, i) => {
+        if (rows[0].length === 0) {
+            let currentWeek = new Date(date1);
 
-            rows[0].forEach(elm => {
+            if(currentWeek.getDay() === 0) currentWeek.setDate(currentWeek.getDate() + 1);
+
+            data.forEach((a, i) => {
                 
-                a[arr[i]].find((prop, i) => {
-                    
-                    const t = addZeroToString.addZeroToLeft(elm.time.split(":")[0]) + ":" + elm.time.split(":")[1];
+                a[arr[i]].find(prop => {
+                    prop.dateDay = currentWeek.getDate();
+                    prop.month = months[currentWeek.getMonth()];
+                    prop.id = nanoid.nanoid(8);
+                    // return true;
+                });
 
-                    if (prop.day === elm.day && prop.time === t) {
-                        prop.namePet = elm.namePet;
-                        prop.nameOwner = elm.nameOwner;
-                        prop.appointmentName = elm.appointmentName;
-                        prop.dateDay = elm.dateDay;
-                        prop.fullDate = elm.fullDate;
-                        return true;
-                    }
-                })
+                currentWeek.setDate(currentWeek.getDate() + 1);
             });
-        });
-        
+        }
+        else{
+            let currentWeek = new Date(date1);
+
+            if(currentWeek.getDay() === 0) currentWeek.setDate(currentWeek.getDate() + 1);
+
+            data.forEach((a, i) => {
+                
+                rows[0].forEach(elm => {
+                    
+                    a[arr[i]].find((prop, i) => {
+                        
+                        const t = addZeroToString.addZeroToLeft(elm.time.split(":")[0]) + ":" + elm.time.split(":")[1];
+                        
+                        if (prop.day === elm.day && prop.time === t) {
+                            prop.namePet = elm.namePet;
+                            prop.nameOwner = elm.nameOwner;
+                            prop.appointmentName = elm.appointmentName;
+                            prop.dateDay = currentWeek.getDate();
+                            prop.fullDate = elm.fullDate;
+                            prop.id = nanoid.nanoid(8);
+                            prop.idDB = elm.id;
+                            prop.month = months[currentWeek.getMonth()];
+                            // return true;
+                        }
+                        else{
+                            prop.dateDay = currentWeek.getDate();
+                            prop.month = months[currentWeek.getMonth()];
+                            prop.id = nanoid.nanoid(8);
+                        }
+                    });
+                    
+                });
+                currentWeek.setDate(currentWeek.getDate() + 1);
+            });
+        }
         res.json({"appointmentsWeek": data});
     });
     
@@ -201,5 +250,20 @@ appointment_router.post("/appointments/type", (req, res, next) => {
     });
 
 });
+
+appointment_router.delete("/appointment", (req, res, next) => {
+
+    const {id} = req.body;
+
+    connection.query("delete from appointments where id = ?", [id], (err, results, fields) => {
+        
+        if(err) res.status(404).json({"status": false, "message": "there was an error with the database"});
+
+        res.status(202).json({"status": true, "message": "appointment deleted"});
+
+    });
+
+});
+
 
 module.exports = appointment_router;

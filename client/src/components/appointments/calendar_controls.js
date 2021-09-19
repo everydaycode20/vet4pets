@@ -12,7 +12,7 @@ const CalendarControls = ({ getPrevWeek, week, getNextWeek, currentYear, addAppo
                 <button type="button" onClick={() => getNextWeek()}><img src={ArrowLeft} alt="next" /></button>
             </div>
             <span>{currentYear}</span>
-            <button onClick={(e) => addAppointment(e.target)}>Schedule Appointment</button>
+            <button className="btn-add-app" onClick={(e) => addAppointment(e.target)}>Schedule Appointment</button>
         </div>
     );
 };

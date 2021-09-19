@@ -9,7 +9,7 @@ import "../../styles/appointment/appointments.scss";
 
 const Appointments = () => {
 
-    const [newWeek, setNewWeek] = useState({"day": new Date().getDate(), "dayInWeek": new Date().getDay()});
+    const [newWeek, setNewWeek] = useState({ "day": new Date().getDate(), "dayInWeek": new Date().getDay() });
 
     const [week, setWeek] = useState(null);
 
@@ -24,7 +24,7 @@ const Appointments = () => {
 
     useEffect(() => {
         
-        let objWeek = [{"day": "monday", "date": 0,  "month": "", "year": ""}, {"day": "tuesday", "date": 0, "month": "", "year": ""}, {"day": "wednesday", "date": 0, "month": "", "year": ""}, {"day": "thursday", "date": 0, "month": "", "year": ""}, {"day": "friday", "date": 0, "month": "" ,"year": ""}];
+        let objWeek = [{"day": "monday", "date": 0,  "month": "", "year": "", "monthIndex": ""}, {"day": "tuesday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "wednesday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "thursday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "friday", "date": 0, "month": "" ,"year": "", "monthIndex": ""}];
         
         const currentDate = new Date();
 
@@ -41,6 +41,7 @@ const Appointments = () => {
                 objWeek[i].date = date.getDate();
                 objWeek[i].month = months[date.getMonth()];
                 objWeek[i].year = date.getFullYear();
+                objWeek[i].monthIndex = date.getMonth() + 1;
                 date.setDate(date.getDate() + 1);
                 
             }
@@ -53,6 +54,7 @@ const Appointments = () => {
                 objWeek[i].date = date.getDate();
                 objWeek[i].month = months[date.getMonth()];
                 objWeek[i].year = date.getFullYear();
+                objWeek[i].monthIndex = date.getMonth() + 1;
                 date.setDate(date.getDate() + 1);
             }
             setCurrentYear(date.getFullYear());
@@ -61,7 +63,7 @@ const Appointments = () => {
         setWeek(objWeek);
         
     }, [newWeek]);
-
+    
     const getPrevWeek = () => {
         
         setNewWeek(prev => ({...prev, day: newWeek.day - 7}));
@@ -73,13 +75,13 @@ const Appointments = () => {
         setNewWeek(prev => ({...prev, day: newWeek.day + 7}));
     }
 
-    const addAppointment = (e, time) => {
-
-        if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
-            setDate({date: 16, day: "thursday", hour: time, month: "September", monthIndex: 9, year: 2021});
+    const addAppointment = (e, time, dateDay, day, month) => {
+        
+        if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container") && !e.classList.contains("btn-delete-card")) {
+            setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: 9, year: 2021});
             setMakeAppointment(true);
         }
-        else if (e.type === "submit" && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
+        else if (e.classList.contains("btn-add-app") && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
             setDate(null);
             setMakeAppointment(true);
         }

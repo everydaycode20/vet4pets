@@ -73,10 +73,10 @@ const Calendar = ({ setDate, date, setCalendar, setBtnActive }) => {
     console.log(changeView);
     return (
         daysInMonth.length > 0 && <div className="calendar-main-container">
-            <CalendarControl setYear={setYear} year={year} setNewMonth={setNewMonth} newMonth={newMonth} setChangeView={setChangeView} changeView={changeView} setHoursDay={setHoursDay} hoursDay={hoursDay} date={date} setBtnActive={setBtnActive}/>
-            {!changeView && !hoursDay && <CalendarDays newMonth={newMonth} setDaysInMonth={setDaysInMonth} daysInMonth={daysInMonth} setYear={setYear} year={year} changeView={changeView} setDate={setDate} setHoursDay={setHoursDay} setBtnActive={setBtnActive}/>}
+            <CalendarControl setYear={setYear} year={year} setNewMonth={setNewMonth} newMonth={newMonth} setChangeView={setChangeView} changeView={changeView} setHoursDay={setHoursDay} hoursDay={hoursDay} date={date} />
+            {!changeView && !hoursDay && <CalendarDays newMonth={newMonth} setDaysInMonth={setDaysInMonth} daysInMonth={daysInMonth} setYear={setYear} year={year} changeView={changeView} setDate={setDate} setHoursDay={setHoursDay} />}
             {changeView && !hoursDay && <CalendarMonths setNewMonth={setNewMonth} setChangeView={setChangeView} newMonth={newMonth} daysInMonth={daysInMonth} setBtnActive={setBtnActive} />}
-            {hoursDay && <CalendarHours setDate={setDate} setCalendar={setCalendar} setBtnActive={setBtnActive} />}
+            {hoursDay && <CalendarHours setDate={setDate} setCalendar={setCalendar} setBtnActive={setBtnActive} date={date}/>}
         </div>
     );
     

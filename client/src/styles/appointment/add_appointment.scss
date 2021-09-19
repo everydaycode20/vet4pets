@@ -54,7 +54,7 @@
             flex-direction: column;
             row-gap: 20px;
 
-            .service-container, .pet-container, .date-container{
+            .service-container, .owner-container, .pet-container, .date-container{
                 background-color: white;
                 padding: 25px 8px;
                 display: flex;
@@ -74,7 +74,7 @@
                     cursor: pointer;
                 }
 
-                .service-selected, .pet-selected, .date-selected{
+                .service-selected, .owner-selected, .pet-selected, .date-selected{
                     background-color: white;
                     font-size: 1.1rem;
                     width: 80%;
@@ -94,7 +94,7 @@
                     }
                 }
 
-                .service-dropdown, .pet-dropdown{
+                .service-dropdown, .owner-dropdown, .pet-dropdown{
                     position: absolute;
                     background-color: white;
                     top: 80%;
@@ -107,6 +107,8 @@
                     row-gap: 5px;
                     cursor: default;
                     z-index: 50;
+                    height: 120px;
+                    overflow-y: scroll;
 
                     li{
                         font-size: 1.1rem;

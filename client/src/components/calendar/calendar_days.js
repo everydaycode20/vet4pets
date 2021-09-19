@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "./styles/calendar-days.css";
 
-const CalendarDays = ({ daysInMonth, changeView, setDate, setHoursDay, setBtnActive }) => {
+const CalendarDays = ({ daysInMonth, changeView, setDate, setHoursDay }) => {
     
     const months = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
