@@ -7,7 +7,7 @@ const checkHours = require("../utils/checkHours").checkHours;
 
 const connection = require("../utils/database_connection");
 
-appointment_router.post("/appointments/day", (req, res, next) => {
+appointment_router.post("/appointments/day/hours", (req, res, next) => {
 
     const {date} = req.body;
     
@@ -16,7 +16,7 @@ appointment_router.post("/appointments/day", (req, res, next) => {
         if(err) res.json({"status": false, "message": "there was an error with the database"});
         
         let arr = [];
-
+        
         rows[0].forEach(elm => {
             const time = new Date(elm.dateAppointment);
 
@@ -28,6 +28,20 @@ appointment_router.post("/appointments/day", (req, res, next) => {
         let newArr = checkHours(arr);
         
         res.json({"hours": newArr});
+    });
+
+});
+
+
+appointment_router.post("/appointments/day", (req, res, next) => {
+
+    const {date} = req.body;
+    
+    connection.query(`call getAppointmentsByDay(?)`, [date],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
     });
 
 });

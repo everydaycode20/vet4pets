@@ -14,7 +14,7 @@ const CalendarHours = ({ setDate, setCalendar, setBtnActive, date }) => {
 
     useEffect(() => {
         
-        fetch("/appointments/day", {
+        fetch("/appointments/day/hours", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
