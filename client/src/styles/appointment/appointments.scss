@@ -104,6 +104,44 @@
         }
     }
 
+    .appointment-message{
+        position: absolute;
+        top: 12%;
+        right: 2%;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+        animation: slideMsg 1.7s cubic-bezier(0,.91,.19,.99) forwards;
+        border-left: 5px solid black;
+
+        span{
+            font-weight: 600;
+        }
+    }
+
+}
+
+@keyframes slideMsg {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translateX(-20px);
+    }
+    
+    90% {
+        opacity: 1;
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
 }
 
 .main-calendar-container{

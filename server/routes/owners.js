@@ -19,8 +19,6 @@ owner_router.post("/owner/pets", (req, res, next) => {
     connection.query("select id, namePet from pet where idPetOwner = ?", [id], (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
-        
-        console.log(rows);
 
         res.json(rows);
     });

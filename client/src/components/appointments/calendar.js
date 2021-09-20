@@ -21,7 +21,7 @@ const AppointmentCard = ({ item, border, getOptions, index }) => {
     );
 }
 
-const Calendar = ({ week, addAppointment }) => {
+const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek }) => {
 
     const [showOptions, setShowOptions] = useState(null);
 
@@ -31,22 +31,12 @@ const Calendar = ({ week, addAppointment }) => {
     "July", "August", "September", "October", "November", "December" ];
 
     const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
-
-    const [appointmentsWeek, setAppointmentsWeek] = useState([]);
+    
+    // const [appointmentsWeek, setAppointmentsWeek] = useState([]);
 
     useEffect(() => {
 
         if (week) {
-        
-            const currentDate = new Date();
-
-            const year = currentDate.getFullYear();
-            
-            const month = currentDate.getMonth();
-        
-            let tempDay = currentDate.getDate() - currentDate.getDay() + 1;
-
-            let date = new Date(year, month, tempDay);
 
             fetch("/appointments/day-week", {
                 method: "POST",
@@ -78,14 +68,13 @@ const Calendar = ({ week, addAppointment }) => {
         let newObj = data.map((elm, i) => {
             
             return {[arr[i]]: elm[arr[i]].map(item => {
+                
                 if (item.id === index) {
                     item.appointmentName = "";
-                    item.dateDay = "";
                     item.fullDate = "";
                     item.idDB = "";
                     item.nameOwner = "";
                     item.namePet = "";
-                    item.time = "";
                     
                 }
                 return item;
@@ -102,7 +91,7 @@ const Calendar = ({ week, addAppointment }) => {
             body: JSON.stringify({id: idDB})
         }).then(res => res.json()).then(data => {
             
-            console.log(data);
+            
             
         }).catch(err => console.log(err));
 
@@ -147,7 +136,7 @@ const Calendar = ({ week, addAppointment }) => {
                                     if (item.appointmentName === "vaccine") border = "4px solid blue";
 
                                     return (
-                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointment(e.target, item.time, item.dateDay, item.day, item.month)} >
+                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointment(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
                                             {item.appointmentName !== "" && <AppointmentCard item={item} border={border} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id}/>}
                                             { showOptions === item.id && 

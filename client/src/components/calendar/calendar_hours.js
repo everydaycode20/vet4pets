@@ -23,7 +23,7 @@ const CalendarHours = ({ setDate, setCalendar, setBtnActive, date }) => {
         }).then(res => res.json()).then(data => {
             
             setHours(data.hours);
-            console.log(data.hours, "HOURS");
+            
         }).catch(err => console.log(err));
 
     }, []);

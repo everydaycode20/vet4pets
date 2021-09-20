@@ -19,7 +19,7 @@ const CalendarDays = ({ daysInMonth, changeView, setDate, setHoursDay }) => {
     }, []);
 
     const getDay = day => {
-        console.log(day);
+        
         let monthIndex = months.indexOf(day.month) + 1;
         setDate({"day": day.day, "date": day.date, "month": day.month, "monthIndex": monthIndex,"year": day.year});
         setHoursDay(true);

@@ -4,6 +4,7 @@ import Calendar from "./calendar";
 import AddAppointment from "./add_appointment";
 import Header from "./header";
 import CalendarControls from "./calendar_controls";
+import AppointmentMessage from "./appointment_message";
 
 import "../../styles/appointment/appointments.scss";
 
@@ -18,6 +19,10 @@ const Appointments = () => {
     const [makeAppointment, setMakeAppointment] = useState(false);
 
     const [date, setDate] = useState(null);
+
+    const [appointmentsWeek, setAppointmentsWeek] = useState([]);
+
+    const [appMessage, setAppMessage] = useState(false);
 
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
@@ -48,14 +53,16 @@ const Appointments = () => {
             setCurrentYear(date.getFullYear());
         }
         else{
-            const date = new Date(year, month, newWeek.day);
-            for (let i = 0; i < 5; i++) {
             
+            const date = new Date(year, month, newWeek.day);
+            
+            for (let i = 0; i < 5; i++) {
+                date.setDate(date.getDate() + 1);
                 objWeek[i].date = date.getDate();
                 objWeek[i].month = months[date.getMonth()];
                 objWeek[i].year = date.getFullYear();
                 objWeek[i].monthIndex = date.getMonth() + 1;
-                date.setDate(date.getDate() + 1);
+                
             }
             setCurrentYear(date.getFullYear());
         }
@@ -75,10 +82,10 @@ const Appointments = () => {
         setNewWeek(prev => ({...prev, day: newWeek.day + 7}));
     }
 
-    const addAppointment = (e, time, dateDay, day, month) => {
+    const addAppointment = (e, time, dateDay, day, month, year, monthIndex) => {
         
         if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container") && !e.classList.contains("btn-delete-card")) {
-            setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: 9, year: 2021});
+            setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: monthIndex, year: year});
             setMakeAppointment(true);
         }
         else if (e.classList.contains("btn-add-app") && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
@@ -98,8 +105,9 @@ const Appointments = () => {
                 <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
             </div>
             
-            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointment={addAppointment}/>
-            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date}/>}
+            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointment={addAppointment} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek}/>
+            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage}/>}
+            {appMessage && <AppointmentMessage setAppMessage={setAppMessage}/>}
         </div>
     );
 

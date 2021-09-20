@@ -4,7 +4,7 @@ import Calendar from "../calendar/calendar";
 
 import "../../styles/appointment/add_appointment.scss";
 
-const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
+const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage }) => {
 
     const [dropdown, setDropdown] = useState(false);
 
@@ -28,7 +28,9 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
 
     const [serviceList, setServiceList] = useState([]);
 
-    const arr = ["Vaccination", "General checkup", "Surgery"];
+    const [appointment, setAppointment] = useState({"id_pet": "", "id_owner": "", "appointment_type": ""});
+    
+    const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     useEffect(() => {
         
@@ -45,7 +47,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
             method: "GET",
         }
     ).then(res => res.json()).then(data => {
-        console.log(data);
+        
         setServiceList(data)
     });
 
@@ -75,7 +77,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
         }
     };
     
-    const getService = (item) => {
+    const getService = (item, id) => {
+        setAppointment(prev => ({...prev, appointment_type: id}));
         setService(item);
         setDropdown(false);
         setBtnActive(prev => ({...prev, step1: true}));
@@ -83,6 +86,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
 
     const getOwnerPets = (owner, id) => {
 
+        setAppointment(prev => ({...prev, id_owner: id}));
         fetch("/owner/pets",
             {
                 method: "POST",
@@ -115,19 +119,51 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
             setPetDropDown(false);
         }
     };
+    
+    const getPet = (petName, id) => {
 
-    const getPet = (petName) => {
+        setAppointment(prev => ({...prev, id_pet: id}));
         setPet(petName);
         setPetDropDown(false);
         setBtnActive(prev => ({...prev, step3: true}));
-    };
-    console.log(btnActive);
-    const addAppointment = (date) => {
 
     };
+    
+    const saveAppointment = (date) => {
 
-    // console.log(date);
+        fetch("/appointment",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"date_appointment": `${date.year}-${date.monthIndex}-${date.date} ${date.hour}`, "id_pet": appointment.id_pet, "id_owner": appointment.id_owner, "appointment_type": appointment.appointment_type})
+        }
+        ).then(res => res.json()).then(data => {
+            
+            if (data.status) {
+                setMakeAppointment(false);
+                let data = JSON.parse(JSON.stringify(appointmentsWeek));
 
+                let newObj = data.map((elm, i) => {
+            
+                    return {[arr[i]]: elm[arr[i]].map(item => {
+
+                        if (item.dateDay === date.date && item.day === date.day && item.time === date.hour) {
+                            item.appointmentName = service;
+                            item.nameOwner = owner;
+                            item.namePet = pet;
+                        }
+                        return item;
+                    })};
+                });
+                setAppointmentsWeek(newObj);
+                setAppMessage(true);
+            }
+        });
+
+    };
+    
     return (
 
         <div className="add-appointment-container" onClick={(e) => hideMenu(e.target)}>
@@ -145,7 +181,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
                             {serviceList.map((item, index) => {
 
                                 return (
-                                    <li key={item.id} onClick={() => getService(item.appointmentName)}>{item.appointmentName}</li>
+                                    <li key={item.id} onClick={() => getService(item.appointmentName, item.id)}>{item.appointmentName}</li>
                                 )
                             })}
                         </ul>}
@@ -179,7 +215,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
                             {petList.map((item, index) => {
 
                                 return (
-                                    <li key={item.id} onClick={() => getPet(item.namePet)}>{item.namePet}</li>
+                                    <li key={item.id} onClick={() => getPet(item.namePet, item.id)}>{item.namePet}</li>
                                 )
                             })}
                         </ul>}
@@ -198,7 +234,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date}) => {
                 <div className="submit-btn">
                     <button type="button" onClick={() => setMakeAppointment(false)}>Cancel</button>
                     {btnActive.step1 && btnActive.step2 && btnActive.step3 && btnActive.step4 ? 
-                        <button type="button" className="save-btn" onClick={() => AddAppointment()}>Save appointment</button> :
+                        <button type="button" className="save-btn" onClick={() => saveAppointment(date)}>Save appointment</button> :
                         <button type="button" className="save-btn-dis">Save appointment</button> 
                     }
                     

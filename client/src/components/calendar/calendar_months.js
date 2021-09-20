@@ -11,10 +11,10 @@ const CalendarMonths = memo(({ setNewMonth, daysInMonth, setBtnActive }) => {
 
     useEffect(() => {
         setIsMounted(true);
-        console.log("mounted month");
+        
         return () => {
             setIsMounted(false);
-            console.log("unmounted month");
+            
         }
     }, []);
 

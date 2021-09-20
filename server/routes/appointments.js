@@ -48,7 +48,7 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
 
     const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
+    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"];
 
     let data = [{"Monday": []}, {"Tuesday": []}, {"Wednesday": []}, {"Thursday": []}, {"Friday": []}];
 
@@ -60,14 +60,14 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
     data.forEach((elm, i) => {
         
         hours.forEach(hour => {
-            elm[arr[i]].push({"id" : "", "time": hour, "day": arr[i], "dateDay": 0, "fullDate": "", "month": "","appointmentName": "", "nameOwner": "", "namePet": ""});
+            elm[arr[i]].push({"id" : "", "time": hour, "day": arr[i], "dateDay": 0, "fullDate": "", "month": "", "monthIndex": "", "year": "", "appointmentName": "", "nameOwner": "", "namePet": ""});
         })
     });
 
     connection.query(`call getAppointmentsByWeek(?, ?)`, [date1, date2], (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
-
+        
         if (rows[0].length === 0) {
             let currentWeek = new Date(date1);
 
@@ -78,6 +78,8 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                 a[arr[i]].find(prop => {
                     prop.dateDay = currentWeek.getDate();
                     prop.month = months[currentWeek.getMonth()];
+                    prop.year = currentWeek.getFullYear();
+                    prop.monthIndex = currentWeek.getMonth() + 1;
                     prop.id = nanoid.nanoid(8);
                     // return true;
                 });
@@ -99,6 +101,7 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                         const t = addZeroToString.addZeroToLeft(elm.time.split(":")[0]) + ":" + elm.time.split(":")[1];
                         
                         if (prop.day === elm.day && prop.time === t) {
+                            
                             prop.namePet = elm.namePet;
                             prop.nameOwner = elm.nameOwner;
                             prop.appointmentName = elm.appointmentName;
@@ -107,11 +110,15 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                             prop.id = nanoid.nanoid(8);
                             prop.idDB = elm.id;
                             prop.month = months[currentWeek.getMonth()];
+                            prop.monthIndex = currentWeek.getMonth() + 1;
+                            prop.year = currentWeek.getFullYear();
                             // return true;
                         }
                         else{
                             prop.dateDay = currentWeek.getDate();
                             prop.month = months[currentWeek.getMonth()];
+                            prop.year = currentWeek.getFullYear();
+                            prop.monthIndex = currentWeek.getMonth() + 1;
                             prop.id = nanoid.nanoid(8);
                         }
                     });
@@ -225,10 +232,10 @@ appointment_router.get("/appointments/pet", (req, res, next) => {
     });
 });
 
-appointment_router.post("/appointments", (req, res, next) => {
+appointment_router.post("/appointment", (req, res, next) => {
     
     const {date_appointment, id_pet, id_owner, appointment_type} = req.body;
-
+    
     connection.query("insert into appointments (dateAppointment, idPet, idOwner, appointmentType) values (?, ?, ?, ?)", [date_appointment, id_pet, id_owner, appointment_type], (err, results, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});

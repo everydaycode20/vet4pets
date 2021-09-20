@@ -21,7 +21,7 @@ const Calendar = ({ setDate, date, setCalendar, setBtnActive }) => {
 
     const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-    const daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     useEffect(() => {
         
@@ -70,7 +70,7 @@ const Calendar = ({ setDate, date, setCalendar, setBtnActive }) => {
         
     }, [newMonth, year]);
     
-    console.log(changeView);
+    
     return (
         daysInMonth.length > 0 && <div className="calendar-main-container">
             <CalendarControl setYear={setYear} year={year} setNewMonth={setNewMonth} newMonth={newMonth} setChangeView={setChangeView} changeView={changeView} setHoursDay={setHoursDay} hoursDay={hoursDay} date={date} />
