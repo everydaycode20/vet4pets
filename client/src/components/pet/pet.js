@@ -1,4 +1,4 @@
-
+import React, { useState } from "react";
 
 import Header from "./header";
 import PetControl from "./pet_control";
@@ -8,11 +8,13 @@ import "../../styles/pet/pet.scss";
 
 const Pet = () => {
     
+    const [numberPets, setNumberPets] = useState(null);
+
     return (
         <div className="main-pet-container">
             <Header />
-            <PetControl />
-            <PetList />
+            <PetControl numberPets={numberPets}/>
+            <PetList setNumberPets={setNumberPets}/>
         </div>
     );
 }

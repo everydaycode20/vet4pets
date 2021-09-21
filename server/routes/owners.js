@@ -4,11 +4,19 @@ const connection = require("../utils/database_connection");
 
 owner_router.get("/owners", (req, res, next) => {
 
-    connection.query("select id, nameOwner from petOwner", (err, rows, fields) => {
+    connection.query("call getOwners()", (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
 
-        res.json(rows);
+        const arr = [];
+
+        rows[0].forEach(elm => {
+            
+            arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate});
+        });
+
+        res.json(arr);
+        
     });
 });
 

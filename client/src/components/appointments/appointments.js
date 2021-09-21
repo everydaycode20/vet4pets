@@ -104,7 +104,7 @@ const Appointments = () => {
                 <Header/>
                 <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
             </div>
-            
+            <div></div>
             <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointment={addAppointment} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek}/>
             {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage}/>}
             {appMessage && <AppointmentMessage setAppMessage={setAppMessage}/>}

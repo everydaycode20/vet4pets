@@ -1,10 +1,10 @@
 import React from "react";
 
-const PetControl = ({  }) => {
+const PetControl = ({ numberPets }) => {
 
     return (
         <div className="pet-control">
-            <span>125 pets</span>
+            <span>{numberPets} pets</span>
             <button>Add new pet</button>
         </div>
     );

@@ -100,6 +100,7 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
 
     return (
         <div className="main-calendar-container">
+            <div className="inner-calendar-container">
                 <div className="week-days">
                     {week && week.map((day, index) => {
 
@@ -114,7 +115,7 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                         )
                     })}
                 </div>
-                <div className="empty"></div>
+                {/* <div className="empty"></div> */}
 
                 <div className="appointment-container">
                     <div className="hours-container">
@@ -151,7 +152,7 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                         )
                     })}
                 </div>
-                
+            </div>
         </div>
     );
 
