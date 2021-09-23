@@ -18,9 +18,14 @@ $darkerGrey: #585858;
     background-color: transparent;
     column-gap: 2px;
     position: absolute;
-    top: 45%;
+    top: 30%;
     right: 2%;
     cursor: pointer;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
 }
 
 @mixin dot {

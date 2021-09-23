@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
 import Pet from "../../assets/pet_filled_black.svg";
+import DotBtn from "../misc/dot_btn";
 
 const PetList = ( { setNumberPets }) => {
 
@@ -33,13 +34,23 @@ const PetList = ( { setNumberPets }) => {
     }, []);
 
     const getOptions = (index) => {
-        setShowOptions(index);
 
-        if (showOptions !== null) {
+        if (showOptions) {
             setShowOptions(null);
+        }
+        else{
+            setShowOptions(index);
         }
     };
 
+    const hideOptions = (e) => {
+
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            setShowOptions(null);
+        }
+        
+    };
+    
     return (
         <section className="main-pet-list-container">
             <ul className="categories-list">
@@ -64,15 +75,16 @@ const PetList = ( { setNumberPets }) => {
                             <span>{elm.age}</span>
                             <span>{elm.type}</span>
                             <span>{elm.registerDate}</span>
-                            <button className="dot-container" onClick={() => getOptions(index)}>
-                                <div className="dot"/>
-                                <div className="dot"/>
-                                <div className="dot"/>
-                            </button>
-                            { showOptions === index && <div className="pet-options">
-                                <Link to={`/pet/${index}`}> <img src={Pet} alt="profile" /> Pet profile</Link>
-                                <Link to={`/pet/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
-                            </div>}
+                            
+                            <DotBtn id={elm.id}>
+                                <div className="owner-options" >
+                                    <div className="pet-options">
+                                        <Link to={{pathname: `/pets/${elm.id}`, state: "obj"}} onClick={() => setShowOptions(null)}> <img src={Pet} alt="profile" /> Owner profile</Link>
+                                        <Link to={`/pets`}> <img src={Edit} alt="edit"/> Edit</Link>
+                                    </div>
+                                </div>
+                            </DotBtn>
+
                         </li>
                     )
                 })}

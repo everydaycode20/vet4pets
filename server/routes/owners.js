@@ -20,6 +20,26 @@ owner_router.get("/owners", (req, res, next) => {
     });
 });
 
+owner_router.get("/owners", (req, res, next) => {
+
+    const {id} = req.body;
+
+    connection.query("call getOwners()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+
+        const arr = [];
+
+        rows[0].forEach(elm => {
+            
+            arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate});
+        });
+
+        res.json(arr);
+        
+    });
+});
+
 owner_router.post("/owner/pets", (req, res, next) => {
 
     const {id} = req.body;
@@ -32,7 +52,7 @@ owner_router.post("/owner/pets", (req, res, next) => {
     });
 });
 
-owner_router.post("/owners", (req, res, next) => {
+owner_router.post("/owner", (req, res, next) => {
 
     const {name, email, address} = req.body;
 

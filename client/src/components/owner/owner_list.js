@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, Switch, Router, Route } from "react-router-dom";
 
 import "../../styles/owner/owner_list.scss";
 
 import Edit from "../../assets/edit_.svg";
 import Profile from "../../assets/profile_filled_black.svg";
+import OwnerProfile from "../owner_profile/owner_profile";
+import DotBtn from "../misc/dot_btn";
+import TelBtn from "../misc/tel_btn";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
 const OwnerList = ({ setNumberOwners }) => {
 
-    const arr = [{"name": "name last name", "email": "example@example.com", "phoneNumber": ["8888-8888"], "address": "address", "registerDate": "01-01-01"},
-                {"name": "name last name", "email": "example@example.com", "phoneNumber": ["8888-8888", "0000-0000"], "address": "address", "registerDate": "01-01-01"}];
-
     const categories = ["Name", "Email", "Phone Number", "Address", "Register Date"];
-
-    const [showOptions, setShowOptions] = useState(null);
 
     const [showListTelephones, setShowListTelephones] = useState(false);
 
@@ -40,18 +38,12 @@ const OwnerList = ({ setNumberOwners }) => {
 
     }, []);
 
-    const getOptions = (index) => {
-        setShowOptions(index);
-
-        if (showOptions !== null) {
-            setShowOptions(null);
-        }
-    };
-
     const getTelephoneList = (index) => {
+
         setShowListTelephones(true);
+
         setIndexTel(index);
-        console.log(index);
+        
         if (showListTelephones) {
             setShowListTelephones(false);
             setIndexTel(null);
@@ -59,6 +51,7 @@ const OwnerList = ({ setNumberOwners }) => {
     };
 
     return (
+        <div>
         <section className="main-owner-list-container">
             <ul className="categories-list">
                 {categories.map((elm, index) => {
@@ -72,6 +65,8 @@ const OwnerList = ({ setNumberOwners }) => {
 
                 {ownerList.map((elm, index) => {
 
+                    const obj = [{"id": elm.id, "telephones": elm.telephones, "address": elm.address, "nameOwner": elm.nameOwner, "email": elm.email, "registered": elm.registerDate}];
+
                     return (
                         <li key={elm.id} className="item-list">
                             <div className="checkbox">
@@ -79,36 +74,31 @@ const OwnerList = ({ setNumberOwners }) => {
                             </div>
                             <span>{elm.nameOwner}</span>
                             <span>{elm.email}</span>
-                            <div>
-                                {elm.telephones.length > 1 ? 
-                                    <button onClick={() => getTelephoneList(elm.id)} rot={showListTelephones && indexTel === elm.id ? showListTelephones.toString() : false.toString()}>{elm.telephones.length} phones <img src={ArrowLeft} alt="more" /> </button> :
-                                    <span>{elm.telephones[0]}</span>
-                                }
-                                {showListTelephones && indexTel === elm.id && <ul className="tel-list">
-                                    {elm.telephones.map((item, index) => {
-
-                                        return <li key={index}>{item}</li>
-                                    })}
-                                </ul>}
-                            </div>
+                            
+                            <TelBtn elm={elm}/>
                             
                             <span>{elm.address}</span>
                             <span>{elm.registerDate}</span>
-                            <button className="dot-container" onClick={() => getOptions(index)}>
-                                <div className="dot"/>
-                                <div className="dot"/>
-                                <div className="dot"/>
-                            </button>
-                            { showOptions === index && <div className="owner-options">
-                                <Link to={`/owner/${index}`}> <img src={Profile} alt="profile" /> Owner profile</Link>
-                                <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
-                            </div>}
+
+                            <DotBtn id={elm.id}>
+                                <div className="owner-options" >
+                                    <Link to={{pathname: `/owners/${elm.id}`, state: obj}}> <img src={Profile} alt="profile" /> Owner profile</Link>
+                                    <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link>
+                                </div>
+                            </DotBtn>
+
                         </li>
                     )
                 })}
             </ul>
             
         </section>
+        <Switch>
+            <Route path="/owners/:id">
+                <OwnerProfile />
+            </Route>
+        </Switch>
+        </div>
     );
 };
 

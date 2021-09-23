@@ -214,6 +214,19 @@ appointment_router.get("/appointments/years", (req, res, next) => {
 
 });
 
+appointment_router.post("/appointments/owner/total", (req, res, next) => {
+
+    const { id_owner, date } = req.body;
+    
+    connection.query(`call getTotalAppointmentsByOwner(?, ?)`, [id_owner, date],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        res.json(rows[0][0]);
+        
+    });
+});
+
 appointment_router.get("/appointments/owner", (req, res, next) => {
 
     const {id_owner} = req.body;
@@ -228,6 +241,33 @@ appointment_router.get("/appointments/owner", (req, res, next) => {
         }
         
     });
+});
+
+
+appointment_router.post("/appointments/owner/upcoming", (req, res, next) => {
+
+    const { id_owner } = req.body;
+    
+    connection.query(`call getUpcomingAppointmentsByOwner(?)`, [id_owner],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
+    });
+
+});
+
+appointment_router.post("/appointments/owner/past", (req, res, next) => {
+
+    const { id_owner } = req.body;
+    
+    connection.query(`call getPastAppointmentsByOwner(?)`, [id_owner],(err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
+    });
+
 });
 
 appointment_router.get("/appointments/pet", (req, res, next) => {

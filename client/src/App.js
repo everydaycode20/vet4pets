@@ -39,8 +39,8 @@ function App() {
             <Route path="/pets">
               <Pet />
             </Route>
-            <Route path="/owner/:id" children={<OwnerProfile/>}>
-            </Route>
+            {/* <Route path="/owner/:id" children={<OwnerProfile/>}>
+            </Route> */}
             <Route path="/pet/:id" children={<PetProfile/>}>
             </Route>
             <Route path="/miscellaneous">

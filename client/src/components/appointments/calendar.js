@@ -32,6 +32,8 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
 
     const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
     
+    const [markTop, setMarkTop] = useState({"minutes": 0});
+
     // const [appointmentsWeek, setAppointmentsWeek] = useState([]);
 
     useEffect(() => {
@@ -51,6 +53,52 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
             }).catch(err => console.log(err));
         }
     }, [week]);
+    
+    useEffect(() => {
+
+        const currentTimeInMinutes =   Math.floor((new Date().getTime()/1000)/60);
+                
+        const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} 17:00`;
+
+        const lastTimeInMinutes = Math.floor((new Date( currentDate ).getTime()/1000)/60);
+
+        const time = Math.floor((540 - (lastTimeInMinutes - currentTimeInMinutes)) * 6.66);
+
+        function getMinutes() {
+
+            const currentTimeInMinutes =   Math.floor((new Date().getTime()/1000)/60);
+                
+            const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} 17:00`;
+
+            const lastTimeInMinutes = Math.floor((new Date( currentDate ).getTime()/1000)/60);
+            
+            // setMarkTop( Math.floor((540 - (lastTimeInMinutes - currentTimeInMinutes)) * 6.66) );
+
+            if (time > 3590) {
+                
+                setMarkTop(prev => ({...prev, minutes: 3590}));
+            }
+            else{
+                setMarkTop(prev => ({...prev, minutes: Math.floor((540 - (lastTimeInMinutes - currentTimeInMinutes)) * 6.66)}));
+            }
+            
+
+            setTimeout(() => {
+                getMinutes();
+                
+            }, 60000);
+
+        }
+
+
+        getMinutes();
+            
+        
+        
+
+        return () => getMinutes();
+        
+    }, []);
     
     const getOptions = (index) => {
         
@@ -118,6 +166,11 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                 {/* <div className="empty"></div> */}
 
                 <div className="appointment-container">
+                    <div className="mark-container" style={{top: markTop.minutes}}>
+                        <div className="mark-dot"/>
+                        <div className="hour-mark"/>
+                    </div>
+                    
                     <div className="hours-container">
                         {hours.map((hour, index) => {
 
