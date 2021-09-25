@@ -42,11 +42,11 @@ const SideBar = () => {
                 <ul className="link-list" ref={links} >
                     <li title="Home"> <NavLink exact to="/" className="link" activeClassName="active" > <img src={Home} alt="home" /> <span>Home</span> </NavLink> </li>
                     <li title="Appointments"> <NavLink to="/appointments" className="link"><img src={Calendar} alt="appointments"/> <span minimize={minimize.toString()}>Appointments</span></NavLink> </li>
-                    <li title="Medical Records"> <NavLink to="/records" className="link"> <img src={MedicalBook} alt="medical records"/> <span>Medical Records</span></NavLink> </li>
+                    {/* <li title="Medical Records"> <NavLink to="/records" className="link"> <img src={MedicalBook} alt="medical records"/> <span>Medical Records</span></NavLink> </li> */}
                     <li title="Pet Owners"> <NavLink to="/owners" className="link"> <img src={Profile} alt="pet owners" /> <span>Pet Owners</span></NavLink> </li>
                     <li title="Pets"> <NavLink to="/pets" className="link"> <img src={Pet} alt="pets" /> <span>Pets</span></NavLink> </li>
                     {/* <li> <NavLink to="/checkups" className="link"> <img src={Checkup} alt="checkups" /> <span>Checkups</span></NavLink> </li> */}
-                    <li title="Miscellaneous"> <NavLink to="/miscellaneous" className="link"> <img src={Medicine} alt="medicine"/> <span>Miscellaneous</span></NavLink> </li>
+                    {/* <li title="Miscellaneous"> <NavLink to="/miscellaneous" className="link"> <img src={Medicine} alt="medicine"/> <span>Miscellaneous</span></NavLink> </li> */}
                     {/* <li title="Settings"> <NavLink to="/settings" className="link settings"> <img src={Settings} alt="settings"/> <span>Settings</span></NavLink> </li> */}
                 </ul>
             </div>

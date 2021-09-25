@@ -1,11 +1,11 @@
 import React from "react";
 
-const PetControl = ({ numberPets }) => {
+const PetControl = ({ numberPets, setAddPet }) => {
 
     return (
         <div className="pet-control">
             <span>{numberPets} pets</span>
-            <button>Add new pet</button>
+            <button onClick={() => setAddPet(true)}>Add new pet</button>
         </div>
     );
 };

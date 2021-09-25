@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const AppointmentMessage = ({ setAppMessage }) => {
 
-    useEffect(() => {
-
-        setTimeout(() => {
-            setAppMessage(false);
-        }, 1700);
-
-    }, []);
-
     return (
-        <div className="appointment-message">
+        <div className="appointment-message" onAnimationEnd={() => setAppMessage(false)}>
             <span>Appointment created</span>
         </div>
     );

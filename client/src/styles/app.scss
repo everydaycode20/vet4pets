@@ -2,12 +2,14 @@
 
 .main-container{
     display: flex;
-    flex-direction: row;
-    height: 100vh;
-    overflow-y: hidden;
+    flex-wrap: wrap;
+    height: 100%;
+    // overflow-y: hidden;
 
     .content-container{
-        width: 100%;
-        height: 100%;
+        // width: 100%;
+        // height: 100%;
+        flex-basis: 0;
+        flex-grow: 999;
     }
 }

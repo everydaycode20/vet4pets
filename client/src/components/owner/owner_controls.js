@@ -1,11 +1,11 @@
 import React from "react";
 
-const OwnerControl = ({ numberOwners }) => {
+const OwnerControl = ({ setAddNewOwner, numberOwners }) => {
 
     return (
         <div className="owner-control">
             <span>{numberOwners} owners</span>
-            <button>Add new owner</button>
+            <button onClick={() => setAddNewOwner(true)}>Add new owner</button>
         </div>
     );
 };

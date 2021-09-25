@@ -1,0 +1,167 @@
+@import "../global";
+
+[btndropdown="false"]{
+    --border: #afafaf;
+}
+
+[btndropdown="true"]{
+    --border: #F38BA0;
+}
+
+.add-owner-container{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.137);
+    z-index: 50;
+
+    .main-owner-form-container{
+        position: fixed;
+        right: 0px;
+        top: 0;
+        height: 100%;
+        background-color: white;
+        padding: 20px;
+        width: 450px;
+        animation: slide 0.2s ease-out forwards;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        .error{
+            color: $pink2;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .owner-phone{
+
+            .dropdown-container{
+                background-color: white;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                position: relative;
+                border: 2px solid var(--border);
+                font-size: 1.1rem;
+                width: max-content;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .phone-dropdown{
+                position: absolute;
+                background-color: white;
+                top: 15%;
+                padding: 10px 0;
+                width: 30%;
+                box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.11);
+                display: flex;
+                flex-direction: column;
+                grid-row-gap: 5px;
+                row-gap: 5px;
+                cursor: default;
+                z-index: 50;
+                height: max-content;
+
+                button{
+                    background-color: transparent;
+                    font-size: 1rem;
+                    margin-left: 10px;
+                    text-align: left;
+                    padding: 2px;
+                    border: none;
+
+                    &:hover{
+                        background-color: $lightGreenBackground;
+                    }
+                }
+            }
+        }
+
+        .owner-name, .owner-phone, .owner-email, .owner-address{
+            display: flex;
+            flex-direction: column;
+            row-gap: 5px;
+
+            label{
+                font-size: 1.1rem;
+                font-weight: 500;
+                width: max-content;
+            }
+
+            input{
+                padding: 5px;
+                width: 50%;
+                font-size: 1rem;
+            }
+
+            textarea{
+                resize: none;
+            }
+        }
+
+        h2{
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+
+        .submit-btn{
+            display: flex;
+            flex-direction: row;
+            column-gap: 20px;
+            justify-content: flex-end;
+
+            button{
+                font-size: 1rem;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            & button:nth-child(1){
+                border: none;
+                background-color: transparent;
+                border-radius: 5px;
+
+                &:hover{
+                    background-color: $pink2;
+                    color: white;
+                    transition: all 0.2s ease-in;
+                }
+            }
+
+            .save-btn{
+                border: none;
+                padding: 10px;
+                background-color: $greeLine;
+                border-radius: 5px;
+                color: white;
+            }
+
+        }
+
+        .submit-owner{
+            border: none;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            background-color: $greeLine;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            width: max-content;
+            cursor: pointer;
+        }
+
+    }
+}
+
+@keyframes slide {
+    from {
+        transform: translateX(350px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}

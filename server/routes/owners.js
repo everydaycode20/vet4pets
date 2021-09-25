@@ -20,26 +20,6 @@ owner_router.get("/owners", (req, res, next) => {
     });
 });
 
-owner_router.get("/owners", (req, res, next) => {
-
-    const {id} = req.body;
-
-    connection.query("call getOwners()", (err, rows, fields) => {
-        
-        if(err) res.json({"status": false, "message": "there was an error in the database"});
-
-        const arr = [];
-
-        rows[0].forEach(elm => {
-            
-            arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate});
-        });
-
-        res.json(arr);
-        
-    });
-});
-
 owner_router.post("/owner/pets", (req, res, next) => {
 
     const {id} = req.body;
@@ -54,7 +34,7 @@ owner_router.post("/owner/pets", (req, res, next) => {
 
 owner_router.post("/owner", (req, res, next) => {
 
-    const {name, email, address} = req.body;
+    const {name, email, address, phone, idPhone} = req.body;
 
     const data = [name, email, address];
 
@@ -62,10 +42,24 @@ owner_router.post("/owner", (req, res, next) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
         
-        res.json({"status": true, "message": "pet owner added"});
+        connection.query("insert into telOwner (idOwner, idPhoneType, telNumber) values (?, ?, ?)", [results.insertId, idPhone, phone], (err, results, fields) => {
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+            
+            res.json({"status": true, "message": "pet owner added"});
+        });
+
+        
     });
 });
 
+owner_router.get("/telephones/type", (req, res, next) => {
 
+    connection.query("select * from telephoneType", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+
+        res.json(rows);
+    });
+});
 
 module.exports = owner_router;

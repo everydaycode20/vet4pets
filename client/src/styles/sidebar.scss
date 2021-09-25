@@ -31,12 +31,14 @@
     padding: 10px 15px;
     font-size: 1.3rem;
     border-right: 2px solid #c0c0c0;
-    width: var(--minimize);
+    // width: var(--minimize);
     // transition: width 0.2s ease-in;
     margin-left: 10px;
     // transform: var(--translate);
     // transition: transform 0.2s ease-in;
     // transform: rotateX(30deg);
+    flex-basis: 5rem;
+    flex-grow: 1;
 
     img{
         width: 30px;

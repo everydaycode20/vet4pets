@@ -4,20 +4,18 @@ import { Link } from "react-router-dom";
 import Edit from "../../assets/edit_.svg";
 import Pet from "../../assets/pet_filled_black.svg";
 import DotBtn from "../misc/dot_btn";
+import Skeleton from "../misc/skeleton";
 
 const PetList = ( { setNumberPets }) => {
 
-    const arr = [{"name": "pet name", "ownerName": "owner name", "age": 10, "type": "dog", "registerDate": "01-01-01"},
-                {"name": "pet name", "ownerName": "owner name", "age": 10, "type": "cat", "registerDate": "01-01-01"}];
-
     const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
-
-    const [showOptions, setShowOptions] = useState(null);
 
     const [petList, setPetList] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        
+        setLoading(true);
         fetch("/pets", {
             method: "GET",
             headers: {
@@ -28,28 +26,10 @@ const PetList = ( { setNumberPets }) => {
             setPetList(data);
 
             setNumberPets(data.length);
-            
+            setLoading(false);
         }).catch(err => console.log(err));
 
     }, []);
-
-    const getOptions = (index) => {
-
-        if (showOptions) {
-            setShowOptions(null);
-        }
-        else{
-            setShowOptions(index);
-        }
-    };
-
-    const hideOptions = (e) => {
-
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-            setShowOptions(null);
-        }
-        
-    };
     
     return (
         <section className="main-pet-list-container">
@@ -61,6 +41,7 @@ const PetList = ( { setNumberPets }) => {
                     )
                 })}
             </ul>
+            {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
             <ul className="pet-list">
 
                 {petList.map((elm, index) => {
@@ -79,7 +60,7 @@ const PetList = ( { setNumberPets }) => {
                             <DotBtn id={elm.id}>
                                 <div className="owner-options" >
                                     <div className="pet-options">
-                                        <Link to={{pathname: `/pets/${elm.id}`, state: "obj"}} onClick={() => setShowOptions(null)}> <img src={Pet} alt="profile" /> Owner profile</Link>
+                                        <Link to={{pathname: `/pets/${elm.id}`, state: "obj"}} > <img src={Pet} alt="profile" /> Owner profile</Link>
                                         <Link to={`/pets`}> <img src={Edit} alt="edit"/> Edit</Link>
                                     </div>
                                 </div>
@@ -89,7 +70,7 @@ const PetList = ( { setNumberPets }) => {
                     )
                 })}
             </ul>
-            
+            }
         </section>
     );
 };

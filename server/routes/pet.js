@@ -2,6 +2,28 @@ const pet_router = require("express").Router();
 
 const connection = require("../utils/database_connection");
 
+pet_router.get("/pets/owners", (req, res, next) => {
+
+    connection.query("select id, nameOwner from petOwner", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+
+        res.json(rows);
+        
+    });
+});
+
+pet_router.get("/pets/breed", (req, res, next) => {
+
+    connection.query("call getPetType()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        res.json(rows[0]);
+        
+    });
+});
+
 pet_router.get("/pets", (req, res, next) => {
 
     connection.query("call getPets()", (err, rows, fields) => {

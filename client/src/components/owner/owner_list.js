@@ -9,20 +9,18 @@ import OwnerProfile from "../owner_profile/owner_profile";
 import DotBtn from "../misc/dot_btn";
 import TelBtn from "../misc/tel_btn";
 
-import ArrowLeft from "../../assets/arrow_left_.svg";
+import Skeleton from "../misc/skeleton";
 
-const OwnerList = ({ setNumberOwners }) => {
+const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
 
     const categories = ["Name", "Email", "Phone Number", "Address", "Register Date"];
 
-    const [showListTelephones, setShowListTelephones] = useState(false);
+    // const [ownerList, setOwnerList] = useState([]);
 
-    const [indexTel, setIndexTel] = useState(null);
-
-    const [ownerList, setOwnerList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        
+        setLoading(true);
         fetch("/owners", {
             method: "GET",
             headers: {
@@ -33,22 +31,11 @@ const OwnerList = ({ setNumberOwners }) => {
             setOwnerList(data);
 
             setNumberOwners(data.length);
-            
+            setLoading(false);
+
         }).catch(err => console.log(err));
 
     }, []);
-
-    const getTelephoneList = (index) => {
-
-        setShowListTelephones(true);
-
-        setIndexTel(index);
-        
-        if (showListTelephones) {
-            setShowListTelephones(false);
-            setIndexTel(null);
-        }
-    };
 
     return (
         <div>
@@ -61,6 +48,8 @@ const OwnerList = ({ setNumberOwners }) => {
                     )
                 })}
             </ul>
+            {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
+            
             <ul className="owner-list">
 
                 {ownerList.map((elm, index) => {
@@ -91,6 +80,7 @@ const OwnerList = ({ setNumberOwners }) => {
                     )
                 })}
             </ul>
+            }
             
         </section>
         <Switch>

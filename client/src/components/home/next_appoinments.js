@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
+import Skeleton from "../misc/skeleton";
+
 const ListAppointment = ({ data }) => {
 
     if (data.length === 0) {
@@ -116,13 +118,8 @@ const NextAppointments = () => {
                 <span>{date.day}, {months[date.month]} {date.date}</span>
                 <button onClick={() => nextDay()}><img src={ArrowLeft} alt="next" /></button>
             </div>
-            {loading ?  
-                <ul className="appointment-skeleton">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul> : 
+            {loading ? 
+                <Skeleton height={93} backgroundColor={"#CDF0EA"} number={3} width={100}/> :
                 <ListAppointment data={data}/>}
         </section>
     );
