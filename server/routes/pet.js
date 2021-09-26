@@ -79,4 +79,14 @@ pet_router.post("/pet/type/breed", (req, res, next) => {
     });
 });
 
+pet_router.get("/pets/month", (req, res, next) => {
+
+    connection.query("call getNumberPatients()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        res.json(rows[0][0]);
+    });
+});
+
 module.exports = pet_router;

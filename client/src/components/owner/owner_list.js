@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, Switch, Router, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../../styles/owner/owner_list.scss";
 
 import Edit from "../../assets/edit_.svg";
 import Profile from "../../assets/profile_filled_black.svg";
-import OwnerProfile from "../owner_profile/owner_profile";
 import DotBtn from "../misc/dot_btn";
 import TelBtn from "../misc/tel_btn";
 
@@ -72,7 +71,7 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
                             <DotBtn id={elm.id}>
                                 <div className="owner-options" >
                                     <Link to={{pathname: `/owners/${elm.id}`, state: obj}}> <img src={Profile} alt="profile" /> Owner profile</Link>
-                                    <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link>
+                                    {/* <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link> */}
                                 </div>
                             </DotBtn>
 
@@ -83,11 +82,6 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
             }
             
         </section>
-        <Switch>
-            <Route path="/owners/:id">
-                <OwnerProfile />
-            </Route>
-        </Switch>
         </div>
     );
 };

@@ -57,14 +57,14 @@ const PetList = ( { setNumberPets }) => {
                             <span>{elm.type}</span>
                             <span>{elm.registerDate}</span>
                             
-                            <DotBtn id={elm.id}>
+                            {/* <DotBtn id={elm.id}>
                                 <div className="owner-options" >
                                     <div className="pet-options">
                                         <Link to={{pathname: `/pets/${elm.id}`, state: "obj"}} > <img src={Pet} alt="profile" /> Owner profile</Link>
                                         <Link to={`/pets`}> <img src={Edit} alt="edit"/> Edit</Link>
                                     </div>
                                 </div>
-                            </DotBtn>
+                            </DotBtn> */}
 
                         </li>
                     )

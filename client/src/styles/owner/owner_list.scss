@@ -31,6 +31,10 @@
         row-gap: 20px;
         width: 90%;
 
+        & .item-list:last-child{
+            margin-bottom: 50px;
+        }
+
         .item-list{
             display: grid;
             grid-template-columns: repeat(5, 1fr);

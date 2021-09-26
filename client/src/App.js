@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import SideBar from "./components/sidebar.js/sidebar";
 import Main from "./components/home/home";
@@ -12,10 +12,6 @@ import OwnerProfile from "./components/owner_profile/owner_profile";
 import PetProfile from "./components/pet_profile/pet_profile";
 
 import "./styles/app.scss";
-
-function Own(params) {
-  return <p>person</p>
-}
 
 function App() {
 

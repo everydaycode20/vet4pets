@@ -326,5 +326,25 @@ appointment_router.delete("/appointment", (req, res, next) => {
 
 });
 
+appointment_router.get("/appointments/day/total", (req, res, next) => {
+
+    connection.query("call getNumberAppointmentsByDay", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        res.json(rows[0][0]);
+    });
+});
+
+appointment_router.get("/appointments/top", (req, res, next) => {
+
+    connection.query("call getTopAppointments()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
+    });
+
+});
 
 module.exports = appointment_router;

@@ -80,5 +80,4 @@ checkup_router.post("/medicine", (req, res, next) => {
 
 });
 
-
 module.exports = checkup_router;

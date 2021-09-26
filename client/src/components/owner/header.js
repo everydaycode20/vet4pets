@@ -7,7 +7,6 @@ const Header = () => {
             <div className="owner-title-container">
                 <h1>Pet Owners</h1>
             </div>
-            <div className="notifications">bell</div>
     </header>
     );
 };
