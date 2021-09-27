@@ -1,7 +1,37 @@
-# Vet4Pets MySQL
+# Vet4Pets-React-Sass-Express-MySQL
 
-This was the final assignment of the Database Course at University. The goal was to make a relational database for a veterinary shop.
+Vet4Pets is a dashboard for a veterinary shop. With it, you can make appointments, add owners and pets. The project consists of three folders: client, server, and sql. The client holds the frontend, the server the backend, and on the SQL folder the script to create the database.
 
-Diagram is shown below.
+## Technologies
 
-![model_vet4pets](https://user-images.githubusercontent.com/63354464/126263619-180166f3-699e-4d5f-aaf4-cfbf744767fe.png)
+* React
+* Sass
+* Express
+* MySQL
+
+## Usage
+
+To be able to run this project, you have to have installed MySQL and Node previously.
+
+```bash
+
+    # on both client and server folders
+    
+    # install dependencies
+    npm install
+
+    # start server and client
+    npm start
+
+```
+
+## Project Status
+
+This project is in progress.
+
+## To do
+
+* Authentication
+* Complete sidebar
+* Improve design
+* Improve DB schema
