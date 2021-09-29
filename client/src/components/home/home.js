@@ -8,6 +8,8 @@ import Medicine from "../../assets/medicine_filled_btn.svg";
 import Pet from "../../assets/pet_filled_btn.svg";
 import Profile from "../../assets/profile_filled_btn.svg";
 import NextAppointments from "./next_appoinments";
+import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
+import Skeleton from "../misc/skeleton";
 
 const Main = () => {
 
@@ -17,8 +19,16 @@ const Main = () => {
 
     const [topList, setTopList] = useState([]);
 
+    const [loadingTopList, setLoadingTopList] = useState(true);
+
+    const [latest, setLatest] = useState([]);
+
+    const [loadingLatest, setLoadingLatest] = useState(true);
+
     useEffect(() => {
-        
+
+        setLoadingTopList(true);
+
         fetch("/pets/month", {
             method: "GET",
             headers: {
@@ -49,6 +59,22 @@ const Main = () => {
         }).then(res => res.json()).then(data => {
             
             setTopList(data);
+            setLoadingTopList(false);
+
+        }).catch(err => console.log(err));
+
+        setLoadingLatest(true);
+
+        fetch("/appointments/latest", {
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json",
+            },
+        }).then(res => res.json()).then(data => {
+            
+            setLatest(data);
+
+            setLoadingLatest(false);
 
         }).catch(err => console.log(err));
 
@@ -62,45 +88,46 @@ const Main = () => {
             <div className="info-home-container">
                 <div className="charts-container">
                     <div className="charts-inner-container">
-                        <HomeChart />
-                        <section className="appointments-status">
-                            <div className="patients-stats">
-                                <div>
-                                    <h2>Total patients this month</h2>
-                                    <span>{totalPatients.month}</span>
-                                </div>
-                                <div>
-                                    <h2>Total patients this year</h2>
-                                    <span>{totalPatients.year}</span>
-                                </div>
-                            </div>
-                            <div className="finished-appointments">
-                                <h2>Finished appointments today</h2>
-                                <span>{appointments.finished}</span>
-                                <h2>Upcoming appointments today</h2>
-                                <span>{appointments.upcoming}</span>
-                            </div>
-                            <div className="top-treatments">
-                                <h2>Top treatments</h2>
-                                <ul className="top-treatments-list">
-                                    {topList.map((item, index) => {
-
-                                        return <li key={index}>{item.appointmentName}</li>
-                                    })}
-                                </ul>
-                            </div>
-                        </section>
                         
-                    </div>
-                    
-                    {/* <section className="button-list">
-                        <div className="button-inner-list">
-                            <button><span>Create new appointment</span>  <img src={Calendar} alt="appointment" /></button>
-                            <button><span>Add new owner</span> <img src={Profile} alt="enw owner" /></button>
-                            <button><span>Add new pet</span> <img src={Pet} alt="new pet" /></button>
-                            <button><span>Add new medicine</span> <img src={Medicine} alt="new medicine  " /></button>
+                        <section className="appointments-status">
+
+                            <PatientMonth totalPatients={totalPatients}/>
+
+                            <PatientYear totalPatients={totalPatients}/>
+                            
+                            <Finished appointments={appointments}/>
+
+                        </section>
+
+                        <div className="main-container-chart">
+                            <HomeChart />
+                                <div className="top-treatments">
+                                    <h2>Top appointments</h2>
+                                    {loadingTopList ? <Skeleton height={32} backgroundColor={"#CDF0EA"} width={100} number={3}/> :
+                                        <TopAppointments topList={topList} />
+                                    }
+                                </div>
                         </div>
-                    </section> */}
+                        
+                        <div className="latest-patients">
+                            <h2>Latest patients</h2>
+                            {loadingLatest ? <Skeleton height={32} backgroundColor={"#CDF0EA"} width={100} number={3}/> : 
+                            <ul>
+                                {latest.map(item => {
+
+                                    return (
+                                        <li key={item.id}>
+                                            <span>{item.date}</span>
+                                            <span>{item.time}</span>
+                                            <span>{item.namePet}</span>
+                                            <span>{item.nameOwner}</span>
+                                            <span>{item.appointmentName}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul> }
+                        </div>
+                    </div>
                 </div>
                 
                 <NextAppointments />

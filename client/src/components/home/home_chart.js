@@ -9,12 +9,11 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
     return (
       <ResponsiveContainer width="99%" height="100%">
           <BarChart width={1000} height={300} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}} >
-              {/* <CartesianGrid strokeDasharray="5 5" /> */}
-              <XAxis dataKey="name" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="5 5" vertical={false}/>
+              <XAxis dataKey="name" axisLine={false} tickLine={false}/>
+              <YAxis axisLine={false} tickLine={false}/>
               <Tooltip cursor={{fill: "transparent"}}/>
-              {/* <Legend /> */}
-              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
           </BarChart>
       </ResponsiveContainer>
     );
@@ -25,12 +24,11 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
     return (
       <ResponsiveContainer width="99%" height="100%">
         <BarChart width={1000} height={300} data={monthlyData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-            {/* <CartesianGrid strokeDasharray="5 5" /> */}
-            <XAxis dataKey="name" fontSize={16} interval={1} />
-            <YAxis />
+            <CartesianGrid strokeDasharray="5 5" vertical={false}/>
+            <XAxis dataKey="name" fontSize={16} interval={1} axisLine={false} tickLine={false}/>
+            <YAxis axisLine={false} tickLine={false}/>
             <Tooltip cursor={{fill: "transparent"}}/>
-            {/* <Legend /> */}
-            <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+            <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
         </BarChart>
       </ResponsiveContainer>
     );
@@ -40,13 +38,12 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
     
     return (
       <ResponsiveContainer width="99%" height="100%">
-          <BarChart width={1000} height={300} data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-              {/* <CartesianGrid strokeDasharray="5 5" /> */}
-              <XAxis dataKey="year" fontSize={16} />
-              <YAxis />
-              <Tooltip cursor={{fill: "transparent"}}/>
-              {/* <Legend /> */}
-              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+          <BarChart width={1000} height={300} data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5}}>
+              <CartesianGrid strokeDasharray="10 10" vertical={false}/>
+              <XAxis dataKey="year" fontSize={16} axisLine={false} tickLine={false} />
+              <YAxis axisLine={false} tickLine={false}/>
+              <Tooltip cursor={{fill: "transparent"}} />
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
           </BarChart>
       </ResponsiveContainer>
     );

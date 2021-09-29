@@ -4,7 +4,7 @@ import Calendar from "../calendar/calendar";
 
 import "../../styles/appointment/add_appointment.scss";
 
-const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage }) => {
+const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage, socket }) => {
 
     const [dropdown, setDropdown] = useState(false);
 
@@ -159,6 +159,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                 });
                 setAppointmentsWeek(newObj);
                 setAppMessage(true);
+                socket.emit("new appointment", "");
             }
         });
 

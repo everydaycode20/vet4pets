@@ -1,5 +1,5 @@
 import "../../styles/skeleton.scss";
-
+import PropTypes from 'prop-types'
 /**
  * 
  * @param {Number} height 
@@ -8,20 +8,27 @@ import "../../styles/skeleton.scss";
  * 
  * @param {Number} number number of items to render
  * 
- * @param {Number} number width percentage
+ * @param {Number} width width percentage
  * 
  */
 
-const Skeleton = ( props ) => {
+const Skeleton = ( { height, backgroundColor, number, width } ) => {
 
     return (
-        <ul className="skeleton" style={{width: `${props.width}%`}}>
-            {Array.from("x".repeat(props.number)).map((elm, index) => {
+        <ul className="skeleton" style={{width: `${width}%`}}>
+            {Array.from("x".repeat(number)).map((elm, index) => {
 
-                return <li key={index} style={{height: `${props.height}px`, backgroundColor: props.backgroundColor}}></li>
+                return <li key={index} style={{height: `${height}px`, backgroundColor: backgroundColor}}></li>
             })}
         </ul>
     );
+};
+
+Skeleton.propTypes = {
+    height: PropTypes.number,
+    backgroundColor: PropTypes.string,
+    number: PropTypes.number,
+    width: PropTypes.number
 };
 
 export default Skeleton;

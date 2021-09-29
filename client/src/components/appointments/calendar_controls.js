@@ -2,7 +2,7 @@ import React, { memo } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
-const CalendarControls = ({ getPrevWeek, week, getNextWeek, currentYear, addAppointment }) => {
+const CalendarControls = ({ getPrevWeek, week, getNextWeek, currentYear, addAppointments }) => {
 
     return (
         <div className="calendar-control">
@@ -12,7 +12,7 @@ const CalendarControls = ({ getPrevWeek, week, getNextWeek, currentYear, addAppo
                 <button type="button" onClick={() => getNextWeek()}><img src={ArrowLeft} alt="next" /></button>
             </div>
             <span>{currentYear}</span>
-            <button className="btn-add-app" onClick={(e) => addAppointment(e.target)}>Schedule Appointment</button>
+            <button className="btn-add-app" onClick={(e) => addAppointments(e.target)}>Schedule Appointment</button>
         </div>
     );
 };

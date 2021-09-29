@@ -347,4 +347,15 @@ appointment_router.get("/appointments/top", (req, res, next) => {
 
 });
 
+appointment_router.get("/appointments/latest", (req, res, next) => {
+
+    connection.query("call getLatestPatients()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
+    });
+
+});
+
 module.exports = appointment_router;
