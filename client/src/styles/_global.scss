@@ -13,15 +13,21 @@ $darkerGrey: #585858;
 $cardTitle: #73788b;
 $pink3: #f32851;
 
+@mixin dotMainContainer {
+    position: absolute;
+    top: 30%;
+    right: 2%;
+}
+
 @mixin dotContainer {
     display: flex;
     flex-direction: row;
     border: none;
     background-color: transparent;
     column-gap: 2px;
-    position: absolute;
-    top: 30%;
-    right: 2%;
+    // position: absolute;
+    // top: 30%;
+    // right: 2%;
     cursor: pointer;
     width: 25px;
     height: 25px;

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import Skeleton from "../misc/skeleton";
+
 const Appointments = ( { appointmentsType, upcomingAppointments, pastAppointments }) => {
 
     const months = [ "January", "February", "March", "April", "May", "June",
@@ -58,8 +60,12 @@ const ProfileAppointments = ({ id }) => {
 
     const [pastAppointments, setPastAppointments] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
+
+
     useEffect(() => {
-        
+        setLoading(true);
         fetch("/appointments/owner/upcoming", {
             method: "POST",
             headers: {
@@ -69,29 +75,37 @@ const ProfileAppointments = ({ id }) => {
         }).then(res => res.json()).then(data => {
             
             setUpcomingAppointments(data);
-            
+
+            setLoading(false);
+
         }).catch(err => console.log(err));
 
     }, []);
+
 
     const getPastAppointments = () => {
 
         setAppointmentsType("past");
 
-        fetch("/appointments/owner/past", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"id_owner": id})
-        }).then(res => res.json()).then(data => {
-            
-            setPastAppointments(data);
-            
+        if (pastAppointments.length === 0) {
 
-        }).catch(err => console.log(err));
+            setLoading(true);
 
-        
+            fetch("/appointments/owner/past", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"id_owner": id})
+            }).then(res => res.json()).then(data => {
+                
+                setPastAppointments(data);
+                
+                setLoading(false);
+
+            }).catch(err => console.log(err));
+        }
+
     };
 
     return (
@@ -101,7 +115,9 @@ const ProfileAppointments = ({ id }) => {
                 <button style={{backgroundColor: appointmentsType === "past" ? "#135A5A" : "#CDF0EA", color: appointmentsType === "past" ? "white" : "#3A6351"}} onClick={() => getPastAppointments()}>past appointments</button>
             </div>
             <div className="appointments-type-container">
+                {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={100}/> : 
                 <Appointments appointmentsType={appointmentsType} upcomingAppointments={upcomingAppointments} pastAppointments={pastAppointments}/>
+                }
             </div>
         </div>
     );

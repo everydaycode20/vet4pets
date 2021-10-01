@@ -4,7 +4,7 @@ import io from "socket.io-client";
 
 import useSocket from "./utils/useSocket";
 
-import SideBar from "./components/sidebar.js/sidebar";
+import SideBar from "./components/sidebar/sidebar";
 import Main from "./components/home/home";
 import Appointments from "./components/appointments/appointments";
 import MedicalRecords from "./components/medical_records/medical_records";
@@ -14,6 +14,7 @@ import Miscellaneous from "./components/miscellaneous/miscellaneous";
 import OwnerProfile from "./components/owner_profile/owner_profile";
 import PetProfile from "./components/pet_profile/pet_profile";
 import Bell from "./components/notification_bell/bell";
+import Menu from "./components/sidebar/menu";
 
 import "./styles/app.scss";
 
@@ -21,14 +22,16 @@ function App() {
 
   const socket = useSocket(io);
 
-  
+  const [showSidebar, setShowSidebar] = useState(false);
 
   return (
       <main className="main-container">
-        <SideBar />
+
+        <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
+        <Menu setShowSidebar={setShowSidebar}/>
 
         <section className="content-container">
-        <Bell socket={socket}/>
+          <Bell socket={socket}/>
           <Switch>
             <Route exact path="/">
               <Main />

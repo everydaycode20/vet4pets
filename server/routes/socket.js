@@ -23,9 +23,7 @@ module.exports.socket = io => {
                     const obj = {"hour": addZeroToString.addZeroToLeft(elm.hour), "minute": addZeroToString.addZeroToRight(elm.minute), "nameOwner": elm.nameowner, "namePet": elm.namepet, "appointmentName": elm.appointmentName};
 
                     schedule.scheduleJob( new Date( timeArr[0], timeArr[1], timeArr[2], elm.hour, elm.minute), () => {
-                        socket.emit("appointments", 
-                        JSON.stringify(obj))
-                    });
+                        socket.emit("appointments", JSON.stringify(obj)) });
                     
                 });
 
@@ -45,10 +43,11 @@ module.exports.socket = io => {
                 const obj = {"hour": addZeroToString.addZeroToLeft(elm.hour), "minute": addZeroToString.addZeroToRight(elm.minute), "nameOwner": elm.nameowner, "namePet": elm.namepet, "appointmentName": elm.appointmentName};
 
                 schedule.scheduleJob( new Date( timeArr[0], timeArr[1], timeArr[2], elm.hour, elm.minute), () => {
-                    socket.emit("appointments", obj)
+                    socket.emit("appointments", JSON.stringify(obj))
                 });
                 
             });
+            
         });
 
     });

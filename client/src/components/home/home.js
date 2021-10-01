@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import HomeChart from "./home_chart";
 
@@ -11,7 +11,7 @@ import NextAppointments from "./next_appoinments";
 import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
 import Skeleton from "../misc/skeleton";
 
-const Main = () => {
+const Main = memo(() => {
 
     const [totalPatients, setTotalPatients] = useState({year: "", month: ""});
 
@@ -25,7 +25,21 @@ const Main = () => {
 
     const [loadingLatest, setLoadingLatest] = useState(true);
 
+    const [greetings, setGreetings] = useState("");
+
     useEffect(() => {
+
+        const currentTime = new Date().getHours();
+
+        if (currentTime >= 4 && currentTime <= 12) {
+            setGreetings("Good morning");
+        }
+        else if(currentTime >= 13 && currentTime <= 16) {
+            setGreetings("Good afternoon");
+        }
+        else{
+            setGreetings("Good evening");
+        }
 
         setLoadingTopList(true);
 
@@ -135,6 +149,6 @@ const Main = () => {
         </div>
     );
 
-};
+});
 
 export default Main;

@@ -1,0 +1,29 @@
+@import "global.scss";
+
+.menu-container{
+    position: absolute;
+    flex-direction: column;
+    row-gap: 5px;
+    display: none;
+    top: 2.5%;
+    left: 1%;
+    border: none;
+    background-color: transparent;
+
+    div{
+        background-color: $pink3;
+        height: 5px;
+        width: 30px;
+        border-radius: 10px;
+    }
+
+}
+
+@media only screen and (max-width: 1200px) {
+
+    .menu-container{
+        display: flex;
+        
+    }
+
+}

@@ -24,15 +24,15 @@ export const Finished = ({ appointments }) => {
 
     return (
         <div className="card app">
-            {/* <h2>Appointments today</h2> */}
+            <h2 className="app-title">Appointments</h2>
             <div>
                 <div>
                     <span>{appointments.finished}</span>
-                    <h2>Finished Appt</h2>
+                    <h2>Finished</h2>
                 </div>
                 <div>
                     <span>{appointments.upcoming}</span>
-                    <h2>Upcoming Appt</h2>
+                    <h2>Upcoming</h2>
                 </div>
             </div>
             

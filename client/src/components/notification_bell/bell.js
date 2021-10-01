@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import BellIcon from "../../assets/bell_filled.svg";
+import useAudio from "../../utils/useAudio";
 
 import "../../styles/bell.scss";
 
@@ -13,6 +14,8 @@ const Bell = ({ socket }) => {
 
     const [showAppointment, setShowAppointment] = useState(false);
 
+    const [playing, toggle, audio] = useAudio();
+
     useEffect(() => {
     
         if (socket) {
@@ -20,15 +23,17 @@ const Bell = ({ socket }) => {
             socket.on("appointments", (obj) => {
                 // console.log("got message bell", JSON.parse(obj));
                 setNotification(true);
-                setAppointment( obj );
+                setAppointment( JSON.parse(obj) );
+                toggle();
             });
         }
         
+        return () => socket && socket.close();
     
     }, [socket])
     
     const showNotification = () => {
-
+        
         setNotification(false);
 
         setShowAppointment(!showAppointment);
