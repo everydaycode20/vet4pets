@@ -5,7 +5,6 @@ import useAudio from "../../utils/useAudio";
 
 import "../../styles/bell.scss";
 
-
 const Bell = ({ socket }) => {
     
     const [notification, setNotification] = useState(false);

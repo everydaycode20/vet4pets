@@ -56,7 +56,7 @@ const SideBar = ({ showSidebar, setShowSidebar }) => {
                     </li>
                     {/* <li> <NavLink to="/checkups" className="link"> <img src={Checkup} alt="checkups" /> <span>Checkups</span></NavLink> </li> */}
                     {/* <li title="Miscellaneous"> <NavLink to="/miscellaneous" className="link"> <img src={Medicine} alt="medicine"/> <span>Miscellaneous</span></NavLink> </li> */}
-                    {/* <li title="Settings"> <NavLink to="/settings" className="link settings"> <img src={Settings} alt="settings"/> <span>Settings</span></NavLink> </li> */}
+                    <li title="Settings" onClick={() => setShowSidebar(false)}> <NavLink to="/settings" className="link settings"> <img src={Settings} alt="settings"/> <span>Settings</span></NavLink> </li>
                 </ul>
             </div>
         </nav>

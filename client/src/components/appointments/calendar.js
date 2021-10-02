@@ -36,10 +36,12 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
     
     const [markTop, setMarkTop] = useState({"minutes": 0});
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-
+        setLoading(true);
         if (week) {
-
+            
             fetch("/appointments/day-week", {
                 method: "POST",
                 headers: {
@@ -50,6 +52,8 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                 
                 setAppointmentsWeek(data.appointmentsWeek);
                 
+                setLoading(false);
+
             }).catch(err => console.log(err));
         }
     }, [week]);
@@ -144,6 +148,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
 
     return (
         <div className="main-calendar-container">
+            {loading ? <div className="inner-calendar-container"></div> :
             <div className="inner-calendar-container">
                 <div className="week-days">
                     {week && week.map((day, index) => {
@@ -200,7 +205,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                         )
                     })}
                 </div>
-            </div>
+            </div>}
         </div>
     );
 

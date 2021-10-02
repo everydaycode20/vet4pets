@@ -1,0 +1,118 @@
+@import "../global";
+
+.notifications-container{
+    background-color: white;
+    width: max-content;
+    height: max-content;
+    box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    h2{
+        color: $cardTitle;
+        font-size: clamp(0.9rem, 2vw, 1.2rem);
+    }
+
+    .volume{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        column-gap: 10px;
+        align-items: center;
+
+        div{
+            display: flex;
+            flex-direction: row;
+            column-gap: 5px;
+
+            button{
+                background-color: transparent;
+                border: none;
+                font-size: 1rem;
+                padding: 5px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.toggle{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    gap: 1ch;
+
+    .toggle-display{
+        --offset: 0.25em;
+        --diameter: 1.2em;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: calc(var(--diameter) * 2 + var(--offset) * 2);;
+        height: calc(var(--diameter) + var(--offset) * 2);
+        border: 0.1em solid rgba(0,0, 0, 0.2);
+        position: relative;
+        border-radius: 100vw;
+        background-color: $pink3;
+        transition: 250ms;
+        cursor: pointer;
+    }
+
+    .toggle-display::before{
+        content: "";
+        width: var(--diameter);
+        height: var(--diameter);
+        border-radius: 50%;
+        border: 0.1 solid rgba(0, 0, 0, 0.2);
+        position: absolute;
+        z-index: 2;
+        top: 50%;
+        left: 0.25rem;
+        transform: translate(0, -50%);
+        background-color: #fff;
+        transition: inherit
+    }
+
+    .sound-toggle {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sound-toggle:focus + .toggle-display{
+        outline: 1px dotted #212121;
+        outline: 1px auto -webkit-focus-ring-color;
+    }
+
+    .sound-toggle:checked + .toggle-display{
+        background-color: $greenText1;
+    }
+
+    .sound-toggle:checked + .toggle-display::before{
+        transform: translate(100%, -50%);
+    }
+
+    [dir='rtl'] .toggle-display:before {
+        left: auto;
+        right: var(--offset);
+    }
+
+    [dir='rtl'] .sound-toggle:checked + .toggle-display:before {
+        transform: translate(-100%, -50%);
+    }
+
+    .toggle-icon{
+        height: 1em;
+        width: 1em;
+    }
+
+
+}

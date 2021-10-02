@@ -15,6 +15,9 @@ import OwnerProfile from "./components/owner_profile/owner_profile";
 import PetProfile from "./components/pet_profile/pet_profile";
 import Bell from "./components/notification_bell/bell";
 import Menu from "./components/sidebar/menu";
+import Settings from "./components/settings/settings";
+
+import Providers from "./utils/providers";
 
 import "./styles/app.scss";
 
@@ -24,40 +27,47 @@ function App() {
 
   const [showSidebar, setShowSidebar] = useState(false);
 
+
+
   return (
-      <main className="main-container">
+    <Providers>
+        <main className="main-container">
 
-        <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
-        <Menu setShowSidebar={setShowSidebar}/>
+          <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
+          <Menu setShowSidebar={setShowSidebar}/>
 
-        <section className="content-container">
-          <Bell socket={socket}/>
-          <Switch>
-            <Route exact path="/">
-              <Main />
-            </Route>
-            <Route path="/appointments">
-              <Appointments socket={socket}/>
-            </Route>
-            <Route path="/records">
-              <MedicalRecords />
-            </Route>
-            <Route path="/owners">
-              <Owner />
-            </Route>
-            <Route path="/pets">
-              <Pet />
-            </Route>
-            {/* <Route path="/owner/:id" children={<OwnerProfile/>}>
-            </Route> */}
-            <Route path="/pet/:id" children={<PetProfile/>}>
-            </Route>
-            <Route path="/miscellaneous">
-              <Miscellaneous />
-            </Route>
-          </Switch>
-        </section>
-      </main>
+          <section className="content-container">
+            <Bell socket={socket}/>
+            <Switch>
+              <Route exact path="/">
+                <Main />
+              </Route>
+              <Route path="/appointments">
+                <Appointments socket={socket}/>
+              </Route>
+              <Route path="/records">
+                <MedicalRecords />
+              </Route>
+              <Route path="/owners">
+                <Owner />
+              </Route>
+              <Route path="/pets">
+                <Pet />
+              </Route>
+              {/* <Route path="/owner/:id" children={<OwnerProfile/>}>
+              </Route> */}
+              <Route path="/pet/:id" children={<PetProfile/>}>
+              </Route>
+              <Route path="/miscellaneous">
+                <Miscellaneous />
+              </Route>
+              <Route path="/settings">
+                <Settings />
+              </Route>
+            </Switch>
+          </section>
+        </main>
+      </Providers>
   );
 }
 
