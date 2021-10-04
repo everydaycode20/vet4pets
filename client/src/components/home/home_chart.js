@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import "../../styles/home/home_chart.scss";
 
@@ -7,8 +7,8 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   
   if (btnBackground === "weekly") {
     return (
-      <ResponsiveContainer width="99%" height="100%">
-          <BarChart width={1000} height={300} data={data}  >
+      <ResponsiveContainer width="99%" height={320}>
+          <BarChart width={1000} height={400} data={data}  >
               <CartesianGrid strokeDasharray="5 5" vertical={false}/>
               <XAxis dataKey="name" axisLine={false} tickLine={false}/>
               <YAxis axisLine={false} tickLine={false}/>

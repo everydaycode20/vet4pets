@@ -123,10 +123,11 @@ const Main = memo(() => {
                                 </div>
                         </div>
                         
-                        <div className="latest-patients">
+                        <div className="latest-patients" style={{height: latest.length === 0 && "250px"}}>
                             <h2>Latest patients</h2>
                             {loadingLatest ? <Skeleton height={32} backgroundColor={"#CDF0EA"} width={100} number={3}/> : 
                             <ul>
+                                {latest.length === 0 && <span>No patients yet.</span>}
                                 {latest.map(item => {
 
                                     return (
