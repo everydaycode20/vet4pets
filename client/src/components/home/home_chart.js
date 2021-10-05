@@ -22,7 +22,7 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   if (btnBackground === "monthly") {
 
     return (
-      <ResponsiveContainer width="99%" height="100%">
+      <ResponsiveContainer width="99%" height={320}>
         <BarChart width={1000} height={300} data={monthlyData.data} >
             <CartesianGrid strokeDasharray="5 5" vertical={false}/>
             <XAxis dataKey="name" fontSize={16} axisLine={false} tickLine={false}/>
@@ -37,7 +37,7 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   if (btnBackground === "yearly") {
     
     return (
-      <ResponsiveContainer width="99%" height="100%">
+      <ResponsiveContainer width="99%" height={320}>
           <BarChart width={1000} height={300} data={yearlyData} >
               <CartesianGrid strokeDasharray="10 10" vertical={false}/>
               <XAxis dataKey="year" fontSize={16} axisLine={false} tickLine={false} />

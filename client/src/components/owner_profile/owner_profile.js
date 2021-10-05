@@ -20,9 +20,9 @@ const OwnerProfile = () => {
             {/* <div className="header">
                 <h1>{nameOwner}</h1>
             </div> */}
-            <button>
+            {/* <button>
                 <Link to="/owners" >X</Link>
-            </button>
+            </button> */}
             
             <div className="profile-info-container">
                 <ProfileInfo id={id} nameOwner={nameOwner} email={email} address={address} telephones={telephones} registered={registered}/>

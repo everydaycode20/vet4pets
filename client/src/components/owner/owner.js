@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Link, Switch, Router, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Header from "./header";
 import OwnerControl from "./owner_controls";
@@ -36,10 +36,10 @@ const Owner = () => {
             {addNewOwner && <AddOwner setAddNewOwner={setAddNewOwner} setOwnerMessage={setOwnerMessage} setOwnerList={setOwnerList} ownerList={ownerList}/>}
             {ownerMessage && <OwnerMessage setOwnerMessage={setOwnerMessage} />}
             <Switch>
-            <Route path="/owners/:id">
-                <OwnerProfile />
-            </Route>
-        </Switch>
+                <Route path="/owners/:id">
+                    <OwnerProfile />
+                </Route>
+            </Switch>
         </div>
     );
 }

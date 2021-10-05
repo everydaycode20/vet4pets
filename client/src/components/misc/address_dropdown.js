@@ -34,12 +34,11 @@ const AddressDropdown = ({ id, address }) => {
     return (
         <div className="address-dropdown" onClick={() => getAddress(id)} onBlur={(e) => hideOptions(e)}>
             
-            <span>{address.substring(0, 10) + "..."}</span>
-            <button rot={showAddress && indexAddress === id ? showAddress.toString() : false.toString()}><img src={ArrowLeft} alt="more" /></button>
+            <button rot={showAddress && indexAddress === id ? showAddress.toString() : false.toString()}>{address.substring(0, 10) + "..."} <img src={ArrowLeft} alt="more" /></button>
 
             {showAddress && indexAddress === id && 
                 <div className="address-content">
-                    {address}
+                    <p>{address}</p>
                 </div>
             }
         </div>

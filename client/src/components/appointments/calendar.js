@@ -184,15 +184,10 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                                 
                                 {item[arr[index]].map((item, index) => {
                                     
-                                    let border = null;
-                                    
-                                    if (item.appointmentName === "general checkup") border = "4px solid red";
-                                    if (item.appointmentName === "vaccine") border = "4px solid blue";
-
                                     return (
                                         <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
-                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={border} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
+                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
                                             {/* { showOptions === item.id && 
                                                 <div className="app-options">
                                                     <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
