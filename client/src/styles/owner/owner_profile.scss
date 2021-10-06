@@ -40,6 +40,7 @@
         padding: 20px;
         column-gap: 20px;
         row-gap: 20px;
+        box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
 
         .info{
             background-color: white;
@@ -80,6 +81,12 @@
                         }
                     }
                 }
+            }
+
+            .address{
+                word-break: break-all;
+                hyphens: auto;
+                width: 250px;
             }
         }
 

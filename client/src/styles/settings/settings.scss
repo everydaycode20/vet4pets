@@ -1,0 +1,46 @@
+@import "../global";
+
+.main-settings-container{
+    background-color: $greenBackground;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    .header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px;
+
+        .control-container{
+            display: flex;
+            flex-direction: row;
+            margin-left: 50px;
+            column-gap: 20px;
+
+            h1{
+                font-size: 1.7rem;
+                font-weight: 500;
+                color: $greeLine;
+            }
+        }
+
+    }
+
+    .settings-inner-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 2vmin;
+        align-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    
+    .settings-inner-container{
+        justify-content: center!important;
+    }
+
+}

@@ -48,9 +48,11 @@ const PetList = ( { setNumberPets }) => {
 
                     return (
                         <li key={elm.id} className="item-list">
-                            <div className="checkbox">
+
+                            {/* <div className="checkbox">
                                 <input type="checkbox" />
-                            </div>
+                            </div> */}
+                            
                             <span>{elm.namePet}</span>
                             <span>{elm.nameOwner}</span>
                             <span>{elm.age}</span>

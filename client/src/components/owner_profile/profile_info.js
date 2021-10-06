@@ -48,7 +48,7 @@ const ProfileInfo = ({ id, nameOwner, email, address, telephones, registered }) 
                 <div className="info 2">
                     <div>
                         <h3>Address</h3>
-                        <span>{address}</span>
+                        <p className="address">{address}</p>
                     </div>
                     <div className="telephone">
                         <h3>Telephone</h3>

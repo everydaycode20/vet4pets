@@ -24,6 +24,14 @@
     --translate: translateX(-130px);
 }
 
+[showsidebar = "false"]{
+    --trans: translateX(-350px);
+}
+
+[showsidebar = "true"]{
+    --trans: translateX(0);
+}
+
 .sidebar{
     display: flex;
     flex-direction: column;
@@ -31,6 +39,7 @@
     padding: 10px 15px;
     font-size: 1.3rem;
     border-right: 2px solid #c0c0c0;
+    background-color: white;
     // width: var(--minimize);
     // transition: width 0.2s ease-in;
     margin-left: 10px;
@@ -39,6 +48,10 @@
     // transform: rotateX(30deg);
     flex-basis: 5rem;
     flex-grow: 1;
+
+    .close{
+        display: none;
+    }
 
     img{
         width: 30px;
@@ -71,12 +84,6 @@
                 column-gap: 10px;
                 padding: 10px;
 
-                img{
-                    // position: absolute;
-                    // left: 20px;
-                    // background-color: var(--img-color);
-                }
-
                 span{
                     opacity: var(--opacity);
                     visibility: var(--visible);
@@ -93,7 +100,7 @@
 
             .active{
                 background-color: #ffe7ec;
-                border-radius: 20px;
+                border-radius: 10px;
                 // width: max-content;
                 transition: width 5s ease-in;
                 // padding-right: 10px;
@@ -110,4 +117,49 @@
 
 .hide-elements{
     display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+    
+    .sidebar{
+        position: absolute;
+        margin: 0;
+        left: 0;
+        transform: var(--trans);
+        z-index: 100;
+        transition: transform 0.2s ease-in;
+        height: 100%;
+
+        .close{
+            display: flex;
+            border: none;
+            background-color: transparent;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .menu-control{
+            display: none;
+        }
+
+        .link-container{
+            .link-list{
+                .link{
+                    span{
+                        opacity: 1;
+                        visibility: visible;
+                        display: flex;
+                    }
+                }
+    
+                .settings{
+                    margin-top: 80px;
+                }
+    
+            }
+
+        }
+
+    }
+
 }

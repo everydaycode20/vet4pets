@@ -1,0 +1,114 @@
+@import "./global";
+
+[notification = "true"]{
+    --anim: ring 1s ease-in-out forwards;
+}
+
+.bell-container{
+    position: absolute;
+    top: 1%;
+    right: 5%;
+
+    button{
+        border: none;
+        background-color: transparent;
+        animation: var(--anim);
+        cursor: pointer;
+
+        img{
+            width: 35px;
+        }
+        
+    }
+
+    .red-dot{
+        position: absolute;
+        top: 50%;
+        background-color: $pink2;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        animation: scaleDot 0.5s ease-in forwards;
+    }
+
+    .bell-dropdown{
+        position: absolute;
+        right: 0;
+        background-color: white;
+        padding: 10px;
+        box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+        border-top: 4px solid $pink3;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+        cursor: default;
+        animation: notification 0.2s ease-out forwards;
+        overflow: hidden;
+        z-index: 30;
+        width: max-content;
+    }
+
+}
+
+@keyframes scaleDot {
+    
+    0% {
+        transform: scale(0.1);
+    }
+
+    25% {
+        transform: scale(0.1);
+    }
+
+    50% {
+        transform: scale(2.5);
+    }
+
+    75% {
+        transform: scale(1);
+    }
+
+}
+
+@keyframes ring {
+
+    0% {
+        transform: rotate(35deg);
+    }
+    12.5% {
+        transform: rotate(-30deg);
+    }
+    25% {
+        transform: rotate(25deg);
+    }
+    37.5% {
+        transform: rotate(-20deg);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+    62.5% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+@keyframes notification {
+    
+    0% {
+        opacity: 0.2;
+        height: 10px;
+    }
+
+    100% {
+        opacity: 1;
+        height: 130px;
+    }
+}

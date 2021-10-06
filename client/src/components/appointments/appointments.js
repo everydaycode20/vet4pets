@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 import Calendar from "./calendar";
 import AddAppointment from "./add_appointment";
@@ -8,8 +8,8 @@ import AppointmentMessage from "./appointment_message";
 
 import "../../styles/appointment/appointments.scss";
 
-const Appointments = () => {
-
+const Appointments = ({ socket }) => {
+    
     const [newWeek, setNewWeek] = useState({ "day": new Date().getDate(), "dayInWeek": new Date().getDay() });
 
     const [week, setWeek] = useState(null);
@@ -82,7 +82,7 @@ const Appointments = () => {
         setNewWeek(prev => ({...prev, day: newWeek.day + 7}));
     }
 
-    const addAppointment = (e, time, dateDay, day, month, year, monthIndex) => {
+    const addAppointments = (e, time, dateDay, day, month, year, monthIndex) => {
         
         if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container") && !e.classList.contains("btn-delete-card")) {
             setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: monthIndex, year: year});
@@ -94,7 +94,7 @@ const Appointments = () => {
         }
         
 
-        if(makeAppointment) setMakeAppointment(false);
+        // if(makeAppointment) setMakeAppointment(false);
 
     };
 
@@ -102,12 +102,12 @@ const Appointments = () => {
         <div className="main-appointment-container">
             <div>
                 <Header/>
-                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointment={addAppointment}/>
+                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments}/>
             </div>
             <div></div>
-            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointment={addAppointment} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek}/>
-            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage}/>}
-            {appMessage && <AppointmentMessage setAppMessage={setAppMessage}/>}
+            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>
+            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage} socket={socket}/>}
+            {appMessage && <AppointmentMessage setAppMessage={setAppMessage} />}
         </div>
     );
 

@@ -23,7 +23,7 @@ const DotBtn = ({ id, ...props }) => {
     };
 
     return (
-        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)}>
+        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)} className="main-dot-container">
             <button className="dot-container" >
                 <div className="dot"/>
                 <div className="dot"/>

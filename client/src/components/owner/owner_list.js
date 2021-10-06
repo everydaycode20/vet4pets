@@ -9,12 +9,11 @@ import DotBtn from "../misc/dot_btn";
 import TelBtn from "../misc/tel_btn";
 
 import Skeleton from "../misc/skeleton";
+import AddressDropdown from "../misc/address_dropdown";
 
 const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
 
     const categories = ["Name", "Email", "Phone Number", "Address", "Register Date"];
-
-    // const [ownerList, setOwnerList] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -57,15 +56,16 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
 
                     return (
                         <li key={elm.id} className="item-list">
-                            <div className="checkbox">
-                                <input type="checkbox" />
-                            </div>
+                            {/* <div className="checkbox">
+                                <input type="checkbox" onChange={() => console.log("si")}/>
+                            </div> */}
                             <span>{elm.nameOwner}</span>
                             <span>{elm.email}</span>
                             
                             <TelBtn elm={elm}/>
                             
-                            <span>{elm.address}</span>
+                            <AddressDropdown address={elm.address} id={elm.id}/>
+
                             <span>{elm.registerDate}</span>
 
                             <DotBtn id={elm.id}>

@@ -13,13 +13,24 @@ pet_router.get("/pets/owners", (req, res, next) => {
     });
 });
 
-pet_router.get("/pets/breed", (req, res, next) => {
+pet_router.get("/pets/type", (req, res, next) => {
 
     connection.query("call getPetType()", (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
         
         res.json(rows[0]);
+        
+    });
+});
+
+pet_router.get("/pets/type/breed", (req, res, next) => {
+
+    connection.query("select * from breed", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        res.json(rows);
         
     });
 });
@@ -61,9 +72,13 @@ pet_router.post("/pet/type", (req, res, next) => {
 
     connection.query("insert into petType (typeDescription, idBreed) values (?, ?)", [type_description, id_breed], (err, results, fields) => {
         
-        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        if(err) {
+            res.json({"status": false, "message": "There is a type with that name"})
+        }
+        else{
+            res.json({"status": true, "message": "Pet type added"});
+        }
         
-        res.json({"status": true, "message": "pet type added"});
     });
 });
 
@@ -73,9 +88,13 @@ pet_router.post("/pet/type/breed", (req, res, next) => {
 
     connection.query("insert into breed ( breedDescription ) values (?)", [breed_description], (err, results, fields) => {
         
-        if(err) res.json({"status": false, "message": "there was an error in the database"});
-        
-        res.json({"status": true, "message": "pet breed added"});
+        if(err) {
+            res.json({"status": false, "message": "There is a type with that name"});
+        }
+        else{
+            res.json({"status": true, "message": "pet breed added"});
+        }
+
     });
 });
 

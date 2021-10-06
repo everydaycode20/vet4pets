@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
@@ -6,7 +6,7 @@ import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
 
 const AppointmentCard = ({ item, border, index, deleteCard }) => {
-
+    
     return (                 
         <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className="appointment-card">
             <span>{item.nameOwner}</span>
@@ -21,9 +21,9 @@ const AppointmentCard = ({ item, border, index, deleteCard }) => {
             </DotBtn>
         </div>
     );
-}
+};
 
-const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek }) => {
+const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek }) => {
 
     const [showOptions, setShowOptions] = useState(null);
 
@@ -36,12 +36,12 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
     
     const [markTop, setMarkTop] = useState({"minutes": 0});
 
-    // const [appointmentsWeek, setAppointmentsWeek] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
+        setLoading(true);
         if (week) {
-
+            
             fetch("/appointments/day-week", {
                 method: "POST",
                 headers: {
@@ -52,6 +52,8 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                 
                 setAppointmentsWeek(data.appointmentsWeek);
                 
+                setLoading(false);
+
             }).catch(err => console.log(err));
         }
     }, [week]);
@@ -92,12 +94,8 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
 
         }
 
-
         getMinutes();
             
-        
-        
-
         return () => getMinutes();
         
     }, []);
@@ -150,6 +148,7 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
 
     return (
         <div className="main-calendar-container">
+            {loading ? <div className="inner-calendar-container"></div> :
             <div className="inner-calendar-container">
                 <div className="week-days">
                     {week && week.map((day, index) => {
@@ -165,7 +164,6 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                         )
                     })}
                 </div>
-                {/* <div className="empty"></div> */}
 
                 <div className="appointment-container">
                     <div className="mark-container" style={{top: markTop.minutes}}>
@@ -186,15 +184,10 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                                 
                                 {item[arr[index]].map((item, index) => {
                                     
-                                    let border = null;
-                                    
-                                    if (item.appointmentName === "general checkup") border = "4px solid red";
-                                    if (item.appointmentName === "vaccine") border = "4px solid blue";
-
                                     return (
-                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointment(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
+                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
-                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={border} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
+                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
                                             {/* { showOptions === item.id && 
                                                 <div className="app-options">
                                                     <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
@@ -207,7 +200,7 @@ const Calendar = ({ week, addAppointment, setAppointmentsWeek, appointmentsWeek 
                         )
                     })}
                 </div>
-            </div>
+            </div>}
         </div>
     );
 

@@ -10,6 +10,15 @@ $lightGreenBackground: #e7fdf9;
 $pink1: #FFDFE6;
 $pink2: #F38BA0;
 $darkerGrey: #585858;
+$cardTitle: #73788b;
+$pink3: #f32851;
+$lightGrey: #e7e7e7;
+
+@mixin dotMainContainer {
+    position: absolute;
+    top: 20%;
+    right: 2%;
+}
 
 @mixin dotContainer {
     display: flex;
@@ -17,15 +26,20 @@ $darkerGrey: #585858;
     border: none;
     background-color: transparent;
     column-gap: 2px;
-    position: absolute;
-    top: 30%;
-    right: 2%;
+    // position: absolute;
+    // top: 30%;
+    // right: 2%;
     cursor: pointer;
-    width: 25px;
-    height: 25px;
+    width: 27px;
+    height: 27px;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
+
+    &:hover{
+        background-color: $lightGrey;
+        transition: 0.2s ease-in;
+    }
 }
 
 @mixin dot {
@@ -42,10 +56,4 @@ $darkerGrey: #585858;
     position: absolute!important;
     height: 1px;
     width: 1px;
-    // overflow: hidden;
-    // clip: rect(1px, 1px, 1px, 1px);
-}
-
-@mixin name {
-    
 }

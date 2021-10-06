@@ -74,7 +74,7 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
     data.forEach((elm, i) => {
         
         hours.forEach(hour => {
-            elm[arr[i]].push({"id" : "", "time": hour, "day": arr[i], "dateDay": 0, "fullDate": "", "month": "", "monthIndex": "", "year": "", "appointmentName": "", "nameOwner": "", "namePet": ""});
+            elm[arr[i]].push({"id" : "", "time": hour, "day": arr[i], "dateDay": 0, "fullDate": "", "month": "", "monthIndex": "", "year": "", "appointmentName": "", "nameOwner": "", "namePet": "", "color": ""});
         })
     });
 
@@ -126,6 +126,7 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                             prop.month = months[currentWeek.getMonth()];
                             prop.monthIndex = currentWeek.getMonth() + 1;
                             prop.year = currentWeek.getFullYear();
+                            prop.color = elm.color;
                             // return true;
                         }
                         else{
@@ -133,6 +134,7 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                             prop.month = months[currentWeek.getMonth()];
                             prop.year = currentWeek.getFullYear();
                             prop.monthIndex = currentWeek.getMonth() + 1;
+                            // prop.color = elm.color;
                             prop.id = nanoid.nanoid(8);
                         }
                     });
@@ -299,15 +301,19 @@ appointment_router.post("/appointment", (req, res, next) => {
 
 });
 
-appointment_router.post("/appointments/type", (req, res, next) => {
-    const {appointment_type} = req.body;
+appointment_router.post("/appointment/type", (req, res, next) => {
 
-    connection.query("insert into appointmentType (appointmentName) values (?)", [appointment_type], (err, results, fields) => {
+    const { appointment_type, color} = req.body;
+
+    connection.query("insert into appointmentType (appointmentName, color) values (?, ?)", [appointment_type, color], (err, results, fields) => {
+    
+        if(err) {
+            res.json({"status": false, "message": "There is an appointment type with that name"})
+        }
+        else{
+            res.json({"status": true, "message": "appointment type added"});
+        }
         
-        if(err) res.json({"status": false, "message": "there was an error with the database"});
-
-        res.json({"status": true, "message": "appointment type added"});
-
     });
 
 });
@@ -339,6 +345,17 @@ appointment_router.get("/appointments/day/total", (req, res, next) => {
 appointment_router.get("/appointments/top", (req, res, next) => {
 
     connection.query("call getTopAppointments()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json(rows[0]);
+    });
+
+});
+
+appointment_router.get("/appointments/latest", (req, res, next) => {
+
+    connection.query("call getLatestPatients()", (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
         

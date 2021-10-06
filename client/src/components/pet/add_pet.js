@@ -32,7 +32,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
 
         });
 
-        fetch("/pets/breed",
+        fetch("/pets/type",
         {
             method: "GET",
         }

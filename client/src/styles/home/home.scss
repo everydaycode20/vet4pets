@@ -34,6 +34,8 @@
         column-gap: 20px;
         flex-wrap: wrap;
         width: 90%;
+        height: 90%;
+        row-gap: 10px;
 
         & > *{
             // flex-grow: 1;
@@ -50,124 +52,163 @@
             // flex-basis: 30ch;
 
             .charts-inner-container{
-                display: grid;
-                grid-template-columns: 100%;
-                grid-template-rows: 65% auto;
-                column-gap: 20px;
-                row-gap: 20px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                height: 100%;
+                width: 100%;
+                align-content: space-between;
+                row-gap: 10px;
+                justify-content: center;
+                // display: grid;
+                // grid-template-rows: auto auto auto;
+
 
                 .appointments-status{
-                    grid-column: 1/2;
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
                     column-gap: 20px;
+                    width: 100%;
+                    height: max-content;
+                    row-gap: 10px;
 
-                    .patients-stats, .finished-appointments{
+                    & .card:nth-child(1), & .card:nth-child(2){
+                        flex-grow: 2;
+                        flex-shrink: 1;
+                    }
+
+                    .card{
+                        padding: 1.2vmin;
+                        background-color: white;
+                        box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+                        border-radius: 5px;
                         display: flex;
                         flex-direction: column;
-                        justify-content: space-between;
-                        align-items: center;
+                        justify-content: space-around;
 
                         h2{
-                            text-align: center;
-                            font-size: 1.1rem;
-                        }
-
-                        div{
-                            text-align: center;
+                            color: $cardTitle;
+                            font-weight: 500;
+                            font-size: clamp(0.9rem, 2vw, 1rem);
                         }
 
                         span{
-                            font-size: 2.2rem;
-                            color: $infoText;
+                            font-weight: 600;
+                            // font-size: 2rem;
+                            font-size: clamp(1rem, 5vw, 2rem);
                         }
+
                     }
 
-                    .top-treatments{
+                    .app{
                         display: flex;
                         flex-direction: column;
-                        row-gap: 5px;
+                        flex: 4 2;
+                        row-gap: 10px;
+                        position: relative;
 
-                        & .top-treatments-list{
+                        .app-title{
+                            // position: absolute;
+                            top: 0;
+                        }
+                        
+                        div{
                             display: flex;
-                            flex-direction: column;
-                            height: 100%;
-                            row-gap: 7px;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            column-gap: 1vmin;
+
+                            div{
+                                display: flex;
+                                flex-direction: column;
+                            }
                         }
                     }
 
-                    .finished-appointments, .patients-stats, .top-treatments{
-                        // border: 1px solid rgb(151, 151, 151);
-                        padding: 20px;
-                        height: 200px;
-                        flex: 2;
-                        background-color: white;
-                        -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
-                        box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11);
+                }
+
+                .main-container-chart{
+                    width: 100%;
+                    // height: 50%;
+                    display: grid;
+                    grid-gap: 1rem;
+                    grid-template-columns: repeat(auto-fit, minmax( 15rem, auto) );
+                    background-color: white;
+                    -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
+                    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11);
+                    padding: 2vmin;
+                    border-radius: 5px;
+
+                    .top-treatments{
+                        flex: 1 1;
+                        padding: 2vmin;
+                        background-color: $green1;
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 20px;
+                        border-radius: 5px;
+
+                        .top-treatments-list{
+                            display: flex;
+                            flex-direction: column;
+                            row-gap: 10px;
+
+                            li{
+                                background-color: white;
+                                padding: 5px;
+                                border-radius: 5px;
+                                font-size: 1.05rem;
+                            }
+                        }
                     }
                 }
             }
 
-            .button-list{
+            .latest-patients{
+                background-color: white;
+                width: 100%;
                 display: flex;
-                height: 100%;
-                justify-content: center;
+                flex-direction: column;
+                box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+                border-radius: 5px;
+                padding: 2vmin;
+                row-gap: 10px;
 
-                .button-inner-list{
+                ul{
+                    padding: 1vmin;
                     display: flex;
-                    flex-direction: row;
-                    width: 100%;
-                    justify-content: space-between;
-                    align-content: center;
-                    align-items: center;
-                    column-gap: 15px;
+                    flex-direction: column;
+                    row-gap: 10px;
 
-                    button{
-                        background-color: $green2;
-                        border: none;
-                        border-radius: 10px;
-                        padding: 20px 10px;
-                        cursor: pointer;
-                        display: flex;
-                        flex-direction: row;
-                        column-gap: 5px;
-                        align-items: center;
-                        
-
-                        span{
-                            font-size: 1.4rem;
-                            font-weight: 500;
-                            color: $greenText1;
-                            width: 80%;
-                        }
-
-                        img{
-                            width: 20%;
-                        }
-
-                        // &:hover{
-                        //     background-color: #87BCBC;
-                        // }
+                    li{
+                        padding: 5px;
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax( 5rem, 1fr) );
+                        row-gap: 5px;
+                        justify-items: center;
+                        background-color: $green1;
+                        border-radius: 5px;
+                        column-gap: 10px;
                     }
                 }
 
-                
             }
         }
 
         .next-appointment-list{
             display: flex;
             flex-direction: column;
-            // width: 30%;
             background-color: white;
             -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
             box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11);
             row-gap: 20px;
             padding: 20px;
-            height: 850px;
+            height: 100%;
+            
             flex-grow: 1;
             flex-shrink: 2;
+            border-radius: 5px;
             // flex-basis: 30ch;
 
             .controls-appointment-list{
@@ -230,4 +271,13 @@
         }
 
     }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .next-appointment-list{
+        height: max-content!important;
+        margin-bottom: 20px;
+    }
+
 }

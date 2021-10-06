@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import "../../styles/home/home_chart.scss";
 
 const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
-
+  
   if (btnBackground === "weekly") {
     return (
-      <ResponsiveContainer width="99%" height="100%">
-          <BarChart width={1000} height={300} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}} >
-              {/* <CartesianGrid strokeDasharray="5 5" /> */}
-              <XAxis dataKey="name" />
-              <YAxis />
+      <ResponsiveContainer width="99%" height={320}>
+          <BarChart width={1000} height={400} data={data}  >
+              <CartesianGrid strokeDasharray="5 5" vertical={false}/>
+              <XAxis dataKey="name" axisLine={false} tickLine={false}/>
+              <YAxis axisLine={false} tickLine={false}/>
               <Tooltip cursor={{fill: "transparent"}}/>
-              {/* <Legend /> */}
-              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
           </BarChart>
       </ResponsiveContainer>
     );
@@ -23,14 +22,13 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   if (btnBackground === "monthly") {
 
     return (
-      <ResponsiveContainer width="99%" height="100%">
-        <BarChart width={1000} height={300} data={monthlyData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-            {/* <CartesianGrid strokeDasharray="5 5" /> */}
-            <XAxis dataKey="name" fontSize={16} interval={1} />
-            <YAxis />
+      <ResponsiveContainer width="99%" height={320}>
+        <BarChart width={1000} height={300} data={monthlyData.data} >
+            <CartesianGrid strokeDasharray="5 5" vertical={false}/>
+            <XAxis dataKey="name" fontSize={16} axisLine={false} tickLine={false}/>
+            <YAxis axisLine={false} tickLine={false}/>
             <Tooltip cursor={{fill: "transparent"}}/>
-            {/* <Legend /> */}
-            <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+            <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
         </BarChart>
       </ResponsiveContainer>
     );
@@ -39,14 +37,13 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   if (btnBackground === "yearly") {
     
     return (
-      <ResponsiveContainer width="99%" height="100%">
-          <BarChart width={1000} height={300} data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-              {/* <CartesianGrid strokeDasharray="5 5" /> */}
-              <XAxis dataKey="year" fontSize={16} />
-              <YAxis />
-              <Tooltip cursor={{fill: "transparent"}}/>
-              {/* <Legend /> */}
-              <Bar dataKey="appointments" fill="#F38BA0" barSize={20}/>
+      <ResponsiveContainer width="99%" height={320}>
+          <BarChart width={1000} height={300} data={yearlyData} >
+              <CartesianGrid strokeDasharray="10 10" vertical={false}/>
+              <XAxis dataKey="year" fontSize={16} axisLine={false} tickLine={false} />
+              <YAxis axisLine={false} tickLine={false}/>
+              <Tooltip cursor={{fill: "transparent"}} />
+              <Bar dataKey="appointments" fill="#F38BA0" barSize={20} radius={[8, 8, 0, 0]}/>
           </BarChart>
       </ResponsiveContainer>
     );

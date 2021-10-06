@@ -1,0 +1,112 @@
+.main-picker-container{
+    padding: 10px;
+    width: min-content;
+    background-color: rgb(243, 243, 243);
+    position: absolute;
+    top: 50px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.37); 
+    box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.37);
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.image-picker-container{
+    display: flex;
+    flex-direction: row;
+    row-gap: 100px;
+    user-select: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-box{
+    border: 1px solid rgb(158, 158, 158);
+    border-radius: 5px;
+    width: 240px;
+    height: 240px;
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0)0%, rgba(0, 0, 0, 1)98%), linear-gradient(90deg, rgba(255, 255, 255, 1)0%, rgba(255, 0, 0, 1)70%); */
+    position: relative;
+    overflow: hidden;
+}
+
+.box-selector{
+    background: radial-gradient(circle, transparent 40%, rgb(255, 255, 255) 40%);
+    border-radius: 100%;
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    overflow: hidden;
+    top: -10px;
+    left: 228px;
+}
+
+.inner-box-selector{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgb(0, 0, 0);
+    z-index: 120;
+}
+
+.color-bar-container{
+    width: min-content;
+    position: relative;
+    /* margin-top: 20px; */
+}
+
+.color-bar{
+    position: relative;
+    height: 240px;
+    width: 20px;
+    margin-left: 10px;
+    /* border: 1px solid rgb(158, 158, 158); */
+    border-radius: 5px;
+    background: linear-gradient(180deg, rgb(255, 0, 0) 0%, rgb(255, 0, 255) 16%, rgb(0, 0, 255) 32%, 
+    rgb(0, 255, 255) 48%, rgb(0, 255, 0) 64%, rgb(255, 255, 0) 80%, rgb(255, 0, 0) 100%);
+    user-select: none;
+    overflow: hidden;
+}
+
+.selector-bar{
+    background: radial-gradient(circle, transparent 40%, rgb(255, 255, 255) 40%);
+    border-radius: 100%;
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+}
+
+.box{
+    width: 35px;
+    height: 35px;
+    /* position: absolute; */
+    /* border: 1px solid rgb(158, 158, 158); */
+    border-radius: 5px;
+}
+
+span{
+    font-weight: 400;
+}
+
+.colors-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.color-code-container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
