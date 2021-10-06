@@ -25,7 +25,7 @@ create table telOwner(
 
 create table breed(
 	id int not null auto_increment primary key,
-    breedDescription varchar(100)
+    breedDescription varchar(100) unique
 );
 
 create table petType(
@@ -56,7 +56,8 @@ create table medicalRecord(
 
 create table appointmentType(
 	id int not null auto_increment primary key,
-    appointmentName varchar(50) not null
+    appointmentName varchar(50) not null unique,
+    color varchar(10) not null
 );
 
 create table appointments(
@@ -197,7 +198,7 @@ create procedure getAppointmentsByWeek(in d date, in d2 date)
 BEGIN
 	select appointments.id, date_format(appointments.dateAppointment, '%Y-%m-%d %k:%i') as fullDate, dayname(appointments.dateAppointment) as day, dayofmonth(appointments.dateAppointment) as dateDay,
 	date(appointments.dateAppointment) as date, date_format(appointments.dateAppointment, '%Y-%m-%d %k:%i') as fullDate, time_format(appointments.dateAppointment, '%k:%i') as time,
-	appointmentType.appointmentName, petowner.nameOwner, pet.namePet
+	appointmentType.appointmentName, petowner.nameOwner, pet.namePet, appointmentType.color
 	from appointments
 	join appointmenttype on appointmentType.id = appointments.appointmentType
 	join petowner on petowner.id = appointments.idOwner
@@ -315,6 +316,32 @@ BEGIN
 	group by appointmentType order by count desc limit 5;
 END $$
 DELIMITER;
+
+DELIMITER $$
+create procedure getCurrentAppointments()
+BEGIN
+	select hour(dateAppointment) as hour, minute(dateAppointment) as minute, petowner.nameowner, pet.namepet, appointmentType.appointmentName, date_format(appointments.dateAppointment, '%Y-%m-%d') as fullDate
+	from appointments
+	join petowner on petowner.id = appointments.idOwner
+	join pet on pet.id = appointments.idPet
+	join appointmentType on appointmentType.id = appointments.appointmentType
+	where date_format(appointments.dateAppointment, '%Y-%m-%d') = curdate();
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure getLatestPatients()
+BEGIN
+	select appointments.id, appointments.dateAppointment, pet.namePet, petowner.nameOwner, date_format(appointments.dateAppointment, '%Y-%m-%d') as date, time(appointments.dateAppointment) as time,
+	appointmentType.appointmentName
+	from appointments
+	join pet on pet.id = appointments.idPet
+	join petowner on petowner.id = appointments.idOwner
+	join appointmenttype on appointmentType.id = appointments.appointmentType
+	where dateAppointment between concat(curdate(), " ", "8:00") and concat(curdate(), " ", curtime()) order by time desc limit 4;
+END $$
+DELIMITER;
+
 
 
 
