@@ -7,12 +7,12 @@ import OwnerList from "./owner_list";
 import AddOwner from "./add_owner";
 import OwnerProfile from "../owner_profile/owner_profile";
 
-import "../../styles/owner/owner.scss";
+import styles from "../../styles/owner/owner.module.scss";
 
 const OwnerMessage = ({ setOwnerMessage }) => {
 
     return (
-        <div className="owner-message" onAnimationEnd={() => setOwnerMessage(false)}>
+        <div className={styles.message} onAnimationEnd={() => setOwnerMessage(false)}>
             <span>Owner added</span>
         </div>
     );
@@ -29,7 +29,7 @@ const Owner = () => {
     const [ownerList, setOwnerList] = useState([]);
 
     return (
-        <div className="main-owner-container">
+        <div className={styles.container}>
             <Header />
             <OwnerControl setAddNewOwner={setAddNewOwner} numberOwners={numberOwners}/>
             <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList}/>

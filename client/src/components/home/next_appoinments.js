@@ -4,6 +4,8 @@ import ArrowLeft from "../../assets/arrow_left_.svg";
 
 import Skeleton from "../misc/skeleton";
 
+import styles from "../../styles/home/next_appointment.module.scss";
+
 const ListAppointment = ({ data }) => {
 
     if (data.length === 0) {
@@ -11,7 +13,7 @@ const ListAppointment = ({ data }) => {
     }
 
     return (
-        <ul className="list-appointment">
+        <ul className={styles.list}>
             {data.map((item, index) => {
 
                 return (
@@ -111,9 +113,9 @@ const NextAppointments = () => {
 
 
     return (
-        <section className="next-appointment-list">
+        <section className={styles.container}>
             <h2>Next appointments</h2>
-            <div className="controls-appointment-list">
+            <div className={styles.controls}>
                 <button onClick={() => prevDay()}><img style={{transform: "rotateY(180deg)"}} src={ArrowLeft} alt="previous" /></button>
                 <span>{date.day}, {months[date.month]} {date.date}</span>
                 <button onClick={() => nextDay()}><img src={ArrowLeft} alt="next" /></button>

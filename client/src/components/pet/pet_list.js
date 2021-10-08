@@ -6,6 +6,8 @@ import Pet from "../../assets/pet_filled_black.svg";
 import DotBtn from "../misc/dot_btn";
 import Skeleton from "../misc/skeleton";
 
+import styles from "../../styles/pet/pet.module.scss";
+
 const PetList = ( { setNumberPets }) => {
 
     const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
@@ -32,8 +34,8 @@ const PetList = ( { setNumberPets }) => {
     }, []);
     
     return (
-        <section className="main-pet-list-container">
-            <ul className="categories-list">
+        <section className={styles.list}>
+            <ul className={styles.categories}>
                 {categories.map((elm, index) => {
 
                     return (
@@ -42,14 +44,14 @@ const PetList = ( { setNumberPets }) => {
                 })}
             </ul>
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
-            <ul className="pet-list">
+            <ul className={styles.pet_list}>
 
                 {petList.map((elm, index) => {
 
                     return (
-                        <li key={elm.id} className="item-list">
+                        <li key={elm.id} className={styles.item}>
 
-                            {/* <div className="checkbox">
+                            {/* <div className={styles.checkbox}>
                                 <input type="checkbox" />
                             </div> */}
                             

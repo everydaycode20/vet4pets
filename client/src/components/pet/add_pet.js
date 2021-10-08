@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import GenericDropdown from "../misc/generic_dropdown";
 
-import "../../styles/pet/add_pet.scss";
+import styles from "../../styles/pet/add_pet.module.scss";
 
 const AddPet = ({ setAddPet, setPetMessage }) => {
 
@@ -46,7 +46,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
     
     const hideMenu = (e) => {
         
-        if (e.classList.contains("add-owner-container")) {
+        if (e.classList.value.includes("container")) {
             setAddPet(false);
         }
 
@@ -107,30 +107,30 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
 
     return (
 
-        <div className="add-owner-container" onClick={(e) => hideMenu(e.target)}>
-            <form className="main-owner-form-container" onSubmit={e => addOwner(e)}>
+        <div className={styles.container} onClick={(e) => hideMenu(e.target)}>
+            <form className={styles.form} onSubmit={e => addOwner(e)}>
                 
-                <div className="pet-name">
+                <div className={styles.name}>
                     <label htmlFor="name">Pet name</label>
                     <input type="text" name="name" id="name" />
                 </div>
                 {!errorMessage.name.status && 
                     <div>
-                        <span className="error">{errorMessage.name.message}</span>
+                        <span className={styles.error}>{errorMessage.name.message}</span>
                     </div>
                 }
-                <div className="pet-age">
+                <div className={styles.age}>
                     <label htmlFor="age">Age</label>
                     <input type="text" name="age" id="age" />
                 </div>
                 {!errorMessage.age.status && 
                     <div>
-                        <span className="error">{errorMessage.age.message}</span>
+                        <span className={styles.error}>{errorMessage.age.message}</span>
                     </div>
                 }
-                <div className="pet-type">
+                <div className={styles.type}>
                     <GenericDropdown title={type.typeName ? type.typeName + "-" + type.typeBreed : "Choose a type"}>
-                        <div className="pet-dropdown">
+                        <div className={styles.pet_dropdown}>
                             {petTypeList.map(type => {
 
                                 return <button key={type.idType} onClick={() => getType(type.typeDescription, type.idType, type.breedDescription, type.idBreed)}>{type.typeDescription}-{type.breedDescription}</button>
@@ -140,12 +140,12 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                 </div>
                 {!errorMessage.type.status && 
                     <div>
-                        <span className="error">{errorMessage.type.message}</span>
+                        <span className={styles.error}>{errorMessage.type.message}</span>
                     </div>
                 }
-                <div className="pet-owner">
+                <div className={styles.owner}>
                     <GenericDropdown title={ownerName || "Choose an owner"}>
-                        <div className="owner-dropdown">
+                        <div className={styles.owner_dropdown}>
                             {ownersList.map(owner => {
 
                                 return <button key={owner.id} onClick={() => getOwner(owner.nameOwner, owner.id)}>{owner.nameOwner}</button>
@@ -154,13 +154,13 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                     </GenericDropdown>
                     {!errorMessage.owner.status && 
                         <div>
-                            <span className="error">{errorMessage.owner.message}</span>
+                            <span className={styles.error}>{errorMessage.owner.message}</span>
                         </div>
                     }
 
                 </div>
 
-                <button type="submit" className="submit-owner">Add new pet</button>
+                <button type="submit" className={styles.submit_owner}>Add new pet</button>
 
             </form>
         </div>

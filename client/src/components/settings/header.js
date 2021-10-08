@@ -1,10 +1,12 @@
 import React, { memo } from "react";
 
+import { header, control} from "../../styles/settings/settings.module.scss";
+
 const Header = memo(() => {
 
     return (
-        <header className="header">
-            <div className="control-container">
+        <header className={header}>
+            <div className={control}>
                 <h1>Settings</h1>
             </div>
         

@@ -1,0 +1,14 @@
+@import "../global";
+
+.container{
+    @include dotMainContainer;
+
+    .dot_container{
+        @include dotContainer;
+
+        .dot{
+            @include dot;
+        }
+    }
+
+}

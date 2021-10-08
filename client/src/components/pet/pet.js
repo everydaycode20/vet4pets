@@ -5,13 +5,12 @@ import PetControl from "./pet_control";
 import PetList from "./pet_list";
 import AddPet from "./add_pet";
 
-import "../../styles/pet/pet.scss";
-
+import styles from "../../styles/pet/pet.module.scss";
 
 const PetMessage = ({ setPetMessage }) => {
 
     return (
-        <div className="pet-message" onAnimationEnd={() => setPetMessage(false)}>
+        <div className={styles.message} onAnimationEnd={() => setPetMessage(false)}>
             <span>Owner added</span>
         </div>
     );
@@ -26,7 +25,7 @@ const Pet = () => {
     const [petMessage, setPetMessage] = useState(false);
 
     return (
-        <div className="main-pet-container">
+        <div className={styles.main_container}>
             <Header />
             <PetControl numberPets={numberPets} setAddPet={setAddPet}/>
             <PetList setNumberPets={setNumberPets}/>

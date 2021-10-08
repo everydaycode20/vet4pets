@@ -8,21 +8,21 @@
     --border: #F38BA0;
 }
 
-.add-owner-container{
+.container{
     position: fixed;
     height: 100vh;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.137);
     z-index: 50;
 
-    .main-owner-form-container{
+    .form{
         position: fixed;
         right: 0px;
         top: 0;
         height: 100%;
         background-color: white;
         padding: 20px;
-        width: 450px;
+        width: 350px;
         animation: slide 0.2s ease-out forwards;
         display: flex;
         flex-direction: column;
@@ -34,9 +34,9 @@
             font-weight: 600;
         }
         
-        .pet-owner, .pet-type{
+        .owner, .type{
 
-            .dropdown-container{
+            .dropdown{
                 background-color: white;
                 display: flex;
                 flex-direction: row;
@@ -50,15 +50,15 @@
                 cursor: pointer;
             }
 
-            .pet-dropdown{
+            .pet_dropdown{
                 height: 100px;
             }
 
-            .owner-dropdown{
+            .owner_dropdown{
                 height: 400px;
             }
 
-            .pet-dropdown, .owner-dropdown{
+            .pet_dropdown, .owner_dropdown{
                 position: absolute;
                 background-color: white;
                 padding: 10px 0;
@@ -71,10 +71,12 @@
                 cursor: default;
                 z-index: 50;
                 overflow-y: scroll;
+                top: 100%;
+                width: 80%;
 
                 button{
                     background-color: transparent;
-                    font-size: 1rem;
+                    font-size: 1.1rem;
                     margin-left: 10px;
                     text-align: left;
                     padding: 2px;
@@ -87,7 +89,7 @@
             }
         }
 
-        .pet-name, .pet-age, .pet-owner{
+        .name, .age, .owner{
             display: flex;
             flex-direction: column;
             row-gap: 5px;
@@ -114,42 +116,7 @@
             font-weight: 400;
         }
 
-
-        .submit-btn{
-            display: flex;
-            flex-direction: row;
-            column-gap: 20px;
-            justify-content: flex-end;
-
-            button{
-                font-size: 1rem;
-                padding: 10px;
-                cursor: pointer;
-            }
-
-            & button:nth-child(1){
-                border: none;
-                background-color: transparent;
-                border-radius: 5px;
-
-                &:hover{
-                    background-color: $pink2;
-                    color: white;
-                    transition: all 0.2s ease-in;
-                }
-            }
-
-            .save-btn{
-                border: none;
-                padding: 10px;
-                background-color: $greeLine;
-                border-radius: 5px;
-                color: white;
-            }
-
-        }
-
-        .submit-owner{
+        .submit_owner{
             border: none;
             font-size: 1.1rem;
             margin-top: 10px;
@@ -175,8 +142,8 @@
 
 @media screen and (max-width: 900px) {
     
-    .main-owner-form-container{
-        width: max-content!important;
+    .container{
+        width: 300px!important;
     }
 
 }

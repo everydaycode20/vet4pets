@@ -1,10 +1,12 @@
 import React from "react";
 
+import { header, title } from "../../styles/owner/owner.module.scss";
+
 const Header = () => {
 
     return (
-        <header className="header">
-            <div className="owner-title-container">
+        <header className={header}>
+            <div className={title}>
                 <h1>Pet Owners</h1>
             </div>
     </header>

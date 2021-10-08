@@ -24,14 +24,14 @@
     --border: #F38BA0;
 }
 
-.add-appointment-container{
+.container{
     position: fixed;
     height: 100vh;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.137);
     z-index: 50;
 
-    .main-form-container{
+    .form{
         position: fixed;
         right: 0px;
         top: 0;
@@ -54,7 +54,7 @@
             flex-direction: column;
             row-gap: 20px;
 
-            .service-container, .owner-container, .pet-container, .date-container{
+            .service, .owner, .pet, .date{
                 background-color: white;
                 padding: 25px 8px;
                 display: flex;
@@ -74,11 +74,11 @@
                     cursor: pointer;
                 }
 
-                .service-selected, .owner-selected, .pet-selected, .date-selected{
+                .date_selected{
                     background-color: white;
                     font-size: 1.1rem;
                     width: 80%;
-                    // padding: 10px;
+                    padding: 10px;
                     border-radius: 5px;
                     display: flex;
                     flex-direction: row;
@@ -94,10 +94,10 @@
                     }
                 }
 
-                .service-dropdown, .owner-dropdown, .pet-dropdown{
+                .service_dropdown, .owner_dropdown, .pet_dropdown{
                     position: absolute;
                     background-color: white;
-                    top: 80%;
+                    top: 100%;
                     padding: 10px 0;
                     width: 75%;
                     -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.11); 
@@ -110,10 +110,12 @@
                     height: 120px;
                     overflow-y: scroll;
 
-                    li{
+                    button{
                         font-size: 1.1rem;
                         margin-left: 10px;
                         padding: 2px;
+                        border: none;
+                        background-color: white;
 
                         &:hover{
                             background-color: $lightGreenBackground;
@@ -125,7 +127,7 @@
             }
         }
 
-        .submit-btn{
+        .submit_btn{
             display: flex;
             flex-direction: row;
             column-gap: 20px;
@@ -149,7 +151,7 @@
                 }
             }
 
-            .save-btn{
+            .save_btn{
                 border: none;
                 padding: 10px;
                 background-color: $greeLine;
@@ -157,7 +159,7 @@
                 color: white;
             }
 
-            .save-btn-dis{
+            .save_btn_dis{
                 border: none;
                 padding: 10px;
                 background-color: $infoText;

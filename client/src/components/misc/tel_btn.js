@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
+import { tel_dropdown, tel_list, btn } from "../../styles/owner/owner_list.module.scss";
+
 const TelBtn = ({ elm }) => {
 
     const [showListTelephones, setShowListTelephones] = useState(false);
@@ -33,12 +35,12 @@ const TelBtn = ({ elm }) => {
     };
 
     return (
-        <div onClick={() => getTelephoneList(elm.id)} onBlur={(e) => hideOptions(e)}>
+        <div className={tel_dropdown} onClick={() => getTelephoneList(elm.id)} onBlur={(e) => hideOptions(e)}>
             {elm.telephones.length > 1 ? 
-                <button  rot={showListTelephones && indexTel === elm.id ? showListTelephones.toString() : false.toString()}>{elm.telephones.length} phones <img src={ArrowLeft} alt="more" /> </button> :
+                <button className={btn} rot={showListTelephones && indexTel === elm.id ? showListTelephones.toString() : false.toString()}>{elm.telephones.length} phones <img src={ArrowLeft} alt="more" /> </button> :
                 <span>{elm.telephones[0]}</span>
             }
-            {showListTelephones && indexTel === elm.id && <ul className="tel-list">
+            {showListTelephones && indexTel === elm.id && <ul className={tel_list}>
                 {elm.telephones.map((item, index) => {
 
                     return <li key={index}>{item}</li>

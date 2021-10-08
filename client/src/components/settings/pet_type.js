@@ -3,12 +3,12 @@ import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
 
-import "../../styles/settings/pet_type.scss";
+import styles from  "../../styles/settings/pet_type.module.scss";
 
 const PetTypeMsg = ({ setMessage, message }) => {
 
     return (
-        <div className="type-message" style={{borderLeft: `5px solid black`}} onAnimationEnd={() => setMessage(false)}>
+        <div className={styles.type_message} style={{borderLeft: `5px solid black`}} onAnimationEnd={() => setMessage(false)}>
             <span>{message.message}</span>
         </div>
     );
@@ -89,28 +89,28 @@ const PetType = ({ setMessage }) => {
     };
     
     return (
-        <div className="inner-pet-type-container">
+        <div className={styles.pet_container}>
 
             <h2>Add a new pet type</h2>
-            <form className="form-type" onSubmit={e => addType(e)}>
+            <form className={styles.form} onSubmit={e => addType(e)}>
                 
-                <div className="description">
+                <div className={styles.description}>
                     <label htmlFor="description">Description</label>
                     <input name="description" id="description" cols="30" rows="5" onChange={() => setErrorMessage(prev => ( {...prev, description: {status: true } } ) ) }/>
                 </div>
-                {!errorMessage.description.status && <div className="error">{errorMessage.description.message}</div>}
+                {!errorMessage.description.status && <div className={styles.error}>{errorMessage.description.message}</div>}
 
                 <GenericDropdown title={breedType || "Select a breed"}>
-                    <div className="breed-dropdown">
+                    <div className={styles.breed_dropdown}>
                         {breedList.map(item => {
                             
                             return <button type="button" key={item.id} onClick={() => getBreed(item.breedDescription, item.id)}>{item.breedDescription}</button>
                         })}
                     </div>
                 </GenericDropdown>
-                {!errorMessage.breed.status && <div className="error">{errorMessage.breed.message}</div>}
+                {!errorMessage.breed.status && <div className={styles.error}>{errorMessage.breed.message}</div>}
 
-                <button>Add pet type</button>
+                <button className={styles.submitBtn}>Add pet type</button>
             </form>
                 
         </div>
@@ -158,17 +158,17 @@ const Breed = ({ setMessage }) => {
     };
 
     return (
-        <div className="inner-breed-type-container">
+        <div className={styles.breed_container}>
             <h2>Add a new breed type</h2>
 
-            <form className="form-type" onSubmit={e => addBreedType(e)}>
+            <form className={styles.form} onSubmit={e => addBreedType(e)}>
             
-                <div className="description">
+                <div className={styles.description}>
                     <label htmlFor="description">Description</label>
                     <input name="description" id="description" cols="30" rows="5" onChange={() => setErrorMessageBreed(prev => ( {...prev, description: {status: true } } ) ) }/>
                 </div>
                 
-                {!errorMessageBreed.description.status && <div className="error">{errorMessageBreed.description.message}</div>}
+                {!errorMessageBreed.description.status && <div className={styles.error}>{errorMessageBreed.description.message}</div>}
 
                 <button>Add breed type</button>
             </form>
@@ -179,23 +179,38 @@ const Breed = ({ setMessage }) => {
 const Type = () => {
 
     let { path, url } = useRouteMatch();
-
+    console.log(path, url);
     const [message, setMessage] = useState({status: false, message: ""});
+    
+    const [active, setActive] = useState(false);
 
+    const checkActive = (match, location) => {
+        
+        if (!match) {
+            setActive(false);
+            return false;
+        }
+        
+        setActive(true);
+
+        const eventID = parseInt(match.params.eventID);
+        return !isNaN(eventID) && eventID % 2 === 1;
+    }
+    
     return (
-        <div className="pet-type-container">
+        <div className={styles.container}>
 
-            <div className="main-pet-type-container">
-                <div className="btn-group">
-                    <NavLink className="link" activeClassName="active" exact to={path}>Pet</NavLink>
-                    <NavLink className="link" to={`${url}/breed`}>Breed</NavLink>
+            <div className={styles.main}>
+                <div className={styles.btn_group}>
+                    <NavLink className={styles.link} style={{backgroundColor: active ? "white" : "#135A5A", color: active ? "black" : "white"}} exact isActive={checkActive} to={path}>Pet</NavLink>
+                    <NavLink className={styles.link} style={{backgroundColor: !active ? "white" : "#135A5A", color: !active ? "black" : "white"}} to={`${url}/breed`}>Breed</NavLink>
                 </div>
 
                 <Switch>
                     <Route exact path={path}>
                         <PetType setMessage={setMessage}/>
                     </Route>
-                    <Route path={path}>
+                    <Route path={`${url}/breed`}>
                         <Breed setMessage={setMessage}/>
                     </Route>
                 </Switch>
@@ -203,7 +218,7 @@ const Type = () => {
 
             {message.status && <PetTypeMsg setMessage={setMessage} message={message}/>}
 
-            <Link to="/settings" className="link-background"/>
+            <Link to="/settings" className={styles.link_background}/>
         </div>
     );
 };

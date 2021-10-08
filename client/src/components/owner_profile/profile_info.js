@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { info, app, addrs, telephone} from "../../styles/owner/owner_profile.module.scss";
 
 const ProfileInfo = ({ id, nameOwner, email, address, telephones, registered }) => {
 
@@ -25,13 +26,13 @@ const ProfileInfo = ({ id, nameOwner, email, address, telephones, registered }) 
 
     return (
         <React.Fragment>
-            <div className="info 1">
+            <div className={info}>
                 <div className="app-email">
                     <h2>{nameOwner}</h2>
                     <span>{email}</span>
                 </div>
                     
-                    <div className="app">
+                    <div className={app}>
                         <h3>Appointments</h3>
                         <div>
                             <div>
@@ -45,12 +46,12 @@ const ProfileInfo = ({ id, nameOwner, email, address, telephones, registered }) 
                         </div>
                     </div>
                 </div>
-                <div className="info 2">
+                <div className={info}>
                     <div>
                         <h3>Address</h3>
-                        <p className="address">{address}</p>
+                        <p className={addrs}>{address}</p>
                     </div>
-                    <div className="telephone">
+                    <div className={telephone}>
                         <h3>Telephone</h3>
                         {telephones.map((item, index) => {
 

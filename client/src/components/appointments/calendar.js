@@ -5,18 +5,20 @@ import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
 
+import styles from "../../styles/appointment/appointments.module.scss";
+
 const AppointmentCard = ({ item, border, index, deleteCard }) => {
     
     return (                 
-        <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className="appointment-card">
+        <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className={styles.card}>
             <span>{item.nameOwner}</span>
             <span>{item.namePet}</span>
             <span>{item.appointmentName}</span>
             <span>{item.time}</span>
-            <DotBtn id={item.id}>
-                <div className="app-options">
+            <DotBtn id={item.id} rotate={true}>
+                <div className={styles.app_options}>
                     <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
-                    <button className="btn-delete-card" onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>
+                    <button className={styles.delete} onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>
                 </div>
             </DotBtn>
         </div>
@@ -147,17 +149,17 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
     };
 
     return (
-        <div className="main-calendar-container">
-            {loading ? <div className="inner-calendar-container"></div> :
-            <div className="inner-calendar-container">
-                <div className="week-days">
+        <div className={styles.calendar}>
+            {loading ? <div className={styles.inner_calendar}></div> :
+            <div className={styles.inner_calendar}>
+                <div className={styles.week_days}>
                     {week && week.map((day, index) => {
 
                         const condition = day.year === new Date().getFullYear() && day.date === new Date().getDate() && day.month === months[new Date().getMonth()];
 
                         return (
-                            <div key={index} className="date">
-                                {condition && <div className="current-day"></div>}
+                            <div key={index} className={styles.date}>
+                                {condition && <div className={styles.current_day}></div>}
                                 <span >{day.date} </span>
                                 <span>{day.day}</span>
                             </div>
@@ -165,13 +167,13 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                     })}
                 </div>
 
-                <div className="appointment-container">
-                    <div className="mark-container" style={{top: markTop.minutes}}>
-                        <div className="mark-dot"/>
-                        <div className="hour-mark"/>
+                <div className={styles.container_calendar}>
+                    <div className={styles.mark_container} style={{top: markTop.minutes}}>
+                        <div className={styles.mark_dot}/>
+                        <div className={styles.hour_mark}/>
                     </div>
                     
-                    <div className="hours-container">
+                    <div className={styles.hours_container}>
                         {hours.map((hour, index) => {
 
                             return <span key={index}>{hour}</span>
@@ -180,12 +182,12 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                     {appointmentsWeek.map((item, index) => {
                         
                         return (
-                            <div key={Math.random()} className="day-container">
+                            <div key={Math.random()} className={styles.day_container}>
                                 
                                 {item[arr[index]].map((item, index) => {
                                     
                                     return (
-                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className="hour-item" onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
+                                        <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className={styles.hour_item} onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
                                             {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
                                             {/* { showOptions === item.id && 

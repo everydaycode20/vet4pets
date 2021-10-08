@@ -1,6 +1,6 @@
-@import "global.scss";
+@import "../global.scss";
 
-.menu-container{
+.container{
     position: absolute;
     flex-direction: column;
     row-gap: 5px;
@@ -21,7 +21,7 @@
 
 @media only screen and (max-width: 1200px) {
 
-    .menu-container{
+    .container{
         display: flex;
         
     }

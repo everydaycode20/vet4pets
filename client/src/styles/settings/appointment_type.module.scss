@@ -1,6 +1,6 @@
 @import "../global.scss";
 
-.app-type-container{
+.container{
     height: 100%;
     width: 100%;
     
@@ -11,14 +11,14 @@
     top: 0;
     right: 0;
 
-    .link-background{
+    .link_background{
         background-color: rgba(88, 88, 88, 0.123);
         width: 100%;
         height: 100%;
         position: absolute;
     }
 
-    .main-app-type-container{
+    .type{
         background-color: white;
         z-index: 100;
         border-radius: 10px;
@@ -32,7 +32,7 @@
             font-weight: 600;
         }
 
-        .form-type{
+        .form{
             display: flex;
             flex-direction: column;
             row-gap: 10px;
@@ -63,7 +63,7 @@
             .color{
                 position: relative;
 
-                .btn-color-picker{
+                .color_picker{
                     width: 30px;
                     height: 30px;
                     border: 1px solid black;
@@ -86,7 +86,7 @@
         }
     }
 
-    .type-message{
+    .message{
         position: absolute;
         top: 12%;
         right: 2%;

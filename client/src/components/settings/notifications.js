@@ -5,7 +5,7 @@ import Close from "../../assets/close_.svg";
 
 import { SettingsContext } from "../../utils/providers";
 
-import "../../styles/settings/notifications.scss";
+import styles from "../../styles/settings/notifications.module.scss";
 
 const Notifications = () => {
     
@@ -14,19 +14,19 @@ const Notifications = () => {
     const { notificationsSettings, setNotificationsSettings } = useContext(SettingsContext);
     
     return (
-        <div className="notifications-container">
+        <div className={styles.container}>
             <h2>Notifications</h2>
             <div>
-                <label htmlFor="toggle" className="toggle">
+                <label htmlFor="toggle" className={styles.toggle}>
                     Active sound on notifications
-                    <input type="checkbox" name="toggle" id="toggle" className="sound-toggle" value="true" checked={notificationsSettings.sound} onChange={() => setNotificationsSettings(prev => ({...prev, sound: !notificationsSettings.sound}))} />
-                    <span className="toggle-display" hidden>
-                        <img src={Check} alt="check" aria-hidden="true" className="toggle-icon"/>
-                        <img src={Close} alt="check" aria-hidden="true" className="toggle-icon"/>
+                    <input type="checkbox" name="toggle" id="toggle" className={styles.sound_toggle} value="true" checked={notificationsSettings.sound} onChange={() => setNotificationsSettings(prev => ({...prev, sound: !notificationsSettings.sound}))} />
+                    <span className={styles.toggle_display} hidden>
+                        <img src={Check} alt="check" aria-hidden="true" className={styles.toggle_icon}/>
+                        <img src={Close} alt="check" aria-hidden="true" className={styles.toggle_icon}/>
                     </span>
                 </label>
             </div>
-            <div className="volume">
+            <div className={styles.volume}>
                 <span>Sound volume</span>
                 <div>
                     {soundBtns.map((item, index) => {

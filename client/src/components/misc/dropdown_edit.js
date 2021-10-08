@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types'
 
-import { btnContainer, btnEdit } from "../../styles/modules/btn.module.scss";
+import { btnEdit, btnContainer} from "../../styles/modules/btn.module.scss";
 
-const GenericDropdown = ({ id, title, center = false, ...props }) => {
+const DropdownEdit = ({ id, title, defaultTitle, center = true, ...props }) => {
     
     const [showOptions, setShowOptions] = useState(false);
 
@@ -18,26 +18,27 @@ const GenericDropdown = ({ id, title, center = false, ...props }) => {
     };
 
     const hideOptions = (e) => {
-
+        
         if (!e.currentTarget.contains(e.relatedTarget)) {
             setShowOptions(false);
         }
         
     };
-
+    
     return (
-        <div onClick={() => getOptions()} onBlur={(e) => hideOptions(e)} className={btnContainer} center={center.toString()}>
-            <button type="button" className={btnEdit} btndropdown={showOptions.toString()}>
-                {title}
+        <div className={btnContainer} onClick={() => getOptions()} onBlur={(e) => hideOptions(e)} center={center.toString()}>
+            <button type="button" className={btnEdit} btndropdown={showOptions.toString()} >
+                {title || defaultTitle}
             </button>
             { showOptions && <React.Fragment>{props.children}</React.Fragment> }
         </div>
     );
 };
 
-GenericDropdown.propTypes = {
+DropdownEdit.propTypes = {
     id: PropTypes.number,
-    title: PropTypes.string
+    title: PropTypes.string,
+    defaultTitle: PropTypes.string
 };
 
-export default GenericDropdown;
+export default DropdownEdit;

@@ -4,7 +4,7 @@
     --anim: ring 1s ease-in-out forwards;
 }
 
-.bell-container{
+.container{
     position: absolute;
     top: 1%;
     right: 5%;
@@ -21,7 +21,7 @@
         
     }
 
-    .red-dot{
+    .red_dot{
         position: absolute;
         top: 50%;
         background-color: $pink2;
@@ -31,7 +31,7 @@
         animation: scaleDot 0.5s ease-in forwards;
     }
 
-    .bell-dropdown{
+    .dropdown{
         position: absolute;
         right: 0;
         background-color: white;

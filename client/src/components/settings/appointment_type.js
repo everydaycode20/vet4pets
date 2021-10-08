@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import ColorPicker from "./color_picker/color-picker";
 
-import "../../styles/settings/appointment_type.scss";
+import styles from "../../styles/settings/appointment_type.module.scss";
 
 const ApptType = ({ setMessage, borderColor }) => {
 
     return (
-        <div className="type-message" style={{borderLeft: `5px solid ${borderColor}`}} onAnimationEnd={() => setMessage(false)}>
+        <div className={styles.message} style={{borderLeft: `5px solid ${borderColor}`}} onAnimationEnd={() => setMessage(false)}>
             <span>Appointment type added</span>
         </div>
     );
@@ -58,26 +58,26 @@ const AppointmentType = () => {
     };
 
     return (
-        <div className="app-type-container">
+        <div className={styles.container}>
             
-            <div className="main-app-type-container">
+            <div className={styles.type}>
                 <h2>Add a new appointment type</h2>
-                <form className="form-type" onSubmit={e => addType(e)}>
-                    <div className="name">
+                <form className={styles.form} onSubmit={e => addType(e)}>
+                    <div className={styles.name}>
                         <label htmlFor="name">Appointment name</label>
                         <input type="text" name="name" id="name" onChange={() => setError(false)}/>
                     </div>
-                    {error && <div className="error">{errorMessage}</div>}
-                    <div className="color">
+                    {error && <div className={styles.error}>{errorMessage}</div>}
+                    <div className={styles.color}>
                         <label htmlFor="color">Select color</label>
-                        <button className="btn-color-picker" style={{backgroundColor: color || "#135A5A"}} type="button" onClick={() => setShowColorPicker(!showColorPicker)}></button>
+                        <button className={styles.color_picker} style={{backgroundColor: color || "#135A5A"}} type="button" onClick={() => setShowColorPicker(!showColorPicker)}></button>
                         {showColorPicker && <ColorPicker colorCode={false} setColor={setColor}/>}
                     </div>
                     <button>Add appointment type</button>
                 </form>
             </div>
             {message && <ApptType setMessage={setMessage} borderColor={color}/>}
-            <Link to="/settings" className="link-background"/>
+            <Link to="/settings" className={styles.link_background}/>
         </div>
     );
 };

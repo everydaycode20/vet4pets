@@ -1,9 +1,11 @@
 import React from "react";
 
+import { card, app, top_list } from "../../styles/home/card.module.scss";
+
 export const PatientMonth = ({ totalPatients }) => {
 
     return (
-        <div className="card">
+        <div className={card}>
             <span>{totalPatients.month}</span>
             <h2>Patients this month</h2>
         </div>
@@ -13,7 +15,7 @@ export const PatientMonth = ({ totalPatients }) => {
 export const PatientYear = ({ totalPatients }) => {
 
     return (
-        <div className="card">
+        <div className={card}>
             <span>{totalPatients.year}</span>
             <h2>Patients this year</h2>
         </div>
@@ -23,7 +25,7 @@ export const PatientYear = ({ totalPatients }) => {
 export const Finished = ({ appointments }) => {
 
     return (
-        <div className="card app">
+        <div className={app}>
             <h2 className="app-title">Appointments</h2>
             <div>
                 <div>
@@ -45,7 +47,7 @@ export const TopAppointments = ({ topList }) => {
 
     return (
         <React.Fragment>
-            <ul className="top-treatments-list">
+            <ul className={top_list}>
                 {topList.map((item, index) => {
 
                     return <li key={index}>{item.appointmentName}</li>

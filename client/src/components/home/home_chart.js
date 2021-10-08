@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-import "../../styles/home/home_chart.scss";
+import styles from "../../styles/home/home_chart.module.scss";
 
 const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
   
@@ -163,10 +163,10 @@ const HomeChart = () => {
   }, []);
 
     return (
-        <section className="home-chart">
-            <div className="header-chart">
+        <section className={styles.home_chart}>
+            <div className={styles.header_chart}>
                 <h2>Appointments this week</h2>
-                <div className="control-chart">
+                <div className={styles.control_chart}>
                     <button style={{backgroundColor: btnBackground === "weekly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "weekly" ? "white" : "#3A6351"}} onClick={() => getWeeklyData()}>weekly</button>
                     <button style={{backgroundColor: btnBackground === "monthly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "monthly" ? "white" : "#3A6351"}} onClick={() => getMonthlyData()}>monthly</button>
                     <button style={{backgroundColor: btnBackground === "yearly" ? "#135A5A" : "#CDF0EA", color: btnBackground === "yearly" ? "white" : "#3A6351"}} onClick={() => getYearlyData()}>yearly</button>

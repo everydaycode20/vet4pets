@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-const DotBtn = ({ id, ...props }) => {
+import styles from "../../styles/modules/dot_dropdown.module.scss";
+
+const DotBtn = ({ id, rotate = false, ...props }) => {
 
     const [showOptions, setShowOptions] = useState(null);
 
@@ -23,11 +25,11 @@ const DotBtn = ({ id, ...props }) => {
     };
 
     return (
-        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)} className="main-dot-container">
-            <button className="dot-container" >
-                <div className="dot"/>
-                <div className="dot"/>
-                <div className="dot"/>
+        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)} className={styles.container}>
+            <button className={styles.dot_container} style={{transform: rotate && "rotateZ(90deg)", }}>
+                <div className={styles.dot}/>
+                <div className={styles.dot}/>
+                <div className={styles.dot}/>
             </button>
             { showOptions === id && <React.Fragment>{props.children}</React.Fragment> }
         </div>

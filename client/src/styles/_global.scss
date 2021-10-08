@@ -57,3 +57,34 @@ $lightGrey: #e7e7e7;
     height: 1px;
     width: 1px;
 }
+
+@mixin dropdown {
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    padding: 10px 5px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.11);
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 5px;
+    row-gap: 5px;
+    cursor: default;
+    z-index: 50;
+    height: max-content;
+    width: 80%;
+}
+
+@mixin btnDropdown {
+    background-color: transparent;
+    font-size: 1.1rem;
+    margin-left: 10px;
+    text-align: left;
+    padding: 2px;
+    border: none;
+    color: black;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $lightGreenBackground;
+    }
+}

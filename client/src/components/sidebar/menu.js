@@ -1,10 +1,10 @@
 
-import "../../styles/menu.scss"
+import {container} from "../../styles/sidebar/menu.module.scss"
 
 const Menu = ({ setShowSidebar }) => {
 
     return (
-        <button className="menu-container" onClick={() => setShowSidebar(true)}>
+        <button className={container} onClick={() => setShowSidebar(true)}>
             <div/>
             <div/>
             <div/>

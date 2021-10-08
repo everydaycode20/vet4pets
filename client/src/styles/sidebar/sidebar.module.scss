@@ -1,4 +1,4 @@
-@import "global.scss";
+@import "../global.scss";
 
 [minimize="false"]{
     --rotate: rotate(0.5turn);
@@ -32,7 +32,7 @@
     --trans: translateX(0);
 }
 
-.sidebar{
+.main{
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -57,7 +57,7 @@
         width: 30px;
     }
 
-    .menu-control{
+    .menu{
         cursor: pointer;
         transform: var(--rotate);
         transition: transform 0.2s ease-in;
@@ -68,11 +68,10 @@
 
     }
 
-    .link-container{
+    .link_container{
         margin-top: 80px;
-        
 
-        .link-list{
+        .list{
             width: max-content;
             display: flex;
             flex-direction: column;
@@ -92,18 +91,11 @@
                     display: var(--display);
                     font-size: 1.2rem;
                 }
+                
             }
 
             .settings{
                 margin-top: 80px;
-            }
-
-            .active{
-                background-color: #ffe7ec;
-                border-radius: 10px;
-                // width: max-content;
-                transition: width 5s ease-in;
-                // padding-right: 10px;
             }
 
         }
@@ -121,7 +113,7 @@
 
 @media only screen and (max-width: 1200px) {
     
-    .sidebar{
+    .main{
         position: absolute;
         margin: 0;
         left: 0;
@@ -138,12 +130,12 @@
             font-weight: 500;
         }
 
-        .menu-control{
+        .menu{
             display: none;
         }
 
-        .link-container{
-            .link-list{
+        .link_container{
+            .list{
                 .link{
                     span{
                         opacity: 1;

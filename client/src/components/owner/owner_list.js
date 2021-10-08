@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import "../../styles/owner/owner_list.scss";
-
 import Edit from "../../assets/edit_.svg";
 import Profile from "../../assets/profile_filled_black.svg";
 import DotBtn from "../misc/dot_btn";
@@ -10,6 +8,8 @@ import TelBtn from "../misc/tel_btn";
 
 import Skeleton from "../misc/skeleton";
 import AddressDropdown from "../misc/address_dropdown";
+
+import styles from "../../styles/owner/owner_list.module.scss";
 
 const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
 
@@ -36,9 +36,9 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
     }, []);
 
     return (
-        <div>
-        <section className="main-owner-list-container">
-            <ul className="categories-list">
+        
+        <section className={styles.list}>
+            <ul className={styles.categories}>
                 {categories.map((elm, index) => {
 
                     return (
@@ -48,14 +48,14 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
             </ul>
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
             
-            <ul className="owner-list">
+            <ul className={styles.owner}>
 
                 {ownerList.map((elm, index) => {
 
                     const obj = [{"id": elm.id, "telephones": elm.telephones, "address": elm.address, "nameOwner": elm.nameOwner, "email": elm.email, "registered": elm.registerDate}];
 
                     return (
-                        <li key={elm.id} className="item-list">
+                        <li key={elm.id} className={styles.item}>
                             {/* <div className="checkbox">
                                 <input type="checkbox" onChange={() => console.log("si")}/>
                             </div> */}
@@ -69,7 +69,7 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
                             <span>{elm.registerDate}</span>
 
                             <DotBtn id={elm.id}>
-                                <div className="owner-options" >
+                                <div className={styles.options} >
                                     <Link to={{pathname: `/owners/${elm.id}`, state: obj}}> <img src={Profile} alt="profile" /> Owner profile</Link>
                                     {/* <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link> */}
                                 </div>
@@ -82,7 +82,7 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
             }
             
         </section>
-        </div>
+        
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 
 import Calendar from "./calendar";
 import AddAppointment from "./add_appointment";
@@ -6,7 +6,7 @@ import Header from "./header";
 import CalendarControls from "./calendar_controls";
 import AppointmentMessage from "./appointment_message";
 
-import "../../styles/appointment/appointments.scss";
+import styles from "../../styles/appointment/appointments.module.scss";
 
 const Appointments = ({ socket }) => {
     
@@ -84,11 +84,11 @@ const Appointments = ({ socket }) => {
 
     const addAppointments = (e, time, dateDay, day, month, year, monthIndex) => {
         
-        if ((e.classList.contains("hour-item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot-container") && !e.classList.contains("btn-delete-card")) {
+        if ((e.classList.contains("hour_item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot_container") && !e.classList.contains("delete")) {
             setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: monthIndex, year: year});
             setMakeAppointment(true);
         }
-        else if (e.classList.contains("btn-add-app") && !e.classList.contains("dot") && !e.classList.contains("dot-container")) {
+        else if (e.classList.contains("btn-add-app") && !e.classList.contains("dot") && !e.classList.contains("dot_container")) {
             setDate(null);
             setMakeAppointment(true);
         }
@@ -99,7 +99,7 @@ const Appointments = ({ socket }) => {
     };
 
     return (
-        <div className="main-appointment-container">
+        <div className={styles.container}>
             <div>
                 <Header/>
                 <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments}/>

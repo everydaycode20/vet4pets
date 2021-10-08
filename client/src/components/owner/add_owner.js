@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import GenericDropdown from "../misc/generic_dropdown";
 
-import "../../styles/owner/add_owner.scss";
+import styles from "../../styles/owner/add_owner.module.scss";
 
 const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerList }) => {
 
@@ -31,7 +31,7 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
     
     const hideMenu = (e) => {
         
-        if (e.classList.contains("add-owner-container")) {
+        if (e.classList.value.includes("container")) {
             setAddNewOwner(false);
         }
 
@@ -96,21 +96,21 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
 
     return (
 
-        <div className="add-owner-container" onClick={(e) => hideMenu(e.target)}>
-            <form className="main-owner-form-container" onSubmit={e => addOwner(e)}>
+        <div className={styles.container} onClick={(e) => hideMenu(e.target)}>
+            <form className={styles.form} onSubmit={e => addOwner(e)}>
                 
-                <div className="owner-name">
+                <div className={styles.name}>
                     <label htmlFor="name">Name</label>
                     <input type="text" name="name" id="name" />
                 </div>
                 {!errorMessage.name.status && 
                     <div>
-                        <span className="error">{errorMessage.name.message}</span>
+                        <span className={styles.error}>{errorMessage.name.message}</span>
                     </div>
                 }
-                <div className="owner-phone">
-                    <GenericDropdown title={telephoneType || "Choose a telephone type"}>
-                        <div className="phone-dropdown">
+                <div className={styles.phone}>
+                    <GenericDropdown title={telephoneType || "Choose a telephone type"} center={false}>
+                        <div className={styles.phone_dropdown}>
                             {telephoneTypes.map(tel => {
 
                                 return <button key={tel.id} onClick={() => getTelephone(tel.phoneType, tel.id)}>{tel.phoneType}</button>
@@ -119,7 +119,7 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
                     </GenericDropdown>
                     {!errorMessage.phoneType.status && 
                         <div>
-                            <span className="error">{errorMessage.phoneType.message}</span>
+                            <span className={styles.error}>{errorMessage.phoneType.message}</span>
                         </div>
                     }
                     <label htmlFor="telephone">Telephone</label>
@@ -127,28 +127,28 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
                 </div>
                 {!errorMessage.phone.status && 
                     <div>
-                        <span className="error">{errorMessage.phone.message}</span>
+                        <span className={styles.error}>{errorMessage.phone.message}</span>
                     </div>
                 }
-                <div className="owner-email">
+                <div className={styles.email}>
                     <label htmlFor="email">Email</label>
                     <input type="text" name="email" id="email"/>
                 </div>
                 {!errorMessage.email.status && 
                     <div>
-                        <span className="error">{errorMessage.email.message}</span>
+                        <span className={styles.error}>{errorMessage.email.message}</span>
                     </div>
                 }
-                <div className="owner-address">
+                <div className={styles.address}>
                     <label htmlFor="address">Address</label>
                     <textarea name="address" id="address" cols="30" rows="5" ></textarea>
                 </div>
                 {!errorMessage.address.status && 
                     <div>
-                        <span className="error">{errorMessage.address.message}</span>
+                        <span className={styles.error}>{errorMessage.address.message}</span>
                     </div>
                 }
-                <button type="submit" className="submit-owner">Add new owner</button>
+                <button type="submit" className={styles.submit}>Add new owner</button>
 
             </form>
         </div>

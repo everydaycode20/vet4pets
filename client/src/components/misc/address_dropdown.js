@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
+import { address_content, address_dropdown, btn } from "../../styles/owner/owner_list.module.scss";
+
 const AddressDropdown = ({ id, address }) => {
 
     const [showAddress, setShowAddress] = useState(false);
@@ -32,12 +34,12 @@ const AddressDropdown = ({ id, address }) => {
     };
 
     return (
-        <div className="address-dropdown" onClick={() => getAddress(id)} onBlur={(e) => hideOptions(e)}>
+        <div className={address_dropdown} onClick={() => getAddress(id)} onBlur={(e) => hideOptions(e)}>
             
-            <button rot={showAddress && indexAddress === id ? showAddress.toString() : false.toString()}>{address.substring(0, 10) + "..."} <img src={ArrowLeft} alt="more" /></button>
+            <button className={btn} rot={showAddress && indexAddress === id ? showAddress.toString() : false.toString()}>{address.substring(0, 10) + "..."} <img src={ArrowLeft} alt="more"/></button>
 
             {showAddress && indexAddress === id && 
-                <div className="address-content">
+                <div className={address_content}>
                     <p>{address}</p>
                 </div>
             }

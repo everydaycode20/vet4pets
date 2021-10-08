@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from "react";
 
 import HomeChart from "./home_chart";
 
-import "../../styles/home/home.scss";
 import Calendar from "../../assets/calendar_filled_btn.svg";
 import Medicine from "../../assets/medicine_filled_btn.svg";
 import Pet from "../../assets/pet_filled_btn.svg";
@@ -10,6 +9,8 @@ import Profile from "../../assets/profile_filled_btn.svg";
 import NextAppointments from "./next_appoinments";
 import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
 import Skeleton from "../misc/skeleton";
+
+import styles from "../../styles/home/home.module.scss";
 
 const Main = memo(() => {
 
@@ -95,15 +96,15 @@ const Main = memo(() => {
     }, []);
 
     return (
-        <div className="main-home-container">
-            <div className="title-container">
+        <div className={styles.container}>
+            <div className={styles.title}>
                 <h1>Home</h1>
             </div>
-            <div className="info-home-container">
-                <div className="charts-container">
-                    <div className="charts-inner-container">
+            <div className={styles.info}>
+                <div className={styles.charts}>
+                    <div className={styles.inner}>
                         
-                        <section className="appointments-status">
+                        <section className={styles.appointments_status}>
 
                             <PatientMonth totalPatients={totalPatients}/>
 
@@ -113,9 +114,9 @@ const Main = memo(() => {
 
                         </section>
 
-                        <div className="main-container-chart">
+                        <div className={styles.main_chart}>
                             <HomeChart />
-                                <div className="top-treatments">
+                                <div className={styles.top_treatments}>
                                     <h2>Top appointments</h2>
                                     {loadingTopList ? <Skeleton height={32} backgroundColor={"#CDF0EA"} width={100} number={3}/> :
                                         <TopAppointments topList={topList} />
@@ -123,7 +124,7 @@ const Main = memo(() => {
                                 </div>
                         </div>
                         
-                        <div className="latest-patients" style={{height: latest.length === 0 && "250px"}}>
+                        <div className={styles.latest_patients} style={{height: latest.length === 0 && "250px"}}>
                             <h2>Latest patients</h2>
                             {loadingLatest ? <Skeleton height={32} backgroundColor={"#CDF0EA"} width={100} number={3}/> : 
                             <ul>

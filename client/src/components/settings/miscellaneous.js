@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
-import "../../styles/settings/miscellaneous.scss";
+import styles from "../../styles/settings/miscellaneous.module.scss";
 
 const Miscellaneous = () => {
     
-
-    
     return (
-        <div className="misc-container">
+        <div className={styles.container}>
             <h2>Miscellaneous</h2>
             <div>
                 <Link to="/settings/appointments">Add new appointment type <img src={ArrowLeft} alt="arrow" /> </Link>

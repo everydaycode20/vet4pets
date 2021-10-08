@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import Calendar from "../calendar/calendar";
+import DropdownEdit from "../misc/dropdown_edit";
 
-import "../../styles/appointment/add_appointment.scss";
+import styles from "../../styles/appointment/add_appointment.module.scss";
 
 const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage, socket }) => {
 
@@ -54,27 +55,11 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
     }, []);
     
     const hideMenu = (e) => {
-
-        if (e.classList.contains("add-appointment-container")) {
+        
+        if (e.classList.value.includes("container")) {
             setMakeAppointment(false);
         }
 
-    };
-
-    const showDropdown = () => {
-        setDropdown(true)
-
-        if (dropdown) {
-            setDropdown(false);
-        }
-    };
-
-    const showOwnerDropdown = () => {
-        setOwnerDropdown(true)
-
-        if (ownerDropdown) {
-            setOwnerDropdown(false);
-        }
     };
     
     const getService = (item, id) => {
@@ -167,76 +152,65 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
     
     return (
 
-        <div className="add-appointment-container" onClick={(e) => hideMenu(e.target)}>
-            <form className="main-form-container">
+        <div className={styles.container} onClick={(e) => hideMenu(e.target)}>
+            
+            <form className={styles.form}>
                 <h2>Add Appointment</h2>
-                <div className="setup">
-                    <div className="service-container">
-                        {!service ? 
-                        <button type="button" btnclassservice={dropdown.toString()} onClick={() => showDropdown()}>Add service</button> : 
-                        <div className="service-selected">
-                            <span>{service}</span>
-                            <button type="button" onClick={() => showDropdown()}>Edit</button>
-                        </div>}
-                        {dropdown && <ul className="service-dropdown">
-                            {serviceList.map((item, index) => {
+                <div className={styles.setup}>
+                    <div className={styles.service}>
+                        <DropdownEdit title={service} defaultTitle={"Add service"} center={true}>
+                            <div className={styles.service_dropdown}>
+                                {serviceList.map((item, index) => {
 
                                 return (
-                                    <li key={item.id} onClick={() => getService(item.appointmentName, item.id)}>{item.appointmentName}</li>
-                                )
-                            })}
-                        </ul>}
+                                        <button key={item.id} onClick={() => getService(item.appointmentName, item.id)}>{item.appointmentName}</button>
+                                    )
+                                })}
+                            </div>
+                        </DropdownEdit>
                     </div>
-                    <div className="owner-container">
-                        {!owner ?
-                        <button type="button" btnclasspet={ownerDropdown.toString()} onClick={() => showOwnerDropdown()}>Add Owner</button> : 
-                        <div className="owner-selected">
-                            <span>{owner}</span>
-                            <button type="button" onClick={() => showOwnerDropdown()}>Edit</button>
-                        </div>
-                        }
-                        {ownerDropdown && <ul className="owner-dropdown">
-                            {ownerList.map((item, index) => {
+                    <div className={styles.owner}>
+                        <DropdownEdit title={owner} defaultTitle={"Add owner"} center={true}>
+                            <div className={styles.owner_dropdown}>
+                                {ownerList.map((item, index) => {
 
-                                return (
-                                    <li key={item.id} onClick={() => getOwnerPets(item.nameOwner, item.id)}>{item.nameOwner}</li>
-                                )
-                            })}
-                        </ul>}
+                                    return (
+                                        <button key={item.id} onClick={() => getOwnerPets(item.nameOwner, item.id)}>{item.nameOwner}</button>
+                                    )
+                                })}
+                            </div>
+                        </DropdownEdit>
                     </div>
-                    {btnActive.step2 && <div className="pet-container">
-                        {!pet? 
-                        <button type="button" btnclasspet={petDropDown.toString()} onClick={() => showPetDropdown()}>Add Pet</button> : 
-                        <div className="pet-selected">
-                            <span>{pet}</span>
-                            <button type="button" onClick={() => showPetDropdown()}>Edit</button>
-                        </div>
-                        }
-                        {petDropDown && <ul className="pet-dropdown">
-                            {petList.map((item, index) => {
+                    {btnActive.step2 && <div className={styles.pet}>
+                        <DropdownEdit title={pet} defaultTitle={"Add pet"} center={true}>
+                            <div className={styles.owner_dropdown}>
+                                {petList.map((item, index) => {
 
-                                return (
-                                    <li key={item.id} onClick={() => getPet(item.namePet, item.id)}>{item.namePet}</li>
-                                )
-                            })}
-                        </ul>}
+                                    return (
+                                        <button key={item.id} onClick={() => getPet(item.namePet, item.id)}>{item.namePet}</button>
+                                    )
+                                })}
+                            </div>
+                        </DropdownEdit>
                     </div>}
-                    <div className="date-container">
-                    {!date ?
-                        <button type="button" btnclassdate={calendar.toString()} onClick={() => showCalendar()}>Add date</button> : 
-                        <div className="date-selected">
-                            <span>{date.day}, {date.date} {date.month.substring(0, 3)} {date.hour}</span>
-                            <button type="button" onClick={() => showCalendar()}>Edit</button>
-                        </div>
+                    <div className={styles.date}>
+
+                        {!date ?
+                            <button type="button" btnclassdate={calendar.toString()} onClick={() => showCalendar()}>Add date</button> : 
+                            <div className={styles.date_selected}>
+                                <span>{date.day}, {date.date} {date.month.substring(0, 3)} {date.hour}</span>
+                                <button type="button" onClick={() => showCalendar()}>Edit</button>
+                            </div>
                         }
                         {calendar && <Calendar setDate={setDate} date={date} setCalendar={setCalendar} setBtnActive={setBtnActive} />}
+                        
                     </div>
                 </div>
-                <div className="submit-btn">
+                <div className={styles.submit_btn}>
                     <button type="button" onClick={() => setMakeAppointment(false)}>Cancel</button>
                     {btnActive.step1 && btnActive.step2 && btnActive.step3 && btnActive.step4 ? 
-                        <button type="button" className="save-btn" onClick={() => saveAppointment(date)}>Save appointment</button> :
-                        <button type="button" className="save-btn-dis">Save appointment</button> 
+                        <button type="button" className={styles.save_btn} onClick={() => saveAppointment(date)}>Save appointment</button> :
+                        <button type="button" className={styles.save_btn_dis}>Save appointment</button> 
                     }
                     
                 </div>
@@ -244,7 +218,6 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         </div>
 
     );
-
 };
 
 export default AddAppointment;

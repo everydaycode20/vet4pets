@@ -7,14 +7,14 @@ import Miscellaneous from "./miscellaneous";
 import AppointmentType from "./appointment_type";
 import Type from "./pet_type";
 
-import "../../styles/settings/settings.scss";
+import styles from "../../styles/settings/settings.module.scss";
 
 const Settings = () => {
 
     return (
-        <div className="main-settings-container">
+        <div className={styles.main_container}>
             <Header />
-            <div className="settings-inner-container">
+            <div className={styles.inner_container}>
                 <Notifications />
                 <Miscellaneous />
             </div>

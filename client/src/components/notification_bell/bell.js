@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import BellIcon from "../../assets/bell_filled.svg";
 import useAudio from "../../utils/useAudio";
 
-import "../../styles/bell.scss";
+import styles from "../../styles/bell.module.scss";
 
 const Bell = ({ socket }) => {
     
@@ -40,7 +40,7 @@ const Bell = ({ socket }) => {
     };
     
     return (
-        <div className="bell-container">
+        <div className={styles.container}>
             <button onClick={() => showNotification()} notification={notification.toString()}>
                 <img src={BellIcon} alt="notification"/>
             </button>
@@ -48,7 +48,7 @@ const Bell = ({ socket }) => {
             {notification && <div className="red-dot" />}
 
             {showAppointment && appointment  && 
-                <ul className="bell-dropdown" >
+                <ul className={styles.dropdown} >
                     <li>{appointment.nameOwner}</li>
                     <li>{appointment.namePet}</li>
                     <li>{appointment.appointmentName}</li>
