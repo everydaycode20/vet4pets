@@ -34,6 +34,6 @@ This project is in progress.
 ## To do
 
 * Authentication
-* Complete sidebar
+* ~~Complete sidebar~~
 * Improve design
 * Improve DB schema
