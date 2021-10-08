@@ -3,6 +3,8 @@ import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
 
+import Close from "../../assets/close_.svg";
+
 import styles from  "../../styles/settings/pet_type.module.scss";
 
 const PetTypeMsg = ({ setMessage, message }) => {
@@ -214,8 +216,9 @@ const Type = () => {
                         <Breed setMessage={setMessage}/>
                     </Route>
                 </Switch>
+                <Link to="/settings" className={styles.close} ><img src={Close} alt="close"/></Link>
             </div>
-
+            
             {message.status && <PetTypeMsg setMessage={setMessage} message={message}/>}
 
             <Link to="/settings" className={styles.link_background}/>

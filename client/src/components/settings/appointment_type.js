@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import ColorPicker from "./color_picker/color-picker";
 
+import Close from "../../assets/close_.svg";
+
 import styles from "../../styles/settings/appointment_type.module.scss";
 
 const ApptType = ({ setMessage, borderColor }) => {
@@ -75,9 +77,11 @@ const AppointmentType = () => {
                     </div>
                     <button>Add appointment type</button>
                 </form>
+                <Link to="/settings" className={styles.close} ><img src={Close} alt="close"/></Link>
             </div>
             {message && <ApptType setMessage={setMessage} borderColor={color}/>}
             <Link to="/settings" className={styles.link_background}/>
+            
         </div>
     );
 };

@@ -58,11 +58,11 @@
        id="g870"
        transform="matrix(1.1034162,0,0,0.99699072,-4.5759344,0.19135452)">
       <path
-         style="fill:none;stroke:#ffffff;stroke-width:0.586673;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:0.586673;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 4.9213277,0.65463286 9.1276493,5.3306695"
          id="path834" />
       <path
-         style="fill:none;stroke:#ffffff;stroke-width:0.58635398;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:0.58635398;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 4.9213277,5.3306695 9.1276493,0.65463286"
          id="path836" />
     </g>

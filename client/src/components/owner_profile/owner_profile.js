@@ -19,11 +19,10 @@ const OwnerProfile = () => {
     return (
         <div className={styles.container}>
             
-            <Link to="/owners" ><img src={Close} alt="close" /></Link>
-            
             <div className={styles.profile}>
                 <ProfileInfo id={id} nameOwner={nameOwner} email={email} address={address} telephones={telephones} registered={registered}/>
                 <ProfileAppointments id={id}/>
+                <Link to="/owners" className={styles.close}><img src={Close} alt="close" /></Link>
             </div>
 
             <Link to="/owners" className={styles.link}/>
