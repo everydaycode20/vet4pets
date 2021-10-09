@@ -48,7 +48,7 @@ appointment_router.post("/appointments/day", (req, res, next) => {
 
 appointment_router.get("/appointments/type", (req, res, next) => {
 
-    connection.query("select id, appointmentName from appointmentType", (err, rows, fields) => {
+    connection.query("select id, appointmentName, color from appointmentType", (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
         
@@ -360,6 +360,26 @@ appointment_router.get("/appointments/latest", (req, res, next) => {
         if(err) res.json({"status": false, "message": "there was an error with the database"});
         
         res.json(rows[0]);
+    });
+
+});
+
+
+appointment_router.post("/appointments/month", (req, res, next) => {
+
+    const { month, year } = req.body;
+
+    const obj = {};
+
+    connection.query("call getNumberAppointmentsByMonth(?, ?)", [month, year], (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        rows[0].forEach(elm => {
+            obj[elm.day] = elm;
+        });
+            
+        res.json(obj);
     });
 
 });

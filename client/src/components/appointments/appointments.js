@@ -5,6 +5,7 @@ import AddAppointment from "./add_appointment";
 import Header from "./header";
 import CalendarControls from "./calendar_controls";
 import AppointmentMessage from "./appointment_message";
+import MonthView from "./month_view";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
@@ -23,6 +24,12 @@ const Appointments = ({ socket }) => {
     const [appointmentsWeek, setAppointmentsWeek] = useState([]);
 
     const [appMessage, setAppMessage] = useState(false);
+
+    const [calendarView, setCalendarView] = useState("weekly");
+
+    const [month, setMonth] = useState([]);
+
+    const [newMonth, setNewMonth] = useState({ month: new Date().getMonth() });
 
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
@@ -81,10 +88,10 @@ const Appointments = ({ socket }) => {
         
         setNewWeek(prev => ({...prev, day: newWeek.day + 7}));
     }
-
+    
     const addAppointments = (e, time, dateDay, day, month, year, monthIndex) => {
         
-        if ((e.classList.contains("hour_item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot_container") && !e.classList.contains("delete")) {
+        if ((e.classList.value.includes("hour_item") && e.children.length === 0) && !e.classList.contains("dot") && !e.classList.contains("dot_container") && !e.classList.contains("delete")) {
             setDate({date: dateDay, day: day, hour: time, month: month, monthIndex: monthIndex, year: year});
             setMakeAppointment(true);
         }
@@ -92,7 +99,6 @@ const Appointments = ({ socket }) => {
             setDate(null);
             setMakeAppointment(true);
         }
-        
 
         // if(makeAppointment) setMakeAppointment(false);
 
@@ -101,11 +107,14 @@ const Appointments = ({ socket }) => {
     return (
         <div className={styles.container}>
             <div>
-                <Header/>
-                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments}/>
+                <Header setCalendarView={setCalendarView} calendarView={calendarView}/>
+                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments} calendarView={calendarView} month={month} setNewMonth={setNewMonth} newMonth={newMonth}/>
             </div>
             <div></div>
-            <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>
+            {calendarView === "weekly" && <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>}
+
+            {calendarView === "monthly" && <MonthView setMonth={setMonth} newMonth={newMonth} />}
+
             {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage} socket={socket}/>}
             {appMessage && <AppointmentMessage setAppMessage={setAppMessage} />}
         </div>

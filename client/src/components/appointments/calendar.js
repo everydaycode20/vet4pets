@@ -57,6 +57,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                 setLoading(false);
 
             }).catch(err => console.log(err));
+
         }
     }, [week]);
     
@@ -141,7 +142,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
             body: JSON.stringify({id: idDB})
         }).then(res => res.json()).then(data => {
             
-            
+
             
         }).catch(err => console.log(err));
 

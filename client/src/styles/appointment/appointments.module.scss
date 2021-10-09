@@ -24,7 +24,7 @@
                 color: $greeLine;
             }
 
-            .control-view{
+            .control_view_calendar{
                 display: flex;
                 flex-direction: row;
                 column-gap: 20px;
@@ -35,6 +35,7 @@
                     border: none;
                     font-size: 1.1rem;
                     color: $greeLine;
+                    cursor: pointer;
                 }
 
             }
@@ -100,7 +101,7 @@
         }
     }
 
-    .appointment-message{
+    .message{
         position: absolute;
         top: 12%;
         right: 2%;

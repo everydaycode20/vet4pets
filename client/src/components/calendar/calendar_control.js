@@ -3,7 +3,7 @@ import "./styles/calendar-control.css";
 
 import ArrowLeft from "./assets/arrow_left_.svg";
 
-const CalendarControl = ({ year, setNewMonth, newMonth, setYear, setChangeView, changeView, setHoursDay, hoursDay, date }) => {
+const CalendarControl = ({ year, setNewMonth, newMonth, setYear, changeView, setHoursDay, hoursDay, date }) => {
 
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
@@ -58,7 +58,9 @@ const CalendarControl = ({ year, setNewMonth, newMonth, setYear, setChangeView, 
     return (
         <div className="calendar-control-container">
             { <button className="bnt-prev" type="button" onClick={() => prevMonth()}> <img src={ArrowLeft} alt="next month" /> </button>}
+
             {!changeView || hoursDay ? <button className="bnt-month-view" type="button" onClick={() => makeChangeView()}> { hoursDay ? `${date.day}, ${date.date}` : months[newMonth.month]}, {year}</button> : <button className="bnt-year-view" type="button" >{year}</button>}
+            
             { <button className="bnt-next" type="button" onClick={() => nextMonth()}><img src={ArrowLeft} alt="next month" className=""/> </button>}
         </div>
     );

@@ -33,6 +33,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
     
     const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+    const [appointmentColor, setAppointmentColor] = useState("");
+
     useEffect(() => {
         
         fetch("/owners",
@@ -47,10 +49,12 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         {
             method: "GET",
         }
-    ).then(res => res.json()).then(data => {
+        ).then(res => res.json()).then(data => {
         
-        setServiceList(data)
-    });
+            setServiceList(data);
+            
+        });
+
 
     }, []);
     
@@ -62,11 +66,18 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
     };
     
-    const getService = (item, id) => {
+    const getService = (item, id, color) => {
+        
+        setAppointmentColor(color);
+        
         setAppointment(prev => ({...prev, appointment_type: id}));
+
         setService(item);
+
         setDropdown(false);
+
         setBtnActive(prev => ({...prev, step1: true}));
+
     }
 
     const getOwnerPets = (owner, id) => {
@@ -97,14 +108,6 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         }
     };
     
-    const showPetDropdown = () => {
-        setPetDropDown(true);
-
-        if (petDropDown) {
-            setPetDropDown(false);
-        }
-    };
-    
     const getPet = (petName, id) => {
 
         setAppointment(prev => ({...prev, id_pet: id}));
@@ -127,7 +130,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         ).then(res => res.json()).then(data => {
             
             if (data.status) {
-                setMakeAppointment(false);
+                
                 let data = JSON.parse(JSON.stringify(appointmentsWeek));
 
                 let newObj = data.map((elm, i) => {
@@ -138,12 +141,17 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                             item.appointmentName = service;
                             item.nameOwner = owner;
                             item.namePet = pet;
+                            item.color = appointmentColor;
                         }
                         return item;
                     })};
                 });
+
                 setAppointmentsWeek(newObj);
                 setAppMessage(true);
+
+                setMakeAppointment(false);
+                
                 socket.emit("new appointment", "");
             }
         });
@@ -163,7 +171,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                                 {serviceList.map((item, index) => {
 
                                 return (
-                                        <button key={item.id} onClick={() => getService(item.appointmentName, item.id)}>{item.appointmentName}</button>
+                                        <button key={item.id} onClick={() => getService(item.appointmentName, item.id, item.color)}>{item.appointmentName}</button>
                                     )
                                 })}
                             </div>
