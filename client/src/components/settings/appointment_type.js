@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ColorPicker from "./color_picker/color-picker";
 
@@ -63,8 +63,9 @@ const AppointmentType = () => {
         <div className={styles.container}>
             
             <div className={styles.type}>
-                <h2>Add a new appointment type</h2>
+                
                 <form className={styles.form} onSubmit={e => addType(e)}>
+                    <h2>Add a new appointment type</h2>
                     <div className={styles.name}>
                         <label htmlFor="name">Appointment name</label>
                         <input type="text" name="name" id="name" onChange={() => setError(false)}/>
@@ -77,7 +78,7 @@ const AppointmentType = () => {
                     </div>
                     <button>Add appointment type</button>
                 </form>
-                <Link to="/settings" className={styles.close} ><img src={Close} alt="close"/></Link>
+                
             </div>
             {message && <ApptType setMessage={setMessage} borderColor={color}/>}
             <Link to="/settings" className={styles.link_background}/>

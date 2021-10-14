@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-const MedicalRecordsOptions = ({  }) => {
+const MedicalRecordsOptions = () => {
 
     return (
         <div className="medical-record-control-container">

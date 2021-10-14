@@ -214,7 +214,7 @@ const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage,
                         });
 
                         setAppointmentsWeek(data);
-                        socket.emit("new appointment", "");
+                        
                     }
                     else{
 
@@ -251,6 +251,7 @@ const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage,
                         setAppointmentsWeek(data);
                     }
 
+                    socket.emit("new appointment", "");
                 }
 
                 history.push("/appointments");

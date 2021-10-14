@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-import daysInMonth from "../../utils/daysInMonth";
 import useDaysInMonth from "../../utils/useDaysInMonth";
 
 import styles from "../../styles/appointment/month_view.module.scss";

@@ -206,23 +206,28 @@ const Type = () => {
         <div className={styles.container}>
 
             <div className={styles.main}>
-                <div className={styles.btn_group}>
-                    <NavLink className={styles.link} style={{backgroundColor: active  ? "white" : "#135A5A", color: active ? "black" : "white"}} isActive={checkActive} exact to={`${path}/pet`}>Pet</NavLink>
-                    <NavLink className={styles.link} style={{backgroundColor: !active ? "white" : "#135A5A", color: !active ? "black" : "white"}} to={`${url}/breed`}>Breed</NavLink>
+
+                <div className={styles.routes}>
+
+                    <div className={styles.btn_group}>
+                        <NavLink className={styles.link} style={{backgroundColor: !active  ? "white" : "#135A5A", color: !active ? "black" : "white"}} isActive={checkActive} exact to={`${path}/pet`}>Pet</NavLink>
+                        <NavLink className={styles.link} style={{backgroundColor: active ? "white" : "#135A5A", color: active ? "black" : "white"}} to={`${url}/breed`}>Breed</NavLink>
+                    </div>
+
+                    <Switch>
+                        <Route exact path={path}>
+                            <p>select an option</p>
+                        </Route>
+                        <Route  path={`${path}/pet`}>
+                            <PetType setMessage={setMessage}/>
+                        </Route>
+                        <Route path={`${url}/breed`}>
+                            <Breed setMessage={setMessage}/>
+                        </Route>
+                    </Switch>
+
                 </div>
 
-                <Switch>
-                    <Route exact path={path}>
-                        <p>select an option</p>
-                    </Route>
-                    <Route  path={`${path}/pet`}>
-                        <PetType setMessage={setMessage}/>
-                    </Route>
-                    <Route path={`${url}/breed`}>
-                        <Breed setMessage={setMessage}/>
-                    </Route>
-                </Switch>
-                <Link to="/settings" className={styles.close} ><img src={Close} alt="close"/></Link>
             </div>
             
             {message.status && <PetTypeMsg setMessage={setMessage} message={message}/>}

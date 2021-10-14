@@ -3,44 +3,46 @@
 .container{
     height: 100%;
     width: 100%;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: absolute;
-    top: 0;
-    right: 0;
+    z-index: 200;
 
     .link_background{
-        background-color: rgba(88, 88, 88, 0.123);
-        width: 100%;
-        height: 100%;
         position: absolute;
+        background-color: rgba(0, 0, 0, 0.137);
+        width: -webkit-fill-available;
+        height: 100%;
     }
 
     .type{
-        background-color: white;
-        z-index: 100;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
-        display: flex;
-        flex-direction: column;
-        row-gap: 40px;
-        position: relative;
-
-        h2{
-            font-weight: 600;
-        }
+        position: fixed;
+        z-index: 50;
 
         .form{
             display: flex;
             flex-direction: column;
-            row-gap: 10px;
+            row-gap: 20px;
+            position: fixed;
+            right: 0px;
+            top: 0;
+            height: 100%;
+            background-color: white;
+            padding: 20px;
+            width: 350px;
+            z-index: 350;
+            animation: slide 0.2s ease-out forwards;
+
+            h2{
+                font-size: 1.3rem;
+                font-weight: 400;
+            }
 
             label{
                 font-size: 1.1rem;
                 font-weight: 500;
+            }
+
+            .name{
+                margin-top: 20px;
             }
 
             .name, .color{
@@ -48,6 +50,7 @@
                 flex-direction: row;
                 column-gap: 10px;
                 align-items: baseline;
+                align-items: center;
 
                 input{
                     padding: 5px;
@@ -89,7 +92,7 @@
 
     .message{
         position: absolute;
-        top: 12%;
+        top: 10%;
         right: 2%;
         background-color: white;
         padding: 20px;
@@ -112,3 +115,34 @@
     }
 }
 
+@keyframes slide {
+    from {
+        transform: translateX(350px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes slideMsg {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translateX(-20px);
+    }
+    
+    95% {
+        opacity: 1;
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}

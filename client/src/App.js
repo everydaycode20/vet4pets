@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import io from "socket.io-client";
 
@@ -10,7 +10,6 @@ import Appointments from "./components/appointments/appointments";
 import MedicalRecords from "./components/medical_records/medical_records";
 import Owner from "./components/owner/owner";
 import Pet from "./components/pet/pet";
-import OwnerProfile from "./components/owner_profile/owner_profile";
 import PetProfile from "./components/pet_profile/pet_profile";
 import Bell from "./components/notification_bell/bell";
 import Menu from "./components/sidebar/menu";

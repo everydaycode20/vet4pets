@@ -1,5 +1,5 @@
-import React, {useState, useRef} from "react";
-import {Link, NavLink} from "react-router-dom";
+import React, {useState, useRef,} from "react";
+import { NavLink} from "react-router-dom";
 
 import Calendar from "../../assets/calendar_filled.svg";
 import MedicalBook from "../../assets/medical-record_.svg";

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 import { Link } from "react-router-dom";
 
 import EditAppointment from "./edit_appointment";
-import AppointmentMessage from "./appointment_message";
 
 import styles from "../../styles/appointment/edit.module.scss";
 
