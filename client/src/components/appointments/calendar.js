@@ -1,9 +1,10 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
+import { TimeSettings } from "../../utils/providers";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
@@ -26,6 +27,8 @@ const AppointmentCard = ({ item, border, index, deleteCard }) => {
 };
 
 const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek, setMakeAppointment }) => {
+
+    const { timeFormat } = useContext(TimeSettings);
 
     const [showOptions, setShowOptions] = useState(null);
 
@@ -78,8 +81,6 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
             const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} 17:00`;
 
             const lastTimeInMinutes = Math.floor((new Date( currentDate ).getTime()/1000)/60);
-            
-            // setMarkTop( Math.floor((540 - (lastTimeInMinutes - currentTimeInMinutes)) * 6.66) );
 
             if (time > 3590) {
                 
@@ -177,7 +178,13 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                     <div className={styles.hours_container}>
                         {hours.map((hour, index) => {
 
+                            let h = parseInt(hour.split(":")[0]);
+                            let minutes = hour.split(":")[1];
+                            
+                            if (index > Math.floor(hours.length / 2) && timeFormat === "24 hours") hour = `${h + 12}:${minutes}`;
+
                             return <span key={index}>{hour}</span>
+                            
                         })}
                     </div>
                     {appointmentsWeek.map((item, index) => {
@@ -185,8 +192,13 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                         return (
                             <div key={Math.random()} className={styles.day_container}>
                                 
-                                {item[arr[index]].map((item, index) => {
+                                {item[arr[index]].map( item => {
                                     
+                                    let hour = parseInt(item.time.split(":")[0]);
+                                    let minutes = item.time.split(":")[1];
+
+                                    if (hour > 12 && timeFormat === "12 hours") item.time = `0${hour - 12}:${minutes}`;
+
                                     return (
                                         <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className={styles.hour_item} onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 

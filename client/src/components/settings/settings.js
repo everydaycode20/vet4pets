@@ -6,6 +6,7 @@ import Notifications from "./notifications";
 import Miscellaneous from "./miscellaneous";
 import AppointmentType from "./appointment_type";
 import Type from "./pet_type";
+import Time from "./time";
 
 import styles from "../../styles/settings/settings.module.scss";
 
@@ -17,6 +18,7 @@ const Settings = () => {
             <div className={styles.inner_container}>
                 <Notifications />
                 <Miscellaneous />
+                <Time />
             </div>
             <Switch>
                 <Route path="/settings/appointments">

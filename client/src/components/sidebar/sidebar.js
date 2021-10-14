@@ -24,7 +24,7 @@ const SideBar = ({ showSidebar, setShowSidebar }) => {
     const minimizeSidebar = () => {
 
         if (minimize === true) {
-            console.log("should minimize");
+            
             setMinimize(false);
             localStorage.setItem("sidebar", false);
         }
