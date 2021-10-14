@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 
 import Calendar from "./calendar";
 import AddAppointment from "./add_appointment";
@@ -6,6 +7,7 @@ import Header from "./header";
 import CalendarControls from "./calendar_controls";
 import AppointmentMessage from "./appointment_message";
 import MonthView from "./month_view";
+import Edit from "./edit";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
@@ -30,6 +32,8 @@ const Appointments = ({ socket }) => {
     const [month, setMonth] = useState([]);
 
     const [newMonth, setNewMonth] = useState({ month: new Date().getMonth() });
+
+    const [messageContent, setMessageContent] = useState("");
 
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
@@ -105,19 +109,24 @@ const Appointments = ({ socket }) => {
     };
 
     return (
-        <div className={styles.container}>
-            <div>
-                <Header setCalendarView={setCalendarView} calendarView={calendarView}/>
-                <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments} calendarView={calendarView} month={month} setNewMonth={setNewMonth} newMonth={newMonth}/>
+            <div className={styles.container}>
+                <div>
+                    <Header setCalendarView={setCalendarView} calendarView={calendarView}/>
+                    <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments} calendarView={calendarView} month={month} setNewMonth={setNewMonth} newMonth={newMonth}/>
+                </div>
+                <div></div>
+                {calendarView === "weekly" && <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>}
+
+                {calendarView === "monthly" && <MonthView setMonth={setMonth} newMonth={newMonth} />}
+
+                {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage} socket={socket} setMessageContent={setMessageContent} />}
+                {appMessage && <AppointmentMessage setAppMessage={setAppMessage} msg={messageContent}/>}
+                <Switch>
+                    <Route path="/appointments/edit/:id">
+                        <Edit setAppMessage={setAppMessage} setMessageContent={setMessageContent} appointmentsWeek={appointmentsWeek} setAppointmentsWeek={setAppointmentsWeek} socket={socket}/>
+                    </Route>
+                </Switch>
             </div>
-            <div></div>
-            {calendarView === "weekly" && <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>}
-
-            {calendarView === "monthly" && <MonthView setMonth={setMonth} newMonth={newMonth} />}
-
-            {makeAppointment && <AddAppointment setMakeAppointment={setMakeAppointment} setDate={setDate} date={date} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setAppMessage={setAppMessage} socket={socket}/>}
-            {appMessage && <AppointmentMessage setAppMessage={setAppMessage} />}
-        </div>
     );
 
 };

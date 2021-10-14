@@ -2,11 +2,11 @@ import React from "react";
 
 import { message } from "../../styles/appointment/appointments.module.scss";
 
-const AppointmentMessage = ({ setAppMessage }) => {
+const AppointmentMessage = ({ setAppMessage, msg }) => {
 
     return (
         <div className={message} onAnimationEnd={() => setAppMessage(false)}>
-            <span>Appointment created</span>
+            <span>{msg}</span>
         </div>
     );
 };

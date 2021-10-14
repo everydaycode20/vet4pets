@@ -22,7 +22,7 @@ const Settings = () => {
                 <Route path="/settings/appointments">
                     <AppointmentType />
                 </Route>
-                <Route path="/settings/type/pet">
+                <Route path="/settings/type">
                     <Type />
                 </Route>
             </Switch>

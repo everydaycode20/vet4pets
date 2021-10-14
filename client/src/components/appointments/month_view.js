@@ -11,6 +11,9 @@ const MonthView = ({ setMonth, newMonth }) => {
 
     const daysInMonth = useDaysInMonth( newMonth.month );
     
+    const months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+
     useEffect(() => {
         
         setMonth(daysInMonth);
@@ -28,8 +31,10 @@ const MonthView = ({ setMonth, newMonth }) => {
 
                 {daysInMonth.map((day, index) => {
                     
+                    const condition = day.year === new Date().getFullYear() && day.date === new Date().getDate() && day.month === months[new Date().getMonth()];
+
                     return (
-                        <div key={index} className={styles.day_month} style={{backgroundColor: !day.currentMonth && "#CDF0EA"}}>
+                        <div key={index} className={styles.day_month} style={{backgroundColor: !day.currentMonth && "#CDF0EA", border: condition && "5px solid #F38BA0"}}>
 
                             <span>{day.date}</span>
 

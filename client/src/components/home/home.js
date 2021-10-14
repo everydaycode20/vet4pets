@@ -2,10 +2,6 @@ import React, { useState, useEffect, memo } from "react";
 
 import HomeChart from "./home_chart";
 
-import Calendar from "../../assets/calendar_filled_btn.svg";
-import Medicine from "../../assets/medicine_filled_btn.svg";
-import Pet from "../../assets/pet_filled_btn.svg";
-import Profile from "../../assets/profile_filled_btn.svg";
 import NextAppointments from "./next_appoinments";
 import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
 import Skeleton from "../misc/skeleton";
@@ -26,21 +22,7 @@ const Main = memo(() => {
 
     const [loadingLatest, setLoadingLatest] = useState(true);
 
-    const [greetings, setGreetings] = useState("");
-
     useEffect(() => {
-
-        const currentTime = new Date().getHours();
-
-        if (currentTime >= 4 && currentTime <= 12) {
-            setGreetings("Good morning");
-        }
-        else if(currentTime >= 13 && currentTime <= 16) {
-            setGreetings("Good afternoon");
-        }
-        else{
-            setGreetings("Good evening");
-        }
 
         setLoadingTopList(true);
 

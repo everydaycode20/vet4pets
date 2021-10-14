@@ -17,7 +17,7 @@ const AppointmentCard = ({ item, border, index, deleteCard }) => {
             <span>{item.time}</span>
             <DotBtn id={item.id} rotate={true}>
                 <div className={styles.app_options}>
-                    <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
+                    <Link to={{pathname: `/appointments/edit/${index}`, state: item } } > <img src={Edit} alt="edit"/> Edit</Link>
                     <button className={styles.delete} onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>
                 </div>
             </DotBtn>
@@ -25,7 +25,7 @@ const AppointmentCard = ({ item, border, index, deleteCard }) => {
     );
 };
 
-const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek }) => {
+const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek, setMakeAppointment }) => {
 
     const [showOptions, setShowOptions] = useState(null);
 
@@ -155,7 +155,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
             <div className={styles.inner_calendar}>
                 <div className={styles.week_days}>
                     {week && week.map((day, index) => {
-
+                        
                         const condition = day.year === new Date().getFullYear() && day.date === new Date().getDate() && day.month === months[new Date().getMonth()];
 
                         return (
@@ -190,7 +190,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                                     return (
                                         <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className={styles.hour_item} onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
-                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard}/>}
+                                            {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard} setMakeAppointment={setMakeAppointment}/>}
                                             {/* { showOptions === item.id && 
                                                 <div className="app-options">
                                                     <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>

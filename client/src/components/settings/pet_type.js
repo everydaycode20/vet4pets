@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch, NavLink, useLocation } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
 
 import Close from "../../assets/close_.svg";
 
 import styles from  "../../styles/settings/pet_type.module.scss";
+import "../../styles/settings/current.scss";
 
 const PetTypeMsg = ({ setMessage, message }) => {
 
@@ -38,6 +39,8 @@ const PetType = ({ setMessage }) => {
             setBreedList(data);
 
         }).catch(err => console.log(err));
+
+        return () => setBreedList([]);
 
     }, []);
 
@@ -181,10 +184,10 @@ const Breed = ({ setMessage }) => {
 const Type = () => {
 
     let { path, url } = useRouteMatch();
-    console.log(path, url);
+
     const [message, setMessage] = useState({status: false, message: ""});
     
-    const [active, setActive] = useState(false);
+    const [active, setActive] = useState(true);
 
     const checkActive = (match, location) => {
         
@@ -192,11 +195,11 @@ const Type = () => {
             setActive(false);
             return false;
         }
-        
-        setActive(true);
+        else{
+            setActive(true);
+            return true;
+        }
 
-        const eventID = parseInt(match.params.eventID);
-        return !isNaN(eventID) && eventID % 2 === 1;
     }
     
     return (
@@ -204,12 +207,15 @@ const Type = () => {
 
             <div className={styles.main}>
                 <div className={styles.btn_group}>
-                    <NavLink className={styles.link} style={{backgroundColor: active ? "white" : "#135A5A", color: active ? "black" : "white"}} exact isActive={checkActive} to={path}>Pet</NavLink>
+                    <NavLink className={styles.link} style={{backgroundColor: active  ? "white" : "#135A5A", color: active ? "black" : "white"}} isActive={checkActive} exact to={`${path}/pet`}>Pet</NavLink>
                     <NavLink className={styles.link} style={{backgroundColor: !active ? "white" : "#135A5A", color: !active ? "black" : "white"}} to={`${url}/breed`}>Breed</NavLink>
                 </div>
 
                 <Switch>
                     <Route exact path={path}>
+                        <p>select an option</p>
+                    </Route>
+                    <Route  path={`${path}/pet`}>
                         <PetType setMessage={setMessage}/>
                     </Route>
                     <Route path={`${url}/breed`}>

@@ -26,8 +26,6 @@ function App() {
 
   const [showSidebar, setShowSidebar] = useState(false);
 
-
-
   return (
     <Providers>
         <main className="main-container">

@@ -384,4 +384,19 @@ appointment_router.post("/appointments/month", (req, res, next) => {
 
 });
 
+appointment_router.put("/appointment", (req, res, next) => {
+
+    const { date_appointment, id_pet, id_owner, appointment_type, id } = req.body;
+    
+    connection.query(`call editAppointment(?, ?, ?, ? , ?)`, [ date_appointment, appointment_type, id_pet, id_owner, id],(err, results, fields) => {
+
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+        
+        res.json({status: true});
+        
+    });
+
+});
+
+
 module.exports = appointment_router;

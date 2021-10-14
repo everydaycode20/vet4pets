@@ -5,13 +5,7 @@ import DropdownEdit from "../misc/dropdown_edit";
 
 import styles from "../../styles/appointment/add_appointment.module.scss";
 
-const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage, socket }) => {
-
-    const [dropdown, setDropdown] = useState(false);
-
-    const [ownerDropdown, setOwnerDropdown] = useState(false);
-
-    const [petDropDown, setPetDropDown] = useState(false);
+const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek, appointmentsWeek, setAppMessage, socket, setMessageContent }) => {
 
     const [calendar, setCalendar] = useState(false);
 
@@ -74,8 +68,6 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
         setService(item);
 
-        setDropdown(false);
-
         setBtnActive(prev => ({...prev, step1: true}));
 
     }
@@ -96,7 +88,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         });
 
         setOwner(owner);
-        setOwnerDropdown(false);
+        
         setBtnActive(prev => ({...prev, step2: true}));
     };
 
@@ -112,7 +104,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
         setAppointment(prev => ({...prev, id_pet: id}));
         setPet(petName);
-        setPetDropDown(false);
+        
         setBtnActive(prev => ({...prev, step3: true}));
 
     };
@@ -152,6 +144,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
                 setMakeAppointment(false);
                 
+                setMessageContent("Appointment created");
+
                 socket.emit("new appointment", "");
             }
         });
@@ -168,7 +162,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                     <div className={styles.service}>
                         <DropdownEdit title={service} defaultTitle={"Add service"} center={true}>
                             <div className={styles.service_dropdown}>
-                                {serviceList.map((item, index) => {
+                                {serviceList.map( item => {
 
                                 return (
                                         <button key={item.id} onClick={() => getService(item.appointmentName, item.id, item.color)}>{item.appointmentName}</button>
