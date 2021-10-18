@@ -65,12 +65,14 @@
 
     .link_container{
         margin-top: 80px;
+        height: 100%;
 
         .list{
             width: max-content;
             display: flex;
             flex-direction: column;
             row-gap: 30px;
+            height: 100%;
 
             .link{
                 display: flex;
@@ -93,9 +95,19 @@
                 margin-top: 80px;
             }
 
+            & li:last-child{
+                
+            }
         }
     }
 
+}
+
+.profile_image{
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 50%;
 }
 
 .minimize{

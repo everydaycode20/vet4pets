@@ -11,7 +11,7 @@ import Time from "./time";
 import styles from "../../styles/settings/settings.module.scss";
 
 const Settings = () => {
-
+    
     return (
         <div className={styles.main_container}>
             <Header />

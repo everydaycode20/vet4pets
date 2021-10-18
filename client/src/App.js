@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import io from "socket.io-client";
 
 import useSocket from "./utils/useSocket";
+import { ProvideAuth, AuthContext } from "./utils/useAuth";
 
 import SideBar from "./components/sidebar/sidebar";
 import Main from "./components/home/home";
@@ -10,10 +11,12 @@ import Appointments from "./components/appointments/appointments";
 import MedicalRecords from "./components/medical_records/medical_records";
 import Owner from "./components/owner/owner";
 import Pet from "./components/pet/pet";
-import PetProfile from "./components/pet_profile/pet_profile";
 import Bell from "./components/notification_bell/bell";
 import Menu from "./components/sidebar/menu";
 import Settings from "./components/settings/settings";
+import Login from "./components/login/login";
+import Register from "./components/register/register";
+import Profile from "./components/profile/profile";
 
 import Providers from "./utils/providers";
 
@@ -21,46 +24,74 @@ import "./styles/app.scss";
 
 function App() {
 
+  const location = useLocation();
+
   const socket = useSocket(io);
 
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <Providers>
-        <main className="main-container">
+    <ProvideAuth>
+      <Providers>
+          <main className="main-container">
 
-          <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
-          <Menu setShowSidebar={setShowSidebar}/>
+            {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>}
+            {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <Menu setShowSidebar={setShowSidebar}/>}
 
-          <section className="content-container">
-            <Bell socket={socket}/>
-            <Switch>
-              <Route exact path="/">
-                <Main />
-              </Route>
-              <Route path="/appointments">
-                <Appointments socket={socket}/>
-              </Route>
-              <Route path="/records">
-                <MedicalRecords />
-              </Route>
-              <Route path="/owners">
-                <Owner />
-              </Route>
-              <Route path="/pets">
-                <Pet />
-              </Route>
+            <section className="content-container">
 
-              <Route path="/pet/:id" children={<PetProfile/>}>
-              </Route>
-              <Route path="/settings">
-                <Settings />
-              </Route>
-            </Switch>
-          </section>
-        </main>
-      </Providers>
+              {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <Bell socket={socket}/>}
+
+              <Switch>
+
+                <Route path="/login">
+                    <Login />
+                </Route>
+
+                <Route path="/register">
+                  <Register />
+                </Route>
+
+                <ProtectedRoute exact path="/">
+                  <Main />
+                </ProtectedRoute>
+
+                <ProtectedRoute path="/appointments">
+                  <Appointments socket={socket}/>
+                </ProtectedRoute>
+
+                <ProtectedRoute path="/owners">
+                  <Owner />
+                </ProtectedRoute>
+
+                <ProtectedRoute path="/pets">
+                  <Pet />
+                </ProtectedRoute>
+                
+                <ProtectedRoute path="/settings">
+                  <Settings />
+                </ProtectedRoute>
+
+                <ProtectedRoute path="/profile">
+                  <Profile />
+                </ProtectedRoute>
+
+              </Switch>
+            </section>
+          </main>
+        </Providers>
+      </ProvideAuth>
   );
 }
+
+const ProtectedRoute = ( { children, ...rest } ) => {
+
+  const { auth } = useContext(AuthContext);
+  
+  return (
+    <Route {...rest} render={ () => auth.authorized ? children : <Redirect to="/login" />} />
+  );
+
+};
 
 export default App;
