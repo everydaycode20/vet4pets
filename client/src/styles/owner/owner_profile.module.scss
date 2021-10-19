@@ -3,34 +3,25 @@
 .container{
     height: 100%;
     width: 100%;
-    
     display: flex;
+    background-color: $greenBackground;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    .link{
-        background-color: rgba(88, 88, 88, 0.123);
-        width: 100%;
-        height: 100%;
-        position: absolute;
-    }
+    z-index: 300;
 
     .profile{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
+        display: flex;
+        flex-wrap: wrap;
         background-color: white;
-        z-index: 100;
-        border-radius: 10px;
-        padding: 40px;
+        z-index: 300;
+        border-radius: 5px;
+        padding: 5vmin;
         column-gap: 20px;
         row-gap: 20px;
         box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
         position: relative;
-
+        flex-basis: 80ch;
+        
     }
 
     .close{
@@ -42,7 +33,8 @@
 
 .info{
     background-color: white;
-    width: 100%;
+    flex: 1;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -92,7 +84,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 20px;
-    grid-column: 1/3;
+    flex-grow: 2;
 
     .btn_container{
         display: flex;

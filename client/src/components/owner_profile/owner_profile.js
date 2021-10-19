@@ -15,7 +15,7 @@ const OwnerProfile = () => {
     const location = useLocation();
 
     const { nameOwner, email, address, telephones, registered } = location.state[0];
-
+    
     return (
         <div className={styles.container}>
             
@@ -24,8 +24,7 @@ const OwnerProfile = () => {
                 <ProfileAppointments id={id}/>
                 <Link to="/owners" className={styles.close}><img src={Close} alt="close" /></Link>
             </div>
-
-            <Link to="/owners" className={styles.link}/>
+            
         </div>
     );
 };

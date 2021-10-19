@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, Switch, Route, useRouteMatch, NavLink, useLocation } from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
-
-import Close from "../../assets/close_.svg";
 
 import styles from  "../../styles/settings/pet_type.module.scss";
 import "../../styles/settings/current.scss";

@@ -9,6 +9,8 @@ const http = require('http');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
+const csrfToken = require("./utils/csrfToken").csrfToken;
+
 const passport = require("passport");
 
 require('dotenv').config("./.env");
@@ -52,6 +54,8 @@ app.use(session({
 require("./passport/local_strategy");
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(csrfToken);
 
 app.use( router_email, appointment_router, owner_router, pet_router, checkup_router, vet_router, router_profile );
 

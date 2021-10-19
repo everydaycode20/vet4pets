@@ -19,12 +19,23 @@
             flex-direction: row;
             margin-left: 50px;
             column-gap: 20px;
+            align-items: center;
 
             h1{
                 font-size: 1.7rem;
                 font-weight: 500;
                 color: $greeLine;
             }
+        }
+
+        .logout{
+            background-color: $pink3;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
         }
     }
 

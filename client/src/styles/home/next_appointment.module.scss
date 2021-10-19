@@ -60,6 +60,10 @@
     &::-webkit-scrollbar-thumb {
         background-color: #70707080;
         border-radius: 20px;
+        
+        &:hover{
+            background-color: #31313180;
+        }
     }
 
     li{

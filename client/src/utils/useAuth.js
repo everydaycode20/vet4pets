@@ -20,6 +20,8 @@ const useProvideAuth = () => {
 
     const [authorized, setAuthorized] = useState(null);
 
+    const [errorLogin, setErrorLogin] = useState(false);
+
     const login = ( username, password ) => {
         setAuthorized(null);
         fetch("/login", {
@@ -34,6 +36,7 @@ const useProvideAuth = () => {
             
             if (!data.status) {
                 setAuthorized(false);
+                setErrorLogin(true);
             }
 
             setUser(data.user);
@@ -51,18 +54,36 @@ const useProvideAuth = () => {
                 "Content-Type": "application/json"
             },
         }).then(res => res.json()).then(data => {
-            
+            setUser(data.user);
             setAuthorized(data.status);
 
         });
 
     }
 
+    const logout = () => {
+
+        fetch("/logout", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(res => res.json()).then(data => {
+            
+            setAuthorized(data.status);
+
+        });
+
+    };
+
     return {
         user,
         login,
         authorized,
-        checkAuth
+        checkAuth,
+        logout,
+        errorLogin
     }
 };
 

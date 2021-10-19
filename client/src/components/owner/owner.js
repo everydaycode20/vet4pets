@@ -35,11 +35,11 @@ const Owner = () => {
             <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList}/>
             {addNewOwner && <AddOwner setAddNewOwner={setAddNewOwner} setOwnerMessage={setOwnerMessage} setOwnerList={setOwnerList} ownerList={ownerList}/>}
             {ownerMessage && <OwnerMessage setOwnerMessage={setOwnerMessage} />}
-            <Switch>
+            {/* <Switch>
                 <Route path="/owners/:id">
                     <OwnerProfile />
                 </Route>
-            </Switch>
+            </Switch> */}
         </div>
     );
 }

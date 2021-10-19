@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs');
 
 const csrfToken = require("../utils/csrfToken").csrfToken;
 
-routerEmail.post("/login", csrfToken, passport.authenticate("local", {failureRedirect: "/failed"}), (req, res, next) => {
+routerEmail.post("/login", passport.authenticate("local", {failureRedirect: "/failed"}), (req, res, next) => {
 
     const { user, name, lastName, email, id } = req.user;
 
@@ -19,7 +19,7 @@ routerEmail.post("/login", csrfToken, passport.authenticate("local", {failureRed
 
 routerEmail.get("/failed", (req, res, next) => {
     
-    res.json({ status: false });
+    res.status(401).json({ status: false });
 });
 
 routerEmail.post("/register", (req, res, next) => {
@@ -40,7 +40,21 @@ routerEmail.post("/register", (req, res, next) => {
 });
 
 routerEmail.get("/check", isAuth, (req, res, next) => {
-    res.json({status: true });
+
+    const { user, name, lastName, email, id } = req.user;
+
+    res.json({ user: { user, name, lastName, email, id }, status: true });
+});
+
+routerEmail.get("/logout", isAuth, (req, res, next) => {
+
+    res.clearCookie("csrfToken");
+
+    res.clearCookie("session");
+
+    req.logOut();
+
+    res.json({ status: false });
 });
 
 module.exports = routerEmail;

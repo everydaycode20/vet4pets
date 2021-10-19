@@ -45,7 +45,7 @@ const Bell = ({ socket }) => {
                 <img src={BellIcon} alt="notification"/>
             </button>
             
-            {notification && <div className="red-dot" />}
+            {notification && <div className={styles.red_dot} />}
 
             {showAppointment && appointment  && 
                 <ul className={styles.dropdown} >

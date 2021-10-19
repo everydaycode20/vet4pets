@@ -8,7 +8,6 @@ import { ProvideAuth, AuthContext } from "./utils/useAuth";
 import SideBar from "./components/sidebar/sidebar";
 import Main from "./components/home/home";
 import Appointments from "./components/appointments/appointments";
-import MedicalRecords from "./components/medical_records/medical_records";
 import Owner from "./components/owner/owner";
 import Pet from "./components/pet/pet";
 import Bell from "./components/notification_bell/bell";
@@ -17,10 +16,11 @@ import Settings from "./components/settings/settings";
 import Login from "./components/login/login";
 import Register from "./components/register/register";
 import Profile from "./components/profile/profile";
+import OwnerProfile from "./components/owner_profile/owner_profile";
 
 import Providers from "./utils/providers";
 
-import "./styles/app.scss";
+import styles from "./styles/app.module.scss";
 
 function App() {
 
@@ -33,12 +33,12 @@ function App() {
   return (
     <ProvideAuth>
       <Providers>
-          <main className="main-container">
+          <main className={styles.main_container}>
 
             {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <SideBar showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>}
             {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <Menu setShowSidebar={setShowSidebar}/>}
 
-            <section className="content-container">
+            <section className={styles.content_container}>
 
               {!(location.pathname.startsWith("/login") || location.pathname.startsWith("/register")) && <Bell socket={socket}/>}
 
@@ -50,6 +50,10 @@ function App() {
 
                 <Route path="/register">
                   <Register />
+                </Route>
+                
+                <Route path="/owners/:id">
+                  <OwnerProfile />
                 </Route>
 
                 <ProtectedRoute exact path="/">

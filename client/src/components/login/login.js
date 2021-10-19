@@ -12,6 +12,12 @@ const Login = () => {
 
     const [password, setPassword] = useState("");
 
+    useEffect(() => {
+        
+        auth.checkAuth();
+
+    }, []);
+
     const login = e => {
 
         e.preventDefault();
@@ -20,42 +26,47 @@ const Login = () => {
         
     };
 
-    if (auth.authorized) {
+    if (auth.authorized && auth.authorized !== null) {
         
         return <Redirect to="/"/>
     }
 
-    return (
-        <div className={styles.container}>
+    if (!auth.authorized && auth.authorized !== null) {
+        
+        return (
+            <div className={styles.container}>
 
-            {auth.authorized === false && 
-                <div className={styles.error} >
-                    <span>Incorrect username or password</span>
-                </div>
-            }
+                {auth.errorLogin && 
+                    <div className={styles.error} >
+                        <span>Incorrect username or password</span>
+                    </div>
+                }
 
-            <form className={styles.form} onSubmit={e => login(e)}>
+                <form className={styles.form} onSubmit={e => login(e)}>
+                    
+                    <h1>Login</h1>
+
+                    <div>
+                        <label htmlFor="username">username</label>
+                        <input type="text" id="username" name="username" onChange={e => setUsername(e.target.value)}/>
+                    </div>
+
+                    <div>
+                        <label htmlFor="password">password</label>
+                        <input type="password" id="password" name="password" onChange={e => setPassword(e.target.value)}/>
+                    </div>
+
+                    <button>login</button>
+
+                    <Link to="/register">Register</Link>
+                    
+                </form>
                 
-                <h1>Login</h1>
+            </div>
+        );
+    }
 
-                <div>
-                    <label htmlFor="username">username</label>
-                    <input type="text" id="username" name="username" onChange={e => setUsername(e.target.value)}/>
-                </div>
-
-                <div>
-                    <label htmlFor="password">password</label>
-                    <input type="password" id="password" name="password" onChange={e => setPassword(e.target.value)}/>
-                </div>
-
-                <button>login</button>
-
-                <Link to="/register">Register</Link>
-                
-            </form>
-            
-        </div>
-    );
+    return null;
 };
 
 export default Login;

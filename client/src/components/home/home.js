@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, memo, useContext } from "react";
 
 import HomeChart from "./home_chart";
 
@@ -6,9 +6,13 @@ import NextAppointments from "./next_appoinments";
 import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
 import Skeleton from "../misc/skeleton";
 
+import { AuthContext } from "../../utils/useAuth";
+
 import styles from "../../styles/home/home.module.scss";
 
 const Main = memo(() => {
+
+    const { auth } = useContext(AuthContext);
 
     const [totalPatients, setTotalPatients] = useState({year: "", month: ""});
 
@@ -23,6 +27,8 @@ const Main = memo(() => {
     const [loadingLatest, setLoadingLatest] = useState(true);
 
     useEffect(() => {
+
+        auth.checkAuth();
 
         setLoadingTopList(true);
 

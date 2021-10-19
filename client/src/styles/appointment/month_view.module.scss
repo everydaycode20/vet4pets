@@ -13,15 +13,11 @@
         height: 100%;
         background-color: white;
         border-radius: 10px;
-        border: 1px solid $greeLine;
+        border: 1px solid $borderCalendar;
 
         .day_name{
             justify-self: center;
         }
-
-        // & .day_month:nth-last-child(n + 8){
-        //     border-bottom: 1px solid $greeLine;
-        // }
 
         & .day_month:nth-last-child(7n){
             border-left: none;
@@ -36,8 +32,8 @@
         }
 
         .day_month{
-            border-left: 1px solid $greeLine;
-            border-top: 1px solid $greeLine;
+            border-left: 1px solid $borderCalendar;
+            border-top: 1px solid $borderCalendar;
             display: flex;
             flex-direction: column;
             padding: 5px;

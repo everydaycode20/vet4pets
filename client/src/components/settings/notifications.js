@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
 import Check from "../../assets/check_.svg";
 import Close from "../../assets/close_.svg";

@@ -17,9 +17,7 @@ const SideBar = ({ showSidebar, setShowSidebar }) => {
 
     const { auth } = useContext(AuthContext);
 
-    const [user, setUser] = useState( auth.user );
-
-    console.log(user);
+    const [ user ] = useState( auth.user );
 
     const [minimize, setMinimize] = useState(localStorage.getItem("sidebar") === "true" || false);
     
