@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
+
+import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/pet/add_pet.module.scss";
 
@@ -18,6 +21,8 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
 
     const [errorMessage, setErrorMessage] = useState( { "name":{"status": true, "message": ""}, "age": {"status": true, "message": ""},
         "type": {"status": true, "message": ""}, "owner": {"status": true, "message": ""} } );
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         
@@ -66,34 +71,46 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
 
     };
 
-    const addOwner = (e) => {
-        
+    function addPet(e) {
+
         e.preventDefault();
 
-        const {name, age} = e.target.elements;
+        const cookie = getCookie("csrfToken");
+
+        const { name, age } = e.target.elements;
 
         if (name.value === "") {
-            setErrorMessage(prev => ({...prev, name: {status: false, message: "there should be a name"}}));
+            setErrorMessage(prev => ({ ...prev, name: { status: false, message: "there should be a name" } }));
         }
         else if (age.value === "") {
-            setErrorMessage(prev => ({...prev, age: {status: false, message: "you should type an age"}}));
+            setErrorMessage(prev => ({ ...prev, age: { status: false, message: "you should type an age" } }));
         }
         else if (type.typeName === "") {
-            setErrorMessage(prev => ({...prev, type: {status: false, message: "you should select a type"}}));
+            setErrorMessage(prev => ({ ...prev, type: { status: false, message: "you should select a type" } }));
         }
         else if (ownerName === "") {
-            setErrorMessage(prev => ({...prev, owner: {status: false, message: "you should select an owner"}}));
+            setErrorMessage(prev => ({ ...prev, owner: { status: false, message: "you should select an owner" } }));
         }
-        else{
+        else {
             fetch("/pet",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({id_owner: ownerId, name: name.value, age: age.value , id_type: type.idType})
-            }
-            ).then(res => res.json()).then(data => {
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "CSRF-TOKEN": cookie
+                    },
+                    body: JSON.stringify({ id_owner: ownerId, name: name.value, age: age.value, id_type: type.idType })
+                }
+            ).then(res =>{ 
+            
+                if (!res.ok) {
+                    setError(true);
+                }
+                else{
+                    return res.json()
+                }
+                
+            }).then(data => {
 
                 if (data.status) {
                     setAddPet(false);
@@ -102,13 +119,18 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
 
             });
         }
+
+    }
+
+    if (error) {
         
+        return <Redirect to="/login"/>
     };
 
     return (
 
         <div className={styles.container} onClick={(e) => hideMenu(e.target)}>
-            <form className={styles.form} onSubmit={e => addOwner(e)}>
+            <form className={styles.form} onSubmit={e => addPet(e)}>
                 
                 <div className={styles.name}>
                     <label htmlFor="name">Pet name</label>

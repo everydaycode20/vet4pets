@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 import Calendar from "../calendar/calendar";
 import DropdownEdit from "../misc/dropdown_edit";
+
+import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/appointment/add_appointment.module.scss";
 
@@ -28,6 +31,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
     const arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     const [appointmentColor, setAppointmentColor] = useState("");
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         
@@ -111,15 +116,26 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
     
     const saveAppointment = (date) => {
 
+        const cookie = getCookie("csrfToken");
+
         fetch("/appointment",
         {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "CSRF-TOKEN": cookie
             },
             body: JSON.stringify({"date_appointment": `${date.year}-${date.monthIndex}-${date.date} ${date.hour}`, "id_pet": appointment.id_pet, "id_owner": appointment.id_owner, "appointment_type": appointment.appointment_type})
-        }
-        ).then(res => res.json()).then(data => {
+        }).then(res =>{ 
+            
+            if (!res.ok) {
+                setError(true);
+            }
+            else{
+                return res.json()
+            }
+            
+        }).then(data => {
             
             if (data.status) {
                 
@@ -148,10 +164,18 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
                 socket.emit("new appointment", "");
             }
+            else{
+                
+            }
         });
 
     };
     
+    if (error) {
+        
+        return <Redirect to="/login"/>
+    };
+
     return (
 
         <div className={styles.container} onClick={(e) => hideMenu(e.target)}>

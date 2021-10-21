@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, Switch, Route, useRouteMatch, NavLink } from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch, NavLink, Redirect } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
+
+import getCookie from "../../utils/getCookie";
 
 import styles from  "../../styles/settings/pet_type.module.scss";
 import "../../styles/settings/current.scss";
@@ -24,6 +26,8 @@ const PetType = ({ setMessage }) => {
     const [breedList, setBreedList] = useState([]);
 
     const [breedId, setBreedId] = useState("");
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         
@@ -48,6 +52,8 @@ const PetType = ({ setMessage }) => {
 
         const { description } = e.target.elements;
         
+        const cookie = getCookie("csrfToken");
+
         if (description.value === "") {
 
             setErrorMessage(prev => ({...prev, description: {status: false, message: "there should be a description"}}));
@@ -62,10 +68,20 @@ const PetType = ({ setMessage }) => {
             fetch("/pet/type", {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-TOKEN": cookie
                 },
                 body: JSON.stringify({type_description: description.value, id_breed: breedId})
-            }).then(res => res.json()).then(data => {
+            }).then(res =>{ 
+            
+                if (!res.ok) {
+                    setError(true);
+                }
+                else{
+                    return res.json()
+                }
+                
+            }).then(data => {
 
                 if (!data.status) {
                     
@@ -91,6 +107,11 @@ const PetType = ({ setMessage }) => {
 
     };
     
+    if (error) {
+        
+        return <Redirect to="/login"/>
+    };
+
     return (
         <div className={styles.pet_container}>
 
@@ -124,12 +145,16 @@ const Breed = ({ setMessage }) => {
 
     const [errorMessageBreed, setErrorMessageBreed] = useState({"description": {"status": true, "message": ""} } );
 
+    const [error, setError] = useState(false);
+
     const addBreedType = (e) => {
 
         e.preventDefault();
 
         const { description } = e.target.elements;
         
+        const cookie = getCookie("csrfToken");
+
         if (description.value === "") {
 
             setErrorMessageBreed(prev => ({...prev, description: {status: false, message: "there should be a description"}}));
@@ -139,10 +164,20 @@ const Breed = ({ setMessage }) => {
             fetch("/pet/type/breed", {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-TOKEN": cookie
                 },
                 body: JSON.stringify( { breed_description: description.value } )
-            }).then(res => res.json()).then(data => {
+            }).then(res =>{ 
+            
+                if (!res.ok) {
+                    setError(true);
+                }
+                else{
+                    return res.json()
+                }
+                
+            }).then(data => {
 
                 if (!data.status) {
                     
@@ -160,6 +195,11 @@ const Breed = ({ setMessage }) => {
 
     };
 
+    if (error) {
+        
+        return <Redirect to="/login"/>
+    };
+    
     return (
         <div className={styles.breed_container}>
             <h2>Add a new breed type</h2>

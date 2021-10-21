@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
 import { TimeSettings } from "../../utils/providers";
+
+import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
@@ -42,6 +44,8 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
     const [markTop, setMarkTop] = useState({"minutes": 0});
 
     const [loading, setLoading] = useState(true);
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -135,19 +139,36 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
         
         setAppointmentsWeek(newObj);
 
+        const cookie = getCookie("csrfToken");
+
         fetch("/appointment", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                "CSRF-TOKEN": cookie
             },
             body: JSON.stringify({id: idDB})
-        }).then(res => res.json()).then(data => {
+        }).then(res =>{ 
+            
+            if (!res.ok) {
+                setError(true);
+            }
+            else{
+                return res.json()
+            }
+            
+        }).then(data => {
             
 
             
         }).catch(err => console.log(err));
 
         setShowOptions(null);
+    };
+
+    if (error) {
+        
+        return <Redirect to="/login"/>
     };
 
     return (

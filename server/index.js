@@ -41,8 +41,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
 
 app.use(session({
-    key: "session",
-    secret: "secret",
+    key: process.env.KEY,
+    secret: process.env.SECRET,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
@@ -55,7 +55,7 @@ require("./passport/local_strategy");
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(csrfToken);
+app.all('*', csrfToken);
 
 app.use( router_email, appointment_router, owner_router, pet_router, checkup_router, vet_router, router_profile );
 

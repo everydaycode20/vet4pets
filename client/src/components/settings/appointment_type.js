@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+
 import ColorPicker from "./color_picker/color-picker";
 
-import Close from "../../assets/close_.svg";
+import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/settings/appointment_type.module.scss";
 
@@ -27,11 +28,15 @@ const AppointmentType = () => {
 
     const [message, setMessage] = useState(false);
 
+    const [fetchError, setFetchError] = useState(false);
+
     const addType = (e) => {
 
         e.preventDefault();
 
         const { name } = e.target.elements;
+
+        const cookie = getCookie("csrfToken");
 
         if (name.value === "") {
             setError(true);
@@ -41,10 +46,20 @@ const AppointmentType = () => {
             fetch("/appointment/type", {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-TOKEN": cookie
                 },
                 body: JSON.stringify({appointment_type: name.value, color: color || "#135A5A"})
-            }).then(res => res.json()).then(data => {
+            }).then(res =>{ 
+            
+                if (!res.ok) {
+                    setFetchError(true);
+                }
+                else{
+                    return res.json()
+                }
+                
+            }).then(data => {
 
                 if (!data.status) {
                     setErrorMessage(data.message);
@@ -57,6 +72,11 @@ const AppointmentType = () => {
             }).catch(err => console.log(err));
         }
 
+    };
+
+    if (fetchError) {
+        
+        return <Redirect to="/login"/>
     };
 
     return (

@@ -1,5 +1,6 @@
 const owner_router = require("express").Router();
 
+const { getCsrfToken } = require("../utils/csrfToken");
 const connection = require("../utils/database_connection");
 
 owner_router.get("/owners", (req, res, next) => {
@@ -32,7 +33,7 @@ owner_router.post("/owner/pets", (req, res, next) => {
     });
 });
 
-owner_router.post("/owner", (req, res, next) => {
+owner_router.post("/owner", getCsrfToken, (req, res, next) => {
 
     const {name, email, address, phone, idPhone} = req.body;
 

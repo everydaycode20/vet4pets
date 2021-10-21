@@ -28,6 +28,8 @@ const Main = memo(() => {
 
     useEffect(() => {
 
+        let controller = new AbortController();
+
         auth.checkAuth();
 
         setLoadingTopList(true);
@@ -80,6 +82,8 @@ const Main = memo(() => {
             setLoadingLatest(false);
 
         }).catch(err => console.log(err));
+
+        return () => controller?.abort();
 
     }, []);
 

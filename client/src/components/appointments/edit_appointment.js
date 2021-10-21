@@ -4,6 +4,8 @@ import { useLocation, Link, useHistory } from "react-router-dom";
 import Calendar from "../calendar/calendar";
 import DropdownEdit from "../misc/dropdown_edit";
 
+import getCookie from "../../utils/getCookie";
+
 import styles from "../../styles/appointment/edit.module.scss";
 
 const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage, socket, setMessageContent }) => {
@@ -142,11 +144,14 @@ const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage,
     
     const editAppointment = (date) => {
 
+        const cookie = getCookie("csrfToken");
+
         fetch("/appointment",
         {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "CSRF-TOKEN": cookie
             },
             body: JSON.stringify({"date_appointment": `${date.year}-${date.monthIndex}-${date.date} ${date.hour}`, "id_pet": appointment.id_pet, "id_owner": appointment.id_owner, "appointment_type": appointment.appointment_type, "id": idDB})
         }

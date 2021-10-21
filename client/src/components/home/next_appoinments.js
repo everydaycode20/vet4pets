@@ -42,7 +42,11 @@ const NextAppointments = () => {
     const [date, setDate] = useState({ day: new Date().getDay() === 0 ? arr[new Date().getDay() + 1] : arr[new Date().getDay()], date: new Date().getDay() === 0 ? new Date().getDate() + 1 : new Date().getDate(), month: new Date().getMonth(), "year": new Date().getFullYear() });
     
     useEffect(() => {
+
+        let controller = new AbortController();
+
         setLoading(true);
+
         fetch("/appointments/day", {
             method: "POST",
             headers: {
@@ -55,6 +59,8 @@ const NextAppointments = () => {
             setLoading(false);
         }).catch(err => console.log(err));
         
+        return () => controller?.abort();
+
     }, []);
 
     const prevDay = () => {

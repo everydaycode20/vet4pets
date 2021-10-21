@@ -2,6 +2,8 @@ const pet_router = require("express").Router();
 
 const connection = require("../utils/database_connection");
 
+const getCsrfToken = require("../utils/csrfToken").getCsrfToken;
+
 pet_router.get("/pets/owners", (req, res, next) => {
 
     connection.query("select id, nameOwner from petOwner", (err, rows, fields) => {
@@ -54,7 +56,7 @@ pet_router.get("/pets", (req, res, next) => {
     });
 });
 
-pet_router.post("/pet", (req, res, next) => {
+pet_router.post("/pet", getCsrfToken, (req, res, next) => {
 
     const { id_owner, name, age, id_type } = req.body;
 
@@ -66,7 +68,7 @@ pet_router.post("/pet", (req, res, next) => {
     });
 });
 
-pet_router.post("/pet/type", (req, res, next) => {
+pet_router.post("/pet/type", getCsrfToken, (req, res, next) => {
 
     const { type_description, id_breed } = req.body;
 
@@ -82,7 +84,7 @@ pet_router.post("/pet/type", (req, res, next) => {
     });
 });
 
-pet_router.post("/pet/type/breed", (req, res, next) => {
+pet_router.post("/pet/type/breed", getCsrfToken, (req, res, next) => {
 
     const {breed_description} = req.body;
 

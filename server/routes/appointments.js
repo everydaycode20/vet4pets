@@ -5,6 +5,8 @@ const nanoid = require("nanoid");
 const addZeroToString = require("../utils/addZerosToString");
 const checkHours = require("../utils/checkHours").checkHours;
 
+const getCsrfToken = require("../utils/csrfToken").getCsrfToken;
+
 const connection = require("../utils/database_connection");
 
 appointment_router.post("/appointments/day/hours", (req, res, next) => {
@@ -288,10 +290,10 @@ appointment_router.get("/appointments/pet", (req, res, next) => {
     });
 });
 
-appointment_router.post("/appointment", (req, res, next) => {
+appointment_router.post("/appointment", getCsrfToken, (req, res, next) => {
     
     const {date_appointment, id_pet, id_owner, appointment_type} = req.body;
-    
+
     connection.query("insert into appointments (dateAppointment, idPet, idOwner, appointmentType) values (?, ?, ?, ?)", [date_appointment, id_pet, id_owner, appointment_type], (err, results, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error with the database"});
@@ -301,7 +303,7 @@ appointment_router.post("/appointment", (req, res, next) => {
 
 });
 
-appointment_router.post("/appointment/type", (req, res, next) => {
+appointment_router.post("/appointment/type", getCsrfToken, (req, res, next) => {
 
     const { appointment_type, color} = req.body;
 
@@ -318,7 +320,7 @@ appointment_router.post("/appointment/type", (req, res, next) => {
 
 });
 
-appointment_router.delete("/appointment", (req, res, next) => {
+appointment_router.delete("/appointment", getCsrfToken, (req, res, next) => {
 
     const {id} = req.body;
 
@@ -384,7 +386,7 @@ appointment_router.post("/appointments/month", (req, res, next) => {
 
 });
 
-appointment_router.put("/appointment", (req, res, next) => {
+appointment_router.put("/appointment", getCsrfToken, (req, res, next) => {
 
     const { date_appointment, id_pet, id_owner, appointment_type, id } = req.body;
     

@@ -69,6 +69,8 @@ const HomeChart = () => {
   };
 
   const getMonthlyData = () => {
+    
+    let controller = new AbortController();
 
     const year = new Date().getFullYear();
 
@@ -101,7 +103,7 @@ const HomeChart = () => {
       setMonthlyData(prev => ({...prev, status: true}))
     }
 
-    
+    return () => controller?.abort();
 
   };
 
@@ -123,6 +125,8 @@ const HomeChart = () => {
 
   useEffect(() => {
     
+    let controller = new AbortController();
+
     let datesWeek = {date1: "", date2: "", date3: "", date4: "", date5: ""};
 
     const currentDate = new Date();
@@ -159,6 +163,8 @@ const HomeChart = () => {
       setData(state);
 
     }).catch(err => console.log(err));
+
+    return () => controller?.abort();
 
   }, []);
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 import GenericDropdown from "../misc/generic_dropdown";
+
+import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/owner/add_owner.module.scss";
 
@@ -14,6 +17,8 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
 
     const [errorMessage, setErrorMessage] = useState( { "name":{"status": true, "message": ""}, "phone": {"status": true, "message": ""},
         "email": {"status": true, "message": ""}, "address": {"status": true, "message": ""}, "phoneType": {"status": true, "message": ""} } );
+
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         
@@ -48,6 +53,8 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
     const addOwner = (e) => {
         
         e.preventDefault();
+        
+        const cookie = getCookie("csrfToken");
 
         const {name, telephone, email, address} = e.target.elements;
 
@@ -71,18 +78,27 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "CSRF-TOKEN": cookie
                 },
                 body: JSON.stringify({"name": name.value, "email": email.value, "address": address.value, "phone": telephone.value, "idPhone": telephoneTypeId})
             }
-            ).then(res => res.json()).then(data => {
+            ).then(res =>{ 
+            
+                if (!res.ok) {
+                    setError(true);
+                }
+                else{
+                    return res.json()
+                }
+                
+            }).then(data => {
 
                 if (data.status) {
                     setAddNewOwner(false);
                     setOwnerMessage(true);
 
                     let data = JSON.parse(JSON.stringify(ownerList));
-
                     
                     data.push({id: Math.random(), nameOwner: name.value, email: email.value, address: address.value, telephones: [telephone.value], idPhone: telephoneTypeId, registerDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`});
 
@@ -92,6 +108,11 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
             });
         }
         
+    };
+
+    if (error) {
+        
+        return <Redirect to="/login"/>
     };
 
     return (
