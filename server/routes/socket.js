@@ -17,7 +17,7 @@ module.exports.socket = io => {
                 const timeArr = [ new Date().getFullYear(), new Date().getMonth(), new Date().getDate()];
 
                 removeJobs(schedule);
-
+                
                 rows[0].forEach(elm => {
 
                     const obj = {"hour": addZeroToString.addZeroToLeft(elm.hour), "minute": addZeroToString.addZeroToRight(elm.minute), "nameOwner": elm.nameowner, "namePet": elm.namepet, "appointmentName": elm.appointmentName};

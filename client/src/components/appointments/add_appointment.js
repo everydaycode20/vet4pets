@@ -164,9 +164,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
                 socket.emit("new appointment", "");
             }
-            else{
-                
-            }
+            
         });
 
     };

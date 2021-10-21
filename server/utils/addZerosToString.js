@@ -11,7 +11,7 @@
 module.exports.addZeroToLeft = (number) => {
     
     if (number.toString().length === 1) {
-        return "0" + number;
+        return number.toString().padStart(2, "0");
     }
 
     return number;
@@ -28,7 +28,7 @@ module.exports.addZeroToLeft = (number) => {
 module.exports.addZeroToRight = (number) => {
 
     if (number.toString().length === 1) {
-        return number + "0";
+        return number.toString().padEnd( number.toString().length + 1, "0");
     }
 
     return number;

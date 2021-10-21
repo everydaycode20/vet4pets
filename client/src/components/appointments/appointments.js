@@ -39,6 +39,10 @@ const Appointments = ({ socket }) => {
     "July", "August", "September", "October", "November", "December" ];
 
     useEffect(() => {
+        socket.emit("new appointment", "");
+    });
+
+    useEffect(() => {
         
         let objWeek = [{"day": "monday", "date": 0,  "month": "", "year": "", "monthIndex": ""}, {"day": "tuesday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "wednesday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "thursday", "date": 0, "month": "", "year": "", "monthIndex": ""}, {"day": "friday", "date": 0, "month": "" ,"year": "", "monthIndex": ""}];
         
@@ -103,8 +107,6 @@ const Appointments = ({ socket }) => {
             setDate(null);
             setMakeAppointment(true);
         }
-
-        // if(makeAppointment) setMakeAppointment(false);
 
     };
 
