@@ -6,7 +6,7 @@ const getCsrfToken = require("../utils/csrfToken").getCsrfToken;
 
 pet_router.get("/pets/owners", (req, res, next) => {
 
-    connection.query("select id, nameOwner from petOwner", (err, rows, fields) => {
+    connection.query("select id, nameOwner from petOwner order by nameOwner", (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
 

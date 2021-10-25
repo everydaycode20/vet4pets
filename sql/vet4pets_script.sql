@@ -135,6 +135,16 @@ create table checkUp(
     foreign key (idOwner) references petOwner(id)
 );
 
+create table adminUser(
+	id int not null auto_increment primary key,
+    user varchar(100) not null unique,
+	name varchar(50) not null,
+    lastName varchar(100) not null,
+    password varchar(300) not null,
+    email varchar(100) not null unique,
+    image varchar(200) null
+);
+
 DELIMITER $$
 create procedure getAppointmentsByDate(in d date)
 BEGIN
@@ -342,6 +352,30 @@ BEGIN
 END $$
 DELIMITER;
 
+DELIMITER $$
+create procedure getNumberAppointmentsByMonth(in m int, in y int)
+BEGIN
+	select count(*) as count, dayofmonth(appointments.dateappointment) as day, monthname(appointments.dateappointment) as month, year(appointments.dateappointment) as year
+	from appointments
+	where month(appointments.dateappointment) = m and year(appointments.dateappointment) = y group by dayofmonth(appointments.dateappointment) order by appointments.dateappointment asc;
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure editAppointment(in d datetime, in a int, in p int, in o int, in id int)
+BEGIN
+	update appointments
+	set dateappointment = d, appointmenttype = a, idpet = p, idowner = o
+	where appointments.id = id;
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure createUser(in u varchar(100), in n varchar(50), in l varchar(100), in e varchar(100), in p varchar(300))
+BEGIN
+	insert into adminUser (user, name, lastname, password, email) values (u, n, l, p, e);
+END $$
+DELIMITER;
 
 
 

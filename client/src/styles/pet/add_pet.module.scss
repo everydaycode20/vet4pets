@@ -36,20 +36,6 @@
         
         .owner, .type{
 
-            .dropdown{
-                background-color: white;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                position: relative;
-                border: 2px solid var(--border);
-                font-size: 1.1rem;
-                width: max-content;
-                padding: 10px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
             .pet_dropdown{
                 height: 100px;
             }
@@ -59,11 +45,9 @@
             }
 
             .pet_dropdown, .owner_dropdown{
-                position: absolute;
                 background-color: white;
                 padding: 10px 0;
                 width: max-content;
-                box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.11);
                 display: flex;
                 flex-direction: column;
                 grid-row-gap: 5px;
@@ -71,8 +55,7 @@
                 cursor: default;
                 z-index: 50;
                 overflow-y: scroll;
-                top: 100%;
-                width: 80%;
+                width: 100%;
 
                 button{
                     background-color: transparent;
@@ -100,7 +83,7 @@
                 width: max-content;
             }
 
-            input{
+            .input{
                 padding: 5px;
                 width: 50%;
                 font-size: 1rem;

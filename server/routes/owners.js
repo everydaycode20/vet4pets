@@ -10,7 +10,7 @@ owner_router.get("/owners", (req, res, next) => {
         if(err) res.json({"status": false, "message": "there was an error in the database"});
 
         const arr = [];
-
+        
         rows[0].forEach(elm => {
             
             arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate});

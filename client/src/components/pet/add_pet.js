@@ -7,7 +7,7 @@ import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/pet/add_pet.module.scss";
 
-const AddPet = ({ setAddPet, setPetMessage }) => {
+const AddPet = ({ setAddPet, setPetMessage, petList, setPetList }) => {
 
     const [ownersList, setOwnersList] = useState([]);
 
@@ -18,6 +18,8 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
     const [petTypeList, setPetTypeList] = useState([]);
 
     const [type, setType] = useState({typeName: "", idType: "", typeBreed: "", idBreed: ""});
+
+    const [tempData, setTempData] = useState(null);
 
     const [errorMessage, setErrorMessage] = useState( { "name":{"status": true, "message": ""}, "age": {"status": true, "message": ""},
         "type": {"status": true, "message": ""}, "owner": {"status": true, "message": ""} } );
@@ -34,7 +36,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
         ).then(res => res.json()).then(data => {
             
             setOwnersList(data);
-
+            setTempData(data);
         });
 
         fetch("/pets/type",
@@ -64,7 +66,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
         setOwnerId(id);
 
     };
-
+    
     const getType = (typeName, idType, breedName, idBreed) => {
         
         setType(prev => ({ ...prev, typeName: typeName, idType: idType, typeBreed: breedName, idBreed: idBreed}));
@@ -113,20 +115,53 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
             }).then(data => {
 
                 if (data.status) {
+                    
                     setAddPet(false);
                     setPetMessage(true);
+
+                    const obj = {age: age.value, id: Math.random(), nameOwner: ownerName, namePet: name.value, registerDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`, type: type.typeName};
+                    
+                    const sortedArray = [ ...petList, obj ].sort((a, b) => {
+
+                        if (a.namePet < b.namePet) {
+                            return -1;
+                        }
+                        if (a.namePet > b.namePet) {
+                            return 1;
+                        }
+
+                        return 0;
+
+                    });
+                    
+                    setPetList(sortedArray );
                 }
 
             });
         }
 
     }
+        
+    const searchName = (e) => {
+
+        const newObj = tempData.filter(elm => elm.nameOwner.includes(e));
+
+        setOwnersList(newObj);
+
+        if (e === "") {
+            
+            console.log("si");
+
+            setOwnersList(tempData);
+        }
+
+    };
 
     if (error) {
         
         return <Redirect to="/login"/>
     };
-
+    
     return (
 
         <div className={styles.container} onClick={(e) => hideMenu(e.target)}>
@@ -134,7 +169,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                 
                 <div className={styles.name}>
                     <label htmlFor="name">Pet name</label>
-                    <input type="text" name="name" id="name" />
+                    <input type="text" name="name" id="name" className={styles.input}/>
                 </div>
                 {!errorMessage.name.status && 
                     <div>
@@ -143,7 +178,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                 }
                 <div className={styles.age}>
                     <label htmlFor="age">Age</label>
-                    <input type="text" name="age" id="age" />
+                    <input type="text" name="age" id="age" className={styles.input}/>
                 </div>
                 {!errorMessage.age.status && 
                     <div>
@@ -151,7 +186,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                     </div>
                 }
                 <div className={styles.type}>
-                    <GenericDropdown title={type.typeName ? type.typeName + "-" + type.typeBreed : "Choose a type"}>
+                    <GenericDropdown title={type.typeName ? type.typeName + "-" + type.typeBreed : "Choose a type"} >
                         <div className={styles.pet_dropdown}>
                             {petTypeList.map(type => {
 
@@ -166,7 +201,7 @@ const AddPet = ({ setAddPet, setPetMessage }) => {
                     </div>
                 }
                 <div className={styles.owner}>
-                    <GenericDropdown title={ownerName || "Choose an owner"}>
+                    <GenericDropdown title={ownerName || "Choose an owner"} search={true} data={ownersList} setData={setOwnersList} event={searchName}>
                         <div className={styles.owner_dropdown}>
                             {ownersList.map(owner => {
 

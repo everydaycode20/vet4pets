@@ -3,6 +3,6 @@ module.exports.isAuth = (req, res, next) => {
         next();
     }
     else{
-        res.json({status: false });
+        res.status(401).json({status: false });
     }
 };

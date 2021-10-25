@@ -8,11 +8,9 @@ import Skeleton from "../misc/skeleton";
 
 import styles from "../../styles/pet/pet.module.scss";
 
-const PetList = ( { setNumberPets }) => {
-
+const PetList = ( { setNumberPets, petList, setPetList } ) => {
+    
     const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
-
-    const [petList, setPetList] = useState([]);
 
     const [loading, setLoading] = useState(true);
 

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { header, title} from "../../styles/pet/pet.module.scss";
 
-const Header = () => {
+const Header = memo(() => {
     
     return (
         <header className={header}>
@@ -11,6 +11,6 @@ const Header = () => {
             </div>
     </header>
     );
-};
+});
 
 export default Header;
