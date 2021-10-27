@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 
 import Calendar from "../calendar/calendar";
 import DropdownEdit from "../misc/dropdown_edit";
+import GenericDropdown from "../misc/generic_dropdown";
 
 import getCookie from "../../utils/getCookie";
 
@@ -34,6 +35,8 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
     const [error, setError] = useState(false);
 
+    const [tempData, setTempData] = useState(null);
+
     useEffect(() => {
         
         fetch("/owners",
@@ -42,6 +45,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
             }
         ).then(res => res.json()).then(data => {
             setOwnerList(data);
+            setTempData(data);
         });
 
         fetch("/appointments/type",
@@ -169,6 +173,19 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
     };
     
+    const searchName = (e) => {
+
+        const newObj = tempData.filter(elm => elm.nameOwner.includes(e));
+
+        setOwnerList(newObj);
+
+        if (e === "") {
+
+            setOwnerList(tempData);
+        }
+
+    };
+
     if (error) {
         
         return <Redirect to="/login"/>
@@ -194,7 +211,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                         </DropdownEdit>
                     </div>
                     <div className={styles.owner}>
-                        <DropdownEdit title={owner} defaultTitle={"Add owner"} center={true}>
+                        <GenericDropdown title={owner || "Add owner"} center={true} search={true} event={searchName}>
                             <div className={styles.owner_dropdown}>
                                 {ownerList.map((item, index) => {
 
@@ -203,11 +220,11 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                                     )
                                 })}
                             </div>
-                        </DropdownEdit>
+                        </GenericDropdown>
                     </div>
                     {btnActive.step2 && <div className={styles.pet}>
                         <DropdownEdit title={pet} defaultTitle={"Add pet"} center={true}>
-                            <div className={styles.owner_dropdown}>
+                            <div className={styles.pet_dropdown}>
                                 {petList.map((item, index) => {
 
                                     return (

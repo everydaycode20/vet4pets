@@ -149,8 +149,6 @@ const AddPet = ({ setAddPet, setPetMessage, petList, setPetList }) => {
         setOwnersList(newObj);
 
         if (e === "") {
-            
-            console.log("si");
 
             setOwnersList(tempData);
         }

@@ -94,7 +94,35 @@
                     }
                 }
 
-                .service_dropdown, .owner_dropdown, .pet_dropdown{
+                .owner_dropdown{
+                    height: 400px;
+                    background-color: white;
+                    padding: 10px 0;
+                    width: max-content;
+                    display: flex;
+                    flex-direction: column;
+                    grid-row-gap: 5px;
+                    row-gap: 5px;
+                    cursor: default;
+                    z-index: 50;
+                    overflow-y: scroll;
+                    width: 100%;
+
+                    button{
+                        background-color: transparent;
+                        font-size: 1.1rem;
+                        margin-left: 10px;
+                        text-align: left;
+                        padding: 2px;
+                        border: none;
+
+                        &:hover{
+                            background-color: $lightGreenBackground;
+                        }
+                    }
+                }
+
+                .service_dropdown, .pet_dropdown{
                     position: absolute;
                     background-color: white;
                     top: 100%;
@@ -107,7 +135,7 @@
                     row-gap: 5px;
                     cursor: default;
                     z-index: 50;
-                    height: 120px;
+                    height: 150px;
                     overflow-y: scroll;
 
                     button{
