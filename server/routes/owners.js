@@ -24,11 +24,11 @@ owner_router.get("/owners", (req, res, next) => {
 owner_router.post("/owner/pets", (req, res, next) => {
 
     const {id} = req.body;
-
+    
     connection.query("select id, namePet from pet where idPetOwner = ?", [id], (err, rows, fields) => {
         
         if(err) res.json({"status": false, "message": "there was an error in the database"});
-
+        
         res.json(rows);
     });
 });

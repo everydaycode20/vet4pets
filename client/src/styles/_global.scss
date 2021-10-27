@@ -15,6 +15,10 @@ $pink3: #f32851;
 $lightGrey: #e7e7e7;
 $borderCalendar: #3a635191;
 
+@mixin shadow {
+    box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+}
+
 @mixin dotMainContainer {
     position: absolute;
     top: 20%;

@@ -18,6 +18,7 @@
             flex-direction: row;
             margin-left: 50px;
             column-gap: 20px;
+            flex-wrap: wrap;
 
             h1{
                 font-size: 1.7rem;
@@ -51,6 +52,8 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        row-gap: 10px;
 
         .dates_control{
             display: flex;

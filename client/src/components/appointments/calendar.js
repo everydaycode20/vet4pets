@@ -5,6 +5,7 @@ import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
 import { TimeSettings } from "../../utils/providers";
+import Skeleton from "../misc/skeleton";
 
 import getCookie from "../../utils/getCookie";
 
@@ -48,7 +49,9 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
     const [error, setError] = useState(false);
 
     useEffect(() => {
+
         setLoading(true);
+
         if (week) {
             
             fetch("/appointments/day-week", {
@@ -64,8 +67,9 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                 setLoading(false);
 
             }).catch(err => console.log(err));
-
+            
         }
+
     }, [week]);
     
     useEffect(() => {
@@ -170,9 +174,10 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
         
         return <Redirect to="/login"/>
     };
-
+    //<Skeleton height={800} width={90} backgroundColor="#CDF0EA" number={1}/>
     return (
         <div className={styles.calendar}>
+            
             {loading ? <div className={styles.inner_calendar}></div> :
             <div className={styles.inner_calendar}>
                 <div className={styles.week_days}>

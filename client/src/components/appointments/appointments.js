@@ -109,12 +109,12 @@ const Appointments = ({ socket }) => {
         }
 
     };
-
+    
     return (
             <div className={styles.container}>
                 <div>
                     <Header setCalendarView={setCalendarView} calendarView={calendarView}/>
-                    <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments} calendarView={calendarView} month={month} setNewMonth={setNewMonth} newMonth={newMonth}/>
+                    <CalendarControls getPrevWeek={getPrevWeek} week={week} getNextWeek={getNextWeek} currentYear={currentYear} addAppointments={addAppointments} calendarView={calendarView} month={month} setNewMonth={setNewMonth} newMonth={newMonth} setNewWeek={setNewWeek} />
                 </div>
                 <div></div>
                 {calendarView === "weekly" && <Calendar newWeek={newWeek} week={week} setWeek={setWeek} setCurrentYear={setCurrentYear} addAppointments={addAppointments} setAppointmentsWeek={setAppointmentsWeek} appointmentsWeek={appointmentsWeek} setDate={setDate} setMakeAppointment={setMakeAppointment}/>}

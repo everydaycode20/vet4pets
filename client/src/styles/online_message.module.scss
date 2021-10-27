@@ -1,0 +1,32 @@
+@import "../styles/global";
+
+.container{
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    background-color: white;
+    padding: 10px;
+    z-index: 300;
+    border-radius: 5px;
+    border-top: 4px solid $pink3;
+    @include shadow;
+    animation: slideDown 0.4s ease-in forwards;
+
+}
+
+@keyframes slideDown {
+    
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    15% {
+        opacity: 0.2;
+        transform: translateY(10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+
+}

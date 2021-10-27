@@ -9,7 +9,7 @@ import getCookie from "../../utils/getCookie";
 import styles from "../../styles/appointment/edit.module.scss";
 
 const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage, socket, setMessageContent }) => {
-
+    
     const location = useLocation();
 
     const history = useHistory();
@@ -52,7 +52,7 @@ const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage,
         ).then(res => res.json()).then(data => {
 
             const found = data.find(elm => elm.nameOwner === nameOwner);
-
+            
             fetch("/owner/pets",
                 {
                     method: "POST",
@@ -73,7 +73,7 @@ const EditAppointment = ({ setAppointmentsWeek, appointmentsWeek, setAppMessage,
 
             setAppointment(prev => ({...prev, id_owner: found.id}));
 
-        });
+        }).catch(err => console.log(err));
 
         fetch("/appointments/type",
         {
