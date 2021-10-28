@@ -1,0 +1,44 @@
+[notification = "true"]{
+    --anim: ring 1s ease-in-out forwards;
+}
+
+.bell{
+    border: none;
+    background-color: transparent;
+    animation: var(--anim);
+    cursor: pointer;
+
+    img{
+        width: 35px;
+    }
+    
+}
+
+@keyframes ring {
+
+    0% {
+        transform: rotate(35deg);
+    }
+    12.5% {
+        transform: rotate(-30deg);
+    }
+    25% {
+        transform: rotate(25deg);
+    }
+    37.5% {
+        transform: rotate(-20deg);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+    62.5% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+
+}

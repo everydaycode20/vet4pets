@@ -4,6 +4,7 @@ import BellIcon from "../../assets/bell_filled.svg";
 import useAudio from "../../utils/useAudio";
 
 import styles from "../../styles/bell.module.scss";
+import "../../styles/bell_anim.scss";
 
 const Bell = ({ socket }) => {
     
@@ -40,8 +41,8 @@ const Bell = ({ socket }) => {
     };
     
     return (
-        <div className={styles.container}>
-            <button onClick={() => showNotification()} notification={notification.toString()}>
+        <div className={styles.container} >
+            <button className="bell" onClick={() => showNotification()}  notification={notification.toString()}>
                 <img src={BellIcon} alt="notification"/>
             </button>
             
