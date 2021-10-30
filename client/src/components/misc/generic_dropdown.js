@@ -66,7 +66,7 @@ const GenericDropdown = ({ id, title, center = false, search = false, event, ...
 
     return (
         <div onClick={(e) => getOptions(e)} onBlur={(e) => hideOptions(e)} className={btnContainer} center={center.toString()}>
-            <button type="button" className={btnEdit} btndropdown={showOptions.toString()}>
+            <button type="button" className={btnEdit} btndropdown={showOptions.toString()}  data-testid="btn">
                 {title}
             </button>
             

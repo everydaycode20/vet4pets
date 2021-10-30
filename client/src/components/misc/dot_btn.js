@@ -25,7 +25,7 @@ const DotBtn = ({ id, rotate = false, ...props }) => {
     };
 
     return (
-        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)} className={styles.container}>
+        <div onClick={() => getOptions(id)} onBlur={(e) => hideOptions(e)} className={styles.container} data-testid="dropdown">
             <button className={styles.dot_container} style={{transform: rotate && "rotateZ(90deg)", }}>
                 <div className={styles.dot}/>
                 <div className={styles.dot}/>

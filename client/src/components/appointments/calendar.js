@@ -5,13 +5,13 @@ import Edit from "../../assets/edit_.svg";
 import Delete from "../../assets/delete_outline.svg";
 import DotBtn from "../misc/dot_btn";
 import { TimeSettings } from "../../utils/providers";
-import Skeleton from "../misc/skeleton";
+
 
 import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
-const AppointmentCard = ({ item, border, index, deleteCard }) => {
+export const AppointmentCard = ({ item, border, index, deleteCard }) => {
     
     return (                 
         <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className={styles.card}>
@@ -19,7 +19,7 @@ const AppointmentCard = ({ item, border, index, deleteCard }) => {
             <span>{item.namePet}</span>
             <span>{item.appointmentName}</span>
             <span>{item.time}</span>
-            <DotBtn id={item.id} rotate={true}>
+            <DotBtn id={item.id} rotate={true} >
                 <div className={styles.app_options}>
                     <Link to={{pathname: `/appointments/edit/${index}`, state: item } } > <img src={Edit} alt="edit"/> Edit</Link>
                     <button className={styles.delete} onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>

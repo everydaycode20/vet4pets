@@ -7,7 +7,7 @@ import getCookie from "../../utils/getCookie";
 
 import styles from "../../styles/owner/add_owner.module.scss";
 
-const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerList }) => {
+const AddOwner = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerList }) => {
 
     const [telephoneTypes, setTelephoneTypes] = useState([]);
 
@@ -51,7 +51,9 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
     };
 
     const addOwner = (e) => {
-        
+
+        const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,}$/;
+
         e.preventDefault();
         
         const cookie = getCookie("csrfToken");
@@ -69,6 +71,9 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
         }
         else if (email.value === "") {
             setErrorMessage(prev => ({...prev, email: {status: false, message: "there should be an email"}}));
+        }
+        else if(!regex.test(email.value)){
+            setErrorMessage(prev => ({...prev, email: {status: false, message: "email should follow the following pattern: example@example.com"}}));
         }
         else if (address.value === "") {
             setErrorMessage(prev => ({...prev, address: {status: false, message: "there should be an address"}}));
@@ -134,7 +139,7 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
                         <div className={styles.phone_dropdown}>
                             {telephoneTypes.map(tel => {
 
-                                return <button key={tel.id} onClick={() => getTelephone(tel.phoneType, tel.id)}>{tel.phoneType}</button>
+                                return <button key={tel.id}  onClick={() => getTelephone(tel.phoneType, tel.id)}>{tel.phoneType}</button>
                             })}
                         </div>
                     </GenericDropdown>
@@ -144,7 +149,7 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
                         </div>
                     }
                     <label htmlFor="telephone">Telephone</label>
-                    <input type="text" name="telephone" id="telephone" />
+                    <input type="text" name="telephone" id="telephone"/>
                 </div>
                 {!errorMessage.phone.status && 
                     <div>
@@ -153,7 +158,7 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
                 }
                 <div className={styles.email}>
                     <label htmlFor="email">Email</label>
-                    <input type="text" name="email" id="email"/>
+                    <input type="text" name="email" id="email" placeholder="example@example.com"/>
                 </div>
                 {!errorMessage.email.status && 
                     <div>
@@ -178,4 +183,4 @@ const AddAppointment = ({ setAddNewOwner, setOwnerMessage, setOwnerList, ownerLi
 
 };
 
-export default AddAppointment;
+export default AddOwner;
