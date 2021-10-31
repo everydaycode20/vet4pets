@@ -6,11 +6,13 @@ import Edit from "./edit";
 
 import { AuthContext } from "../../utils/useAuth";
 
+import DefaultProfilePhoto from "../../assets/profile_filled_grey.svg";
+
 import styles from "../../styles/profile/profile.module.scss";
 
 const Profile = () => {
 
-    const { auth } = useContext(AuthContext);
+    const { auth, setUser } = useContext(AuthContext);
     const { user } = auth;
     
     const [userInfo, setUserInfo] = useState({ name: user.name, lastName: user.lastName});
@@ -21,11 +23,12 @@ const Profile = () => {
             <Header />
 
             <div className={styles.inner_container}>
+
                 <div className={styles.info}>
 
-                    {/* <div className={styles.image}>
-
-                    </div> */}
+                    <div className={styles.image_container}>
+                        <img src={user.image || DefaultProfilePhoto} alt="" />
+                    </div>
 
                     <span className={styles.name}>{userInfo.name} {userInfo.lastName}</span>
                     <span>{user.email}</span>
@@ -37,7 +40,7 @@ const Profile = () => {
 
             <Switch>
                 <Route path="/profile/edit">
-                    <Edit user={user} setUserInfo={setUserInfo}/>
+                    <Edit user={user} setUserInfo={setUserInfo} setUser={setUser}/>
                 </Route>
             </Switch>
 

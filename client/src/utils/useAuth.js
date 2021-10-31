@@ -38,7 +38,7 @@ const useProvideAuth = () => {
                 setAuthorized(false);
                 setErrorLogin(true);
             }
-
+            
             setUser(data.user);
             setAuthorized(data.status);
         });
@@ -79,6 +79,7 @@ const useProvideAuth = () => {
 
     return {
         user,
+        setUser,
         login,
         authorized,
         checkAuth,

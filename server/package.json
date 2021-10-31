@@ -11,10 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.27.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.7",
+    "file-type": "^16.5.3",
+    "multer": "^1.4.3",
     "mysql": "^2.18.1",
     "nanoid": "^3.1.25",
     "node-cron": "^3.0.0",

@@ -10,7 +10,7 @@ routerEmail.put("/profile", (req, res, next) => {
     connection.query("update adminUser set name = ?, lastName = ? where id = ?", [ name, lastName, id], (err, results) => {
 
         if(err) res.json({"status": false, "message": "there was an error in the database"});
-
+        console.log(results);
         res.json({status: true});
 
     });

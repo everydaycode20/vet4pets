@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
+import EditImage from "./edit_image";
+
 import styles from "../../styles/profile/edit.module.scss";
 
-const EditProfile = ({ user, setUserInfo }) => {
+const EditProfile = ({ user, setUserInfo, setUser }) => {
     
     const history = useHistory();
 
@@ -51,15 +53,17 @@ const EditProfile = ({ user, setUserInfo }) => {
             
             <form className={styles.form} onSubmit={e => editProfile(e)}>
                 <h2>Edit Profile</h2>
+                
+                <EditImage user={user} setUser={setUser}/>
 
-                <div >
+                <div className={styles.inner}>
                     <label htmlFor="profile-name">Name</label>
                     <input type="text" id="profile-name" name="profile-name" value={name} onChange={e => setName(e.target.value)}/>
                 </div>
 
                 {errorName && <div><span>should not be empty</span></div>}
 
-                <div>
+                <div className={styles.inner}>
                     <label htmlFor="last-name">Last Name</label>
                     <input type="text" id="last-name" name="last-name" value={lastName} onChange={e => setLastName(e.target.value)}/>
                 </div>

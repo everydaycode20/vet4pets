@@ -63,7 +63,7 @@ const SideBar = ({ showSidebar, setShowSidebar }) => {
 
                     <li title="Settings" onClick={() => setShowSidebar(false)}> <NavLink to="/settings" className={`${styles.link} ${styles.settings}`}> <img src={Settings} alt="settings"/> <span>Settings</span></NavLink> </li>
 
-                    <li title="Profile" className={styles.profile}>
+                    <li title="Profile" className={styles.profile} onClick={() => setShowSidebar(false)}>
                         <NavLink to="/profile" className={styles.link}>
                             <div className={styles.profile_image}>
 
