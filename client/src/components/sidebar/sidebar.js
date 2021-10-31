@@ -10,15 +10,17 @@ import Pet from "../../assets/pet_filled.svg";
 
 import { AuthContext } from "../../utils/useAuth";
 
+import DefaultProfilePhoto from "../../assets/profile_filled_grey.svg";
+
 import styles from "../../styles/sidebar/sidebar.module.scss";
 import "../../styles/sidebar/active.scss";
 
 const SideBar = ({ showSidebar, setShowSidebar }) => {
 
     const { auth } = useContext(AuthContext);
-
-    const [ user ] = useState( auth.user );
-
+    
+    const { user } = auth;
+    
     const [minimize, setMinimize] = useState(localStorage.getItem("sidebar") === "true" || false);
     
     const sidebar = useRef(null);
@@ -66,7 +68,7 @@ const SideBar = ({ showSidebar, setShowSidebar }) => {
                     <li title="Profile" className={styles.profile} onClick={() => setShowSidebar(false)}>
                         <NavLink to="/profile" className={styles.link}>
                             <div className={styles.profile_image}>
-
+                                <img src={user && (user.image || DefaultProfilePhoto)} alt="profile" />
                             </div>
                             {user && <span>{user.name} {user.lastName.substring(0, 1)}.</span>}
 

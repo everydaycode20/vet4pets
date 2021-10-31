@@ -72,8 +72,6 @@ const NextAppointments = () => {
         
         currentDate.setDate(currentDate.getDate() - 1);
         
-        // const currentDay = currentDate.getDay() === 0 ? currentDate.getDate() + 1 : currentDate.getDate() - 1;
-        
         setDate(prev => ({ ...prev, day: arr[currentDate.getDay()], date: currentDate.getDate(), month: currentDate.getMonth() }));
 
         fetch("/appointments/day", {
@@ -86,6 +84,7 @@ const NextAppointments = () => {
             
             setData(data);
             setLoading(false);
+
         }).catch(err => console.log(err));
 
     };
@@ -108,7 +107,7 @@ const NextAppointments = () => {
             headers: {
             "Content-Type": "application/json",
             },
-            body: JSON.stringify({"date": `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDay}`})
+            body: JSON.stringify({"date": `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`})
         }).then(res => res.json()).then(data => {
             
             setData(data);
