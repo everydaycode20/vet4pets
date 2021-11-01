@@ -15,6 +15,17 @@ pet_router.get("/pets/owners", (req, res, next) => {
     });
 });
 
+pet_router.get("/pets/owners/all", (req, res, next) => {
+
+    connection.query("call getOwnersByPet()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        res.json(rows[0]);
+        
+    });
+});
+
 pet_router.get("/pets/type", (req, res, next) => {
 
     connection.query("call getPetType()", (err, rows, fields) => {

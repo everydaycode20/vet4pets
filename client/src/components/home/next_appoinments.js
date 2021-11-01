@@ -39,7 +39,7 @@ const NextAppointments = () => {
     const months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
 
-    const [date, setDate] = useState({ day: new Date().getDay() === 0 ? arr[new Date().getDay() + 1] : arr[new Date().getDay()], date: new Date().getDay() === 0 ? new Date().getDate() + 1 : new Date().getDate(), month: new Date().getMonth(), "year": new Date().getFullYear() });
+    const [date, setDate] = useState({ day:  arr[new Date().getDay()] , date: new Date().getDate(), month: new Date().getMonth(), "year": new Date().getFullYear() });
     
     useEffect(() => {
 
@@ -57,6 +57,7 @@ const NextAppointments = () => {
             
             setData(data);
             setLoading(false);
+
         }).catch(err => console.log(err));
         
         return () => controller?.abort();

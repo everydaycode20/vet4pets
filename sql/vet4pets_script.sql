@@ -377,5 +377,12 @@ BEGIN
 END $$
 DELIMITER;
 
-
+DELIMITER $$
+create procedure getOwnersByPet()
+BEGIN
+	select petowner.id, petowner.nameOwner
+	from pet
+	join petowner on petowner.id = pet.idPetOwner group by nameOwner order by nameOWner;
+END $$
+DELIMITER;
 

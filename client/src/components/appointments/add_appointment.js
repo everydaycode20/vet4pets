@@ -39,13 +39,16 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
 
     useEffect(() => {
         
-        fetch("/owners",
+        fetch("/pets/owners/all",
             {
                 method: "GET",
+                credentials: "include"
             }
         ).then(res => res.json()).then(data => {
+
             setOwnerList(data);
             setTempData(data);
+
         });
 
         fetch("/appointments/type",
@@ -214,7 +217,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                         <GenericDropdown title={owner || "Add owner"} center={true} search={true} event={searchName}>
                             <div className={styles.owner_dropdown}>
                                 {ownerList.map((item, index) => {
-
+                                    
                                     return (
                                         <button key={item.id} onClick={() => getOwnerPets(item.nameOwner, item.id)}>{item.nameOwner}</button>
                                     )
@@ -226,7 +229,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
                         <DropdownEdit title={pet} defaultTitle={"Add pet"} center={true}>
                             <div className={styles.pet_dropdown}>
                                 {petList.map((item, index) => {
-
+                                    
                                     return (
                                         <button key={item.id} onClick={() => getPet(item.namePet, item.id)}>{item.namePet}</button>
                                     )
