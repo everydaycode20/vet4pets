@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import styles from "../../styles/home/home_chart.module.scss";
@@ -51,7 +51,7 @@ const Chart = ({ btnBackground, data, monthlyData, yearlyData}) => {
 
 };
 
-const HomeChart = () => {
+const HomeChart = memo(() => {
 
   const [data, setData] = useState( [ {name: 'monday', appointments: 0,}, {name: 'tuesday', appointments: 0},{name: "wednesday", appointments: 0}, {name: "thursday", appointments: 0}, {name: "friday", appointments: 0}]);
 
@@ -181,6 +181,6 @@ const HomeChart = () => {
           <Chart btnBackground={btnBackground} data={data} monthlyData={monthlyData} yearlyData={yearlyData}/>
         </section>
     );
-};
+});
 
 export default HomeChart;

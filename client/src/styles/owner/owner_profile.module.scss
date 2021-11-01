@@ -15,12 +15,12 @@
         background-color: white;
         z-index: 300;
         border-radius: 5px;
-        padding: 5vmin;
+        padding: 4vmin;
         column-gap: 20px;
         row-gap: 20px;
         box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
         position: relative;
-        flex-basis: 80ch;
+        flex-basis: 90ch;
         
     }
 
@@ -33,8 +33,8 @@
 
 .info{
     background-color: white;
-    flex: 1;
-    flex-grow: 1;
+    flex: 2;
+    flex-grow: 2;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -77,6 +77,33 @@
         word-break: break-all;
         hyphens: auto;
         width: 250px;
+    }
+}
+
+.petList{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.11);
+    border-radius: 5px;
+    row-gap: 20px;
+    flex: 2;
+    flex-grow: 2;
+
+    h3{
+        font-weight: 500;
+    }
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+
+        li{
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #CDF0EA;
+        }
     }
 }
 

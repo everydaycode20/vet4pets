@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
@@ -8,7 +8,7 @@ import Skeleton from "../misc/skeleton";
 
 import styles from "../../styles/pet/pet.module.scss";
 
-const PetList = ( { setNumberPets, petList, setPetList } ) => {
+const PetList = memo(( { setNumberPets, petList, setPetList } ) => {
     
     const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
 
@@ -75,6 +75,6 @@ const PetList = ( { setNumberPets, petList, setPetList } ) => {
             }
         </section>
     );
-};
+});
 
 export default PetList;

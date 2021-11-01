@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import io from "socket.io-client";
 
@@ -24,7 +24,7 @@ import Providers from "./utils/providers";
 
 import styles from "./styles/app.module.scss";
 
-function App() {
+const App = () => {
   
   const online = useOnline();
   
@@ -92,7 +92,7 @@ function App() {
         </Providers>
       </ProvideAuth>
   );
-}
+};
 
 const ProtectedRoute = ( { children, ...rest } ) => {
 

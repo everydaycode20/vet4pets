@@ -26,11 +26,13 @@ const Owner = () => {
 
     const [ownerList, setOwnerList] = useState([]);
 
+    const [tempList, setTempList] = useState(ownerList);
+    
     return (
         <div className={styles.container}>
             <Header />
-            <OwnerControl setAddNewOwner={setAddNewOwner} numberOwners={numberOwners}/>
-            <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList}/>
+            <OwnerControl setAddNewOwner={setAddNewOwner} numberOwners={numberOwners} setOwnerList={setOwnerList} tempList={tempList}/>
+            <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList} setTempList={setTempList}/>
             {addNewOwner && <AddOwner setAddNewOwner={setAddNewOwner} setOwnerMessage={setOwnerMessage} setOwnerList={setOwnerList} ownerList={ownerList}/>}
             {ownerMessage && <OwnerMessage setOwnerMessage={setOwnerMessage} />}
         </div>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { card, app, top_list } from "../../styles/home/card.module.scss";
 
-export const PatientMonth = ({ totalPatients }) => {
+export const PatientMonth = memo(({ totalPatients }) => {
 
     return (
         <div className={card}>
@@ -10,9 +10,9 @@ export const PatientMonth = ({ totalPatients }) => {
             <h2>Patients this month</h2>
         </div>
     );
-};
+});
 
-export const PatientYear = ({ totalPatients }) => {
+export const PatientYear = memo(({ totalPatients }) => {
 
     return (
         <div className={card}>
@@ -20,9 +20,9 @@ export const PatientYear = ({ totalPatients }) => {
             <h2>Patients this year</h2>
         </div>
     );
-};
+});
 
-export const Finished = ({ appointments }) => {
+export const Finished = memo(({ appointments }) => {
 
     return (
         <div className={app}>
@@ -41,9 +41,9 @@ export const Finished = ({ appointments }) => {
             
         </div>
     );
-};
+});
 
-export const TopAppointments = ({ topList }) => {
+export const TopAppointments = memo(({ topList }) => {
 
     return (
         <React.Fragment>
@@ -55,4 +55,4 @@ export const TopAppointments = ({ topList }) => {
             </ul>
         </React.Fragment>
     );
-};
+});

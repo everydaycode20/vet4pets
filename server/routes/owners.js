@@ -13,9 +13,22 @@ owner_router.get("/owners", (req, res, next) => {
         
         rows[0].forEach(elm => {
             
-            arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate});
+            arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate, "hasPet": elm.hasPet === 0 ? false : true});
         });
 
+        res.json(arr);
+        
+    });
+});
+
+owner_router.get("/owners/pet", (req, res, next) => {
+
+    connection.query("call getOwners()", (err, rows, fields) => {
+        
+        if(err) res.json({"status": false, "message": "there was an error in the database"});
+        
+        const arr = rows[0].filter(elm => elm.hasPet === 1).map(elm => ({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate, "hasPet": elm.hasPet === 0 ? false : true}));
+        
         res.json(arr);
         
     });

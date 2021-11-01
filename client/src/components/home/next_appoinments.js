@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import ArrowLeft from "../../assets/arrow_left_.svg";
 
@@ -28,7 +28,7 @@ const ListAppointment = ({ data }) => {
     );
 };
 
-const NextAppointments = () => {
+const NextAppointments = memo(() => {
 
     const [data, setData] = useState([]);
 
@@ -132,6 +132,6 @@ const NextAppointments = () => {
         </section>
     );
 
-};
+});
 
 export default NextAppointments;

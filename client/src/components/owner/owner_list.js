@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
@@ -11,13 +11,14 @@ import AddressDropdown from "../misc/address_dropdown";
 
 import styles from "../../styles/owner/owner_list.module.scss";
 
-const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
+const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList }) => {
 
     const categories = ["Name", "Email", "Phone Number", "Address", "Register Date"];
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         setLoading(true);
         fetch("/owners", {
             method: "GET",
@@ -27,6 +28,8 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
         }).then(res => res.json()).then(data => {
             
             setOwnerList(data);
+
+            setTempList(data);
 
             setNumberOwners(data.length);
             setLoading(false);
@@ -84,6 +87,6 @@ const OwnerList = ({ setNumberOwners, setOwnerList, ownerList }) => {
         </section>
         
     );
-};
+});
 
 export default OwnerList;

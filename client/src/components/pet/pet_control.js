@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { memo } from "react";
 
 import { control } from "../../styles/pet/pet.module.scss";
 
-const PetControl = ({ numberPets, setAddPet }) => {
+const PetControl = memo(({ numberPets, setAddPet }) => {
 
     return (
         <div className={control}>
@@ -13,6 +13,6 @@ const PetControl = ({ numberPets, setAddPet }) => {
 
         </div>
     );
-};
+});
 
 export default PetControl;

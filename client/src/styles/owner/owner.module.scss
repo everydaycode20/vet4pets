@@ -51,6 +51,30 @@
             cursor: pointer;
             font-size: 1rem;
         }
+
+        .dropdown{
+            width: 125px;
+
+            .options{
+                padding: 5px;
+
+                li{
+                    width: 100%;
+
+                    button{
+                        text-align: left;
+                        width: 100%;
+
+                        &:hover{
+                            background-color: $greenBackground;
+                            cursor: pointer;
+                        }
+                    }
+
+
+                }
+            }
+        }
     }
 
     .message{

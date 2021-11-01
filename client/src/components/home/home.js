@@ -10,7 +10,7 @@ import { AuthContext } from "../../utils/useAuth";
 
 import styles from "../../styles/home/home.module.scss";
 
-const Main = memo(() => {
+const Main = () => {
 
     const { auth } = useContext(AuthContext);
 
@@ -143,6 +143,6 @@ const Main = memo(() => {
         </div>
     );
 
-});
+};
 
 export default Main;

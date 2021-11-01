@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import Calendar from "./calendar";
@@ -11,7 +11,7 @@ import Edit from "./edit";
 
 import styles from "../../styles/appointment/appointments.module.scss";
 
-const Appointments = ({ socket }) => {
+const Appointments = memo(({ socket }) => {
     
     const [newWeek, setNewWeek] = useState({ "day": new Date().getDate(), "dayInWeek": new Date().getDay() });
 
@@ -131,6 +131,6 @@ const Appointments = ({ socket }) => {
             </div>
     );
 
-};
+});
 
 export default Appointments;
