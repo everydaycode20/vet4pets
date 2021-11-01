@@ -235,12 +235,24 @@ BEGIN
 END $$
 DELIMITER;
 
+DELIMITER //
+CREATE FUNCTION ownerHasPet(id int)
+    RETURNS boolean
+	DETERMINISTIC
+    BEGIN
+        DECLARE boolPet boolean;
+        SET boolPet = exists(select pet.idPetOwner from pet where pet.idPetOwner = id);
+        RETURN boolPet;
+    END //
+DELIMITER ;
+
 DELIMITER $$
 create procedure getOwners()
 BEGIN
-	select  petowner.id, nameOwner, email, address, group_concat(telowner.telnumber separator ",") as telephones, date_format(petowner.registerDate, '%Y-%m-%d') as registerDate
+	select  petowner.id, nameOwner, email, address, group_concat(telowner.telnumber separator ",") as telephones, date_format(petowner.registerDate, '%Y-%m-%d') as registerDate, ownerHasPet(petowner.id) as hasPet
 	from petowner
-	join telowner on telowner.idOwner = petOwner.id group by petowner.nameOwner order by petowner.nameowner asc;
+	join telowner on telowner.idOwner = petOwner.id
+	group by petowner.nameOwner order by petowner.nameowner asc;
 END $$
 DELIMITER;
 
