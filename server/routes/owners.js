@@ -56,6 +56,40 @@ owner_router.get("/owners/:sort", (req, res, next) => {
         });
         
     }
+    if (param === "date_desc") {
+
+        connection.query("call getOwnersDescDate()", (err, rows, fields) => {
+        
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+            
+            const arr = [];
+        
+            rows[0].forEach(elm => {
+                
+                arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate, "hasPet": elm.hasPet === 0 ? false : true});
+            });
+    
+            res.json(arr);
+            
+        });
+    }
+    if (param === "date_asc") {
+
+        connection.query("call getOwnersAscDate()", (err, rows, fields) => {
+        
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+            
+            const arr = [];
+        
+            rows[0].forEach(elm => {
+                
+                arr.push({"id": elm.id, "nameOwner": elm.nameOwner, "email": elm.email, "address": elm.address, "telephones": elm.telephones.split(","), "registerDate": elm.registerDate, "hasPet": elm.hasPet === 0 ? false : true});
+            });
+    
+            res.json(arr);
+            
+        });
+    }
 
 });
 

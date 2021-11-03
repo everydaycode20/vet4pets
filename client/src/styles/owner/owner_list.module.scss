@@ -48,6 +48,30 @@
             }
         }
 
+        & li:last-child{
+            
+            button{
+                font-size: 1rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                column-gap: 5px;
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+                padding: 5px;
+                border-radius: 5px;
+
+                &:hover{
+                    background-color: $green1;
+                }
+
+                .arrow{
+                    width: 15px;
+                }
+            }
+        }
+
     }
 
     .owner{

@@ -9,16 +9,19 @@ import TelBtn from "../misc/tel_btn";
 
 import Skeleton from "../misc/skeleton";
 import AddressDropdown from "../misc/address_dropdown";
+import Categories from "./owner_list_categories";
 
 import styles from "../../styles/owner/owner_list.module.scss";
 
 const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList, filterType }) => {
     
-    const categories = ["Email", "Phone Number", "Address", "Register Date"];
+    const categories = ["Email", "Phone Number", "Address"];
 
     const [loading, setLoading] = useState(true);
     
     const [sortType, setSortType] = useState("asc");
+
+    const [dateSortType, setDateSortType] = useState("asc");
 
     useEffect(() => {
 
@@ -42,113 +45,14 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
 
     }, []);
 
-    const sortByName = () => {
 
-        if (sortType === "asc") {
-
-            setSortType("desc");
-
-            if (filterType === "Pets") {
-
-                const tmpList = [...ownerList];
-
-                const newTempList = tmpList.sort((a, b) => {
-                    if (a.nameOwner.toLowerCase() < b.nameOwner.toLowerCase()) {
-                        return 1;
-                    }
-
-                    if (a.nameOwner.toLowerCase() > b.nameOwner.toLowerCase()) {
-                        return -1;
-                    }
-                    
-                    return 0;
-                });
-
-                setOwnerList(newTempList);
-
-            }
-            else{
-
-                setLoading(true);
-
-                fetch("/owners/descendent", {
-                    method: "GET",
-                    headers: {
-                    "Content-Type": "application/json",
-                    },
-                }).then(res => res.json()).then(data => {
-        
-                    setOwnerList(data);
-        
-                    setLoading(false);
-        
-                }).catch(err => console.log(err));
-            }
-            
-        }
-        else{
-            
-            setSortType("asc");
-
-            if (filterType === "Pets") {
-                
-                const tmpList = [...ownerList];
-
-                const newTempList = tmpList.sort((a, b) => {
-                    if (a.nameOwner.toLowerCase() < b.nameOwner.toLowerCase()) {
-                        return -1;
-                    }
-
-                    if (a.nameOwner.toLowerCase() > b.nameOwner.toLowerCase()) {
-                        return 1;
-                    }
-                    
-                    return 0;
-                });
-
-                setOwnerList(newTempList);
-
-            }
-            else{
-
-                setLoading(true);
-
-                fetch("/owners", {
-                    method: "GET",
-                    headers: {
-                    "Content-Type": "application/json",
-                    },
-                }).then(res => res.json()).then(data => {
-                    
-                    setOwnerList(data);
-        
-                    setTempList(data);
-        
-                    setNumberOwners(data.length);
-                    setLoading(false);
-        
-                }).catch(err => console.log(err));
-            }
-
-        }
-
-
-    }
 
     return (
         
         <section className={styles.list}>
-            <ul className={styles.categories}>
 
-                <li title={sortType === "asc" ? "descendent" : "ascendent"}> <button onClick={ () => sortByName() }>Name <img className={styles.arrow} style={{transform: sortType === "asc" ? "rotateZ(90deg)" : "rotateZ(270deg)"}} src={Arrow} alt="sort" /> </button></li>
+            <Categories filterType={filterType} ownerList={ownerList} setOwnerList={setOwnerList} setLoading={setLoading} setTempList={setTempList} />
 
-                {categories.map((elm, index) => {
-
-                    return (
-                        <li key={index}>{elm}</li>
-                    )
-                })}
-            </ul>
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
             
             <ul className={styles.owner}>
@@ -160,7 +64,7 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
                     return (
                         <li key={elm.id} className={styles.item}>
                             {/* <div className="checkbox">
-                                <input type="checkbox" onChange={() => console.log("si")}/>
+                                <input type="checkbox" onChange={() => console.log("test")}/>
                             </div> */}
                             <span>{elm.nameOwner}</span>
                             <span>{elm.email}</span>
