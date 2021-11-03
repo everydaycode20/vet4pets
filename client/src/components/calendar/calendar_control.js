@@ -40,16 +40,14 @@ const CalendarControl = ({ year, setNewMonth, newMonth, setYear, changeView, set
     }
 
     const makeChangeView = () => {
-        // setNewMonth( prev => ({...prev, view: false}) );
         
         if (hoursDay) {
-            // setChangeView(true);
+
             setHoursDay(false);
             setNewMonth( prev => ({...prev, view: true}) );
         }
         else{
-            // setChangeView(false);
-            // setHoursDay(false);
+
             setNewMonth( prev => ({...prev, view: false}) );
         }
         

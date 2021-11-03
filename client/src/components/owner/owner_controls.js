@@ -4,10 +4,8 @@ import GenericDropdown from "../misc/generic_dropdown";
 
 import styles, { control } from "../../styles/owner/owner.module.scss";
 
-const OwnerControl = memo(({ setAddNewOwner, numberOwners, tempList, setOwnerList }) => {
+const OwnerControl = memo(({ setAddNewOwner, numberOwners, tempList, setOwnerList, filterType, setFilterType }) => {
 
-    const [filterType, setFilterType] = useState("All");
-    
     const filterByPet = () => {
 
         setFilterType("Pets");
@@ -40,8 +38,8 @@ const OwnerControl = memo(({ setAddNewOwner, numberOwners, tempList, setOwnerLis
             <div className={styles.dropdown}>
                 <GenericDropdown title={`Show: ${filterType}`}>
                     <ul className={styles.options}>
-                        <li> <button onClick={() => filterByPet()}>Only with pets</button> </li>
-                        <li> <button onClick={() => getAll()}>All</button> </li>
+                        <li> <button style={{backgroundColor: filterType === "Pets" && "#CDF0EA"}} onClick={() => filterByPet()}>Only with pets</button> </li>
+                        <li> <button style={{backgroundColor: filterType === "All" && "#CDF0EA"}} onClick={() => getAll()}>All</button> </li>
                     </ul>
                 </GenericDropdown>
             </div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
 import Profile from "../../assets/profile_filled_black.svg";
+import Arrow from "../../assets/arrow_left_.svg";
 import DotBtn from "../misc/dot_btn";
 import TelBtn from "../misc/tel_btn";
 
@@ -11,15 +12,18 @@ import AddressDropdown from "../misc/address_dropdown";
 
 import styles from "../../styles/owner/owner_list.module.scss";
 
-const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList }) => {
-
-    const categories = ["Name", "Email", "Phone Number", "Address", "Register Date"];
+const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList, filterType }) => {
+    
+    const categories = ["Email", "Phone Number", "Address", "Register Date"];
 
     const [loading, setLoading] = useState(true);
+    
+    const [sortType, setSortType] = useState("asc");
 
     useEffect(() => {
 
         setLoading(true);
+
         fetch("/owners", {
             method: "GET",
             headers: {
@@ -38,10 +42,106 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList 
 
     }, []);
 
+    const sortByName = () => {
+
+        if (sortType === "asc") {
+
+            setSortType("desc");
+
+            if (filterType === "Pets") {
+
+                const tmpList = [...ownerList];
+
+                const newTempList = tmpList.sort((a, b) => {
+                    if (a.nameOwner.toLowerCase() < b.nameOwner.toLowerCase()) {
+                        return 1;
+                    }
+
+                    if (a.nameOwner.toLowerCase() > b.nameOwner.toLowerCase()) {
+                        return -1;
+                    }
+                    
+                    return 0;
+                });
+
+                setOwnerList(newTempList);
+
+            }
+            else{
+
+                setLoading(true);
+
+                fetch("/owners/descendent", {
+                    method: "GET",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                }).then(res => res.json()).then(data => {
+        
+                    setOwnerList(data);
+        
+                    setLoading(false);
+        
+                }).catch(err => console.log(err));
+            }
+            
+        }
+        else{
+            
+            setSortType("asc");
+
+            if (filterType === "Pets") {
+                
+                const tmpList = [...ownerList];
+
+                const newTempList = tmpList.sort((a, b) => {
+                    if (a.nameOwner.toLowerCase() < b.nameOwner.toLowerCase()) {
+                        return -1;
+                    }
+
+                    if (a.nameOwner.toLowerCase() > b.nameOwner.toLowerCase()) {
+                        return 1;
+                    }
+                    
+                    return 0;
+                });
+
+                setOwnerList(newTempList);
+
+            }
+            else{
+
+                setLoading(true);
+
+                fetch("/owners", {
+                    method: "GET",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                }).then(res => res.json()).then(data => {
+                    
+                    setOwnerList(data);
+        
+                    setTempList(data);
+        
+                    setNumberOwners(data.length);
+                    setLoading(false);
+        
+                }).catch(err => console.log(err));
+            }
+
+        }
+
+
+    }
+
     return (
         
         <section className={styles.list}>
             <ul className={styles.categories}>
+
+                <li title={sortType === "asc" ? "descendent" : "ascendent"}> <button onClick={ () => sortByName() }>Name <img className={styles.arrow} style={{transform: sortType === "asc" ? "rotateZ(90deg)" : "rotateZ(270deg)"}} src={Arrow} alt="sort" /> </button></li>
+
                 {categories.map((elm, index) => {
 
                     return (

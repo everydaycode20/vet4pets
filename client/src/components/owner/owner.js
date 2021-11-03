@@ -28,13 +28,21 @@ const Owner = () => {
 
     const [tempList, setTempList] = useState(ownerList);
     
+    const [filterType, setFilterType] = useState("All");
+
     return (
         <div className={styles.container}>
+
             <Header />
-            <OwnerControl setAddNewOwner={setAddNewOwner} numberOwners={numberOwners} setOwnerList={setOwnerList} tempList={tempList}/>
-            <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList} setTempList={setTempList}/>
-            {addNewOwner && <AddOwner setAddNewOwner={setAddNewOwner} setOwnerMessage={setOwnerMessage} setOwnerList={setOwnerList} ownerList={ownerList}/>}
+
+            <OwnerControl setAddNewOwner={setAddNewOwner} numberOwners={numberOwners} setOwnerList={setOwnerList} tempList={tempList} filterType={filterType} setFilterType={setFilterType}/>
+
+            <OwnerList setNumberOwners={setNumberOwners} setOwnerList={setOwnerList} ownerList={ownerList} setTempList={setTempList} filterType={filterType}/>
+
+            {addNewOwner && <AddOwner setAddNewOwner={setAddNewOwner} setOwnerMessage={setOwnerMessage} setOwnerList={setOwnerList} ownerList={ownerList} />}
+
             {ownerMessage && <OwnerMessage setOwnerMessage={setOwnerMessage} />}
+
         </div>
     );
 }

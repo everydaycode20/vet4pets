@@ -174,7 +174,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
         
         return <Redirect to="/login"/>
     };
-    //<Skeleton height={800} width={90} backgroundColor="#CDF0EA" number={1}/>
+    
     return (
         <div className={styles.calendar}>
             
@@ -229,11 +229,7 @@ const Calendar = ({ week, addAppointments, setAppointmentsWeek, appointmentsWeek
                                         <div key={item.id} style={{cursor: item.appointmentName !== "" && "default"}} className={styles.hour_item} onClick={(e) => addAppointments(e.target, item.time, item.dateDay, item.day, item.month, item.year, item.monthIndex)} >
 
                                             {item.appointmentName !== "" && <AppointmentCard item={item} border={`4px solid ${item.color}`} setShowOptions={setShowOptions} getOptions={getOptions} index={item.id} deleteCard={deleteCard} setMakeAppointment={setMakeAppointment}/>}
-                                            {/* { showOptions === item.id && 
-                                                <div className="app-options">
-                                                    <Link to={`/owner/${index}`}> <img src={Edit} alt="edit"/> Edit</Link>
-                                                    <button className="btn-delete-card" onClick={() => deleteCard(item.id, item.idDB)}> <img src={Delete} alt="delete" />Delete</button>
-                                                </div>} */}
+                                            
                                         </div>
                                     )
                                 })}

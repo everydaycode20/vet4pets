@@ -42,7 +42,7 @@ const AddAppointment = ({ setMakeAppointment, setDate, date, setAppointmentsWeek
         fetch("/pets/owners/all",
             {
                 method: "GET",
-                credentials: "include"
+                credentials: "include",
             }
         ).then(res => res.json()).then(data => {
 
