@@ -267,6 +267,26 @@ END $$
 DELIMITER;
 
 DELIMITER $$
+create procedure getOwnersDescDate()
+BEGIN
+	select  petowner.id, nameOwner, email, address, group_concat(telowner.telnumber separator ",") as telephones, date_format(petowner.registerDate, '%Y-%m-%d') as registerDate, ownerHasPet(petowner.id) as hasPet
+	from petowner
+	join telowner on telowner.idOwner = petOwner.id
+	group by petowner.nameOwner order by petowner.registerDate desc;
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure getOwnersAscDate()
+BEGIN
+	select  petowner.id, nameOwner, email, address, group_concat(telowner.telnumber separator ",") as telephones, date_format(petowner.registerDate, '%Y-%m-%d') as registerDate, ownerHasPet(petowner.id) as hasPet
+	from petowner
+	join telowner on telowner.idOwner = petOwner.id
+	group by petowner.nameOwner order by petowner.registerDate asc;
+END $$
+DELIMITER;
+
+DELIMITER $$
 create procedure getPets()
 BEGIN
 	select pet.id, pet.namePet, pet.age, petOwner.nameOwner, petType.typeDescription, date_format(pet.registerDate, '%Y-%m-%d') as registerDate

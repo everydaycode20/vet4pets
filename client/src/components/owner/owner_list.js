@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import Edit from "../../assets/edit_.svg";
 import Profile from "../../assets/profile_filled_black.svg";
-import Arrow from "../../assets/arrow_left_.svg";
 import DotBtn from "../misc/dot_btn";
 import TelBtn from "../misc/tel_btn";
 
@@ -14,14 +13,8 @@ import Categories from "./owner_list_categories";
 import styles from "../../styles/owner/owner_list.module.scss";
 
 const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList, filterType }) => {
-    
-    const categories = ["Email", "Phone Number", "Address"];
 
     const [loading, setLoading] = useState(true);
-    
-    const [sortType, setSortType] = useState("asc");
-
-    const [dateSortType, setDateSortType] = useState("asc");
 
     useEffect(() => {
 
