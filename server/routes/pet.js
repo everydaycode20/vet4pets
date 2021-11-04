@@ -67,6 +67,70 @@ pet_router.get("/pets", (req, res, next) => {
     });
 });
 
+pet_router.get("/pets/:sort", (req, res, next) => {
+
+    const param = req.params.sort;
+
+    if (param === "descendent") {
+        
+        connection.query("call getPetsDesc()", (err, rows, fields) => {
+        
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+    
+            const arr = [];
+    
+            rows[0].forEach(elm => {
+                
+                arr.push({"id": elm.id, "namePet": elm.namePet, "nameOwner": elm.nameOwner, "age": elm.age, "type": elm.typeDescription, "registerDate": elm.registerDate});
+    
+            });
+    
+            res.json(arr);
+            
+        });
+
+    }
+    if (param === "date_asc") {
+
+        connection.query("call getPetsAscDate()", (err, rows, fields) => {
+        
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+    
+            const arr = [];
+    
+            rows[0].forEach(elm => {
+                
+                arr.push({"id": elm.id, "namePet": elm.namePet, "nameOwner": elm.nameOwner, "age": elm.age, "type": elm.typeDescription, "registerDate": elm.registerDate});
+    
+            });
+    
+            res.json(arr);
+            
+        });
+
+    }
+    if (param === "date_desc") {
+
+        connection.query("call getPetsDescDate()", (err, rows, fields) => {
+        
+            if(err) res.json({"status": false, "message": "there was an error in the database"});
+    
+            const arr = [];
+    
+            rows[0].forEach(elm => {
+                
+                arr.push({"id": elm.id, "namePet": elm.namePet, "nameOwner": elm.nameOwner, "age": elm.age, "type": elm.typeDescription, "registerDate": elm.registerDate});
+    
+            });
+    
+            res.json(arr);
+            
+        });
+    }
+
+
+});
+
 pet_router.post("/pet", getCsrfToken, (req, res, next) => {
 
     const { id_owner, name, age, id_type } = req.body;

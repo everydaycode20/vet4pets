@@ -5,6 +5,7 @@ import Edit from "../../assets/edit_.svg";
 import Pet from "../../assets/pet_filled_black.svg";
 import DotBtn from "../misc/dot_btn";
 import Skeleton from "../misc/skeleton";
+import Categories from "./pet_list_categories";
 
 import styles from "../../styles/pet/pet.module.scss";
 
@@ -33,14 +34,18 @@ const PetList = memo(( { setNumberPets, petList, setPetList } ) => {
     
     return (
         <section className={styles.list}>
-            <ul className={styles.categories}>
+
+            {/* <ul className={styles.categories}>
                 {categories.map((elm, index) => {
 
                     return (
                         <li key={index}>{elm}</li>
                     )
                 })}
-            </ul>
+            </ul> */}
+            
+            <Categories setPetList={setPetList} petList={petList} setLoading={setLoading} />
+
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
             <ul className={styles.pet_list}>
 

@@ -28,11 +28,17 @@ const Pet = () => {
 
     return (
         <div className={styles.main_container}>
+
             <Header />
+
             <PetControl numberPets={numberPets} setAddPet={setAddPet} petList={petList} setPetList={setPetList} />
-            <PetList setNumberPets={setNumberPets} setPetList={setPetList} petList={petList}/>
+
+            <PetList setNumberPets={setNumberPets} setPetList={setPetList} petList={petList} />
+
             {addPet && <AddPet setAddPet={setAddPet} setPetMessage={setPetMessage} setPetList={setPetList} petList={petList} />}
+
             {petMessage && <PetMessage setPetMessage={setPetMessage}/>}
+            
         </div>
     );
 }

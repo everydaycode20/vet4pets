@@ -107,6 +107,54 @@
         grid-column: 2/3;
         padding: 10px 0;
         width: 90%;
+
+        & li:first-child{
+            
+            button{
+                font-size: 1rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                column-gap: 5px;
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+                padding: 5px;
+                border-radius: 5px;
+
+                &:hover{
+                    background-color: $green1;
+                }
+
+                .arrow{
+                    width: 15px;
+                }
+            }
+        }
+
+        & li:last-child{
+            
+            button{
+                font-size: 1rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                column-gap: 5px;
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+                padding: 5px;
+                border-radius: 5px;
+
+                &:hover{
+                    background-color: $green1;
+                }
+
+                .arrow{
+                    width: 15px;
+                }
+            }
+        }
     }
 
     .pet_list{

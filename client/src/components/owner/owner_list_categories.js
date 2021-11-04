@@ -44,7 +44,7 @@ const Categories = ( { setLoading, ownerList, filterType, setOwnerList, setTempL
                 fetch("/owners/descendent", {
                     method: "GET",
                     headers: {
-                    "Content-Type": "application/json",
+                        "Content-Type": "application/json",
                     },
                 }).then(res => res.json()).then(data => {
         
