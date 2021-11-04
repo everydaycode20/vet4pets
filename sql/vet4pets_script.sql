@@ -292,9 +292,40 @@ BEGIN
 	select pet.id, pet.namePet, pet.age, petOwner.nameOwner, petType.typeDescription, date_format(pet.registerDate, '%Y-%m-%d') as registerDate
 	from pet
 	join petOwner on petOwner.id = pet.idPetOwner
-	join petType on petType.id = pet.idType;
+	join petType on petType.id = pet.idType order by pet.namePet asc;
 END $$
 DELIMITER;
+
+DELIMITER $$
+create procedure getPetsAscDate()
+BEGIN
+	select pet.id, pet.namePet, pet.age, petOwner.nameOwner, petType.typeDescription, date_format(pet.registerDate, '%Y-%m-%d') as registerDate
+	from pet
+	join petOwner on petOwner.id = pet.idPetOwner
+	join petType on petType.id = pet.idType order by pet.registerDate asc;
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure getPetsDescDate()
+BEGIN
+	select pet.id, pet.namePet, pet.age, petOwner.nameOwner, petType.typeDescription, date_format(pet.registerDate, '%Y-%m-%d') as registerDate
+	from pet
+	join petOwner on petOwner.id = pet.idPetOwner
+	join petType on petType.id = pet.idType order by pet.registerDate desc;
+END $$
+DELIMITER;
+
+DELIMITER $$
+create procedure getPetsDesc()
+BEGIN
+	select pet.id, pet.namePet, pet.age, petOwner.nameOwner, petType.typeDescription, date_format(pet.registerDate, '%Y-%m-%d') as registerDate
+	from pet
+	join petOwner on petOwner.id = pet.idPetOwner
+	join petType on petType.id = pet.idType order by pet.namePet desc;
+END $$
+DELIMITER;
+
 
 DELIMITER $$
 create procedure getTotalAppointmentsByOwner(in id int, in d date)
