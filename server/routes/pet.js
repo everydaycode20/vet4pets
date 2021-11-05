@@ -175,7 +175,7 @@ pet_router.post("/pet/type/breed", getCsrfToken, (req, res, next) => {
     });
 });
 
-pet_router.get("/pets/month", (req, res, next) => {
+pet_router.get("/pet/month", (req, res, next) => {
 
     connection.query("call getNumberPatients()", (err, rows, fields) => {
         

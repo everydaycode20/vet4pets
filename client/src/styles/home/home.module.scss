@@ -6,7 +6,6 @@
     height: 100%;
     background-color: $HomeBackground;
     justify-items: center;
-    
 
     .title{
         display: flex;
@@ -133,7 +132,15 @@
 
         }
     }
+}
 
+@media screen and (max-width: 1000px) {
     
+    .container{
+        grid-template-rows: auto 100%;
+    }
 
+    .latest_patients{
+        margin-bottom: 20px;
+    }
 }

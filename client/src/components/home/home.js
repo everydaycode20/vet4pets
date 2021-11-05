@@ -25,7 +25,7 @@ const Main = () => {
     const [latest, setLatest] = useState([]);
 
     const [loadingLatest, setLoadingLatest] = useState(true);
-
+    
     useEffect(() => {
 
         let controller = new AbortController();
@@ -34,7 +34,7 @@ const Main = () => {
 
         setLoadingTopList(true);
 
-        fetch("/pets/month", {
+        fetch("/pet/month", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
