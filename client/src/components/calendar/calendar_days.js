@@ -37,11 +37,11 @@ const CalendarDays = ({ daysInMonth, changeView, setDate, setHoursDay }) => {
                 let currentDay = day.date === new Date().getDate() && day.month === months[new Date().getMonth()] && day.year === new Date().getFullYear() && !changeView;
 
                 return (
-                    <div key={index} className="day-item" onClick={() => getDay({"day": day.day, "date": day.date, "month": day.month, "year": day.year})} style={{backgroundColor: currentDay && "#bcbcbc"}}>
+                    <button key={index} className="day-item" onClick={() => getDay({"day": day.day, "date": day.date, "month": day.month, "year": day.year})} style={{backgroundColor: currentDay && "#bcbcbc"}}>
 
                         <span style={{color: day.currentMonth ? "black" : "#d8d8d8"}}>{day.date}</span>
 
-                    </div>
+                    </button>
                 )
             })}
         </div>

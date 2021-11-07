@@ -59,10 +59,6 @@ const useDaysInMonth = ( newMonth ) => {
 
         });
 
-        
-
-        
-
     }, [newMonth]);
 
     return daysInMonth;
