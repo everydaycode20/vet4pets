@@ -144,10 +144,59 @@ appointment_router.post("/appointments/day-week", (req, res, next) => {
                 });
                 currentWeek.setDate(currentWeek.getDate() + 1);
             });
-        }
+        };
         res.json({"appointmentsWeek": data});
     });
     
+});
+
+appointment_router.post("/appointments/current_day", (req, res) => {
+
+    const {date} = req.body;
+
+    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"];
+
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    connection.query(`call getAppointmentsByDayDate(?)`, [date], (err, rows, fields) => {
+
+        if(err) res.json({"status": false, "message": "there was an error with the database"});
+
+        const newDate = new Date(date.split("-")[0], date.split("-")[1], date.split("-")[2],8);
+        
+        newDate.setTime(newDate.getTime() - (30 * 60 * 1000));
+        
+        let arr = [];
+
+        arr = hours.map((hour, i) => {
+        
+            let index = rows[0].findIndex(elm => `${addZeroToString.addZeroToLeft(elm.time.split(":")[0])}:${elm.time.split(":")[1]}` === hour);
+            
+            if (index !== -1) {
+                newDate.setTime(newDate.getTime() + (30 * 60 * 1000));
+                return rows[0][index];
+            }
+            else{
+                newDate.setTime(newDate.getTime() + (30 * 60 * 1000));
+                return {
+                    id: nanoid.nanoid(8),
+                    fullDate: `${date} ${addZeroToString.addZeroToLeft(newDate.getHours())}:${addZeroToString.addZeroToRight(newDate.getMinutes())}`,
+                    day: days[newDate.getDay()],
+                    dateDay: newDate.getDate(),
+                    date: date,
+                    time:  hour,
+                    appointmentName: '',
+                    nameOwner: '',
+                    namePet: '',
+                    color: ''
+                };
+            }
+        });
+
+        res.json(arr);
+        
+    });
+
 });
 
 appointment_router.post("/appointments/week", (req, res, next) => {

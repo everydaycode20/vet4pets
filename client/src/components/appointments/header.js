@@ -14,6 +14,8 @@ const Header = memo(({ setCalendarView, calendarView }) => {
 
                 <button style={{fontWeight: calendarView === "weekly" && "700"}} onClick={() => setCalendarView("weekly")}>weekly</button>
                 
+                <button style={{fontWeight: calendarView === "daily" && "700"}} onClick={() => setCalendarView("daily")}>daily</button>
+
             </div>
         </div>
         

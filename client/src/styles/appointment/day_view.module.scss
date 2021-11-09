@@ -1,0 +1,77 @@
+@import "../global";
+
+.container{
+    display: flex;
+    justify-content: center;
+
+    .inner_calendar{
+        width: 90%;
+        background-color: white;
+        border-radius: 10px;
+        outline: 1px solid $borderCalendar;
+        margin-bottom: 10px;
+    }
+
+    .day_view{
+        display: grid;
+        grid-template-columns: auto 1fr;
+        height: 100%;
+        position: relative;
+
+        .hours_container{
+            display: grid;
+            grid-template-rows: repeat(18, 1fr);
+            height: 100%;
+            justify-content: space-around;
+            border-right: 1px solid $borderCalendar;
+            
+            span{
+                border-bottom: 1px solid $borderCalendar;
+                padding: 0 10px;
+            }
+
+            & span:last-child{
+                border-bottom: none;
+                padding: 0 10px;
+            }
+            
+        }
+
+        .appointment_list{
+            display: grid;
+            height: 100%;
+            background-color: #ECF9F7;
+            justify-content: space-around;
+            background-color: white;
+            grid-template-rows: repeat(18, 1fr);
+            grid-template-columns: 1fr;
+            border-radius: 10px;
+
+            & .appointment:first-child{
+                border-radius: 0 10px 0 0;
+            }
+
+            .appointment{
+                border-bottom: 1px solid $borderCalendar;
+                padding: 0 10px;
+            }
+
+            & .appointment:last-child{
+                border-bottom: none;
+                padding: 0 10px;
+            }
+
+            .appointment{
+                display: flex;
+                flex-direction: row;
+                column-gap: 20px;
+
+                span{
+                    font-size: 1.1rem;
+
+                }
+            }
+        }
+
+    }
+}
