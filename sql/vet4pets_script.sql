@@ -459,3 +459,17 @@ BEGIN
 END $$
 DELIMITER;
 
+DELIMITER $$
+create procedure getAppointmentsByDayDate(in d date)
+BEGIN
+	select appointments.id, date_format(appointments.dateAppointment, '%Y-%m-%d %k:%i') as fullDate, dayname(appointments.dateAppointment) as day, dayofmonth(appointments.dateAppointment) as dateDay,
+	date(appointments.dateAppointment) as date, time_format(appointments.dateAppointment, '%k:%i') as time, appointmentType.appointmentName, petowner.nameOwner, pet.namePet, appointmentType.color,
+    dayofweek(appointments.dateAppointment) as numberDay
+	from appointments
+	join appointmenttype on appointmentType.id = appointments.appointmentType
+	join petowner on petowner.id = appointments.idOwner
+	join pet on pet.id = appointments.idPet
+	where date_format(dateAppointment, '%Y-%m-%d') = date_format(d, '%Y-%m-%d') order by appointments.dateAppointment asc;
+END $$
+DELIMITER;
+

@@ -6,7 +6,7 @@ const DayView = ( { day } ) => {
     
     const [appointmentsList, setAppointmentsList] = useState([]);
 
-    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30"];
+    const hours = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"];
 
     useEffect(() => {
         
@@ -30,7 +30,7 @@ const DayView = ( { day } ) => {
             <div className={styles.inner_calendar}>
 
                 <div className={styles.day_view}>
-
+                    
                     <div className={styles.hours_container}>
                         
                         {hours.map((hour, index) => {
