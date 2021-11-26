@@ -12,7 +12,7 @@ import Categories from "./owner_list_categories";
 
 import styles from "../../styles/owner/owner_list.module.scss";
 
-const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList, filterType }) => {
+const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList, filterType, view }) => {
 
     const [loading, setLoading] = useState(true);
 
@@ -38,7 +38,12 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
 
     }, []);
 
-
+    const style = {
+        "display": "grid",
+        "gridTemplateColumns": "repeat(auto-fit, minmax( 15rem, 1fr))",
+        "padding": "5px",
+        "columnGap": "20px"
+    }
 
     return (
         
@@ -48,19 +53,19 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
 
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
             
-            <ul className={styles.owner}>
+            <ul className={styles.owner} style={view === "grid" ? style : {}}>
 
                 {ownerList.map((elm, index) => {
 
                     const obj = [{"id": elm.id, "telephones": elm.telephones, "address": elm.address, "nameOwner": elm.nameOwner, "email": elm.email, "registered": elm.registerDate}];
 
                     return (
-                        <li key={elm.id} className={styles.item}>
+                        <li key={elm.id} className={styles.item} style={{height: view === "grid" && "100%", marginBottom: view === "grid" && "0"}}>
                             {/* <div className="checkbox">
                                 <input type="checkbox" onChange={() => console.log("test")}/>
                             </div> */}
                             <span>{elm.nameOwner}</span>
-                            <span>{elm.email}</span>
+                            <span style={{whiteSpace: view === "grid" && "break-spaces", wordWrap: view === "grid" && "anywhere"}}>{elm.email}</span>
                             
                             <TelBtn elm={elm}/>
                             
@@ -68,7 +73,7 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
 
                             <span>{elm.registerDate}</span>
 
-                            <DotBtn id={elm.id}>
+                            <DotBtn id={elm.id} top={3}>
                                 <div className={styles.options} >
                                     <Link to={{pathname: `/owners/${elm.id}`, state: obj}}> <img src={Profile} alt="profile" /> Owner profile</Link>
                                     {/* <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link> */}
