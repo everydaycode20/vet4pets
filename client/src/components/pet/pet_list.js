@@ -9,9 +9,7 @@ import Categories from "./pet_list_categories";
 
 import styles from "../../styles/pet/pet.module.scss";
 
-const PetList = memo(( { setNumberPets, petList, setPetList } ) => {
-    
-    const categories = ["Name", "Owner Name", "Age", "Type", "Register Date"];
+const PetList = memo(( { setNumberPets, petList, setPetList, view } ) => {
 
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +30,13 @@ const PetList = memo(( { setNumberPets, petList, setPetList } ) => {
 
     }, []);
     
+    const style = {
+        "display": "grid",
+        "gridTemplateColumns": "repeat(auto-fit, minmax( 15rem, 1fr))",
+        "padding": "5px",
+        "columnGap": "20px"
+    }
+
     return (
         <section className={styles.list}>
 
@@ -47,7 +52,7 @@ const PetList = memo(( { setNumberPets, petList, setPetList } ) => {
             <Categories setPetList={setPetList} petList={petList} setLoading={setLoading} />
 
             {loading ? <Skeleton height={41} backgroundColor={"#CDF0EA"} number={3} width={90}/> :
-            <ul className={styles.pet_list}>
+            <ul className={styles.pet_list} style={view === "grid" ? style : {}}>
 
                 {petList.map((elm, index) => {
 

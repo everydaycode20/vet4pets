@@ -26,14 +26,16 @@ const Pet = () => {
 
     const [petList, setPetList] = useState([]);
 
+    const [view, setView] = useState("list");
+
     return (
         <div className={styles.main_container}>
 
             <Header />
 
-            <PetControl numberPets={numberPets} setAddPet={setAddPet} petList={petList} setPetList={setPetList} />
+            <PetControl numberPets={numberPets} setAddPet={setAddPet} petList={petList} setPetList={setPetList} setView={setView} view={view}/>
 
-            <PetList setNumberPets={setNumberPets} setPetList={setPetList} petList={petList} />
+            <PetList setNumberPets={setNumberPets} setPetList={setPetList} petList={petList} view={view} />
 
             {addPet && <AddPet setAddPet={setAddPet} setPetMessage={setPetMessage} setPetList={setPetList} petList={petList} />}
 

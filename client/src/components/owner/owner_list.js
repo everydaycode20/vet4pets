@@ -73,7 +73,7 @@ const OwnerList = memo(({ setNumberOwners, setOwnerList, ownerList, setTempList,
 
                             <span>{elm.registerDate}</span>
 
-                            <DotBtn id={elm.id} top={3}>
+                            <DotBtn id={elm.id} top={view === "grid" && 3}>
                                 <div className={styles.options} >
                                     <Link to={{pathname: `/owners/${elm.id}`, state: obj}}> <img src={Profile} alt="profile" /> Owner profile</Link>
                                     {/* <Link to={`/owners`}> <img src={Edit} alt="edit"/> Edit</Link> */}
