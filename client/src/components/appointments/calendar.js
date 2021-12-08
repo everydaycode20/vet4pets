@@ -13,8 +13,13 @@ import styles from "../../styles/appointment/appointments.module.scss";
 
 export const AppointmentCard = ({ item, border, index, deleteCard }) => {
     
+    
+
+    const dates = item.fullDate.split(" ");
+    console.log(dates);
+    console.log( new Date(dates[0].split("-")[0], dates[0].split("-")[1], dates[0].split("-")[2], dates[1].split(":")[0], dates[1].split(":")[1]) );
     return (                 
-        <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border}} className={styles.card}>
+        <div style={{backgroundColor: item.appointmentName !== "" && "white", borderTop: border, top: 0}} className={styles.card}>
             <span>{item.nameOwner}</span>
             <span>{item.namePet}</span>
             <span>{item.appointmentName}</span>

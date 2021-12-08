@@ -10,6 +10,8 @@ import MonthView from "./month_view";
 import Edit from "./edit";
 import DayView from "./day_view";
 
+import usePage from "../../utils/usePage";
+
 import styles from "../../styles/appointment/appointments.module.scss";
 
 const Appointments = memo(({ socket }) => {
@@ -46,6 +48,8 @@ const Appointments = memo(({ socket }) => {
     useEffect(() => {
         socket.emit("new appointment", "");
     });
+
+    usePage("appointments");
 
     useEffect(() => {
         

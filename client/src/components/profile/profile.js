@@ -6,6 +6,8 @@ import Edit from "./edit";
 
 import { AuthContext } from "../../utils/useAuth";
 
+import usePage from "../../utils/usePage";
+
 import DefaultProfilePhoto from "../../assets/profile_filled_grey.svg";
 
 import styles from "../../styles/profile/profile.module.scss";
@@ -16,6 +18,8 @@ const Profile = () => {
     const { user } = auth;
     
     const [userInfo, setUserInfo] = useState({ name: user.name, lastName: user.lastName});
+
+    usePage("profile");
 
     return (
         <div className={styles.container}>

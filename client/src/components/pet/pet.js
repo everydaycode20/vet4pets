@@ -5,6 +5,8 @@ import PetControl from "./pet_control";
 import PetList from "./pet_list";
 import AddPet from "./add_pet";
 
+import usePage from "../../utils/usePage";
+
 import styles from "../../styles/pet/pet.module.scss";
 
 const PetMessage = ({ setPetMessage }) => {
@@ -27,6 +29,8 @@ const Pet = () => {
     const [petList, setPetList] = useState([]);
 
     const [view, setView] = useState("list");
+
+    usePage("pets");
 
     return (
         <div className={styles.main_container}>

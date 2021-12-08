@@ -5,6 +5,8 @@ import OwnerControl from "./owner_controls";
 import OwnerList from "./owner_list";
 import AddOwner from "./add_owner";
 
+import usePage from "../../utils/usePage";
+
 import styles from "../../styles/owner/owner.module.scss";
 
 const OwnerMessage = ({ setOwnerMessage }) => {
@@ -31,6 +33,8 @@ const Owner = () => {
     const [filterType, setFilterType] = useState("All");
 
     const [view, setView] = useState("list");
+
+    usePage("owners");
 
     return (
         <div className={styles.container}>

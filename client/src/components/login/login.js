@@ -27,8 +27,9 @@ const Login = () => {
     };
 
     if (auth.authorized && auth.authorized !== null) {
+        const page = sessionStorage.getItem('page');
         
-        return <Redirect to="/"/>
+        return <Redirect to={`${page ? page : "/"}`}/>
     }
 
     if (!auth.authorized && auth.authorized !== null) {

@@ -8,10 +8,14 @@ import AppointmentType from "./appointment_type";
 import Type from "./pet_type";
 import Time from "./time";
 
+import usePage from "../../utils/usePage";
+
 import styles from "../../styles/settings/settings.module.scss";
 
 const Settings = () => {
     
+    usePage("settings");
+
     return (
         <div className={styles.main_container}>
             <Header />

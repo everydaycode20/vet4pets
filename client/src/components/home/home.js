@@ -6,6 +6,8 @@ import NextAppointments from "./next_appoinments";
 import { PatientMonth, PatientYear, Finished, TopAppointments } from "./home_cards";
 import Skeleton from "../misc/skeleton";
 
+import usePage from "../../utils/usePage";
+
 import { AuthContext } from "../../utils/useAuth";
 
 import styles from "../../styles/home/home.module.scss";
@@ -86,6 +88,8 @@ const Main = () => {
         return () => controller?.abort();
 
     }, []);
+
+    usePage("");
 
     return (
         <div className={styles.container}>
