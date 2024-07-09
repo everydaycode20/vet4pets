@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.grey-border {
+  border: #e8ecef solid 1px;
+}
+
+.light-grey-border {
+  border: #e8ecef26 solid 1px;
+}
+
+.shadow-1 {
+  box-shadow: 0px 5px 25px 0px rgba(91, 91, 91, 0.1);
+  -webkit-box-shadow: 0px 5px 25px 0px rgba(91, 91, 91, 0.1);
+  -moz-box-shadow: 0px 5px 25px 0px rgba(91, 91, 91, 0.1);
+}
+
+.shadow-2 {
+  box-shadow: 0px 10px 40px 0px rgba(91, 91, 91, 0.1);
+  -webkit-box-shadow: 0px 10px 40px 0px rgba(91, 91, 91, 0.1);
+  -moz-box-shadow: 0px 10px 40px 0px rgba(91, 91, 91, 0.1);
+}
+
+.shadow-3 {
+  box-shadow: 0px 20px 50px 0px rgba(91, 91, 91, 0.1);
+  -webkit-box-shadow: 0px 20px 50px 0px rgba(91, 91, 91, 0.1);
+  -moz-box-shadow: 0px 20px 50px 0px rgba(91, 91, 91, 0.1);
+}
+
+// .border-radius-5 {
+//   border-radius: 5px;
+// }
+
+// .border-radius-10 {
+//   border-radius: 10px;
+// }
+
+// .border-radius-20 {
+//   border-radius: 20px;
+// }
