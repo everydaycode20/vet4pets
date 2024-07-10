@@ -25,6 +25,7 @@
   },
   "include": ["src"],
   "paths": {
- "@mui/material": ["./node_modules/@mui/system"]
- }
+    "@mui/material": ["./node_modules/@mui/system"],
+    "@/*": ["./src/*"]
+  }
 }

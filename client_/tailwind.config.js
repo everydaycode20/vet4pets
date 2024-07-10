@@ -24,16 +24,16 @@ export default {
       "light-gray": "#E8ECEF",
       "light-gray-2": "#F2F4F6",
       "light-gray-3": "#F8FAFB",
+      "light-gray-4": "#778CA2",
       black: "#252631",
       "light-black": "#25263126",
     },
-    extend: {
-      borderRadius: {
-        5: "5px",
-        10: "10px",
-        20: "20px",
-      },
+    borderRadius: {
+      5: "5px",
+      10: "10px",
+      20: "20px",
     },
+    extend: {},
   },
   plugins: [],
 };

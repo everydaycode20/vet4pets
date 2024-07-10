@@ -1,0 +1,46 @@
+$blue: #4d7cfe;
+$light-blue: #4d7cfe26;
+$cyan: #2ce5f6;
+$light-cyan: #2ce5f626;
+$pink: #fe4d97;
+$light-pink: #fe4d9726;
+$orange: #ffab2b;
+$light-orange: #ffab2b26;
+$green: #6dd230;
+$light-green: #6dd23026;
+$gray-dark: #273444;
+$gray: #98a9bc;
+$light-gray: #e8ecef;
+$light-gray-2: #f2f4f6;
+$light-gray-3: #f8fafb;
+$light-gray-4: #778ca2;
+$black: #252631;
+$light-black: #25263126;
+
+// $colors: (
+//   "blue": #4d7cfe,
+//   "light-blue": #4d7cfe26,
+//   "cyan": #2ce5f6,
+//   "light-cyan": #2ce5f626,
+//   "pink": #fe4d97,
+//   "light-pink": #fe4d9726,
+//   "orange": #ffab2b,
+//   "light-orange": #ffab2b26,
+//   "green": #6dd230,
+//   "light-green": #6dd23026,
+//   "gray-dark": #273444,
+//   "gray": #98a9bc,
+//   "light-gray": #e8ecef,
+//   "light-gray-2": #f2f4f6,
+//   "light-gray-3": #f8fafb,
+//   "black": #252631,
+//   "light-black": #25263126,
+// );
+
+// @each $color, $i in $colors {
+//   .border {
+//     &-#{$color} {
+//       border-color: $i;
+//     }
+//   }
+// }

@@ -5,6 +5,9 @@ import { Button } from "@mui/base/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import styles from "./input.module.scss";
+import JoinClasses from "../../utils/join-classes";
+
 interface IInput {
   label: string;
   id: string;
@@ -32,19 +35,22 @@ export default function Input({
     };
 
     return (
-      <div className="w-full">
+      <div className={"w-full " + styles.input}>
         <label className="w-full block" htmlFor={id}>
           {label}
         </label>
 
         <MuiInput
           type={showPassword ? "text" : "password"}
-          className="w-full flex"
+          className={JoinClasses(
+            "w-full flex input-password rounded-5",
+            styles["input-container-password"]
+          )}
           id={id}
           placeholder={placeholder}
           {...field}
           endAdornment={
-            <InputAdornment>
+            <InputAdornment className={JoinClasses("", styles["password-toggler"])}>
               <IconButton
                 size="small"
                 aria-label="toggle password visibility"
@@ -65,13 +71,16 @@ export default function Input({
   }
 
   return (
-    <div className="w-full">
+    <div className={"w-full " + styles.input}>
       <label className="w-full block" htmlFor={id}>
         {label}
       </label>
 
       <MuiInput
-        className="w-full"
+        className={JoinClasses(
+          "w-full flex rounded-5 input-text",
+          styles["input-container"]
+        )}
         id={id}
         placeholder={placeholder}
         {...field}

@@ -3,6 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import Input from "../components/input/input";
+import JoinClasses from "../utils/join-classes";
+
+import styles from "./login.module.scss";
 
 interface IFormInput {
   email: string;
@@ -34,15 +37,18 @@ export default function Login() {
   return (
     <main>
       <h1>Sign In</h1>
-      
+
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={JoinClasses("flex flex-col", styles.form)}
+        >
           <Controller
             name="email"
             control={control}
             render={({ field }) => (
               <Input
-                id="test"
+                id="email"
                 label="Your email"
                 placeholder="Enter your email"
                 field={field}

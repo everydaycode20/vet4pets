@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "../src/assets/scss/fonts/fonts";
+@import "../src/assets/scss/colors/colors";
+
 :root {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Public Sans", sans-serif;
 }
 
 main {
@@ -15,6 +21,31 @@ h1 {
   font-size: 24px;
   line-height: 36px;
   font-weight: 700;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
 }
 
 .grey-border {
@@ -45,6 +76,28 @@ h1 {
 
 .base-Input-root input {
   width: 100%;
+}
+
+.input-text input {
+  &:focus,
+  &:focus-visible {
+    border-color: $light-gray;
+    box-shadow: $light-gray-4 0px 0px 0px 3px;
+    outline: none;
+  }
+}
+
+.input-password {
+  border: none;
+
+  &.base--focused {
+    border-color: $light-gray;
+    box-shadow: $light-gray-4 0px 0px 0px 3px;
+  }
+
+  input {
+    outline: none;
+  }
 }
 
 // .border-radius-5 {
