@@ -7,6 +7,12 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import styles from "./input.module.scss";
 import JoinClasses from "../../utils/join-classes";
+import { UseFormStateReturn } from "react-hook-form";
+
+interface IFormInput {
+  email: string;
+  password: string;
+}
 
 interface IInput {
   label: string;
@@ -14,6 +20,7 @@ interface IInput {
   placeholder: string;
   field: any;
   type?: "default" | "password";
+  invalid?: boolean;
 }
 
 export default function Input({
@@ -22,6 +29,7 @@ export default function Input({
   placeholder,
   field,
   type = "default",
+  invalid,
 }: IInput) {
   if (type === "password") {
     const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +49,8 @@ export default function Input({
         </label>
 
         <MuiInput
+          autoComplete="true"
+          error={invalid}
           type={showPassword ? "text" : "password"}
           className={JoinClasses(
             "w-full flex input-password rounded-5",
@@ -50,7 +60,9 @@ export default function Input({
           placeholder={placeholder}
           {...field}
           endAdornment={
-            <InputAdornment className={JoinClasses("", styles["password-toggler"])}>
+            <InputAdornment
+              className={JoinClasses("", styles["password-toggler"])}
+            >
               <IconButton
                 size="small"
                 aria-label="toggle password visibility"
@@ -77,6 +89,7 @@ export default function Input({
       </label>
 
       <MuiInput
+        error={invalid}
         className={JoinClasses(
           "w-full flex rounded-5 input-text",
           styles["input-container"]

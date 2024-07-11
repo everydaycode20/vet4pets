@@ -33,7 +33,11 @@ export default {
       10: "10px",
       20: "20px",
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        publicSans: ["Public Sans", "sans-serif"]
+      }
+    },
   },
   plugins: [],
 };

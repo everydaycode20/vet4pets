@@ -51,6 +51,14 @@ h5 {
   font-weight: 600;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: $black;
+}
+
 .grey-border {
   border: #e8ecef solid 1px;
 }
@@ -81,6 +89,21 @@ h5 {
   width: 100%;
 }
 
+.base-Input-root.base--error {
+  border-color: $pink;
+
+  input {
+    border-color: $pink;
+  }
+
+  &.input-text input {
+    &:focus,
+    &:focus-visible {
+      box-shadow: $pink 0px 0px 0px 3px;
+    }
+  }
+}
+
 .input-text input {
   &:focus,
   &:focus-visible {
@@ -90,7 +113,7 @@ h5 {
   }
 }
 
-.input-password {
+.base-Input-adornedEnd {
   border: none;
 
   &.base--focused {
@@ -98,8 +121,26 @@ h5 {
     box-shadow: $light-gray-4 0px 0px 0px 3px;
   }
 
+  &.base--error.base--focused {
+    box-shadow: $pink 0px 0px 0px 3px;
+  }
+
   input {
     outline: none;
+  }
+}
+
+.blue-btn {
+  background-color: $blue;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 12px 24px;
+
+  &:hover {
+    background-color: $light-gray-2;
+    color: $light-gray-4;
   }
 }
 

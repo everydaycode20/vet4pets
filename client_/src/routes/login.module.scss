@@ -1,3 +1,12 @@
 .form {
   row-gap: 12px;
+
+  &-container {
+    max-width: 364px;
+    width: 100%;
+  }
+}
+
+.submit-btn {
+  margin-top: 12px;
 }
