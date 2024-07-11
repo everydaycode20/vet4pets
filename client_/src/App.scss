@@ -2,13 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "../src/assets/scss/fonts/fonts";
-@import "../src/assets/scss/colors/colors";
+@import "./assets/scss/fonts/fonts.scss";
+@import "./assets/scss/colors/colors";
 
 :root {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+body {
   font-family: "Public Sans", sans-serif;
 }
 
