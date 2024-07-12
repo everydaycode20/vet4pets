@@ -60,6 +60,7 @@ export default function Login() {
                     placeholder="Enter your email"
                     field={field}
                     invalid={fieldState.invalid}
+                    error={fieldState?.error?.message}
                   />
                 );
               }}
@@ -78,6 +79,7 @@ export default function Login() {
                   field={field}
                   type="password"
                   invalid={fieldState.invalid}
+                  error={fieldState?.error?.message}
                 />
               )}
             />

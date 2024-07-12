@@ -21,6 +21,7 @@ interface IInput {
   field: any;
   type?: "default" | "password";
   invalid?: boolean;
+  error?: string;
 }
 
 export default function Input({
@@ -30,6 +31,7 @@ export default function Input({
   field,
   type = "default",
   invalid,
+  error,
 }: IInput) {
   if (type === "password") {
     const [showPassword, setShowPassword] = useState(false);
@@ -78,6 +80,8 @@ export default function Input({
             </InputAdornment>
           }
         />
+
+        <span className="text-pink">{error}</span>
       </div>
     );
   }
@@ -98,6 +102,8 @@ export default function Input({
         placeholder={placeholder}
         {...field}
       />
+
+      <span className="text-pink">{error}</span>
     </div>
   );
 }
