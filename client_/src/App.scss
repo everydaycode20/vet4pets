@@ -144,6 +144,18 @@ h5 {
   }
 }
 
+.navigation-container ul li a.active {
+  color: $blue;
+}
+
+.navigation-container ul li a.active::after {
+  background-color: $blue;
+}
+
+.navigation-container ul li a.active div {
+  background-color: #f8fafb;
+}
+
 // .border-radius-5 {
 //   border-radius: 5px;
 // }

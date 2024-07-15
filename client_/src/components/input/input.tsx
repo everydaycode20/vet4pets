@@ -7,12 +7,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import styles from "./input.module.scss";
 import JoinClasses from "../../utils/join-classes";
-import { UseFormStateReturn } from "react-hook-form";
 
-interface IFormInput {
-  email: string;
-  password: string;
-}
 
 interface IInput {
   label: string;

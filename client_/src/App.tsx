@@ -6,21 +6,26 @@ import {
 
 import "./App.scss";
 
-import Login from "./routes/login";
+import Login from "./routes/login/login";
+import Root from "./routes/root/root";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <Root />,
     errorElement: (
       <>
         <h1>404</h1>
       </>
     ),
     children: [
+      // {
+      //   index: true,
+      //   loader: async () => redirect("/login"),
+      // },
       {
-        index: true,
-        loader: async () => redirect("/login"),
+        path: "dashboard",
+        element: <div>dashboard</div>,
       },
     ],
   },

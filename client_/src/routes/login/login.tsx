@@ -2,11 +2,11 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string } from "zod";
 
-import Input from "../components/input/input";
-import JoinClasses from "../utils/join-classes";
+import Input from "../../components/input/input";
+import JoinClasses from "../../utils/join-classes";
 
 import styles from "./login.module.scss";
-import SubmitBtn from "../components/submit-btn/submit-btn";
+import SubmitBtn from "../../components/submit-btn/submit-btn";
 
 interface IFormInput {
   email: string;

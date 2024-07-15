@@ -1,0 +1,56 @@
+@import "../../assets/scss/colors/colors";
+
+.sidebar {
+  max-width: 252px;
+  width: 100%;
+  border-right: 1px solid $light-gray;
+
+  aside {
+  }
+
+  &__title {
+    font-size: 22px;
+    line-height: 32px;
+    padding: 24px 0 24px 24px;
+    border-bottom: 1px solid $light-gray;
+
+    span {
+    }
+  }
+}
+
+.navigation {
+  padding: 22px 0 24px 22px;
+
+  &__collapse {
+    padding-right: 22px;
+    font-size: 14px ;
+  }
+
+  ul {
+    margin-top: 12px;
+
+    li a {
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 600;
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 2px;
+      column-gap: 12px;
+
+      &:after {
+        content: "";
+        width: 2px;
+        height: 100%;
+        border-radius: 1px;
+      }
+    }
+
+    li a div {
+      column-gap: 12px;
+      padding: 9px 12px;
+      border-radius: 8px;
+    }
+  }
+}

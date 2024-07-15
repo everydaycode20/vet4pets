@@ -33,10 +33,30 @@ export default {
       10: "10px",
       20: "20px",
     },
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      semibold: 600,
+      bold: 700,
+    },
     extend: {
       fontFamily: {
-        publicSans: ["Public Sans", "sans-serif"]
-      }
+        publicSans: ["Public Sans", "sans-serif"],
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s cubic-bezier(0.87, 0, 0.13, 1)",
+        "accordion-up": "accordion-up 0.2s cubic-bezier(0.87, 0, 0.13, 1)",
+      },
     },
   },
   plugins: [],
