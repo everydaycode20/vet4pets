@@ -144,15 +144,18 @@ h5 {
   }
 }
 
-.navigation-container ul li a.active {
+.navigation-container ul li a.active,
+.active div {
   color: $blue;
 }
 
-.navigation-container ul li a.active::after {
+.navigation-container ul li a.active::after,
+.active:after {
   background-color: $blue;
 }
 
-.navigation-container ul li a.active div {
+.navigation-container ul li a.active div,
+.active div {
   background-color: #f8fafb;
 }
 

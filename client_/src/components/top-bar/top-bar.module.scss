@@ -1,0 +1,11 @@
+@import "../../assets/scss/colors/colors";
+
+.header {
+  padding: 16.5px 23px 16.5px 55px;
+  border-bottom: 1px solid $light-gray;
+
+  h1 {
+    font-size: 22px;
+    line-height: 32px;
+  }
+}

@@ -25,7 +25,17 @@ const router = createBrowserRouter([
       // },
       {
         path: "dashboard",
-        element: <div>dashboard</div>,
+        element: <div title="asas">dashboard</div>,
+        handle: {
+          title: "Dashboard",
+        },
+      },
+      {
+        path: "settings",
+        element: <div>settings</div>,
+        handle: {
+          title: "Settings",
+        },
       },
     ],
   },
