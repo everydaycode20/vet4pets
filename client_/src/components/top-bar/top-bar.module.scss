@@ -8,11 +8,14 @@
     font-size: 22px;
     line-height: 32px;
   }
+
+  nav {
+    column-gap: 24px;
+  }
 }
 
 .profile {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  margin-left: 24px;
 }

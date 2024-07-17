@@ -25,7 +25,10 @@ export default function TopBar() {
         {matches[matches.length - 1].handle?.title}
       </h1>
 
-      <nav className="flex items-center" aria-label="top navigation">
+      <nav
+        className="flex items-center w-full justify-end"
+        aria-label="top navigation"
+      >
         <Search />
 
         <Notifications />

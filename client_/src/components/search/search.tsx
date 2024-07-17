@@ -1,11 +1,15 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Combobox,
-  Transition,
   ComboboxInput,
   ComboboxOptions,
   ComboboxOption,
 } from "@headlessui/react";
+
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import JoinClasses from "../../utils/join-classes";
+
+import styles from "./search.module.scss";
 
 const people = [
   { id: 1, name: "Wade Cooper" },
@@ -16,36 +20,13 @@ const people = [
   { id: 6, name: "Hellen Schmidt" },
 ];
 
-export default function Example() {
+export default function Search() {
   const [selected, setSelected] =
     useState<{ id: number; name: string }[]>(people);
 
   const [query, setQuery] = useState("");
 
-  const [people1, setPeople1] = useState([]);
-
-  let filteredPeople: { id: number; name: string }[] = [];
-
-  function A() {
-    if (query !== "") {
-      setTimeout(() => {
-        filteredPeople = people.filter((person) =>
-          person.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
-      }, 2000);
-    }
-  }
-
-  //   if (query !== "") {
-  //     T().then((val) => {
-  //       console.log(val);
-
-  //       setPeople1(val);
-  //     });
-  //   }
+  const [people1, setPeople1] = useState<any>([]);
 
   function T() {
     return new Promise((resolve, reject) => {
@@ -58,46 +39,52 @@ export default function Example() {
         );
 
         resolve(p);
-      }, 2000);
+      }, 300);
     });
   }
 
   useEffect(() => {
     if (query !== "") {
       T().then((val) => {
-        console.log(val);
-
         setPeople1(val);
       });
     }
   }, [query]);
 
-  //   console.log(filteredPeople);
-
-  //   const filteredPeople =
-  //     query === ""
-  //       ? people
-  //       : people.filter((person) =>
-  //           person.name
-  //             .toLowerCase()
-  //             .replace(/\s+/g, "")
-  //             .includes(query.toLowerCase().replace(/\s+/g, ""))
-  //         );
-
   return (
-    <div className="">
-      <Combobox value={selected} onChange={(value) => setSelected(value!)}>
+    <div className={JoinClasses("", styles["search-container"])}>
+      <Combobox
+        // virtual={{ options: people1 }}
+        value={selected}
+        onChange={(value) => setSelected(value!)}
+        onClose={() => setQuery("")}
+      >
         {({ open }) => (
           <>
-            <ComboboxInput
-              onChange={(event) => setQuery(event.target.value)}
-              displayValue={(person: any) => person && person.name}
-            />
+            <div className="relative flex items-center w-full">
+              <SearchOutlinedIcon htmlColor="#778CA2" className="absolute" />
+
+              <ComboboxInput
+                onChange={(event) => setQuery(event.target.value)}
+                displayValue={(person: any) => person && person.name}
+                placeholder="Search for owners, pets..."
+                className="bg-transparent relative w-full"
+              />
+            </div>
+
             {open && (
-              <div>
-                <ComboboxOptions static>
-                  {people1.map((person) => (
-                    <ComboboxOption key={person.id} value={person}>
+              <div className={JoinClasses("relative")}>
+                <ComboboxOptions
+                  static
+                  anchor="bottom"
+                  className={JoinClasses("", styles.options)}
+                >
+                  {people1.map((person: any) => (
+                    <ComboboxOption
+                      className={JoinClasses("cursor-default", styles.option)}
+                      key={person.id}
+                      value={person}
+                    >
                       {person.name}
                     </ComboboxOption>
                   ))}

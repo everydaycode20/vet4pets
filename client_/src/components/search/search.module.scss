@@ -1,0 +1,36 @@
+@import "../../assets/scss/colors/colors";
+
+.search-container {
+  max-width: 236px;
+  width: 100%;
+
+  input {
+    background-color: transparent;
+    font-size: 14px;
+    color: $light-gray-4;
+    padding: 5px 0px 5px 28px;
+
+    &[data-focus] {
+      outline: none;
+      box-shadow: 0.1px 2px 0px 0px rgba($light-gray-4, 1);
+    }
+  }
+}
+
+.options {
+  width: 450px;
+  background-color: white;
+  margin-top: 10px;
+  border: 1px solid $light-gray-4;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.option {
+  padding: 6px 12px;
+
+  &[data-focus] {
+    background-color: $light-gray;
+    border-radius: 10px;
+  }
+}
