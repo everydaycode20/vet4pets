@@ -42,7 +42,10 @@ const routes = [
 
 export default function Sidebar() {
   return (
-    <nav className={JoinClasses("", styles["sidebar"])}>
+    <nav
+      className={JoinClasses("", styles["sidebar"])}
+      aria-label="left side navigation"
+    >
       <aside className="h-full flex flex-col">
         <div className={JoinClasses("", styles.sidebar__title)}>
           <span className="font-semibold text-black">Vet4Pets</span>
