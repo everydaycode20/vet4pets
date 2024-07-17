@@ -1,0 +1,30 @@
+$breakpoints: (
+  sm: 480px,
+  md: 768px,
+  lg: 976px,
+  xl: 1440px,
+);
+
+@mixin media-up($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+
+    @media screen and (min-width: $value) {
+      @content;
+    }
+  }
+
+  @warn "Unknown `#{$breakpoint}` in $breakpoints";
+}
+
+@mixin media-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+
+    @media screen and (max-width: $value) {
+      @content;
+    }
+  }
+
+  @warn "Unknown `#{$breakpoint}` in $breakpoints";
+}

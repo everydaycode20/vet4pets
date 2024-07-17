@@ -1,8 +1,17 @@
 @import "../../assets/scss/colors/colors";
+@import "../../assets/scss/breakpoints";
 
 .header {
-  padding: 14px 23px 14px 55px;
   border-bottom: 1px solid $light-gray;
+  padding: 14px 10px 14px 10px;
+
+  @include media-down(lg) {
+    row-gap: 10px;
+  }
+
+  @include media-up(lg) {
+    padding: 14px 23px 14px 55px;
+  }
 
   h1 {
     font-size: 22px;

@@ -1,8 +1,13 @@
 @import "../../assets/scss/colors/colors";
+@import "../../assets/scss/breakpoints";
 
 .search-container {
   max-width: 236px;
   width: 100%;
+
+  @include media-down(lg) {
+    max-width: none;
+  }
 
   input {
     background-color: transparent;

@@ -1,7 +1,8 @@
 @import "../../assets/scss/colors/colors";
+@import "../../assets/scss/variables";
 
 .sidebar {
-  max-width: 252px;
+  max-width: $sidebar-width;
   width: 100%;
   border-right: 1px solid $light-gray;
 

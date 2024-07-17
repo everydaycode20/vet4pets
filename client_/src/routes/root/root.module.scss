@@ -1,0 +1,8 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/breakpoints";
+
+.main-container {
+  @include media-up(lg) {
+    padding-left: $sidebar-width;
+  }
+}

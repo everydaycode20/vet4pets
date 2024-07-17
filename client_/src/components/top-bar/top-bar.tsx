@@ -17,7 +17,7 @@ export default function TopBar() {
   return (
     <header
       className={JoinClasses(
-        "bg-light-gray-3 flex items-center justify-between",
+        "bg-light-gray-3 flex items-center justify-between flex-wrap lg:flex-nowrap",
         styles.header
       )}
     >
