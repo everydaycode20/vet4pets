@@ -1,73 +1,47 @@
 import ChartCard from "../../components/chart-card/chart-card";
 
-const chartdata = [
+const data = [
   {
-    date: "Jan 23",
-    SolarPanels: 2890,
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
   },
   {
-    date: "Feb 23",
-    SolarPanels: 2756,
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
   },
   {
-    date: "Mar 23",
-    SolarPanels: 3322,
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
   },
   {
-    date: "Apr 23",
-    SolarPanels: 3470,
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
   },
   {
-    date: "May 23",
-    SolarPanels: 3475,
+    name: "Page E",
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
   },
   {
-    date: "Jun 23",
-    SolarPanels: 3129,
+    name: "Page F",
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
   },
   {
-    date: "Jul 23",
-    SolarPanels: 3490,
-  },
-  {
-    date: "Aug 23",
-    SolarPanels: 2903,
-  },
-  {
-    date: "Sep 23",
-    SolarPanels: 2643,
-  },
-  {
-    date: "Oct 23",
-    SolarPanels: 2837,
-  },
-  {
-    date: "Nov 23",
-    SolarPanels: 2954,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 3239,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 3239,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 3239,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 2039,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 2509,
-  },
-  {
-    date: "Dec 23",
-    SolarPanels: 3020,
+    name: "Page G",
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
   },
 ];
 
@@ -75,7 +49,13 @@ export default function Dashboard() {
   return (
     <div>
       <section>
-        <ChartCard title="Patients this month" quantity={25} data={chartdata} />
+        <ChartCard
+          title="Patients this month"
+          quantity={25}
+          data={data}
+          fill="rgba(77,124,254,0.06)"
+          stroke="#4D7CFE"
+        />
       </section>
     </div>
   );

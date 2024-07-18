@@ -15,7 +15,9 @@ export default function Root() {
         <TopBar />
 
         <main className="w-full h-full bg-light-gray-3">
-          <Outlet />
+          <div className="container">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

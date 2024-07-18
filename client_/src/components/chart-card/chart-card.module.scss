@@ -1,12 +1,17 @@
 @import "../../assets/scss/colors/colors";
+@import "../../assets/scss/breakpoints";
 
 .card {
-  max-width: 364px;
   width: 100%;
   border-radius: 8px;
   border: 1px solid $light-gray;
   background-color: white;
   padding: 24px;
+  row-gap: 10px;
+
+  @include media-up(md) {
+    max-width: 364px;
+  }
 
   h2 {
     font-size: 14px;
@@ -18,8 +23,4 @@
     font-size: 24px;
     line-height: 36px;
   }
-}
-
-.chart {
-  height: 56px;
 }
