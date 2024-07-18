@@ -165,6 +165,15 @@ h5 {
   background-color: #f8fafb;
 }
 
+.chart-card .recharts-tooltip-cursor,
+.chart-card .recharts-active-dot {
+  display: none;
+}
+
+.chart-card .recharts-line {
+  cursor: default;
+}
+
 // .border-radius-5 {
 //   border-radius: 5px;
 // }

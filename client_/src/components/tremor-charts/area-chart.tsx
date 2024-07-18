@@ -3,7 +3,6 @@
 "use client";
 
 import React from "react";
-// import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
 
 import MouseOutlinedIcon from "@mui/icons-material/MouseOutlined";
 
@@ -646,11 +645,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={JoinClasses("h-80 w-full", className)}
-        {...other}
-      >
+      <div ref={ref} className={JoinClasses("w-full", className)} {...other}>
         <ResponsiveContainer>
           <RechartsAreaChart
             data={data}

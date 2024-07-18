@@ -8,6 +8,7 @@ import "./App.scss";
 
 import Login from "./routes/login/login";
 import Root from "./routes/root/root";
+import Dashboard from "./routes/dashboard/dashboard";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       // },
       {
         path: "dashboard",
-        element: <div title="asas">dashboard</div>,
+        element: <Dashboard />,
         handle: {
           title: "Dashboard",
         },
