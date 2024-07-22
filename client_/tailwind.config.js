@@ -35,6 +35,7 @@ export default {
       "light-gray-4": "#778CA2",
       black: "#252631",
       "light-black": "#25263126",
+      white: "#fff",
     },
     borderRadius: {
       5: "5px",

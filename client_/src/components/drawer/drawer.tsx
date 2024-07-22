@@ -10,6 +10,8 @@ import { JoinClasses, focusRing } from "../../utils/utils";
 
 // import { Button } from "./Button";
 
+import styles from "./drawer.module.scss";
+
 const Drawer = (
   props: React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Root>
 ) => {
@@ -58,7 +60,7 @@ const DrawerOverlay = React.forwardRef<
       ref={forwardedRef}
       className={JoinClasses(
         // base
-        "fixed inset-0 z-50 overflow-y-auto",
+        "fixed inset-0 z-50 overflow-y-auto lg:hidden",
         // background color
         "bg-black/30",
         // transition
@@ -87,13 +89,12 @@ const DrawerContent = React.forwardRef<
           ref={forwardedRef}
           className={JoinClasses(
             // base
-            "fixed inset-y-2 mx-auto flex w-[95vw] flex-1 flex-col overflow-y-auto rounded-md border p-4 shadow-lg focus:outline-none max-sm:inset-x-2 sm:inset-y-2 sm:right-2 sm:max-w-lg sm:p-6",
+            "fixed inset-y-2 mx-auto flex flex-1 flex-col overflow-y-auto shadow-lg pt-2 focus:outline-none max-sm:right-2 sm:inset-y-2 sm:right-2",
             // border color
             "border-gray-200 dark:border-gray-900",
             // background color
             "bg-white dark:bg-[#090E1A]",
-            // transition
-            "data-[state=closed]:animate-drawerSlideRightAndFade data-[state=open]:animate-drawerSlideLeftAndFade",
+            styles.content,
             focusRing,
             className
           )}
@@ -111,22 +112,18 @@ const DrawerHeader = React.forwardRef<
   React.ComponentPropsWithoutRef<"div">
 >(({ children, className, ...props }, ref) => {
   return (
-    <div
-      ref={ref}
-      className="flex items-start justify-between gap-x-4 border-b border-gray-200 pb-4 dark:border-gray-900"
-      {...props}
-    >
-      <div className={JoinClasses("mt-1 flex flex-col gap-y-1", className)}>
+    <div ref={ref} className="flex items-start justify-between" {...props}>
+      <div className={JoinClasses("flex flex-col gap-y-1", className)}>
         {children}
       </div>
 
       <DrawerPrimitives.Close asChild>
-        {/* <Button
-          variant="ghost"
-          className="aspect-square p-1 hover:bg-gray-100 hover:dark:bg-gray-400/10"
+        <button
+          className="aspect-square p-1 hover:bg-gray-2 hover:dark:bg-gray-400/10"
+          type="button"
         >
           <CloseOutlinedIcon className="size-6" aria-hidden="true" />
-        </Button> */}
+        </button>
       </DrawerPrimitives.Close>
     </div>
   );
@@ -158,11 +155,7 @@ const DrawerBody = React.forwardRef<
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => {
   return (
-    <div
-      ref={ref}
-      className={JoinClasses("flex-1 py-4", className)}
-      {...props}
-    />
+    <div ref={ref} className={JoinClasses("flex-1", className)} {...props} />
   );
 });
 
@@ -190,7 +183,7 @@ const DrawerFooter = ({
   return (
     <div
       className={JoinClasses(
-        "flex flex-col-reverse border-t border-gray-200 pt-4 sm:flex-row sm:justify-end sm:space-x-2 dark:border-gray-900",
+        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
         className
       )}
       {...props}

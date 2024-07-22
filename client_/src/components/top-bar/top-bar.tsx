@@ -14,8 +14,13 @@ import Notifications from "../notifications/notifications";
 import styles from "./top-bar.module.scss";
 import Search from "../search/search";
 
+import { mobileSidebarState } from "../sidebar/mobile-sidebar";
+import { useAtom } from "jotai";
+
 export default function TopBar() {
   const matches: any = useMatches();
+
+  const [_, setState] = useAtom(mobileSidebarState);
 
   return (
     <header
@@ -29,7 +34,11 @@ export default function TopBar() {
           {matches[matches.length - 1].handle?.title}
         </h1>
 
-        <button className="block lg:hidden" type="button">
+        <button
+          className="block lg:hidden"
+          type="button"
+          onClick={() => setState(true)}
+        >
           <span className="sr-only">open menu</span>
 
           <MenuOutlinedIcon />

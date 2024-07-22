@@ -29,7 +29,7 @@ export default function Search() {
   const [people1, setPeople1] = useState<any>([]);
 
   function T() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _) => {
       setTimeout(() => {
         const p = people.filter((person) =>
           person.name
