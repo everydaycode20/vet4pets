@@ -1,0 +1,42 @@
+@import "../../assets/scss/colors/colors";
+
+.container {
+  min-width: 364px;
+  width: 100%;
+
+  h2 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.controls {
+  padding: 0 10px;
+  column-gap: 12px;
+
+  button {
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border: 1px solid $light-gray;
+    border-radius: 50%;
+    display: flex;
+
+    &:first-of-type {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.date {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid $light-gray;
+  padding: 5px 0;
+
+  span {
+    font-size: 14px;
+    line-height: 21px;
+    color: $black;
+  }
+}

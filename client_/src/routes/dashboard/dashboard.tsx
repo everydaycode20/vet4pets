@@ -1,4 +1,5 @@
 import ChartCard from "../../components/chart-card/chart-card";
+import NextAppointments from "../../components/next-appointments/next-appointments";
 
 const data = [
   {
@@ -47,8 +48,8 @@ const data = [
 
 export default function Dashboard() {
   return (
-    <div>
-      <section>
+    <div className="flex">
+      <section className="flex gap-[24px] flex-wrap w-full">
         <ChartCard
           title="Patients this month"
           quantity={25}
@@ -56,6 +57,18 @@ export default function Dashboard() {
           fill="rgba(77,124,254,0.06)"
           stroke="#4D7CFE"
         />
+
+        <ChartCard
+          title="Patients this year"
+          quantity={21}
+          data={data}
+          fill="rgba(109,210,48,0.06)"
+          stroke="#6DD230"
+        />
+      </section>
+
+      <section>
+        <NextAppointments />
       </section>
     </div>
   );
