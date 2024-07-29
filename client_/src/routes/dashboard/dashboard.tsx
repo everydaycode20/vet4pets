@@ -1,4 +1,4 @@
-import ChartCard from "../../components/chart-card/chart-card";
+import { ChartCard, SimpleCart } from "../../components/chart-card/chart-card";
 import NextAppointments from "../../components/next-appointments/next-appointments";
 
 const data = [
@@ -48,8 +48,8 @@ const data = [
 
 export default function Dashboard() {
   return (
-    <div className="flex">
-      <section className="flex gap-[24px] flex-wrap w-full">
+    <div className="flex gap-[24px] h-full">
+      <section className="flex gap-[24px] flex-wrap w-full h-fit">
         <ChartCard
           title="Patients this month"
           quantity={25}
@@ -65,6 +65,8 @@ export default function Dashboard() {
           fill="rgba(109,210,48,0.06)"
           stroke="#6DD230"
         />
+
+        <SimpleCart finished={1} upcoming={4} />
       </section>
 
       <section>

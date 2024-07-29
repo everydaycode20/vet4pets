@@ -11,13 +11,7 @@ interface IChartCard {
   stroke: string;
 }
 
-export default function ChartCard({
-  title,
-  quantity,
-  data,
-  fill,
-  stroke,
-}: IChartCard) {
+export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
   return (
     <article
       className={JoinClasses(
@@ -32,6 +26,45 @@ export default function ChartCard({
       </div>
 
       <AreaChart data={data} fill={fill} stroke={stroke} dataKey="uv" />
+    </article>
+  );
+}
+
+export function SimpleCart({
+  finished,
+  upcoming,
+}: {
+  finished: string | number;
+  upcoming: string | number;
+}) {
+  return (
+    <article
+      className={JoinClasses(
+        "chart-card flex flex-col sm:flex-row",
+        styles.card
+      )}
+    >
+      <div className="w-full">
+        <h2 className="font-medium">Appointments</h2>
+
+        <div className="flex justify-between">
+          <div className="flex flex-col">
+            <span className={JoinClasses("font-semibold", styles.number)}>
+              {finished}
+            </span>
+
+            <span className={JoinClasses("", styles.finished)}>Finished</span>
+          </div>
+
+          <div className="flex flex-col">
+            <span className={JoinClasses("font-semibold", styles.number)}>
+              {upcoming}
+            </span>
+
+            <span className={JoinClasses("", styles.finished)}>Upcoming</span>
+          </div>
+        </div>
+      </div>
     </article>
   );
 }

@@ -22,5 +22,18 @@
   p {
     font-size: 24px;
     line-height: 36px;
+    color: $black;
   }
+
+  span {
+    color: $black;
+  }
+}
+
+.finished {
+  font-size: 16px;
+}
+
+.number {
+  font-size: 24px;
 }

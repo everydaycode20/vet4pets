@@ -5,6 +5,7 @@
 @import "./assets/scss/fonts/fonts.scss";
 @import "./assets/scss/colors/colors";
 @import "./assets/scss/breakpoints";
+@import "./assets/scss/variables";
 
 :root {
   box-sizing: border-box;
@@ -18,7 +19,7 @@ body {
 
 main {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - $top-bar-width);
 }
 
 h1 {
@@ -178,6 +179,7 @@ h5 {
   width: 100%;
   max-width: none;
   padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 // .border-radius-5 {
