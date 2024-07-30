@@ -1,5 +1,6 @@
 import { ChartCard, SimpleCart } from "../../components/chart-card/chart-card";
 import NextAppointments from "../../components/next-appointments/next-appointments";
+import DashboardBarChart from "../../components/dashboard-bar-chart/dashboard-bar-chart";
 
 const data = [
   {
@@ -49,25 +50,31 @@ const data = [
 export default function Dashboard() {
   return (
     <div className="flex gap-[24px] h-full">
-      <section className="flex gap-[24px] flex-wrap w-full h-fit">
-        <ChartCard
-          title="Patients this month"
-          quantity={25}
-          data={data}
-          fill="rgba(77,124,254,0.06)"
-          stroke="#4D7CFE"
-        />
+      <div>
+        <section className="flex gap-[24px] flex-wrap w-full h-fit">
+          <ChartCard
+            title="Patients this month"
+            quantity={25}
+            data={data}
+            fill="rgba(77,124,254,0.06)"
+            stroke="#4D7CFE"
+          />
 
-        <ChartCard
-          title="Patients this year"
-          quantity={21}
-          data={data}
-          fill="rgba(109,210,48,0.06)"
-          stroke="#6DD230"
-        />
+          <ChartCard
+            title="Patients this year"
+            quantity={21}
+            data={data}
+            fill="rgba(109,210,48,0.06)"
+            stroke="#6DD230"
+          />
 
-        <SimpleCart finished={1} upcoming={4} />
-      </section>
+          <SimpleCart finished={1} upcoming={4} />
+        </section>
+
+        <section>
+          <DashboardBarChart />
+        </section>
+      </div>
 
       <section>
         <NextAppointments />

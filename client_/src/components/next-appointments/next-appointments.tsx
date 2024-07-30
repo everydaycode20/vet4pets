@@ -127,18 +127,23 @@ export default function NextAppointments() {
         </div>
       </div>
 
-      <div className="bg-white" id="appointments-list">
+      <div
+        className={JoinClasses(
+          "bg-white overflow-y-auto",
+          styles["container-appointment-list"]
+        )}
+        id="appointments-list"
+      >
         <ul>
           {app.map((val: any, i: any) => {
             return (
               <li key={i}>
                 <div>
-                  <span>{val.type}</span>
-
-                  <span>{val.time}</span>
+                  <span className="font-medium text-black">{val.type}</span>{" "}
+                  <span className="text-light-gray-4">{val.time}</span>
                 </div>
 
-                <span>{val.owner}</span>
+                <span className="text-light-gray-4">{val.owner}</span>
               </li>
             );
           })}

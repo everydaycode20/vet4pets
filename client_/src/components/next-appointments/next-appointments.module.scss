@@ -43,3 +43,27 @@
     color: $black;
   }
 }
+
+.container-appointment-list {
+  border-radius: 8px;
+  border: 1px solid $light-gray;
+  padding: 13px 24px;
+
+  ul li {
+    padding: 11px 0;
+    border-bottom: 1px solid $light-gray;
+
+    & > div {
+      span:first-of-type,
+      span:last-of-type {
+        font-size: 14px;
+        line-height: 21px;
+      }
+    }
+
+    & > span {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+}

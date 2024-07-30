@@ -1,0 +1,43 @@
+@import "../../assets/scss/colors/colors";
+
+.panel-chart {
+  height: 200px;
+}
+
+.bar-chart-container {
+  padding: 20px;
+}
+
+.tooltip {
+  border: 1px solid $light-gray;
+  background-color: #fff;
+  padding: 3px 16px;
+  border-radius: 100px;
+
+  span {
+    font-size: 14px;
+    line-height: 21px;
+    color: $light-gray-4;
+  }
+}
+
+.tab-list {
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 21px;
+  color: $light-gray-4;
+  width: fit-content;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: 0;
+
+  button {
+    padding: 4px 12px;
+
+    &:nth-of-type(2) {
+      border-left: 1px solid $light-gray;
+      border-right: 1px solid $light-gray;
+    }
+  }
+}
