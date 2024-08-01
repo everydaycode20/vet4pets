@@ -9,8 +9,12 @@
   padding: 24px;
   row-gap: 10px;
 
-  @include media-up(md) {
+  @include media-up(lg2) {
     max-width: 364px;
+  }
+
+  @include media-down(lg2) {
+    // max-width: none;
   }
 
   h2 {

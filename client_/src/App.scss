@@ -19,7 +19,7 @@ body {
 
 main {
   width: 100vw;
-  height: calc(100vh - $top-bar-width);
+  height: calc(100% - $top-bar-width);
 }
 
 h1 {
@@ -177,7 +177,7 @@ h5 {
 
 .container {
   width: 100%;
-  max-width: none;
+  max-width: 1200px;
   padding-top: 24px;
   padding-bottom: 24px;
 }
@@ -185,6 +185,10 @@ h5 {
 .dashboard-chart.base--selected {
   background-color: $light-gray-3;
   color: $blue;
+}
+
+header {
+  border-bottom: 1px solid $light-gray;
 }
 
 // .border-radius-5 {

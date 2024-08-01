@@ -2,6 +2,10 @@ import { ChartCard, SimpleCart } from "../../components/chart-card/chart-card";
 import NextAppointments from "../../components/next-appointments/next-appointments";
 import DashboardBarChart from "../../components/dashboard-bar-chart/dashboard-bar-chart";
 
+import JoinClasses from "../../utils/join-classes";
+
+import styles from "./dashboard.module.scss";
+
 const data = [
   {
     name: "Page A",
@@ -49,9 +53,14 @@ const data = [
 
 export default function Dashboard() {
   return (
-    <div className="flex gap-[24px] h-full">
-      <div>
-        <section className="flex gap-[24px] flex-wrap w-full h-fit">
+    <div
+      className={JoinClasses(
+        "grid gap-[24px] h-full",
+        styles["dashboard-container"]
+      )}
+    >
+      <div className="w-full">
+        <section className="grid grid-cols-1 sm2:grid-cols-2 lg:grid-cols-1 lg2:grid-cols-2 gap-[24px] w-full h-fit">
           <ChartCard
             title="Patients this month"
             quantity={25}

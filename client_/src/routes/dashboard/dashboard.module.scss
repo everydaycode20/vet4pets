@@ -1,0 +1,9 @@
+@import "../../assets/scss/breakpoints";
+
+.dashboard-container {
+  grid-template-columns: 1fr;
+
+  @include media-up(lg) {
+    grid-template-columns: 1fr 364px;
+  }
+}

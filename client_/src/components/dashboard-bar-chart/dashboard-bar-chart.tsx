@@ -18,8 +18,8 @@ import styles from "./dashboard-bar-chart.module.scss";
 
 export default function DashboardBarChart() {
   return (
-    <div>
-      <h2>Appointments this week</h2>
+    <div className={JoinClasses("", styles.container)}>
+      <h2 className="text-light-gray-4">Appointments this week</h2>
 
       <div className={JoinClasses("bg-white", styles["bar-chart-container"])}>
         <Tabs defaultValue={1}>

@@ -2,8 +2,10 @@
 @import "../../assets/scss/breakpoints.scss";
 
 .header {
-  border-bottom: 1px solid $light-gray;
+  // border-bottom: 1px solid $light-gray;
   padding: 14px 10px 14px 10px;
+  max-width: 1200px;
+  margin: 0 auto;
 
   @include media-down(lg) {
     row-gap: 10px;
