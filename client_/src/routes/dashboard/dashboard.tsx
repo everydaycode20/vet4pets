@@ -1,8 +1,11 @@
 import { ChartCard, SimpleCart } from "../../components/chart-card/chart-card";
-import NextAppointments from "../../components/next-appointments/next-appointments";
-import DashboardBarChart from "../../components/dashboard-bar-chart/dashboard-bar-chart";
 
 import JoinClasses from "../../utils/join-classes";
+
+import NextAppointments from "../../components/next-appointments/next-appointments";
+import DashboardBarChart from "../../components/dashboard-bar-chart/dashboard-bar-chart";
+import TopAppointments from "../../components/top-appointments/top-appointments";
+import LatestPatients from "../../components/latest-patients/latest-patients";
 
 import styles from "./dashboard.module.scss";
 
@@ -82,6 +85,12 @@ export default function Dashboard() {
 
         <section>
           <DashboardBarChart />
+        </section>
+
+        <section className="flex flex-col lg2:flex-row gap-[24px]">
+          <TopAppointments />
+
+          <LatestPatients />
         </section>
       </div>
 

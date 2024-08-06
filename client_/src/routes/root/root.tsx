@@ -8,14 +8,14 @@ import JoinClasses from "../../utils/join-classes";
 
 export default function Root() {
   return (
-    <div className="flex w-full h-screen overflow-x-hidden">
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar />
 
       <div className={JoinClasses("w-full", styles["main-container"])}>
         <TopBar />
 
-        <main className="w-full bg-light-gray-3">
-          <div className="container h-full">
+        <main className="w-full bg-light-gray-3 overflow-y-auto">
+          <div className="container">
             <Outlet />
           </div>
         </main>
