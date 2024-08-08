@@ -1,0 +1,58 @@
+@import "../../assets/scss/colors/colors";
+
+.toolbar {
+  padding: 24px;
+
+  span {
+    font-size: 20px;
+    line-height: 30px;
+    margin-left: 12px;
+  }
+}
+
+.buttons-container {
+  border: 1px solid $light-gray;
+  border-radius: 8px;
+  max-width: 150px;
+
+  button {
+    padding: 6px 9px;
+
+    &:first-of-type {
+      border-right: 1px solid $light-gray;
+    }
+
+    &:last-of-type {
+      border-left: 1px solid $light-gray;
+    }
+
+    &:active {
+      background-color: $light-gray-3;
+    }
+  }
+}
+
+.tab-list {
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 21px;
+  color: $light-gray-4;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 0;
+
+  button {
+    padding: 4px 12px;
+
+    &:nth-of-type(2) {
+      border-left: 1px solid $light-gray;
+      border-right: 1px solid $light-gray;
+    }
+  }
+}
+
+.active-view {
+  background-color: $light-gray-3;
+  color: $blue;
+}

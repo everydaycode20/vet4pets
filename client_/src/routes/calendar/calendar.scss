@@ -1,0 +1,98 @@
+@import "../../assets/scss/colors/colors";
+@import "react-big-calendar/lib/sass/styles";
+@import "react-big-calendar/lib/addons/dragAndDrop/styles";
+
+.rbc-calendar {
+  border: 1px solid $light-gray;
+  border-radius: 8px;
+}
+
+.rbc-month-view {
+  border: none;
+}
+
+.rbc-month-header {
+  background-color: $light-gray-3;
+  border-top: 1px solid $light-gray;
+
+  .rbc-header {
+    border-left: none;
+    border-color: $light-gray;
+    padding: 12px 0;
+
+    span {
+      color: $black;
+      font-size: 14px;
+      line-height: 21px;
+      font-weight: 500;
+    }
+  }
+}
+
+.rbc-month-row {
+  .rbc-off-range-bg {
+    background-color: white;
+  }
+
+  .rbc-off-range {
+    color: $light-gray-4;
+  }
+
+  .rbc-date-cell {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  .rbc-today {
+    background-color: $light-gray-3;
+  }
+}
+
+.rbc-time-view {
+  border: none;
+}
+
+.rbc-time-content {
+  border-top-width: 1px;
+
+  .rbc-today {
+    background-color: $light-gray-3;
+  }
+
+  .rbc-time-slot {
+    span {
+      font-size: 14px;
+      line-height: 21px;
+      font-weight: 500;
+    }
+  }
+}
+
+.rbc-time-header {
+  border-top: 1px solid $light-gray;
+
+  .rbc-time-header-content {
+    .rbc-today {
+      background-color: $light-gray-3;
+    }
+
+    .rbc-time-header-cell {
+      min-height: auto;
+      background-color: $light-gray-3;
+    }
+
+    .rbc-header {
+      border-left: none;
+      border-color: $light-gray;
+      padding: 12px 0;
+
+      span {
+        color: $black;
+        font-size: 14px;
+        line-height: 21px;
+        font-weight: 500;
+      }
+    }
+  }
+}

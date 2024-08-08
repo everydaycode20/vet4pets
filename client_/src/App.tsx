@@ -9,6 +9,7 @@ import "./App.scss";
 import Login from "./routes/login/login";
 import Root from "./routes/root/root";
 import Dashboard from "./routes/dashboard/dashboard";
+import Appointments from "./routes/appointments/appointments";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,13 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         handle: {
           title: "Dashboard",
+        },
+      },
+      {
+        path: "appointments",
+        element: <Appointments />,
+        handle: {
+          title: "Appointments",
         },
       },
       {
