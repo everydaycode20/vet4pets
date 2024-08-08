@@ -1,4 +1,11 @@
-import { forwardRef, ReactNode, useState } from "react";
+import {
+  Dispatch,
+  forwardRef,
+  JSXElementConstructor,
+  ReactElement,
+  SetStateAction,
+  useState,
+} from "react";
 import { Modal as MuiModal } from "@mui/base/Modal";
 import { prepareForSlot } from "@mui/base/utils";
 
@@ -22,9 +29,15 @@ const Backdrop = forwardRef<
 
 const BackdropSlot = prepareForSlot(Backdrop);
 
-export default function Modal({ children }: { children?: ReactNode }) {
-  const [open, setOpen] = useState(true);
-
+export default function Modal({
+  children,
+  open,
+  setOpen,
+}: {
+  children?: JSX.Element | JSX.Element[];
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -34,18 +47,11 @@ export default function Modal({ children }: { children?: ReactNode }) {
       // aria-describedby="unstyled-modal-description"
       open={open}
       onClose={handleClose}
-      slots={{
-        backdrop: BackdropSlot,
-      }}
+      // slots={{
+      //   backdrop: BackdropSlot,
+      // }}
     >
-      <div className={JoinClasses("", styles["modal-content"])}>
-        <h2 id="unstyled-modal-title" className="modal-title">
-          Text in a modal
-        </h2>
-        <p id="unstyled-modal-description" className="modal-description">
-          Aliquid amet deserunt earum!
-        </p>
-      </div>
+      <>{children ? children : <></>}</>
     </MuiModal>
   );
 }
