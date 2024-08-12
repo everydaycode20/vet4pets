@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Select } from "@mui/base/Select";
-import { Option } from "@mui/base/Option";
 
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, number, date } from "zod";
 
 import Modal from "../../components/modal/modal";
-import CalendarExtended from "../calendar/calendar";
+import CalendarExtended from "../../components/calendar/calendar";
+import Select from "../../components/select/select";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
@@ -23,16 +22,27 @@ export default function Appointments() {
       <CalendarExtended />
 
       <Modal open={open} setOpen={setOpen}>
-        <div className={JoinClasses("", styles.close)}>
-          <button type="button" onClick={() => setOpen(false)}>
-            <span className="sr-only">close</span>
+        <div className={JoinClasses("bg-white", styles.container)}>
+          <div
+            className={JoinClasses(
+              "flex items-center justify-between",
+              styles.close
+            )}
+          >
+            <h2 className="font-medium text-light-gray-4">
+              Add a new appointment
+            </h2>
 
-            <CloseOutlinedIcon htmlColor="#778CA2" />
-          </button>
-        </div>
+            <button type="button" onClick={() => setOpen(false)}>
+              <span className="sr-only">close</span>
 
-        <div>
-          <Form />
+              <CloseOutlinedIcon htmlColor="#778CA2" />
+            </button>
+          </div>
+
+          <div>
+            <Form />
+          </div>
         </div>
       </Modal>
     </section>
@@ -40,7 +50,10 @@ export default function Appointments() {
 }
 
 const schema = object({
-  service: string().min(1),
+  service: object({
+    id: number(),
+    name: string(),
+  }),
   // owner: number().min(1),
   // date: object({
   //   start: date(),
@@ -49,7 +62,10 @@ const schema = object({
 });
 
 interface IFormAppointment {
-  service: string;
+  service: {
+    id: number;
+    name: string;
+  };
   // owner: number;
   // date: {
   //   start: Date;
@@ -65,12 +81,11 @@ function Form() {
   const {
     control,
     handleSubmit,
-    register,
     formState: { errors },
   } = useForm<IFormAppointment>({
     resolver: zodResolver(schema),
     defaultValues: {
-      service: "",
+      service: {},
     },
   });
 
@@ -78,51 +93,25 @@ function Form() {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          rules={{ required: true }}
-          render={({
-            field: { onChange, ref, onBlur, value, name, ...rest },
-          }) => {
-            console.log(rest);
-
+          name="service"
+          control={control}
+          render={({ field: { onChange, value } }) => {
             return (
               <Select
-                id="service"
-                name={name}
-                placeholder="test placeholder"
-                onChange={(e, v) => {
-                  console.log(v);
-
-                  onChange(v);
-                }}
-                value={value || ""}
-                ref={ref}
-                onBlur={onBlur}
-              >
-                <Option value={"10"}>Ten</Option>
-
-                <Option value={"20"}>Twenty</Option>
-              </Select>
+                data={[
+                  { id: 1, name: "item 1" },
+                  { id: 2, name: "item 2" },
+                ]}
+                value={value}
+                onChange={onChange}
+                placeholder="Add a service"
+              />
             );
           }}
-          control={control}
-          name="service"
-          defaultValue=""
         />
 
         <button type="submit">submit</button>
       </form>
-    </div>
-  );
-}
-
-function BaseSelect({ id, field }: any) {
-  return (
-    <div>
-      <Select placeholder="test select" {...field}>
-        <Option value={"10"}>Ten</Option>
-        <Option value={"20"}>Twenty</Option>
-        <Option value={"30"}>Thirty</Option>
-      </Select>
     </div>
   );
 }

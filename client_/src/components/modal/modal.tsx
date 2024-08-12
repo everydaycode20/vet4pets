@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  forwardRef,
-  JSXElementConstructor,
-  ReactElement,
-  SetStateAction,
-  useState,
-} from "react";
+import { Dispatch, forwardRef, SetStateAction } from "react";
 import { Modal as MuiModal } from "@mui/base/Modal";
 import { prepareForSlot } from "@mui/base/utils";
 
@@ -47,9 +40,9 @@ export default function Modal({
       // aria-describedby="unstyled-modal-description"
       open={open}
       onClose={handleClose}
-      // slots={{
-      //   backdrop: BackdropSlot,
-      // }}
+      slots={{
+        backdrop: BackdropSlot,
+      }}
     >
       <>{children ? children : <></>}</>
     </MuiModal>
