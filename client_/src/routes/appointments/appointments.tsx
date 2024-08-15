@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Select } from "@mui/base/Select";
+import { forwardRef, useState } from "react";
+import { Select, SelectProps, SelectRootSlotProps } from "@mui/base/Select";
 import { Option } from "@mui/base/Option";
+import { styled } from "@mui/system";
 
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +41,7 @@ export default function Appointments() {
 }
 
 const schema = object({
-  service: string().min(1),
+  service: string(),
   // owner: number().min(1),
   // date: object({
   //   start: date(),
@@ -78,35 +79,28 @@ function Form() {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          rules={{ required: true }}
-          render={({
-            field: { onChange, ref, onBlur, value, name, ...rest },
-          }) => {
-            console.log(rest);
+          name="service"
+          control={control}
+          // rules={{ required: true }}
+          render={({ field: { onChange, ...rest } }) => {
+            
 
             return (
-              <Select
-                id="service"
-                name={name}
-                placeholder="test placeholder"
-                onChange={(e, v) => {
-                  console.log(v);
-
-                  onChange(v);
+              <BaseSelect
+                {...rest}
+                onChange={onChange}
+                // value={value}
+                placeholder="text select"
+                onListboxOpenChange={(e) => {
+                  console.log(e);
                 }}
-                value={value || ""}
-                ref={ref}
-                onBlur={onBlur}
               >
-                <Option value={"10"}>Ten</Option>
-
-                <Option value={"20"}>Twenty</Option>
-              </Select>
+                <BaseOption value={10}>Ten</BaseOption>
+                <BaseOption value={20}>Twenty</BaseOption>
+                <BaseOption value={30}>Thirty</BaseOption>
+              </BaseSelect>
             );
           }}
-          control={control}
-          name="service"
-          defaultValue=""
         />
 
         <button type="submit">submit</button>
@@ -115,14 +109,77 @@ function Form() {
   );
 }
 
-function BaseSelect({ id, field }: any) {
+const BaseSelect = forwardRef(function CustomSelect<
+  TValue extends {},
+  Multiple extends boolean
+>(
+  props: SelectProps<TValue, Multiple>,
+  ref: React.ForwardedRef<HTMLButtonElement>
+) {
+  const slots: SelectProps<TValue, Multiple>["slots"] = {
+    root: Button,
+    listbox: Listbox,
+    popup: Popup,
+    ...props.slots,
+  };
+
+  // console.log(ref);
+
+  return <Select {...props} ref={ref} slots={slots} />;
+}) as <TValue extends {}, Multiple extends boolean>(
+  props: SelectProps<TValue, Multiple> & React.RefAttributes<HTMLButtonElement>
+) => JSX.Element;
+
+const Button = forwardRef(function Button<
+  TValue extends {},
+  Multiple extends boolean
+>(
+  props: SelectRootSlotProps<TValue, Multiple>,
+  ref: React.ForwardedRef<HTMLButtonElement>
+) {
+  const { ownerState, ...other } = props;
+  // console.log(props);
+
   return (
-    <div>
-      <Select placeholder="test select" {...field}>
-        <Option value={"10"}>Ten</Option>
-        <Option value={"20"}>Twenty</Option>
-        <Option value={"30"}>Thirty</Option>
-      </Select>
-    </div>
+    <button type="button" {...other} ref={ref}>
+      {other.children}
+    </button>
   );
-}
+});
+
+const Popup = styled("div")`
+  z-index: 1600;
+`;
+
+const Listbox = styled("ul")(
+  ({ theme }) => `
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  padding: 6px;
+  margin: 12px 0;
+  min-width: 320px;
+  border-radius: 12px;
+  overflow: auto;
+  outline: 0px;
+  background: ${theme.palette.mode === "dark" ? "black" : "#fff"};
+  border: 1px solid ${theme.palette.mode === "dark" ? "black" : "grey"};
+  color: ${theme.palette.mode === "dark" ? "black" : "grey"};
+  box-shadow: 0px 2px 6px ${
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
+  };
+  `
+);
+
+const BaseOption = styled(Option)(
+  ({ theme }) => `
+  list-style: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: default;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+  `
+);

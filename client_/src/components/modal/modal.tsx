@@ -47,9 +47,9 @@ export default function Modal({
       // aria-describedby="unstyled-modal-description"
       open={open}
       onClose={handleClose}
-      // slots={{
-      //   backdrop: BackdropSlot,
-      // }}
+      slots={{
+        backdrop: BackdropSlot,
+      }}
     >
       <>{children ? children : <></>}</>
     </MuiModal>
