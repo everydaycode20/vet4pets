@@ -1,4 +1,18 @@
+.container {
+  border-radius: 8px;
+  padding: 18px 24px;
+  max-width: 680px;
+  width: 100%;
+
+  h2 {
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
+
 .close {
+  margin-bottom: 12px;
+
   button {
     padding: 5px;
   }

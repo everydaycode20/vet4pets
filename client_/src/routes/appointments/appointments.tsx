@@ -1,14 +1,12 @@
-import { forwardRef, useState } from "react";
-import { Select, SelectProps, SelectRootSlotProps } from "@mui/base/Select";
-import { Option } from "@mui/base/Option";
-import { styled } from "@mui/system";
+import { useState } from "react";
 
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, number, date } from "zod";
 
 import Modal from "../../components/modal/modal";
-import CalendarExtended from "../calendar/calendar";
+import CalendarExtended from "../../components/calendar/calendar";
+import Select from "../../components/select/select";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
@@ -24,16 +22,27 @@ export default function Appointments() {
       <CalendarExtended />
 
       <Modal open={open} setOpen={setOpen}>
-        <div className={JoinClasses("", styles.close)}>
-          <button type="button" onClick={() => setOpen(false)}>
-            <span className="sr-only">close</span>
+        <div className={JoinClasses("bg-white", styles.container)}>
+          <div
+            className={JoinClasses(
+              "flex items-center justify-between",
+              styles.close
+            )}
+          >
+            <h2 className="font-medium text-light-gray-4">
+              Add a new appointment
+            </h2>
 
-            <CloseOutlinedIcon htmlColor="#778CA2" />
-          </button>
-        </div>
+            <button type="button" onClick={() => setOpen(false)}>
+              <span className="sr-only">close</span>
 
-        <div>
-          <Form />
+              <CloseOutlinedIcon htmlColor="#778CA2" />
+            </button>
+          </div>
+
+          <div>
+            <Form />
+          </div>
         </div>
       </Modal>
     </section>
@@ -41,7 +50,10 @@ export default function Appointments() {
 }
 
 const schema = object({
-  service: string(),
+  service: object({
+    id: number(),
+    name: string(),
+  }),
   // owner: number().min(1),
   // date: object({
   //   start: date(),
@@ -50,7 +62,10 @@ const schema = object({
 });
 
 interface IFormAppointment {
-  service: string;
+  service: {
+    id: number;
+    name: string;
+  };
   // owner: number;
   // date: {
   //   start: Date;
@@ -66,12 +81,11 @@ function Form() {
   const {
     control,
     handleSubmit,
-    register,
     formState: { errors },
   } = useForm<IFormAppointment>({
     resolver: zodResolver(schema),
     defaultValues: {
-      service: "",
+      service: {},
     },
   });
 
@@ -81,24 +95,17 @@ function Form() {
         <Controller
           name="service"
           control={control}
-          // rules={{ required: true }}
-          render={({ field: { onChange, ...rest } }) => {
-            
-
+          render={({ field: { onChange, value } }) => {
             return (
-              <BaseSelect
-                {...rest}
+              <Select
+                data={[
+                  { id: 1, name: "item 1" },
+                  { id: 2, name: "item 2" },
+                ]}
+                value={value}
                 onChange={onChange}
-                // value={value}
-                placeholder="text select"
-                onListboxOpenChange={(e) => {
-                  console.log(e);
-                }}
-              >
-                <BaseOption value={10}>Ten</BaseOption>
-                <BaseOption value={20}>Twenty</BaseOption>
-                <BaseOption value={30}>Thirty</BaseOption>
-              </BaseSelect>
+                placeholder="Add a service"
+              />
             );
           }}
         />
@@ -108,78 +115,3 @@ function Form() {
     </div>
   );
 }
-
-const BaseSelect = forwardRef(function CustomSelect<
-  TValue extends {},
-  Multiple extends boolean
->(
-  props: SelectProps<TValue, Multiple>,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
-  const slots: SelectProps<TValue, Multiple>["slots"] = {
-    root: Button,
-    listbox: Listbox,
-    popup: Popup,
-    ...props.slots,
-  };
-
-  // console.log(ref);
-
-  return <Select {...props} ref={ref} slots={slots} />;
-}) as <TValue extends {}, Multiple extends boolean>(
-  props: SelectProps<TValue, Multiple> & React.RefAttributes<HTMLButtonElement>
-) => JSX.Element;
-
-const Button = forwardRef(function Button<
-  TValue extends {},
-  Multiple extends boolean
->(
-  props: SelectRootSlotProps<TValue, Multiple>,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
-  const { ownerState, ...other } = props;
-  // console.log(props);
-
-  return (
-    <button type="button" {...other} ref={ref}>
-      {other.children}
-    </button>
-  );
-});
-
-const Popup = styled("div")`
-  z-index: 1600;
-`;
-
-const Listbox = styled("ul")(
-  ({ theme }) => `
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-  padding: 6px;
-  margin: 12px 0;
-  min-width: 320px;
-  border-radius: 12px;
-  overflow: auto;
-  outline: 0px;
-  background: ${theme.palette.mode === "dark" ? "black" : "#fff"};
-  border: 1px solid ${theme.palette.mode === "dark" ? "black" : "grey"};
-  color: ${theme.palette.mode === "dark" ? "black" : "grey"};
-  box-shadow: 0px 2px 6px ${
-    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
-  };
-  `
-);
-
-const BaseOption = styled(Option)(
-  ({ theme }) => `
-  list-style: none;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: default;
-
-  &:last-of-type {
-    border-bottom: none;
-  }
-  `
-);
