@@ -16,14 +16,16 @@ export default function Select({
   onChange,
   placeholder,
   data,
+  name
 }: {
   value: { id: number; name: string };
   onChange: (...event: any[]) => void;
   placeholder: string;
   data: { id: number; name: string }[];
+  name:string
 }) {
   return (
-    <Listbox name="service" value={value} onChange={onChange}>
+    <Listbox name={name} value={value} onChange={onChange}>
       <ListboxButton
         className={JoinClasses(
           "text-black font-medium flex items-center justify-between",

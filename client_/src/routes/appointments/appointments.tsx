@@ -7,6 +7,7 @@ import { object, string, number, date } from "zod";
 import Modal from "../../components/modal/modal";
 import CalendarExtended from "../../components/calendar/calendar";
 import Select from "../../components/select/select";
+import ComboBox from "../../components/combobox/combobox";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
@@ -54,7 +55,10 @@ const schema = object({
     id: number(),
     name: string(),
   }),
-  // owner: number().min(1),
+  owner: object({
+    id: number(),
+    name: string(),
+  }),
   // date: object({
   //   start: date(),
   //   end: date(),
@@ -66,7 +70,10 @@ interface IFormAppointment {
     id: number;
     name: string;
   };
-  // owner: number;
+  owner: {
+    id: number;
+    name: string;
+  };
   // date: {
   //   start: Date;
   //   end: Date;
@@ -92,23 +99,48 @@ function Form() {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="service"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <Select
-                data={[
-                  { id: 1, name: "item 1" },
-                  { id: 2, name: "item 2" },
-                ]}
-                value={value}
-                onChange={onChange}
-                placeholder="Add a service"
-              />
-            );
-          }}
-        />
+        <div className={JoinClasses("flex justify-between")}>
+          <Controller
+            name="service"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Select
+                  data={[
+                    { id: 1, name: "item 1" },
+                    { id: 2, name: "item 2" },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                  placeholder="Add a service"
+                  name="service"
+                />
+              );
+            }}
+          />
+
+          <Controller
+            name="owner"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <ComboBox
+                  name="owner"
+                  value={value}
+                  onChange={onChange}
+                  placeholder="Search or Select an owner"
+                  data={[
+                    { id: 1, name: "Durward Reynolds" },
+                    { id: 2, name: "Kenton Towne" },
+                    { id: 3, name: "Therese Wunsch" },
+                    { id: 4, name: "Benedict Kessler" },
+                    { id: 5, name: "Katelyn Rohan" },
+                  ]}
+                />
+              );
+            }}
+          />
+        </div>
 
         <button type="submit">submit</button>
       </form>
