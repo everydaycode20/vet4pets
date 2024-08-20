@@ -192,6 +192,13 @@ header {
   border-bottom: 1px solid $light-gray;
 }
 
+.btn-hover {
+  &:hover {
+    background-color: $light-gray;
+    border-radius: 4px;
+  }
+}
+
 // .border-radius-5 {
 //   border-radius: 5px;
 // }

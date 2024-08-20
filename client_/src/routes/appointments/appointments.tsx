@@ -8,6 +8,7 @@ import Modal from "../../components/modal/modal";
 import CalendarExtended from "../../components/calendar/calendar";
 import Select from "../../components/select/select";
 import ComboBox from "../../components/combobox/combobox";
+import DatePicker from "../../components/date-picker/date-picker";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
@@ -34,7 +35,11 @@ export default function Appointments() {
               Add a new appointment
             </h2>
 
-            <button type="button" onClick={() => setOpen(false)}>
+            <button
+              className="btn-hover"
+              type="button"
+              onClick={() => setOpen(false)}
+            >
               <span className="sr-only">close</span>
 
               <CloseOutlinedIcon htmlColor="#778CA2" />
@@ -59,6 +64,10 @@ const schema = object({
     id: number(),
     name: string(),
   }),
+  pet: object({
+    id: number(),
+    name: string(),
+  }),
   // date: object({
   //   start: date(),
   //   end: date(),
@@ -71,6 +80,10 @@ interface IFormAppointment {
     name: string;
   };
   owner: {
+    id: number;
+    name: string;
+  };
+  pet: {
     id: number;
     name: string;
   };
@@ -93,13 +106,17 @@ function Form() {
     resolver: zodResolver(schema),
     defaultValues: {
       service: {},
+      owner: {},
+      pet: {},
     },
   });
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={JoinClasses("flex justify-between")}>
+        <div
+          className={JoinClasses("flex justify-between", styles["form-row"])}
+        >
           <Controller
             name="service"
             control={control}
@@ -140,6 +157,38 @@ function Form() {
               );
             }}
           />
+        </div>
+
+        <div className={JoinClasses("flex justify-between")}>
+          <Controller
+            name="pet"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <ComboBox
+                  name="pet"
+                  value={value}
+                  onChange={onChange}
+                  placeholder="Search or Select a pet"
+                  data={[
+                    { id: 1, name: "Durward Reynolds" },
+                    { id: 2, name: "Kenton Towne" },
+                    { id: 3, name: "Therese Wunsch" },
+                    { id: 4, name: "Benedict Kessler" },
+                    { id: 5, name: "Katelyn Rohan" },
+                  ]}
+                />
+              );
+            }}
+          />
+
+          <div>
+            <div>
+              <label htmlFor="">Add date and time</label>
+            </div>
+
+            <DatePicker />
+          </div>
         </div>
 
         <button type="submit">submit</button>
