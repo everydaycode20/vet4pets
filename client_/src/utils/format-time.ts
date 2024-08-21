@@ -8,8 +8,6 @@ export default function formatTime(time: string) {
     .split(" ")[1]
     .toLowerCase();
 
-  console.log(hour >= 13 ? hour - 12 : hour, minutes, timeOfDay);
-
   return `${hour >= 13 ? hour - 12 : hour}:${minutes
     .toString()
     .padEnd(2, "0")} ${timeOfDay}`;

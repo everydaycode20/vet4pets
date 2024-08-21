@@ -1,0 +1,31 @@
+@import "../../assets/scss/colors/colors";
+
+.day-picker-container {
+  max-width: 324px;
+  width: 100%;
+}
+
+.checkbox {
+  border-radius: 100px;
+  background-color: $light-gray-2;
+  max-width: 90px;
+  width: 100%;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  time {
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 400;
+    color: $light-gray-4;
+    padding: 4px 15px;
+  }
+}
+
+.checkbox-container {
+  row-gap: 12px;
+  margin-top: 24px;
+}

@@ -95,3 +95,13 @@
     }
   }
 }
+
+.checkbox {
+  &[data-checked] {
+    background-color: $blue;
+
+    time {
+      color: white;
+    }
+  }
+}

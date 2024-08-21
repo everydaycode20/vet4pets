@@ -3,6 +3,9 @@
   padding: 18px 24px;
   max-width: 680px;
   width: 100%;
+  margin: 48px 0;
+  max-height: calc(100% - 48px);
+  overflow-y: auto;
 
   h2 {
     font-size: 14px;

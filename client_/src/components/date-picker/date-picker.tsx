@@ -6,10 +6,12 @@ import { DayPicker } from "react-day-picker";
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 
+import JoinClasses from "../../utils/join-classes";
 import formatTime from "../../utils/format-time";
 
 import "react-day-picker/style.css";
 import "./date-picker.scss";
+import styles from "./date-picker.module.scss";
 
 export default function DatePicker() {
   const [selected, setSelected] = useState<Date>();
@@ -17,7 +19,7 @@ export default function DatePicker() {
   console.log(selected);
 
   return (
-    <div>
+    <div className={JoinClasses("", styles["day-picker-container"])}>
       <DayPicker
         mode="single"
         weekStartsOn={1}
@@ -49,7 +51,12 @@ export default function DatePicker() {
       />
 
       {selected && (
-        <ul>
+        <ul
+          className={JoinClasses(
+            "flex flex-wrap justify-between",
+            styles["checkbox-container"]
+          )}
+        >
           {timeArr.map((time, index) => {
             return (
               <li key={index}>
@@ -93,7 +100,11 @@ function TimeCheckbox({
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <Checkbox checked={enabled} onChange={setEnabled} className="">
+    <Checkbox
+      checked={enabled}
+      onChange={setEnabled}
+      className={JoinClasses("checkbox", styles.checkbox)}
+    >
       <time dateTime={new Date(0, 0, 0, 8, 0).toLocaleTimeString()}>
         {formatTime(time.hourTime24)}
       </time>
