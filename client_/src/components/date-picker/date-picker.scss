@@ -1,10 +1,16 @@
 @import "../../assets/scss/colors/colors";
 
+.rdp-root {
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+}
+
 .rdp-nav {
   border: 1px solid $light-gray;
   border-radius: 6px;
   height: 34px;
   top: 20px;
+  right: 24px;
 
   button {
     width: 40px;
@@ -21,8 +27,7 @@
 }
 
 .rdp-month_caption {
-  border-radius: 6px;
-  border: 1px solid $light-gray;
+  border-bottom: 1px solid $light-gray;
   height: fit-content;
   padding: 26px 24px;
 
@@ -30,5 +35,63 @@
     font-size: 16px;
     font-weight: 600;
     font-family: "PublicSans", sans-serif;
+  }
+}
+
+.rdp-month_grid {
+  .rdp-weekdays {
+    background-color: $light-gray-3;
+  }
+
+  .rdp-weekdays .rdp-weekday {
+    font-family: "PublicSans", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 19px 0;
+    color: $light-gray-4;
+  }
+
+  .rdp-weeks {
+    .rdp-week .rdp-day button {
+      font-family: "PublicSans", sans-serif;
+      font-size: 14px;
+      color: $black;
+      font-weight: 400;
+
+      &:focus,
+      &:focus-visible {
+        border-radius: 4px;
+      }
+    }
+
+    .rdp-week .rdp-day {
+      &.rdp-hidden {
+        visibility: visible;
+        pointer-events: none;
+        user-select: none;
+        touch-action: none;
+
+        button {
+          font-weight: 300;
+          color: $light-gray-4;
+        }
+      }
+    }
+
+    .rdp-week .rdp-today {
+      background-color: $light-blue;
+      border-radius: 4px;
+
+      button {
+        font-weight: 600;
+      }
+    }
+
+    .rdp-selected {
+      button {
+        border-radius: 4px;
+        border-color: $light-blue;
+      }
+    }
   }
 }

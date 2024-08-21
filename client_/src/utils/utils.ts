@@ -1,4 +1,5 @@
 import JoinClasses from "./join-classes";
 import { focusRing } from "./focus-ring";
+import formatTime from "./format-time";
 
-export { JoinClasses, focusRing };
+export { JoinClasses, focusRing, formatTime };
