@@ -191,7 +191,11 @@ function Form() {
           </div>
         </div>
 
-        <button type="submit">submit</button>
+        <div className={JoinClasses("flex justify-center", styles["submit-btn"])}>
+          <button className="blue-btn" type="submit">
+            submit
+          </button>
+        </div>
       </form>
     </div>
   );
