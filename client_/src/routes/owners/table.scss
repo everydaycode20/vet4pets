@@ -1,0 +1,49 @@
+@import "../../assets/scss/colors/colors";
+
+table {
+  border-radius: 8px;
+  border-spacing: 0px;
+  border-collapse: separate;
+  border: 1px solid $light-gray;
+  overflow: hidden;
+
+  tr th {
+    color: $light-gray-4;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  tr th,
+  tr td {
+    padding: 18px;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  tr td {
+    font-size: 14px;
+    font-weight: 300;
+    color: $black;
+  }
+
+  tr {
+    background-color: white;
+  }
+}
+
+.base-TablePagination-actions {
+  display: flex;
+  justify-content: center;
+
+  button:disabled {
+    opacity: 0.4;
+  }
+}
+
+.base-TablePagination-spacer {
+  display: none;
+}
+
+.base-TablePagination-displayedRows {
+  text-align: center;
+  font-weight: 500;
+}
