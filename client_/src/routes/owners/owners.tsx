@@ -1,8 +1,11 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, useMemo } from "react";
 import {
-  createColumnHelper,
+  ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingFn,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import { TablePagination } from "@mui/base/TablePagination";
@@ -12,7 +15,11 @@ import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
+import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
+import JoinClasses from "../../utils/join-classes";
+
 import "./table.scss";
+import styles from "./table.module.scss";
 
 type Person = {
   firstName: string;
@@ -53,36 +60,46 @@ const defaultData: Person[] = [
   },
 ];
 
-const columnHelper = createColumnHelper<Person>();
-
-const columns = [
-  columnHelper.accessor("firstName", {
-    cell: (info) => info.getValue(),
-    header: () => <span>First Name</span>,
-  }),
-  columnHelper.accessor((row) => row.lastName, {
-    id: "lastName",
-    cell: (info) => <span>{info.getValue()}</span>,
-    header: () => <span>Last Name</span>,
-  }),
-  columnHelper.accessor("phone", {
-    cell: (info) => info.getValue(),
-    header: () => <span>Phone Name</span>,
-  }),
-  columnHelper.accessor("address", {
-    cell: (info) => info.getValue(),
-    header: () => <span>Address</span>,
-  }),
-  columnHelper.accessor("registerDate", {
-    cell: (info) => info.getValue(),
-    header: () => <span>Register Date</span>,
-  }),
-];
-
 export default function Owner() {
   const [data, _setData] = useState(() => [...defaultData]);
 
   const [page, setPage] = useState(0);
+
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const columns = useMemo<ColumnDef<Person>[]>(
+    () => [
+      {
+        accessorKey: "firstName",
+        cell: (info) => info.getValue(),
+        header: () => <span>First Name</span>,
+      },
+      {
+        accessorFn: (row) => row.lastName,
+        accessorKey: "lastName",
+        cell: (info) => {
+          info.getValue();
+        },
+        header: () => <span>Last Name</span>,
+      },
+      {
+        accessorKey: "phone",
+        cell: (info) => info.getValue(),
+        header: () => <span>Phone Name</span>,
+      },
+      {
+        accessorKey: "address",
+        cell: (info) => info.getValue(),
+        header: () => <span>Address</span>,
+      },
+      {
+        accessorKey: "registerDate",
+        cell: (info) => info.getValue(),
+        header: () => <span>Register Date</span>,
+      },
+    ],
+    []
+  );
 
   const handleChangePage = (
     _: React.MouseEvent<HTMLButtonElement> | null,
@@ -95,8 +112,14 @@ export default function Owner() {
 
   const table = useReactTable({
     data,
+    debugTable: true,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
   });
 
   return (
@@ -107,12 +130,43 @@ export default function Owner() {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={JoinClasses(
+                        "flex ",
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : ""
+                      )}
+                    >
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+
+                      {{
+                        asc: (
+                          <ArrowDownwardOutlinedIcon
+                            className=""
+                            aria-hidden={true}
+                            focusable={false}
+                          />
+                        ),
+                        desc: (
+                          <ArrowDownwardOutlinedIcon
+                            className=""
+                            aria-hidden={true}
+                            focusable={false}
+                          />
+                        ),
+                      }[header.column.getIsSorted() as string] ?? (
+                        <div className={JoinClasses("", styles["sorting-arrow-placeholder"])} />
+                      )}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
