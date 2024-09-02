@@ -3,7 +3,9 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingFn,
   SortingState,
   useReactTable,
@@ -17,6 +19,9 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import JoinClasses from "../../utils/join-classes";
+import getSortingState from "../../utils/get-sorting-state";
+
+import MockDataPerson from "../../assets/mock_data-person.json";
 
 import "./table.scss";
 import styles from "./table.module.scss";
@@ -29,36 +34,7 @@ type Person = {
   registerDate: string;
 };
 
-const defaultData: Person[] = [
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    phone: "888888888",
-    address: "address",
-    registerDate: "2021-08-05",
-  },
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    phone: "888888888",
-    address: "address",
-    registerDate: "2021-08-05",
-  },
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    phone: "888888888",
-    address: "address",
-    registerDate: "2021-08-05",
-  },
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    phone: "888888888",
-    address: "address",
-    registerDate: "2021-08-05",
-  },
-];
+const defaultData: Person[] = MockDataPerson;
 
 export default function Owner() {
   const [data, _setData] = useState(() => [...defaultData]);
@@ -66,6 +42,13 @@ export default function Owner() {
   const [page, setPage] = useState(0);
 
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 25,
+  });
+
+  console.log(pagination);
 
   const columns = useMemo<ColumnDef<Person>[]>(
     () => [
@@ -75,7 +58,7 @@ export default function Owner() {
         header: () => <span>First Name</span>,
       },
       {
-        accessorFn: (row) => row.lastName,
+        // accessorFn: (row) => row.lastName,
         accessorKey: "lastName",
         cell: (info) => {
           info.getValue();
@@ -86,11 +69,13 @@ export default function Owner() {
         accessorKey: "phone",
         cell: (info) => info.getValue(),
         header: () => <span>Phone Name</span>,
+        enableSorting: false,
       },
       {
         accessorKey: "address",
         cell: (info) => info.getValue(),
         header: () => <span>Address</span>,
+        enableSorting: false,
       },
       {
         accessorKey: "registerDate",
@@ -116,11 +101,18 @@ export default function Owner() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     onSortingChange: setSorting,
     state: {
       sorting,
+      pagination,
     },
   });
+
+  const { pageSize, pageIndex } = table.getState().pagination;
+
+  console.log(table.getState().sorting);
 
   return (
     <section className="h-full">
@@ -129,11 +121,19 @@ export default function Owner() {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <th
+                  key={header.id}
+                  aria-sort={
+                    header.id === table.getState().sorting[0]?.id &&
+                    table.getState().sorting.length > 0
+                      ? getSortingState(table.getState().sorting)
+                      : "none"
+                  }
+                >
                   {header.isPlaceholder ? null : (
                     <div
-                      tabIndex={0}
-                      role="button"
+                      tabIndex={header.column.getCanSort() ? 0 : undefined}
+                      role={header.column.getCanSort() ? "button" : undefined}
                       onClick={header.column.getToggleSortingHandler()}
                       className={JoinClasses(
                         "flex ",
@@ -147,10 +147,18 @@ export default function Owner() {
                         header.getContext()
                       )}
 
+                      <span className="sr-only">
+                        {header.id === table.getState().sorting[0]?.id &&
+                        table.getState().sorting.length > 0
+                          ? "sorted " +
+                            getSortingState(table.getState().sorting)
+                          : "no sorted"}
+                      </span>
+
                       {{
                         asc: (
                           <ArrowDownwardOutlinedIcon
-                            className=""
+                            className="rotate-180"
                             aria-hidden={true}
                             focusable={false}
                           />
@@ -163,7 +171,12 @@ export default function Owner() {
                           />
                         ),
                       }[header.column.getIsSorted() as string] ?? (
-                        <div className={JoinClasses("", styles["sorting-arrow-placeholder"])} />
+                        <div
+                          className={JoinClasses(
+                            "",
+                            styles["sorting-arrow-placeholder"]
+                          )}
+                        />
                       )}
                     </div>
                   )}
@@ -186,10 +199,16 @@ export default function Owner() {
 
           <tr>
             <TablePagination
-              count={100}
+              count={table.getFilteredRowModel().rows.length}
               rowsPerPage={25}
-              page={page}
-              onPageChange={handleChangePage}
+              page={pageIndex}
+              onPageChange={(_, page) => {
+                table.setPageIndex(page);
+              }}
+              onRowsPerPageChange={(e) => {
+                const size = e.target.value ? Number(e.target.value) : 10;
+                table.setPageSize(size);
+              }}
               rowsPerPageOptions={[]}
               slotProps={{
                 actions: {
