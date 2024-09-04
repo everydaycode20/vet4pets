@@ -1,4 +1,4 @@
-import { useReducer, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -6,7 +6,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
-  SortingFn,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -16,6 +15,7 @@ import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import JoinClasses from "../../utils/join-classes";
@@ -25,21 +25,20 @@ import MockDataPerson from "../../assets/mock_data-person.json";
 
 import "./table.scss";
 import styles from "./table.module.scss";
+import Table from "../../components/table/table";
 
-type Person = {
+interface Person {
   firstName: string;
   lastName: string;
   phone: string;
   address: string;
   registerDate: string;
-};
+}
 
 const defaultData: Person[] = MockDataPerson;
 
 export default function Owner() {
   const [data, _setData] = useState(() => [...defaultData]);
-
-  const [page, setPage] = useState(0);
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -47,8 +46,6 @@ export default function Owner() {
     pageIndex: 0,
     pageSize: 25,
   });
-
-  console.log(pagination);
 
   const columns = useMemo<ColumnDef<Person>[]>(
     () => [
@@ -58,11 +55,8 @@ export default function Owner() {
         header: () => <span>First Name</span>,
       },
       {
-        // accessorFn: (row) => row.lastName,
         accessorKey: "lastName",
-        cell: (info) => {
-          info.getValue();
-        },
+        cell: (info) => info.getValue(),
         header: () => <span>Last Name</span>,
       },
       {
@@ -86,13 +80,6 @@ export default function Owner() {
     []
   );
 
-  const handleChangePage = (
-    _: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
-
   // const rerender = useReducer(() => ({}), {})[1];
 
   const table = useReactTable({
@@ -112,10 +99,63 @@ export default function Owner() {
 
   const { pageSize, pageIndex } = table.getState().pagination;
 
-  console.log(table.getState().sorting);
+  // console.log(table.getState().sorting);
+
+  interface Person {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    address: string;
+    registerDate: string;
+  }
+
 
   return (
     <section className="h-full">
+      <Table
+        data={MockDataPerson}
+        columns={[
+          {
+            accessorKey: "firstName",
+            headerName: "First Name",
+          },
+          {
+            accessorKey: "lastName",
+            headerName: "Last Name",
+          },
+          {
+            accessorKey: "phone",
+            headerName: "Phone Name",
+            sort: false,
+          },
+          {
+            accessorKey: "address",
+            headerName: "Address",
+            sort: false,
+          },
+          {
+            accessorKey: "registerDate",
+            headerName: "Register Date",
+          },
+        ]}
+        
+      />
+
+      <div
+        className={JoinClasses(
+          "flex justify-end",
+          styles["add-owner-container"]
+        )}
+      >
+        <button className="flex items-center" type="button">
+          <div>
+            <PersonAddAlt1Icon htmlColor="#778CA2" />
+          </div>
+
+          <span className="font-medium text-black">Add new owner</span>
+        </button>
+      </div>
+
       <table className="w-full max-h-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
