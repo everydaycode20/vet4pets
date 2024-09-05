@@ -1,7 +1,7 @@
 @import "../../assets/scss/colors/colors";
 
 table {
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   border-spacing: 0px;
   border-collapse: separate;
   border: 1px solid $light-gray;
@@ -31,6 +31,10 @@ table {
     &:hover {
       background-color: $light-gray-3;
     }
+
+    &:last-of-type td {
+      border-bottom: none;
+    }
   }
 }
 
@@ -50,4 +54,13 @@ table {
 .base-TablePagination-displayedRows {
   text-align: center;
   font-weight: 500;
+}
+
+.pagination-container {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid $light-gray;
+  padding: 12px 0;
 }
