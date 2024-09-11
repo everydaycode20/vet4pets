@@ -60,7 +60,7 @@ const DrawerOverlay = React.forwardRef<
       ref={forwardedRef}
       className={JoinClasses(
         // base
-        "fixed inset-0 z-50 overflow-y-auto lg:hidden",
+        "fixed inset-0 z-50 overflow-y-auto",
         // background color
         "bg-black/30",
         // transition

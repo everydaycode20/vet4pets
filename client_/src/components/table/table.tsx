@@ -141,7 +141,7 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
         </tbody>
       </table>
 
-      <div className="pagination-container" aria-label="pagination table">
+      <div className="pagination-container" aria-label="table pagination">
         <TablePagination
           count={table.getFilteredRowModel().rows.length}
           rowsPerPage={25}
