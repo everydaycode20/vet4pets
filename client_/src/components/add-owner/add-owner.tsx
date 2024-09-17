@@ -15,49 +15,19 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./add-owner.module.scss";
 
-type StateType = [boolean, () => void, () => void, () => void] & {
-  state: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-};
-
 export const addOwnerState = atom(false);
 
-const useToggleState = () => {
-  const [state, setState] = useAtom(addOwnerState);
-
-  const close = () => {
-    setState(false);
-  };
-
-  const open = () => {
-    setState(true);
-  };
-
-  const toggle = () => {
-    setState((state) => !state);
-  };
-
-  const hookData = [state, open, close, toggle] as StateType;
-  hookData.state = state;
-  hookData.open = open;
-  hookData.close = close;
-  hookData.toggle = toggle;
-  return hookData;
-};
-
 export default function AddOwner() {
-  const [editOpen, closeEdit] = useToggleState();
+  const [state, setState] = useAtom(addOwnerState);
 
   return (
     <>
       <div>
         <Drawer
-          open={true}
+          open={state}
           onOpenChange={(modalOpened) => {
-            if (!modalOpened) {
-              closeEdit();
+            if (modalOpened === false) {
+              setState(false);
             }
           }}
         >

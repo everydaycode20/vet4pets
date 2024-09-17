@@ -17,10 +17,12 @@ interface IFormInput {
 }
 
 const schema = object({
-  firstName: string().min(1),
-  lastName: string().min(1),
-  phone: string().min(1),
-  address: string().min(1),
+  firstName: string().min(1, { message: "Enter a name" }),
+  lastName: string().min(1, { message: "Enter a last name" }),
+  phone: string()
+    .min(1, { message: "Enter a phone" })
+    .regex(/^\d+$/, { message: "Invalid phone. Numbers only" }),
+  address: string().min(1, { message: "Enter an address" }),
   registerDate: date(),
 });
 
