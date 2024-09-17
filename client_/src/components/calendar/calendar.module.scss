@@ -1,12 +1,17 @@
 @import "../../assets/scss/colors/colors";
 
 .toolbar {
-  padding: 24px;
+  flex: 1;
 
   span {
     font-size: 20px;
     line-height: 30px;
     margin-left: 12px;
+  }
+
+  &-container {
+    padding: 24px;
+    column-gap: 24px;
   }
 }
 
@@ -55,4 +60,27 @@
 .active-view {
   background-color: $light-gray-3;
   color: $blue;
+}
+
+.add-appointment-container {
+  button {
+    font-size: 14px;
+    line-height: 21px;
+    border: 1px solid $light-gray;
+    background-color: white;
+    border-radius: 6px;
+
+    div {
+      padding: 6px 12px;
+    }
+
+    span {
+      padding: 6px 12px;
+      border-left: 1px solid $light-gray;
+    }
+
+    &:active {
+      background-color: $light-gray-3;
+    }
+  }
 }

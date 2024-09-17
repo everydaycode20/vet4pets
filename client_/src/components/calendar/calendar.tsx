@@ -1,14 +1,18 @@
 import { useMemo, useState, useCallback } from "react";
+import { useAtom } from "jotai";
 import { Calendar, dayjsLocalizer, SlotInfo } from "react-big-calendar";
 import dayjs from "dayjs";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./calendar.module.scss";
 import "./calendar.scss";
+
+import { addAppointmentState } from "../../routes/appointments/appointments";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -75,6 +79,8 @@ function Toolbar({
 }) {
   const views = ["Month", "Week", "Day"];
 
+  const [state, setState] = useAtom(addAppointmentState);
+
   const back = () => {
     onNavigate("PREV");
   };
@@ -94,43 +100,64 @@ function Toolbar({
   };
 
   return (
-    <div className={JoinClasses("flex items-center", styles.toolbar)}>
-      <div className={JoinClasses("flex", styles["buttons-container"])}>
-        <button type="button" onClick={back}>
-          <span className="sr-only">back</span>
+    <div className={JoinClasses("flex justify-between items-center", styles["toolbar-container"])}>
+      <div className={JoinClasses("flex items-center", styles.toolbar)}>
+        <div className={JoinClasses("flex", styles["buttons-container"])}>
+          <button type="button" onClick={back}>
+            <span className="sr-only">back</span>
 
-          <NavigateBeforeOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
-        </button>
+            <NavigateBeforeOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
+          </button>
 
-        <button className="text-light-gray-4" type="button" onClick={today}>
-          Today
-        </button>
+          <button className="text-light-gray-4" type="button" onClick={today}>
+            Today
+          </button>
 
-        <button type="button" onClick={next}>
-          <span className="sr-only">next</span>
+          <button type="button" onClick={next}>
+            <span className="sr-only">next</span>
 
-          <NavigateNextOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
-        </button>
+            <NavigateNextOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
+          </button>
+        </div>
+
+        <span className="font-semibold">{label}</span>
+
+        <div className={JoinClasses("flex", styles["tab-list"])}>
+          {views.map((v, index) => {
+            return (
+              <button
+                className={JoinClasses(
+                  "",
+                  v.toLocaleLowerCase() === view ? styles["active-view"] : ""
+                )}
+                type="button"
+                key={index}
+                onClick={() => goToView(v.toLocaleLowerCase() as any)}
+              >
+                {v}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      <span className="font-semibold">{label}</span>
+      <div
+        className={JoinClasses(
+          "flex justify-end",
+          styles["add-appointment-container"]
+        )}
+      >
+        <button
+          className="flex items-center"
+          type="button"
+          onClick={() => setState(true)}
+        >
+          <div>
+            <CalendarMonthIcon htmlColor="#778CA2" />
+          </div>
 
-      <div className={JoinClasses("flex", styles["tab-list"])}>
-        {views.map((v, index) => {
-          return (
-            <button
-              className={JoinClasses(
-                "",
-                v.toLocaleLowerCase() === view ? styles["active-view"] : ""
-              )}
-              type="button"
-              key={index}
-              onClick={() => goToView(v.toLocaleLowerCase() as any)}
-            >
-              {v}
-            </button>
-          );
-        })}
+          <span className="font-medium text-black">Add new owner</span>
+        </button>
       </div>
     </div>
   );

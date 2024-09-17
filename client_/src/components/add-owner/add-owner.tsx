@@ -4,9 +4,6 @@ import {
   Drawer,
   DrawerBody,
   DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
 } from "../../components/drawer/drawer";
 
 import AddOwnerContent from "./add-owner-content";
@@ -34,12 +31,6 @@ export default function AddOwner() {
           <DrawerContent
             className={JoinClasses("", styles["add-owner-content-container"])}
           >
-            <DrawerHeader>
-              <DrawerTitle className="justify-end"></DrawerTitle>
-
-              <DrawerDescription className="mt-1 text-sm"></DrawerDescription>
-            </DrawerHeader>
-
             <DrawerBody>
               <AddOwnerContent />
             </DrawerBody>

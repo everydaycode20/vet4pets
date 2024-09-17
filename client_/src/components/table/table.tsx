@@ -58,7 +58,7 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
 
   return (
     <div>
-      <table className="w-full max-h-full">
+      <table className="w-full max-h-full table-container">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

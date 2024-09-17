@@ -1,8 +1,18 @@
 import { useState } from "react";
+import { atom, useAtom } from "jotai";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, number, date } from "zod";
+
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "../../components/drawer/drawer";
 
 import Modal from "../../components/modal/modal";
 import CalendarExtended from "../../components/calendar/calendar";
@@ -16,41 +26,34 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./appointments.module.scss";
 
+export const addAppointmentState = atom(false);
+
 export default function Appointments() {
-  const [open, setOpen] = useState(true);
+  const [state, setState] = useAtom(addAppointmentState);
 
   return (
     <section className="h-full">
       <CalendarExtended />
 
-      <Modal open={open} setOpen={setOpen}>
-        <div className={JoinClasses("bg-white", styles.container)}>
-          <div
-            className={JoinClasses(
-              "flex items-center justify-between",
-              styles.close
-            )}
-          >
-            <h2 className="font-medium text-light-gray-4">
-              Add a new appointment
-            </h2>
-
-            <button
-              className="btn-hover"
-              type="button"
-              onClick={() => setOpen(false)}
-            >
-              <span className="sr-only">close</span>
-
-              <CloseOutlinedIcon htmlColor="#778CA2" />
-            </button>
-          </div>
-
-          <div>
+      <Drawer
+        open={state}
+        onOpenChange={(modalOpened) => {
+          if (modalOpened === false) {
+            setState(false);
+          }
+        }}
+      >
+        <DrawerContent
+          className={JoinClasses(
+            "",
+            styles["add-appointments-content-container"]
+          )}
+        >
+          <DrawerBody>
             <Form />
-          </div>
-        </div>
-      </Modal>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </section>
   );
 }
@@ -112,86 +115,82 @@ function Form() {
   });
 
   return (
-    <div>
+    <div className={JoinClasses("", styles["form-container"])}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div
-          className={JoinClasses("flex justify-between", styles["form-row"])}
-        >
-          <Controller
-            name="service"
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Select
-                  data={[
-                    { id: 1, name: "item 1" },
-                    { id: 2, name: "item 2" },
-                  ]}
-                  value={value}
-                  onChange={onChange}
-                  placeholder="Add a service"
-                  name="service"
-                />
-              );
-            }}
-          />
+        <Controller
+          name="service"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Select
+                data={[
+                  { id: 1, name: "item 1" },
+                  { id: 2, name: "item 2" },
+                ]}
+                value={value}
+                onChange={onChange}
+                placeholder="Add a service"
+                name="service"
+              />
+            );
+          }}
+        />
 
-          <Controller
-            name="owner"
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <ComboBox
-                  name="owner"
-                  value={value}
-                  onChange={onChange}
-                  placeholder="Search or Select an owner"
-                  data={[
-                    { id: 1, name: "Durward Reynolds" },
-                    { id: 2, name: "Kenton Towne" },
-                    { id: 3, name: "Therese Wunsch" },
-                    { id: 4, name: "Benedict Kessler" },
-                    { id: 5, name: "Katelyn Rohan" },
-                  ]}
-                />
-              );
-            }}
-          />
-        </div>
+        <Controller
+          name="owner"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <ComboBox
+                name="owner"
+                value={value}
+                onChange={onChange}
+                placeholder="Search or Select an owner"
+                data={[
+                  { id: 1, name: "Durward Reynolds" },
+                  { id: 2, name: "Kenton Towne" },
+                  { id: 3, name: "Therese Wunsch" },
+                  { id: 4, name: "Benedict Kessler" },
+                  { id: 5, name: "Katelyn Rohan" },
+                ]}
+              />
+            );
+          }}
+        />
 
-        <div className={JoinClasses("flex justify-between")}>
-          <Controller
-            name="pet"
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <ComboBox
-                  name="pet"
-                  value={value}
-                  onChange={onChange}
-                  placeholder="Search or Select a pet"
-                  data={[
-                    { id: 1, name: "Durward Reynolds" },
-                    { id: 2, name: "Kenton Towne" },
-                    { id: 3, name: "Therese Wunsch" },
-                    { id: 4, name: "Benedict Kessler" },
-                    { id: 5, name: "Katelyn Rohan" },
-                  ]}
-                />
-              );
-            }}
-          />
+        <Controller
+          name="pet"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <ComboBox
+                name="pet"
+                value={value}
+                onChange={onChange}
+                placeholder="Search or Select a pet"
+                data={[
+                  { id: 1, name: "Durward Reynolds" },
+                  { id: 2, name: "Kenton Towne" },
+                  { id: 3, name: "Therese Wunsch" },
+                  { id: 4, name: "Benedict Kessler" },
+                  { id: 5, name: "Katelyn Rohan" },
+                ]}
+              />
+            );
+          }}
+        />
 
+        <div>
           <div>
-            <div>
-              <label htmlFor="">Add date and time</label>
-            </div>
-
-            <DatePicker />
+            <label htmlFor="">Add date and time</label>
           </div>
+
+          <DatePicker />
         </div>
 
-        <div className={JoinClasses("flex justify-center", styles["submit-btn"])}>
+        <div
+          className={JoinClasses("flex justify-center", styles["submit-btn"])}
+        >
           <button className="blue-btn" type="submit">
             submit
           </button>
