@@ -11,6 +11,7 @@ import Root from "./routes/root/root";
 import Dashboard from "./routes/dashboard/dashboard";
 import Appointments from "./routes/appointments/appointments";
 import Owner from "./routes/owners/owners";
+import Pets from "./routes/pets/pets";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,13 @@ const router = createBrowserRouter([
         element: <Owner />,
         handle: {
           title: "Pet Owners",
+        },
+      },
+      {
+        path: "pets",
+        element: <Pets />,
+        handle: {
+          title: "Pets",
         },
       },
       {

@@ -1,0 +1,37 @@
+@import "../../assets/scss/colors/colors";
+@import "../../assets/scss/variables";
+@import "../../assets/scss/breakpoints";
+
+.add-owner-content-container {
+  max-width: 550px;
+  width: 100%;
+  border-right: 1px solid $light-gray;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 22px;
+  line-height: 32px;
+  padding: 16px 0 16px 24px;
+  border-bottom: 1px solid $light-gray;
+}
+
+.form-container {
+  padding: 24px;
+  height: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+
+  }
+
+  &-row {
+    column-gap: 12px;
+
+    @include media-down(sm2) {
+      flex-direction: column;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import "../../assets/scss/colors/colors";
+
+.add-owner-container {
+  padding: 0 0 12px;
+
+  button {
+    font-size: 14px;
+    line-height: 21px;
+    border: 1px solid $light-gray;
+    background-color: white;
+    border-radius: 6px;
+
+    div {
+      padding: 6px 12px;
+    }
+
+    span {
+      padding: 6px 12px;
+      border-left: 1px solid $light-gray;
+    }
+
+    &:active {
+      background-color: $light-gray-3;
+    }
+  }
+}

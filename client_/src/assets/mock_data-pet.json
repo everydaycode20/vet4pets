@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Purrsloud",
+    "type": "Cat",
+    "registerDate": "6/26/2018",
+    "age": "5",
+    "ownerName": "Owner Name"
+  },
+  {
+    "name": "Barksalot",
+    "type": "Dog",
+    "registerDate": "6/26/2018",
+    "age": "500",
+    "ownerName": "Owner Name"
+  },
+  {
+    "name": "Meowsalot",
+    "type": "Cat",
+    "registerDate": "6/26/2018",
+    "age": "20",
+    "ownerName": "Owner Name"
+  }
+]
