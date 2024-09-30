@@ -8,11 +8,13 @@ import JoinClasses from "../../utils/join-classes";
 import styles from "./add-pet.module.scss";
 import SubmitBtn from "../submit-btn/submit-btn";
 
+import ComboBox from "../../components/combobox/combobox";
+
 interface IFormInput {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  address: string;
+  name: string;
+  owner: { id: number; name: string };
+  age: number | undefined;
+  type: { id: number; name: string };
   registerDate: Date;
 }
 
@@ -26,7 +28,7 @@ const schema = object({
   registerDate: date(),
 });
 
-export default function AddOwnerContent() {
+export default function AddPetContent() {
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
   };
@@ -38,10 +40,10 @@ export default function AddOwnerContent() {
   } = useForm<IFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phone: "",
-      address: "",
+      name: "",
+      owner: {},
+      age: undefined,
+      type: {},
       registerDate: new Date(),
     },
   });
@@ -52,42 +54,23 @@ export default function AddOwnerContent() {
     >
       <div className="h-full w-full flex flex-col">
         <div className={JoinClasses("w-full", styles.title)}>
-          <span className="font-semibold text-black ">Add new Owner</span>
+          <span className="font-semibold text-black ">Add new Pet</span>
         </div>
 
         <div className={JoinClasses("", styles["form-container"])}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={JoinClasses("flex", styles["form-container-row"])}>
               <Controller
-                name="firstName"
+                name="name"
                 control={control}
                 rules={{ required: true }}
                 defaultValue=""
                 render={({ field, fieldState }) => {
                   return (
                     <Input
-                      id="firstName"
-                      label="First Name"
-                      placeholder="Owner Name"
-                      field={field}
-                      invalid={fieldState.invalid}
-                      error={fieldState?.error?.message}
-                    />
-                  );
-                }}
-              />
-
-              <Controller
-                name="lastName"
-                control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field, fieldState }) => {
-                  return (
-                    <Input
-                      id="lastName"
-                      label="Last Name"
-                      placeholder="Owner Last Name"
+                      id="name"
+                      label="Pet Name"
+                      placeholder="Pet Name"
                       field={field}
                       invalid={fieldState.invalid}
                       error={fieldState?.error?.message}
@@ -97,18 +80,42 @@ export default function AddOwnerContent() {
               />
             </div>
 
+            <div className={JoinClasses("flex", styles["form-container-row"])}>
+              <Controller
+                name="owner"
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <ComboBox
+                      name="owner"
+                      value={value}
+                      onChange={onChange}
+                      placeholder="Search or Select an owner"
+                      data={[
+                        { id: 1, name: "Durward Reynolds" },
+                        { id: 2, name: "Kenton Towne" },
+                        { id: 3, name: "Therese Wunsch" },
+                        { id: 4, name: "Benedict Kessler" },
+                        { id: 5, name: "Katelyn Rohan" },
+                      ]}
+                    />
+                  );
+                }}
+              />
+            </div>
+
             <div>
               <Controller
-                name="phone"
+                name="age"
                 control={control}
                 rules={{ required: true }}
-                defaultValue=""
+                defaultValue={undefined}
                 render={({ field, fieldState }) => {
                   return (
                     <Input
-                      id="phone"
-                      label="Phone"
-                      placeholder="Phone"
+                      id="age"
+                      label="Age"
+                      placeholder="Age"
                       field={field}
                       invalid={fieldState.invalid}
                       error={fieldState?.error?.message}
@@ -118,21 +125,24 @@ export default function AddOwnerContent() {
               />
             </div>
 
-            <div>
+            <div className={JoinClasses("flex", styles["form-container-row"])}>
               <Controller
-                name="address"
+                name="type"
                 control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field, fieldState }) => {
+                render={({ field: { onChange, value } }) => {
                   return (
-                    <Input
-                      id="address"
-                      label="Address"
-                      placeholder="Address  "
-                      field={field}
-                      invalid={fieldState.invalid}
-                      error={fieldState?.error?.message}
+                    <ComboBox
+                      name="type"
+                      value={value}
+                      onChange={onChange}
+                      placeholder="Search or Select a type"
+                      data={[
+                        { id: 1, name: "Durward Reynolds" },
+                        { id: 2, name: "Kenton Towne" },
+                        { id: 3, name: "Therese Wunsch" },
+                        { id: 4, name: "Benedict Kessler" },
+                        { id: 5, name: "Katelyn Rohan" },
+                      ]}
                     />
                   );
                 }}

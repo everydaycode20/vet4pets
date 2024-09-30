@@ -156,7 +156,7 @@ function Toolbar({
             <CalendarMonthIcon htmlColor="#778CA2" />
           </div>
 
-          <span className="font-medium text-black">Add new owner</span>
+          <span className="font-medium text-black">Add new appointment</span>
         </button>
       </div>
     </div>

@@ -1,12 +1,21 @@
 @import "../../assets/scss/colors/colors";
 
+.input-wrapper {
+  max-width: 264px;
+  width: 100%;
+
+  button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+  }
+}
+
 .input-container {
   max-width: 264px;
   width: 100%;
   height: fit-content;
-}
-
-.input {
   font-size: 14px;
   line-height: 21px;
   width: 100%;
@@ -17,6 +26,14 @@
   input:focus {
     outline: none;
   }
+}
+
+.label {
+  font-size: 14px;
+  line-height: 21px;
+  width: 100%;
+  color: $black;
+  margin-bottom: 12px;
 }
 
 .options {
@@ -35,4 +52,9 @@
 .option {
   padding: 7px 12px;
   border-radius: 6px;
+  cursor: default;
+
+  &:hover {
+    background-color: $light-gray;
+  }
 }
