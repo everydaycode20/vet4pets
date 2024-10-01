@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Checkbox } from "@headlessui/react";
 
+import { Checkbox, useCheckboxStore, useStoreState } from "@ariakit/react";
 import { DayPicker } from "react-day-picker";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
@@ -16,7 +16,7 @@ import styles from "./date-picker.module.scss";
 export default function DatePicker() {
   const [selected, setSelected] = useState<Date>();
 
-  console.log(selected);
+  // console.log(selected);
 
   return (
     <div className={JoinClasses("", styles["day-picker-container"])}>
@@ -97,13 +97,15 @@ function TimeCheckbox({
 }: {
   time: { time: string; hourTime24: string };
 }) {
-  const [enabled, setEnabled] = useState(false);
+  // const [enabled, setEnabled] = useState(false);
+
+  const checkbox = useCheckboxStore();
 
   return (
     <Checkbox
-      checked={enabled}
-      onChange={setEnabled}
+      store={checkbox}
       className={JoinClasses("checkbox", styles.checkbox)}
+      render={<button />}
     >
       <time dateTime={new Date(0, 0, 0, 8, 0).toLocaleTimeString()}>
         {formatTime(time.hourTime24)}

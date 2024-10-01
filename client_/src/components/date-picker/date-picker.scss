@@ -97,7 +97,7 @@
 }
 
 .checkbox {
-  &[data-checked] {
+  &[aria-checked="true"] {
     background-color: $blue;
 
     time {

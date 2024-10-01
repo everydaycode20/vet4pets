@@ -14,7 +14,7 @@ import ComboBox from "../../components/combobox/combobox";
 import { date, object, string } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Example from "../combobox/combobox-2";
+import Example from "../combobox/combobox";
 
 export const addPetState = atom(false);
 interface IFormInput {

@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { startTransition, useMemo, useState, useEffect } from "react";
 import {
+  ComboboxProvider,
   Combobox,
-  ComboboxInput,
-  ComboboxOptions,
-  ComboboxOption,
-} from "@headlessui/react";
+  ComboboxPopover,
+  ComboboxItem,
+} from "@ariakit/react";
+
+import { matchSorter } from "match-sorter";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./search.module.scss";
@@ -21,79 +24,51 @@ const people = [
 ];
 
 export default function Search() {
-  const [selected, setSelected] =
-    useState<{ id: number; name: string }[]>(people);
+  const [searchValue, setSearchValue] = useState("");
 
-  const [query, setQuery] = useState("");
+  const matches = useMemo(
+    () => matchSorter(people, searchValue, { keys: ["name"] }),
 
-  const [people1, setPeople1] = useState<any>([]);
+    [searchValue]
+  );
 
-  function T() {
-    return new Promise((resolve, _) => {
-      setTimeout(() => {
-        const p = people.filter((person) =>
-          person.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
-
-        resolve(p);
-      }, 300);
-    });
-  }
-
-  useEffect(() => {
-    if (query !== "") {
-      T().then((val) => {
-        setPeople1(val);
-      });
-    }
-  }, [query]);
+  console.log(searchValue);
 
   return (
     <div className={JoinClasses("", styles["search-container"])}>
-      <Combobox
-        // virtual={{ options: people1 }}
-        value={selected}
-        onChange={(value) => setSelected(value!)}
-        onClose={() => setQuery("")}
+      <ComboboxProvider
+        setValue={(value) => {
+          startTransition(() => setSearchValue(value));
+        }}
       >
-        {({ open }) => (
-          <>
-            <div className="relative flex items-center w-full">
-              <SearchOutlinedIcon htmlColor="#778CA2" className="absolute" />
+        <div className={JoinClasses("relative flex items-center w-full")}>
+          <SearchOutlinedIcon htmlColor="#778CA2" className="absolute" />
 
-              <ComboboxInput
-                onChange={(event) => setQuery(event.target.value)}
-                displayValue={(person: any) => person && person.name}
-                placeholder="Search for owners, pets..."
-                className="bg-transparent relative w-full"
+          <Combobox
+            showOnKeyPress={searchValue ? true : false}
+            showOnClick={searchValue ? true : false}
+            placeholder={"Search for owners, pets..."}
+            className="bg-transparent relative w-full"
+          />
+        </div>
+
+        <ComboboxPopover
+          gutter={8}
+          className={JoinClasses("bg-white flex flex-col", styles.options)}
+        >
+          {matches.length ? (
+            matches.map((value) => (
+              <ComboboxItem
+                key={value.id}
+                value={value.name}
+                className={JoinClasses("cursor-default", styles.option)}
               />
-            </div>
-
-            {open && (
-              <div className={JoinClasses("relative")}>
-                <ComboboxOptions
-                  static
-                  anchor="bottom"
-                  className={JoinClasses("", styles.options)}
-                >
-                  {people1.map((person: any) => (
-                    <ComboboxOption
-                      className={JoinClasses("cursor-default", styles.option)}
-                      key={person.id}
-                      value={person}
-                    >
-                      {person.name}
-                    </ComboboxOption>
-                  ))}
-                </ComboboxOptions>
-              </div>
-            )}
-          </>
-        )}
-      </Combobox>
+            ))
+          ) : (
+            <div className="no-results">No results found</div>
+          )}
+        </ComboboxPopover>
+      </ComboboxProvider>
     </div>
   );
 }
