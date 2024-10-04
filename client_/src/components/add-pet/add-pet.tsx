@@ -11,7 +11,7 @@ import styles from "./add-pet.module.scss";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 import ComboBox from "../../components/combobox/combobox";
-import { date, object, string } from "zod";
+import { date, number, object, string } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Example from "../combobox/combobox";
@@ -26,12 +26,16 @@ interface IFormInput {
 }
 
 const schema = object({
-  firstName: string().min(1, { message: "Enter a name" }),
-  lastName: string().min(1, { message: "Enter a last name" }),
-  phone: string()
-    .min(1, { message: "Enter a phone" })
-    .regex(/^\d+$/, { message: "Invalid phone. Numbers only" }),
-  address: string().min(1, { message: "Enter an address" }),
+  name: string(),
+  owner: object({
+    id: number(),
+    name: string(),
+  }),
+  age: number(),
+  type: object({
+    id: number(),
+    name: string(),
+  }),
   registerDate: date(),
 });
 
@@ -90,7 +94,7 @@ export default function AddPet() {
                 }}
               /> */}
 
-              <Example
+              {/* <Example
                 placeholder="Owner"
                 label="Select an owner"
                 data={[
@@ -100,9 +104,9 @@ export default function AddPet() {
                   { id: 4, name: "Benedict Kessler" },
                   { id: 5, name: "Katelyn Rohan" },
                 ]}
-              />
+              /> */}
 
-              {/* <AddPetContent /> */}
+              <AddPetContent />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

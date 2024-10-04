@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { HTMLProps, useEffect, useMemo, useRef } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtom } from "jotai";
 
@@ -29,6 +29,20 @@ export default function Pets() {
 
   const columns = useMemo<ColumnDef<Pet>[]>(
     () => [
+      {
+        id: "select",
+        header: () => <div></div>,
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        ),
+      },
       {
         accessorKey: "name",
         cell: (info) => info.getValue(),
@@ -85,5 +99,28 @@ export default function Pets() {
 
       <AddPet />
     </section>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={JoinClasses("cursor-pointer")}
+      {...rest}
+    />
   );
 }

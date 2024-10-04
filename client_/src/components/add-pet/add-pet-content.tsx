@@ -1,6 +1,7 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { date, object, string } from "zod";
+import { date, number, object, string } from "zod";
 
 import Input from "../input/input";
 import JoinClasses from "../../utils/join-classes";
@@ -10,23 +11,46 @@ import SubmitBtn from "../submit-btn/submit-btn";
 
 import ComboBox from "../../components/combobox/combobox";
 
+import { startTransition, useMemo, useState } from "react";
+import {
+  ComboboxProvider,
+  ComboboxLabel,
+  Combobox,
+  ComboboxDisclosure,
+  ComboboxPopover,
+  ComboboxItem,
+} from "@ariakit/react";
+import { matchSorter } from "match-sorter";
+
 interface IFormInput {
-  name: string;
+  // name: string;
   owner: { id: number; name: string };
-  age: number | undefined;
-  type: { id: number; name: string };
-  registerDate: Date;
+  // age: number | undefined | string;
+  // type: { id: number; name: string };
+  // registerDate: Date;
 }
 
 const schema = object({
-  firstName: string().min(1, { message: "Enter a name" }),
-  lastName: string().min(1, { message: "Enter a last name" }),
-  phone: string()
-    .min(1, { message: "Enter a phone" })
-    .regex(/^\d+$/, { message: "Invalid phone. Numbers only" }),
-  address: string().min(1, { message: "Enter an address" }),
-  registerDate: date(),
+  // name: string(),
+  owner: object({
+    id: number(),
+    name: string(),
+  }),
+  // age: number().or(string()),
+  // type: object({
+  //   id: number(),
+  //   name: string(),
+  // }),
+  // registerDate: date(),
 });
+
+const data = [
+  { id: 1, name: "Durward Reynolds" },
+  { id: 2, name: "Kenton Towne" },
+  { id: 3, name: "Therese Wunsch" },
+  { id: 4, name: "Benedict Kessler" },
+  { id: 5, name: "Katelyn Rohan" },
+];
 
 export default function AddPetContent() {
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -40,13 +64,20 @@ export default function AddPetContent() {
   } = useForm<IFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
+      // name: "",
       owner: {},
-      age: undefined,
-      type: {},
-      registerDate: new Date(),
+      // age: undefined,
+      // type: {},
+      // registerDate: new Date(),
     },
   });
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const matches = useMemo(
+    () => matchSorter(data, searchValue, { keys: ["name"] }),
+    [searchValue]
+  );
 
   return (
     <div
@@ -60,7 +91,7 @@ export default function AddPetContent() {
         <div className={JoinClasses("", styles["form-container"])}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={JoinClasses("flex", styles["form-container-row"])}>
-              <Controller
+              {/* <Controller
                 name="name"
                 control={control}
                 rules={{ required: true }}
@@ -77,19 +108,22 @@ export default function AddPetContent() {
                     />
                   );
                 }}
-              />
+              /> */}
             </div>
 
             <div className={JoinClasses("flex", styles["form-container-row"])}>
               <Controller
                 name="owner"
                 control={control}
-                render={({ field: { onChange, value } }) => {
+                render={({ field }) => {
                   return (
                     <ComboBox
+                      field={field}
+                      control={control}
+                      // ref={field.ref}
                       name="owner"
-                      value={value}
-                      onChange={onChange}
+                      // value={value}
+                      // onChange={onChange}
                       placeholder="Search or Select an owner"
                       data={[
                         { id: 1, name: "Durward Reynolds" },
@@ -104,8 +138,10 @@ export default function AddPetContent() {
               />
             </div>
 
+            <DevTool control={control} />
+
             <div>
-              <Controller
+              {/* <Controller
                 name="age"
                 control={control}
                 rules={{ required: true }}
@@ -122,14 +158,16 @@ export default function AddPetContent() {
                     />
                   );
                 }}
-              />
+              /> */}
             </div>
 
             <div className={JoinClasses("flex", styles["form-container-row"])}>
-              <Controller
+              {/* <Controller
                 name="type"
                 control={control}
                 render={({ field: { onChange, value } }) => {
+                  console.log(value, "CB VALUE");
+
                   return (
                     <ComboBox
                       name="type"
@@ -146,7 +184,7 @@ export default function AddPetContent() {
                     />
                   );
                 }}
-              />
+              /> */}
             </div>
 
             <div>

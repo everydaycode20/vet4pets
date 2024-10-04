@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { HTMLProps, useEffect, useRef, useState } from "react";
 
 import {
   flexRender,
@@ -30,6 +30,10 @@ interface ITable {
 }
 
 export default function Table({ data, columns, pagesSize = 25 }: ITable) {
+  const [rowSelection, setRowSelection] = useState({});
+
+  console.log(rowSelection);
+
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -46,13 +50,14 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       pagination,
+      rowSelection,
     },
+    enableRowSelection: true,
   });
-
-  console.log(columns);
 
   const { pageSize, pageIndex } = table.getState().pagination;
 
@@ -176,5 +181,28 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
         />
       </div>
     </div>
+  );
+}
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={JoinClasses("cursor-pointer")}
+      {...rest}
+    />
   );
 }

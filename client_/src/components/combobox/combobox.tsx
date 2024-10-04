@@ -11,6 +11,7 @@ import { matchSorter } from "match-sorter";
 
 import styles from "./combobox.module.scss";
 import JoinClasses from "../../utils/join-classes";
+import { ControllerRenderProps } from "react-hook-form";
 
 export default function ComboBox({
   value,
@@ -19,20 +20,40 @@ export default function ComboBox({
   data,
   name,
   label,
+  control,
+  field,
+  ref,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
   placeholder: string;
   data: { id: number; name: string }[];
   name?: string;
-  label: string;
+  label?: string;
+  control?: any;
+  field: ControllerRenderProps<any, string>;
+  ref?: any;
 }) {
   const [searchValue, setSearchValue] = useState("");
+
+  const [selectedValue, setSelectedValue] = useState<{
+    id: number;
+    name: string;
+  }>();
 
   const matches = useMemo(
     () => matchSorter(data, searchValue, { keys: ["name"] }),
     [searchValue]
   );
+
+  const itemsMap = useMemo(
+    () => new Map(data.map((val) => [val.name, val])),
+    []
+  );
+
+  console.log(matches);
+
+  // console.log(value, "VALUE");
 
   return (
     <ComboboxProvider
@@ -40,17 +61,19 @@ export default function ComboBox({
         startTransition(() => setSearchValue(value));
       }}
     >
+      {/* <input type="hidden" {...field} value={field.value.name} /> */}
       <ComboboxLabel className={JoinClasses("block", styles.label)}>
         {label}
       </ComboboxLabel>
 
       <div className={JoinClasses("relative", styles["input-wrapper"])}>
         <Combobox
-          placeholder={placeholder}
+          // {...field}
+          name={field.name}
+          onBlur={field.onBlur}
+          value={field.value?.name}
           className={styles["input-container"]}
         />
-
-        {/* <ExpandMoreOutlinedIcon htmlColor="#252631" fontSize="small" /> */}
 
         <ComboboxDisclosure className="" />
       </div>
@@ -63,6 +86,15 @@ export default function ComboBox({
         {matches.length ? (
           matches.map((value) => (
             <ComboboxItem
+              selectValueOnClick={(e) => {
+                console.log(matches);
+
+                // const selectedItem = itemsMap.get(value.name);
+
+                matches.length === 1 && field.onChange(matches[0]);
+
+                return true;
+              }}
               key={value.id}
               value={value.name}
               className={JoinClasses(
