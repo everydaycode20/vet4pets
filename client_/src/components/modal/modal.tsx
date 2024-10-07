@@ -26,22 +26,32 @@ export default function Modal({
   children,
   open,
   setOpen,
+  backdrop = true,
+  disablePortal = false,
+  classes = "",
 }: {
   children?: JSX.Element | JSX.Element[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  backdrop?: boolean;
+  disablePortal?: boolean;
+  classes: any;
 }) {
   const handleClose = () => setOpen(false);
 
+  console.log(classes);
+  
+
   return (
     <MuiModal
-      className={JoinClasses("", styles.modal)}
+      disablePortal={disablePortal}
+      className={JoinClasses("", styles.modal + " " + classes)}
       // aria-labelledby="unstyled-modal-title"
       // aria-describedby="unstyled-modal-description"
       open={open}
       onClose={handleClose}
       slots={{
-        backdrop: BackdropSlot,
+        backdrop: backdrop ? BackdropSlot : undefined,
       }}
     >
       <>{children ? children : <></>}</>

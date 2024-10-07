@@ -14,13 +14,7 @@ import MockDataPerson from "../../assets/mock_data-person.json";
 import styles from "./table.module.scss";
 import Table from "../../components/table/table";
 
-interface Person {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  address: string;
-  registerDate: string;
-}
+import { Person } from "../../models/person.interface";
 
 const defaultData: Person[] = MockDataPerson;
 

@@ -1,26 +1,19 @@
+import { startTransition, useMemo, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { date, number, object, string } from "zod";
 
-import Input from "../input/input";
 import JoinClasses from "../../utils/join-classes";
+import Input from "../input/input";
+import SubmitBtn from "../submit-btn/submit-btn";
+import PetOwnerTable from "./pet-owner-table";
+import ComboBox from "../../components/combobox/combobox";
+import Modal from "../modal/modal";
 
 import styles from "./add-pet.module.scss";
-import SubmitBtn from "../submit-btn/submit-btn";
 
-import ComboBox from "../../components/combobox/combobox";
-
-import { startTransition, useMemo, useState } from "react";
-import {
-  ComboboxProvider,
-  ComboboxLabel,
-  Combobox,
-  ComboboxDisclosure,
-  ComboboxPopover,
-  ComboboxItem,
-} from "@ariakit/react";
-import { matchSorter } from "match-sorter";
+import MockDataPerson from "../../assets/mock_data-person.json";
 
 interface IFormInput {
   // name: string;
@@ -52,7 +45,13 @@ const data = [
   { id: 5, name: "Katelyn Rohan" },
 ];
 
+import { Person } from "../../models/person.interface";
+
+const defaultData: Person[] = MockDataPerson;
+
 export default function AddPetContent() {
+  const [open, setOpen] = useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
   };
@@ -71,13 +70,6 @@ export default function AddPetContent() {
       // registerDate: new Date(),
     },
   });
-
-  const [searchValue, setSearchValue] = useState("");
-
-  const matches = useMemo(
-    () => matchSorter(data, searchValue, { keys: ["name"] }),
-    [searchValue]
-  );
 
   return (
     <div
@@ -112,7 +104,7 @@ export default function AddPetContent() {
             </div>
 
             <div className={JoinClasses("flex", styles["form-container-row"])}>
-              <Controller
+              {/* <Controller
                 name="owner"
                 control={control}
                 render={({ field }) => {
@@ -135,7 +127,10 @@ export default function AddPetContent() {
                     />
                   );
                 }}
-              />
+              /> */}
+              <button type="button" onClick={() => setOpen(true)}>
+                Select an owner
+              </button>
             </div>
 
             <DevTool control={control} />
@@ -190,6 +185,16 @@ export default function AddPetContent() {
             <div>
               <SubmitBtn text="Add Owner" classes="" />
             </div>
+
+            <Modal
+              open={open}
+              setOpen={setOpen}
+              backdrop={false}
+              disablePortal={true}
+              classes={styles["modal-container"]}
+            >
+              <PetOwnerTable data={defaultData} pagesSize={25} />
+            </Modal>
           </form>
         </div>
       </div>
