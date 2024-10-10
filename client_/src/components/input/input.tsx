@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Input as MuiInput } from "@mui/base/Input";
 import { styled } from "@mui/system";
 import { Button } from "@mui/base/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import Debounce from "../../utils/debounce";
+
 import styles from "./input.module.scss";
 import JoinClasses from "../../utils/join-classes";
 
-
 interface IInput {
-  label: string;
+  label?: string;
   id: string;
   placeholder: string;
-  field: any;
+  field?: any;
   type?: "default" | "password";
   invalid?: boolean;
   error?: string;
+  withDebounce?: boolean;
+  value?: any;
+  onChange?: (value: any) => void;
 }
 
 export default function Input({
@@ -27,6 +31,9 @@ export default function Input({
   type = "default",
   invalid,
   error,
+  withDebounce,
+  onChange,
+  value,
 }: IInput) {
   if (type === "password") {
     const [showPassword, setShowPassword] = useState(false);
@@ -74,6 +81,37 @@ export default function Input({
               </IconButton>
             </InputAdornment>
           }
+        />
+
+        <span className="text-pink">{error}</span>
+      </div>
+    );
+  }
+
+  if (withDebounce) {
+    const change = Debounce((e) => {
+      onChange && onChange(e.target.value);
+    });
+
+    return (
+      <div className={"w-full " + styles.input}>
+        {label && (
+          <label className="w-full block" htmlFor={id}>
+            {label}
+          </label>
+        )}
+
+        <MuiInput
+          // value={value}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => change(e)}
+          error={invalid}
+          className={JoinClasses(
+            "w-full flex rounded-5 input-text",
+            styles["input-container"]
+          )}
+          id={id}
+          placeholder={placeholder}
+          // {...field}
         />
 
         <span className="text-pink">{error}</span>

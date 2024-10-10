@@ -54,7 +54,6 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
       pagination,
       rowSelection,
     },
-    enableRowSelection: true,
   });
 
   const { pageSize, pageIndex } = table.getState().pagination;

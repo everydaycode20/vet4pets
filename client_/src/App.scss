@@ -199,14 +199,52 @@ header {
   }
 }
 
-// .border-radius-5 {
-//   border-radius: 5px;
-// }
+.checkbox {
+  position: relative;
 
-// .border-radius-10 {
-//   border-radius: 10px;
-// }
+  input {
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
 
-// .border-radius-20 {
-//   border-radius: 20px;
-// }
+  input:focus + label {
+    outline: dashed 2px #d3d3d3;
+    outline-offset: 5px;
+  }
+
+  input:checked + label {
+    &:before {
+      background: $blue;
+      border-color: $blue;
+    }
+
+    & > svg path {
+      display: block;
+    }
+  }
+
+  label {
+    &:before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      background-color: $light-gray;
+    }
+  }
+
+  svg {
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    width: 11px;
+    height: 8px;
+
+    path {
+      display: none;
+    }
+  }
+}
