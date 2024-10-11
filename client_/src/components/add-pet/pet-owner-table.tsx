@@ -1,4 +1,12 @@
-import { HTMLProps, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Dispatch,
+  HTMLProps,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import {
   ColumnDef,
@@ -38,10 +46,14 @@ import { Person } from "../../models/person.interface";
 
 import "./table.scss";
 import styles from "./table.module.scss";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 interface ITable {
   data: any[];
   pagesSize?: number;
+  register: UseFormRegister<any>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setValue: UseFormSetValue<any>;
 }
 
 declare module "@tanstack/react-table" {
@@ -63,23 +75,14 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0;
-
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    );
-  }
-
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
-};
-
-export default function PetOwnerTable({ data, pagesSize = 25 }: ITable) {
-  const [rowSelection, setRowSelection] = useState({});
-
-  console.log(rowSelection);
+export default function PetOwnerTable({
+  data,
+  pagesSize = 25,
+  register,
+  setOpen,
+  setValue,
+}: ITable) {
+  const [rowSelection, setRowSelection] = useState<{ [key: string]: any }>({});
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -90,16 +93,49 @@ export default function PetOwnerTable({ data, pagesSize = 25 }: ITable) {
 
   const [globalFilter, setGlobalFilter] = useState("");
 
+  console.log(rowSelection);
+
+  useEffect(() => {
+    console.log("UE");
+
+    const index = parseInt(Object.keys(rowSelection)[0]);
+
+    console.log(index);
+    
+
+    if (index) {
+      const index = parseInt(Object.keys(rowSelection)[0]);
+
+      console.log(data);
+
+      setValue(
+        "owner",
+        { name: data[index].firstName, id: data[index].id },
+        { shouldDirty: true, shouldTouch: true, shouldValidate: true }
+      );
+    }
+
+    return () => {
+      // if (rowSelection["0"]) {
+      //   const index = parseInt(Object.keys(rowSelection)[0]);
+      //   setValue(
+      //     "owner",
+      //     { name: data[index].firstName, id: data[index].id },
+      //     { shouldDirty: true, shouldTouch: true, shouldValidate: true }
+      //   );
+      // }
+    };
+  }, [rowSelection]);
+
   const columns = useMemo<ColumnDef<Person>[]>(
     () => [
       {
         id: "select",
         header: () => <div></div>,
         cell: ({ row }) => {
-          // console.log(row);
-
           return (
             <IndeterminateCheckbox
+              register={register}
               id={row.index.toString()}
               data={row.original}
               {...{
@@ -153,20 +189,22 @@ export default function PetOwnerTable({ data, pagesSize = 25 }: ITable) {
     enableMultiRowSelection: false,
   });
 
-  const { pageSize, pageIndex } = table.getState().pagination;
-
-  console.log(globalFilter);
+  const { pageIndex } = table.getState().pagination;
 
   return (
     <div className={JoinClasses("", styles["table-wrapper"])}>
-      <button className={JoinClasses("absolute", styles["close-button"])}>
+      <button
+        type="button"
+        className={JoinClasses("absolute", styles["close-button"])}
+        onClick={() => setOpen(false)}
+      >
         <span className="sr-only">close</span>
 
         <CloseOutlinedIcon />
       </button>
 
       <div>
-        <div className={JoinClasses("sticky top-0", styles.input)}>
+        <div className={JoinClasses("sticky top-0 z-10", styles.input)}>
           <Input
             // value={globalFilter ?? ""}
             withDebounce
@@ -306,6 +344,7 @@ function IndeterminateCheckbox({
   indeterminate,
   className = "",
   data,
+  register,
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement> & any) {
   const ref = useRef<HTMLInputElement>(null!);
@@ -316,21 +355,16 @@ function IndeterminateCheckbox({
     }
   }, [ref, indeterminate]);
 
-  console.log(rest);
-
-  // rest.onChange = (e:any) => {
-  //   console.log(e.target.checked);
-
-  // }
-
   return (
     <div className="checkbox">
       <input
+        {...register("owner")}
         type="checkbox"
         ref={ref}
         className={JoinClasses("cursor-pointer sr-only")}
         {...rest}
         id={rest.id}
+        value={rest.id}
       />
 
       <label htmlFor={rest.id}>

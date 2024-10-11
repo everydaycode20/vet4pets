@@ -1,4 +1,4 @@
-import { startTransition, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,14 +37,6 @@ const schema = object({
   // registerDate: date(),
 });
 
-const data = [
-  { id: 1, name: "Durward Reynolds" },
-  { id: 2, name: "Kenton Towne" },
-  { id: 3, name: "Therese Wunsch" },
-  { id: 4, name: "Benedict Kessler" },
-  { id: 5, name: "Katelyn Rohan" },
-];
-
 import { Person } from "../../models/person.interface";
 
 const defaultData: Person[] = MockDataPerson;
@@ -59,7 +51,11 @@ export default function AddPetContent() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    register,
+    setValue,
+    formState,
+    watch,
+    getValues,
   } = useForm<IFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -70,6 +66,18 @@ export default function AddPetContent() {
       // registerDate: new Date(),
     },
   });
+
+  console.log(formState);
+
+  // console.log(watch());
+
+  useEffect(() => {
+    setValue(
+      "owner",
+      { name: "test", id: 1 },
+      { shouldDirty: true, shouldTouch: true, shouldValidate: true }
+    );
+  }, []);
 
   return (
     <div
@@ -193,7 +201,13 @@ export default function AddPetContent() {
               disablePortal={true}
               classes={styles["modal-container"]}
             >
-              <PetOwnerTable data={defaultData} pagesSize={25} />
+              <PetOwnerTable
+                setValue={setValue}
+                setOpen={setOpen}
+                register={register}
+                data={defaultData}
+                pagesSize={25}
+              />
             </Modal>
           </form>
         </div>
