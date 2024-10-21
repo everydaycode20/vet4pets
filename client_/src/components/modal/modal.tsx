@@ -39,9 +39,6 @@ export default function Modal({
 }) {
   const handleClose = () => setOpen(false);
 
-  console.log(classes);
-  
-
   return (
     <MuiModal
       disablePortal={disablePortal}

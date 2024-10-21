@@ -4,6 +4,10 @@ import { styled } from "@mui/system";
 import { Button } from "@mui/base/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
+
+import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 
 import Debounce from "../../utils/debounce";
 
@@ -15,7 +19,7 @@ interface IInput {
   id: string;
   placeholder: string;
   field?: any;
-  type?: "default" | "password";
+  type?: "default" | "password" | "number";
   invalid?: boolean;
   error?: string;
   withDebounce?: boolean;
@@ -81,6 +85,65 @@ export default function Input({
               </IconButton>
             </InputAdornment>
           }
+        />
+
+        <span className="text-pink">{error}</span>
+      </div>
+    );
+  }
+
+  if (type === "number") {
+    return (
+      <div className={"w-full " + styles.input}>
+        {label && (
+          <label className="w-full block" htmlFor={id}>
+            {label}
+          </label>
+        )}
+
+        <BaseNumberInput
+          onChange={(_, v) => {
+            field.onChange(v);
+          }}
+          min={1}
+          max={100}
+          ref={field.ref}
+          id={id}
+          error={invalid}
+          className={JoinClasses(
+            "w-full flex rounded-5 input-text",
+            styles["input-container"]
+          )}
+          slots={{
+            incrementButton: (e) => {
+              return (
+                <button
+                  type="button"
+                  onMouseDown={e.onMouseDown}
+                  onClick={e.onClick}
+                  aria-disabled={e["aria-disabled"]}
+                  disabled={e["aria-disabled"]}
+                  aria-controls={e["aria-controls"]}
+                  aria-label="increase"
+                >
+                  <KeyboardArrowUpOutlinedIcon htmlColor="#778CA2" />
+                </button>
+              );
+            },
+            decrementButton: (e) => (
+              <button
+                type="button"
+                onMouseDown={e.onMouseDown}
+                onClick={e.onClick}
+                aria-disabled={e["aria-disabled"]}
+                disabled={e["aria-disabled"]}
+                aria-controls={e["aria-controls"]}
+                aria-label={"decrease"}
+              >
+                <KeyboardArrowDownOutlinedIcon htmlColor="#778CA2" />
+              </button>
+            ),
+          }}
         />
 
         <span className="text-pink">{error}</span>

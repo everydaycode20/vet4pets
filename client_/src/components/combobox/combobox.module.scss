@@ -1,8 +1,8 @@
 @import "../../assets/scss/colors/colors";
 
 .input-wrapper {
-  max-width: 264px;
-  width: 100%;
+  // max-width: 264px;
+  // width: 100%;
 
   button {
     position: absolute;
@@ -13,8 +13,8 @@
 }
 
 .input-container {
-  max-width: 264px;
-  width: 100%;
+  // max-width: 264px;
+  // width: 100%;
   height: fit-content;
   font-size: 14px;
   line-height: 21px;
@@ -29,7 +29,7 @@
 }
 
 .label {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 21px;
   width: 100%;
   color: $black;

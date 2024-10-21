@@ -17,17 +17,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
-  SortingFn,
-  sortingFns,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  RankingInfo,
-  rankItem,
-  compareItems,
-} from "@tanstack/match-sorter-utils";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { TablePagination } from "@mui/base/TablePagination";
+
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
@@ -40,20 +36,17 @@ import Input from "../input/input";
 
 import getSortingState from "../../utils/get-sorting-state";
 import JoinClasses from "../../utils/join-classes";
-import Debounce from "../../utils/debounce";
 
 import { Person } from "../../models/person.interface";
 
 import "./table.scss";
 import styles from "./table.module.scss";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 interface ITable {
   data: any[];
   pagesSize?: number;
-  register: UseFormRegister<any>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  setValue: UseFormSetValue<any>;
+  onChange: (e: any) => void;
 }
 
 declare module "@tanstack/react-table" {
@@ -75,12 +68,13 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
+// TODO fix accessibility issues
+
 export default function PetOwnerTable({
   data,
   pagesSize = 25,
-  register,
   setOpen,
-  setValue,
+  onChange,
 }: ITable) {
   const [rowSelection, setRowSelection] = useState<{ [key: string]: any }>({});
 
@@ -93,38 +87,14 @@ export default function PetOwnerTable({
 
   const [globalFilter, setGlobalFilter] = useState("");
 
-  console.log(rowSelection);
-
   useEffect(() => {
-    console.log("UE");
-
-    const index = parseInt(Object.keys(rowSelection)[0]);
-
-    console.log(index);
-    
-
-    if (index) {
+    if (Object.keys(rowSelection).length === 1) {
       const index = parseInt(Object.keys(rowSelection)[0]);
 
-      console.log(data);
-
-      setValue(
-        "owner",
-        { name: data[index].firstName, id: data[index].id },
-        { shouldDirty: true, shouldTouch: true, shouldValidate: true }
-      );
+      onChange(index);
+    } else if (Object.keys(rowSelection).length === 0) {
+      onChange(-1);
     }
-
-    return () => {
-      // if (rowSelection["0"]) {
-      //   const index = parseInt(Object.keys(rowSelection)[0]);
-      //   setValue(
-      //     "owner",
-      //     { name: data[index].firstName, id: data[index].id },
-      //     { shouldDirty: true, shouldTouch: true, shouldValidate: true }
-      //   );
-      // }
-    };
   }, [rowSelection]);
 
   const columns = useMemo<ColumnDef<Person>[]>(
@@ -135,7 +105,6 @@ export default function PetOwnerTable({
         cell: ({ row }) => {
           return (
             <IndeterminateCheckbox
-              register={register}
               id={row.index.toString()}
               data={row.original}
               {...{
@@ -196,7 +165,11 @@ export default function PetOwnerTable({
       <button
         type="button"
         className={JoinClasses("absolute", styles["close-button"])}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+
+          document.getElementById("select-owner-btn")?.focus();
+        }}
       >
         <span className="sr-only">close</span>
 
@@ -344,7 +317,6 @@ function IndeterminateCheckbox({
   indeterminate,
   className = "",
   data,
-  register,
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement> & any) {
   const ref = useRef<HTMLInputElement>(null!);
@@ -358,7 +330,6 @@ function IndeterminateCheckbox({
   return (
     <div className="checkbox">
       <input
-        {...register("owner")}
         type="checkbox"
         ref={ref}
         className={JoinClasses("cursor-pointer sr-only")}

@@ -16,24 +16,20 @@ import styles from "./add-pet.module.scss";
 import MockDataPerson from "../../assets/mock_data-person.json";
 
 interface IFormInput {
-  // name: string;
-  owner: { id: number; name: string };
-  // age: number | undefined | string;
-  // type: { id: number; name: string };
+  name: string;
+  owner: number;
+  age: string | null | number | undefined;
+  type: number;
   // registerDate: Date;
 }
 
 const schema = object({
-  // name: string(),
-  owner: object({
-    id: number(),
-    name: string(),
+  name: string().min(1, { message: "Enter a name" }),
+  owner: number().positive({ message: "Must select an owner" }),
+  age: number({ message: "Enter an age" }).positive({
+    message: "Enter an age",
   }),
-  // age: number().or(string()),
-  // type: object({
-  //   id: number(),
-  //   name: string(),
-  // }),
+  type: number().positive({ message: "Select a type" }),
   // registerDate: date(),
 });
 
@@ -51,33 +47,20 @@ export default function AddPetContent() {
   const {
     control,
     handleSubmit,
-    register,
-    setValue,
-    formState,
-    watch,
     getValues,
+    formState: { errors },
   } = useForm<IFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      // name: "",
-      owner: {},
-      // age: undefined,
-      // type: {},
+      name: "",
+      owner: -1,
+      age: 0,
+      type: -1,
       // registerDate: new Date(),
     },
   });
 
-  console.log(formState);
-
-  // console.log(watch());
-
-  useEffect(() => {
-    setValue(
-      "owner",
-      { name: "test", id: 1 },
-      { shouldDirty: true, shouldTouch: true, shouldValidate: true }
-    );
-  }, []);
+  console.log(errors);
 
   return (
     <div
@@ -91,92 +74,100 @@ export default function AddPetContent() {
         <div className={JoinClasses("", styles["form-container"])}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={JoinClasses("flex", styles["form-container-row"])}>
-              {/* <Controller
+              <Controller
                 name="name"
-                control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field, fieldState }) => {
-                  return (
-                    <Input
-                      id="name"
-                      label="Pet Name"
-                      placeholder="Pet Name"
-                      field={field}
-                      invalid={fieldState.invalid}
-                      error={fieldState?.error?.message}
-                    />
-                  );
-                }}
-              /> */}
-            </div>
-
-            <div className={JoinClasses("flex", styles["form-container-row"])}>
-              {/* <Controller
-                name="owner"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <ComboBox
-                      field={field}
-                      control={control}
-                      // ref={field.ref}
-                      name="owner"
-                      // value={value}
-                      // onChange={onChange}
-                      placeholder="Search or Select an owner"
-                      data={[
-                        { id: 1, name: "Durward Reynolds" },
-                        { id: 2, name: "Kenton Towne" },
-                        { id: 3, name: "Therese Wunsch" },
-                        { id: 4, name: "Benedict Kessler" },
-                        { id: 5, name: "Katelyn Rohan" },
-                      ]}
-                    />
-                  );
-                }}
-              /> */}
-              <button type="button" onClick={() => setOpen(true)}>
-                Select an owner
-              </button>
-            </div>
-
-            <DevTool control={control} />
-
-            <div>
-              {/* <Controller
-                name="age"
                 control={control}
                 rules={{ required: true }}
                 defaultValue={undefined}
                 render={({ field, fieldState }) => {
                   return (
                     <Input
-                      id="age"
-                      label="Age"
-                      placeholder="Age"
+                      id="name"
+                      label="Pet name"
+                      placeholder="Pet name"
                       field={field}
                       invalid={fieldState.invalid}
                       error={fieldState?.error?.message}
                     />
                   );
                 }}
-              /> */}
+              />
+
+              <div className="w-full relative">
+                <span
+                  className="block mb-[12px] text-[12px] text-black cursor-default"
+                  onClick={() => {
+                    document.getElementById("select-owner-btn")?.focus();
+                  }}
+                >
+                  Select an owner
+                </span>
+
+                <button
+                  id="select-owner-btn"
+                  type="button"
+                  className={JoinClasses(
+                    "default-button text-[14px]",
+                    open ? "default-button-open" : "",
+                    styles["select-owner-btn"]
+                  )}
+                  onClick={() => {
+                    setOpen(true);
+
+                    document.getElementById("select-owner-btn")?.blur();
+                  }}
+                >
+                  {getValues().owner >= 0
+                    ? `${defaultData[getValues().owner].firstName} ${
+                        defaultData[getValues().owner].lastName
+                      }`
+                    : "Select an owner"}
+
+                  {getValues().owner >= 0 && (
+                    <span className="sr-only">selected</span>
+                  )}
+                </button>
+
+                {errors.owner && (
+                  <span className="text-pink mt-[5px] block">
+                    {errors.owner.message}
+                  </span>
+                )}
+              </div>
             </div>
 
+            {/* <DevTool control={control} />  */}
+
             <div className={JoinClasses("flex", styles["form-container-row"])}>
-              {/* <Controller
+              <Controller
+                name="age"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return (
+                    <Input
+                      type="number"
+                      id="age"
+                      label="Age"
+                      placeholder="Type an age"
+                      field={field}
+                      invalid={fieldState.invalid}
+                      error={fieldState?.error?.message}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
                 name="type"
                 control={control}
-                render={({ field: { onChange, value } }) => {
-                  console.log(value, "CB VALUE");
-
+                render={({ field, fieldState }) => {
                   return (
                     <ComboBox
+                      label="Select a type"
                       name="type"
-                      value={value}
-                      onChange={onChange}
+                      field={field}
                       placeholder="Search or Select a type"
+                      error={fieldState?.error?.message}
                       data={[
                         { id: 1, name: "Durward Reynolds" },
                         { id: 2, name: "Kenton Towne" },
@@ -187,7 +178,7 @@ export default function AddPetContent() {
                     />
                   );
                 }}
-              /> */}
+              />
             </div>
 
             <div>
@@ -201,12 +192,19 @@ export default function AddPetContent() {
               disablePortal={true}
               classes={styles["modal-container"]}
             >
-              <PetOwnerTable
-                setValue={setValue}
-                setOpen={setOpen}
-                register={register}
-                data={defaultData}
-                pagesSize={25}
+              <Controller
+                name="owner"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <PetOwnerTable
+                      onChange={field.onChange}
+                      setOpen={setOpen}
+                      data={defaultData}
+                      pagesSize={25}
+                    />
+                  );
+                }}
               />
             </Modal>
           </form>

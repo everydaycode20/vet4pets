@@ -1,4 +1,11 @@
-import { startTransition, useMemo, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  startTransition,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   ComboboxProvider,
   ComboboxLabel,
@@ -23,6 +30,7 @@ export default function ComboBox({
   control,
   field,
   ref,
+  error,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
@@ -31,82 +39,82 @@ export default function ComboBox({
   name?: string;
   label?: string;
   control?: any;
-  field: ControllerRenderProps<any, string>;
+  field?: ControllerRenderProps<any, string>;
   ref?: any;
+  error?: string;
 }) {
   const [searchValue, setSearchValue] = useState("");
-
-  const [selectedValue, setSelectedValue] = useState<{
-    id: number;
-    name: string;
-  }>();
 
   const matches = useMemo(
     () => matchSorter(data, searchValue, { keys: ["name"] }),
     [searchValue]
   );
 
-  const itemsMap = useMemo(
-    () => new Map(data.map((val) => [val.name, val])),
-    []
-  );
+  const [open, isOpen] = useState(false);
 
-  console.log(matches);
-
-  // console.log(value, "VALUE");
+  useEffect(() => {
+    if (matches.length === 1) {
+      field?.onChange(matches[0].id);
+    } else {
+      field?.onChange(-1);
+    }
+  }, [matches]);
 
   return (
-    <ComboboxProvider
-      setValue={(value) => {
-        startTransition(() => setSearchValue(value));
-      }}
-    >
-      {/* <input type="hidden" {...field} value={field.value.name} /> */}
-      <ComboboxLabel className={JoinClasses("block", styles.label)}>
-        {label}
-      </ComboboxLabel>
-
-      <div className={JoinClasses("relative", styles["input-wrapper"])}>
-        <Combobox
-          // {...field}
-          name={field.name}
-          onBlur={field.onBlur}
-          value={field.value?.name}
-          className={styles["input-container"]}
-        />
-
-        <ComboboxDisclosure className="" />
-      </div>
-
-      <ComboboxPopover
-        gutter={8}
-        sameWidth
-        className={JoinClasses("bg-white flex flex-col", styles.options)}
+    <div className={JoinClasses("w-full", open ? "z-20" : "")}>
+      <ComboboxProvider
+        setValue={(value) => {
+          startTransition(() => setSearchValue(value));
+        }}
+        setOpen={(e) => {
+          isOpen(e);
+        }}
       >
-        {matches.length ? (
-          matches.map((value) => (
-            <ComboboxItem
-              selectValueOnClick={(e) => {
-                console.log(matches);
+        <div className={JoinClasses("w-full")}>
+          {label && (
+            <ComboboxLabel className={JoinClasses("block", styles.label)}>
+              {label}
+            </ComboboxLabel>
+          )}
 
-                // const selectedItem = itemsMap.get(value.name);
-
-                matches.length === 1 && field.onChange(matches[0]);
-
-                return true;
-              }}
-              key={value.id}
-              value={value.name}
-              className={JoinClasses(
-                "data-[focus]:bg-blue-100 ",
-                styles.option
-              )}
+          <div
+            className={JoinClasses("relative w-full", styles["input-wrapper"])}
+          >
+            <Combobox
+              name={field?.name}
+              onBlur={field?.onBlur}
+              onChange={field?.onChange}
+              className={JoinClasses("", styles["input-container"])}
+              placeholder={placeholder}
             />
-          ))
-        ) : (
-          <div className="no-results">No results found</div>
-        )}
-      </ComboboxPopover>
-    </ComboboxProvider>
+
+            <ComboboxDisclosure className="" />
+          </div>
+
+          <ComboboxPopover
+            gutter={8}
+            sameWidth
+            className={JoinClasses("bg-white flex flex-col", styles.options)}
+          >
+            {matches.length ? (
+              matches.map((value) => (
+                <ComboboxItem
+                  key={value.id}
+                  value={value.name}
+                  className={JoinClasses(
+                    "data-[focus]:bg-blue-100 ",
+                    styles.option
+                  )}
+                />
+              ))
+            ) : (
+              <div className="no-results py-2 px-2">No results found</div>
+            )}
+          </ComboboxPopover>
+        </div>
+      </ComboboxProvider>
+
+      {error && <span className="text-pink block">{error}</span>}
+    </div>
   );
 }

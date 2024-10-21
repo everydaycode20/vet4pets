@@ -23,11 +23,47 @@
     font-weight: 400;
     padding: 15px 24px;
     border-radius: 5px;
+    width: 100%;
   }
 }
 
 .input-container input {
   border: 1px solid $light-gray;
+}
+
+.input-container {
+  input {
+    order: 2;
+  }
+
+  button {
+    background-color: $light-gray-2;
+    border-radius: 4px;
+
+    &:active {
+      background-color: $light-gray;
+    }
+
+    &:first-of-type {
+      order: 3;
+      margin-left: 4px;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    &:last-of-type {
+      order: 1;
+      margin-right: 4px;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 .input-container-password {

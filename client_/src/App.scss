@@ -248,3 +248,22 @@ header {
     }
   }
 }
+
+.default-button {
+  color: $light-gray-4;
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+  padding: 15px 24px;
+  font-weight: 600;
+  max-width: 350px;
+  width: 100%;
+  height: fit-content;
+
+  &-open {
+    background-color: $light-gray-2;
+  }
+
+  &:hover {
+    background-color: $light-gray-2;
+  }
+}
