@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Checkbox, useCheckboxStore, useStoreState } from "@ariakit/react";
 import { DayPicker } from "react-day-picker";
 
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 
@@ -50,6 +52,8 @@ export default function DatePicker() {
         }}
       />
 
+      <TimeRange />
+
       {selected && (
         <ul
           className={JoinClasses(
@@ -69,6 +73,7 @@ export default function DatePicker() {
     </div>
   );
 }
+
 const timeArr = [
   { time: "8:00", hourTime24: "8:00" },
   { time: "8:30", hourTime24: "8:30" },
@@ -91,6 +96,58 @@ const timeArr = [
   { time: "5:00", hourTime24: "17:00" },
   { time: "5:30", hourTime24: "17:30" },
 ];
+
+function TimeRange() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div>
+      <div>
+        <input
+          type="text"
+          name=""
+          id=""
+          aria-hidden={true}
+          className="sr-only"
+        />
+
+        <div
+          className={JoinClasses("flex", styles["time-select"])}
+          aria-expanded={open}
+        >
+          <div className={JoinClasses("flex flex-col", )}>
+            <button type="submit" onClick={() => setOpen(!open)}>
+              Start
+            </button>
+
+            <span>--:--</span>
+          </div>
+
+          <button type="submit">
+            <CloseOutlinedIcon fontSize="small" />
+          </button>
+        </div>
+
+        <div
+          aria-role="listbox"
+          className={JoinClasses(
+            "absolute overflow-y-scroll cursor-pointer bg-white",
+            styles["option-list"],
+            open ? "block" : "hidden"
+          )}
+        >
+          {timeArr.map((time, index) => {
+            return (
+              <div key={index} aria-role="option">
+                {time.time}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function TimeCheckbox({
   time,

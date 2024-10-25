@@ -89,7 +89,7 @@ const DrawerContent = React.forwardRef<
           ref={forwardedRef}
           className={JoinClasses(
             // base
-            "fixed inset-y-2 mx-auto flex flex-1 flex-col overflow-y-auto shadow-lg pt-2 focus:outline-none max-sm:right-2 sm:inset-y-2 sm:right-2",
+            "fixed inset-y-2 mx-auto flex flex-1 flex-col shadow-lg pt-2 focus:outline-none max-sm:right-2 sm:inset-y-2 sm:right-2",
             // border color
             "border-gray-200 dark:border-gray-900",
             // background color
