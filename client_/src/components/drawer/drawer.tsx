@@ -31,6 +31,7 @@ const DrawerTrigger = React.forwardRef<
     />
   );
 });
+
 DrawerTrigger.displayName = "Drawer.Trigger";
 
 const DrawerClose = React.forwardRef<
@@ -80,8 +81,10 @@ DrawerOverlay.displayName = "DrawerOverlay";
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitives.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content>
->(({ className, ...props }, forwardedRef) => {
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content> & {
+    overflow?: boolean;
+  }
+>(({ className, overflow, ...props }, forwardedRef) => {
   return (
     <DrawerPortal>
       <DrawerOverlay>
@@ -96,7 +99,8 @@ const DrawerContent = React.forwardRef<
             "bg-white dark:bg-[#090E1A]",
             styles.content,
             focusRing,
-            className
+            className,
+            overflow && "overflow-y-auto"
           )}
           {...props}
         />

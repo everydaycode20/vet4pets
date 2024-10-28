@@ -31,10 +31,44 @@
 }
 
 .time-select {
-  
+  column-gap: 20px;
+  font-weight: 600;
+  border: 1px solid $light-gray-2;
+  border-radius: 6px;
+  padding: 10px 15px;
+
+  button {
+    font-size: 12px;
+  }
+
+  span {
+    font-size: 14px;
+  }
 }
 
 .option-list {
   max-height: 200px;
-  
+  width: 100%;
+  border: 1px solid $light-gray-2;
+  border-radius: 6px;
+  margin-top: 2px;
+
+  .option {
+    padding: 10px 15px;
+
+    &:hover {
+      background-color: $light-gray-2;
+    }
+  }
+}
+
+.remove {
+  border-radius: 50%;
+  padding: 5px 5px;
+  height: 30px;
+  background-color: $light-gray-2;
+
+  &:hover {
+    background-color: $light-gray-3;
+  }
 }

@@ -44,6 +44,7 @@ export default function Appointments() {
         }}
       >
         <DrawerContent
+          overflow={true}
           className={JoinClasses(
             "",
             styles["add-appointments-content-container"]
@@ -122,15 +123,19 @@ function Form() {
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <Select
-                data={[
-                  { id: 1, name: "item 1" },
-                  { id: 2, name: "item 2" },
-                ]}
+              <ComboBox
+                label="Select an appointment type"
+                name="owner"
                 value={value}
                 onChange={onChange}
-                placeholder="Add a service"
-                name="service"
+                placeholder="Search or Select an appointment"
+                data={[
+                  { id: 1, name: "Durward Reynolds" },
+                  { id: 2, name: "Kenton Towne" },
+                  { id: 3, name: "Therese Wunsch" },
+                  { id: 4, name: "Benedict Kessler" },
+                  { id: 5, name: "Katelyn Rohan" },
+                ]}
               />
             );
           }}
@@ -142,6 +147,7 @@ function Form() {
           render={({ field: { onChange, value } }) => {
             return (
               <ComboBox
+                label="Select an owner"
                 name="owner"
                 value={value}
                 onChange={onChange}
@@ -164,6 +170,7 @@ function Form() {
           render={({ field: { onChange, value } }) => {
             return (
               <ComboBox
+                label="Select a pet"
                 name="pet"
                 value={value}
                 onChange={onChange}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
 
 import { Checkbox, useCheckboxStore, useStoreState } from "@ariakit/react";
 import { DayPicker } from "react-day-picker";
@@ -52,24 +52,21 @@ export default function DatePicker() {
         }}
       />
 
-      <TimeRange />
+      <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
+        <TimeRangeTime
+          label="Start"
+          onChange={(e) => {
+            console.log(e);
+          }}
+        />
 
-      {selected && (
-        <ul
-          className={JoinClasses(
-            "flex flex-wrap justify-between",
-            styles["checkbox-container"]
-          )}
-        >
-          {timeArr.map((time, index) => {
-            return (
-              <li key={index}>
-                <TimeCheckbox key={index} time={time} />
-              </li>
-            );
-          })}
-        </ul>
-      )}
+        <TimeRangeTime
+          label="End"
+          onChange={(e) => {
+            console.log(e);
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -97,76 +94,123 @@ const timeArr = [
   { time: "5:30", hourTime24: "17:30" },
 ];
 
-function TimeRange() {
+function TimeRangeTime({
+  label,
+  onChange,
+  ...props
+}: {
+  label: string;
+  onChange?: (val: string) => void;
+  props?: any;
+}) {
   const [open, setOpen] = useState(false);
 
+  const [time, setTime] = useState("");
+
+  const ref = useRef<any>(null);
+
+  useEffect(() => {
+    function handler(e: any) {
+      const elm = ref.current;
+
+      if (elm && !elm.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, []);
+
   return (
-    <div>
-      <div>
+    <div className="w-full relative" ref={ref}>
+      {!onChange && (
         <input
           type="text"
-          name=""
-          id=""
+          // name=""
+          // id=""
           aria-hidden={true}
           className="sr-only"
+          {...props}
         />
+      )}
 
-        <div
-          className={JoinClasses("flex", styles["time-select"])}
-          aria-expanded={open}
-        >
-          <div className={JoinClasses("flex flex-col", )}>
-            <button type="submit" onClick={() => setOpen(!open)}>
-              Start
-            </button>
-
-            <span>--:--</span>
-          </div>
-
-          <button type="submit">
-            <CloseOutlinedIcon fontSize="small" />
+      <div
+        className={JoinClasses("flex items-center", styles["time-select"])}
+        aria-expanded={open}
+      >
+        <div className={JoinClasses("flex flex-col items-start")}>
+          <button
+            className="text-black"
+            type="submit"
+            onClick={() => setOpen(!open)}
+            id={`${label}-btn`}
+          >
+            {label}
           </button>
+
+          {time === "" && (
+            <span className="text-light-gray-4">Select time</span>
+          )}
+
+          {time !== "" && <span className="text-blue">{time}</span>}
         </div>
 
-        <div
-          aria-role="listbox"
-          className={JoinClasses(
-            "absolute overflow-y-scroll cursor-pointer bg-white",
-            styles["option-list"],
-            open ? "block" : "hidden"
-          )}
-        >
-          {timeArr.map((time, index) => {
-            return (
-              <div key={index} aria-role="option">
-                {time.time}
-              </div>
-            );
-          })}
-        </div>
+        {time !== "" && (
+          <button
+            className={JoinClasses("", styles.remove)}
+            type="submit"
+            onClick={() => {
+              setTime("");
+
+              onChange && onChange("");
+
+              document.getElementById(`${label}-btn`)?.focus();
+            }}
+          >
+            <CloseOutlinedIcon fontSize="small" htmlColor="#778CA2" />
+
+            <span className="sr-only">
+              remove selected {label.toLowerCase()} time
+            </span>
+          </button>
+        )}
+      </div>
+
+      <div
+        aria-role="listbox"
+        className={JoinClasses(
+          "absolute overflow-y-scroll cursor-pointer bg-white z-10",
+          styles["option-list"],
+          open ? "block" : "hidden"
+        )}
+      >
+        {timeArr.map((time, index) => {
+          return (
+            <div
+              className={JoinClasses("", styles.option)}
+              key={index}
+              aria-role="option"
+              onClick={() => {
+                setOpen(false);
+
+                setTime(time.time);
+
+                onChange && onChange(time.time);
+
+                document.getElementById(`${label}-btn`)?.focus();
+              }}
+            >
+              {time.time}
+            </div>
+          );
+        })}
       </div>
     </div>
-  );
-}
-
-function TimeCheckbox({
-  time,
-}: {
-  time: { time: string; hourTime24: string };
-}) {
-  // const [enabled, setEnabled] = useState(false);
-
-  const checkbox = useCheckboxStore();
-
-  return (
-    <Checkbox
-      store={checkbox}
-      className={JoinClasses("checkbox", styles.checkbox)}
-      render={<button />}
-    >
-      <time dateTime={new Date(0, 0, 0, 8, 0).toLocaleTimeString()}>
-        {formatTime(time.hourTime24)}
-      </time>
-    </Checkbox>
   );
 }
