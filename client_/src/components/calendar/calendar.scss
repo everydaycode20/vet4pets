@@ -96,3 +96,28 @@
     }
   }
 }
+
+.rbc-day-bg + .rbc-day-bg {
+  border-left-color: $light-gray;
+}
+
+.rbc-month-row + .rbc-month-row {
+  border-top-color: $light-gray;
+}
+
+.rbc-date-cell .rbc-button-link :not(.rbc-off-range) {
+  color: $black;
+}
+
+.rbc-month-row .rbc-off-range {
+  color: $light-gray-4;
+}
+
+.rbc-event {
+  border-radius: 4px;
+}
+
+.rbc-event-label,
+.rbc-event-content {
+  font-size: 12px;
+}

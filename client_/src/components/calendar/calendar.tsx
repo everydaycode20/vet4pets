@@ -13,6 +13,7 @@ import styles from "./calendar.module.scss";
 import "./calendar.scss";
 
 import { addAppointmentState } from "../../routes/appointments/appointments";
+import CalendarEvent from "./calendar-event";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -43,11 +44,9 @@ export default function CalendarExtended() {
         min={minDate}
         components={{
           toolbar: Toolbar,
-          // event: (event) => {
-          //   console.log(event);
-
-          //   return <div></div>;
-          // },
+          month: {
+            event: CalendarEvent,
+          },
         }}
         onView={onView}
         view={view}
@@ -100,7 +99,12 @@ function Toolbar({
   };
 
   return (
-    <div className={JoinClasses("flex justify-between items-center", styles["toolbar-container"])}>
+    <div
+      className={JoinClasses(
+        "flex justify-between items-center",
+        styles["toolbar-container"]
+      )}
+    >
       <div className={JoinClasses("flex items-center", styles.toolbar)}>
         <div className={JoinClasses("flex", styles["buttons-container"])}>
           <button type="button" onClick={back}>
@@ -168,17 +172,17 @@ const now = new Date();
 const data = [
   {
     id: 0,
-    title: "All Day Event very long title",
+    title: "All Day Event very long title salu2",
     allDay: true,
-    start: new Date(2024, 3, 0),
-    end: new Date(2024, 3, 1),
+    start: new Date(2025, 5, 0),
+    end: new Date(2025, 5, 1),
     color: "red",
   },
   {
     id: 1,
-    title: "Long Event",
-    start: new Date(2024, 3, 7),
-    end: new Date(2024, 3, 10),
+    title: "Long Event OMG",
+    start: new Date(2025, 5, 2, 13, 0, 0, 0),
+    end: new Date(2025, 5, 5, 20, 0, 0, 0),
   },
 
   {
@@ -198,98 +202,98 @@ const data = [
   {
     id: 4,
     title: "Some Event",
-    start: new Date(2024, 3, 9, 0, 0, 0),
-    end: new Date(2024, 3, 9, 0, 0, 0),
+    start: new Date(2025, 3, 9, 0, 0, 0),
+    end: new Date(2025, 3, 9, 0, 0, 0),
     allDay: true,
   },
 
   {
     id: 92,
     title: "Some Other Event",
-    start: new Date(2024, 3, 9, 8, 0, 0),
-    end: new Date(2024, 3, 10, 11, 30, 0),
+    start: new Date(2025, 3, 9, 8, 0, 0),
+    end: new Date(2025, 3, 10, 11, 30, 0),
   },
   {
     id: 5,
     title: "Conference",
-    start: new Date(2024, 3, 11),
-    end: new Date(2024, 3, 13),
+    start: new Date(2025, 3, 11),
+    end: new Date(2025, 3, 13),
     desc: "Big conference for important people",
   },
   {
     id: 6,
     title: "Meeting",
-    start: new Date(2024, 3, 12, 10, 30, 0, 0),
-    end: new Date(2024, 3, 12, 12, 30, 0, 0),
+    start: new Date(2025, 3, 12, 10, 30, 0, 0),
+    end: new Date(2025, 3, 12, 12, 30, 0, 0),
     desc: "Pre-meeting meeting, to prepare for the meeting",
   },
   {
     id: 7,
     title: "Lunch",
-    start: new Date(2024, 3, 12, 12, 0, 0, 0),
-    end: new Date(2024, 3, 12, 13, 0, 0, 0),
+    start: new Date(2025, 3, 12, 12, 0, 0, 0),
+    end: new Date(2025, 3, 12, 13, 0, 0, 0),
     desc: "Power lunch",
   },
   {
     id: 8,
     title: "Meeting",
-    start: new Date(2024, 3, 12, 14, 0, 0, 0),
-    end: new Date(2024, 3, 12, 15, 0, 0, 0),
+    start: new Date(2025, 3, 12, 14, 0, 0, 0),
+    end: new Date(2025, 3, 12, 15, 0, 0, 0),
   },
   {
     id: 9,
     title: "Happy Hour",
-    start: new Date(2024, 3, 12, 17, 0, 0, 0),
-    end: new Date(2024, 3, 12, 17, 30, 0, 0),
+    start: new Date(2025, 3, 12, 17, 0, 0, 0),
+    end: new Date(2025, 3, 12, 17, 30, 0, 0),
     desc: "Most important meal of the day",
   },
   {
     id: 10,
     title: "Dinner",
-    start: new Date(2024, 3, 12, 20, 0, 0, 0),
-    end: new Date(2024, 3, 12, 21, 0, 0, 0),
+    start: new Date(2025, 3, 12, 20, 0, 0, 0),
+    end: new Date(2025, 3, 12, 21, 0, 0, 0),
   },
   {
     id: 11,
     title: "Planning Meeting with Paige",
-    start: new Date(2024, 3, 13, 8, 0, 0),
-    end: new Date(2024, 3, 13, 10, 30, 0),
+    start: new Date(2025, 3, 13, 8, 0, 0),
+    end: new Date(2025, 3, 13, 10, 30, 0),
   },
   {
     id: 11.1,
     title: "Inconvenient Conference Call",
-    start: new Date(2024, 3, 13, 9, 30, 0),
-    end: new Date(2024, 3, 13, 12, 0, 0),
+    start: new Date(2025, 3, 13, 9, 30, 0),
+    end: new Date(2025, 3, 13, 12, 0, 0),
   },
   {
     id: 11.2,
     title: "Project Kickoff - Lou's Shoes",
-    start: new Date(2024, 3, 13, 11, 30, 0),
-    end: new Date(2024, 3, 13, 14, 0, 0),
+    start: new Date(2025, 3, 13, 11, 30, 0),
+    end: new Date(2025, 3, 13, 14, 0, 0),
   },
   {
     id: 11.3,
     title: "Quote Follow-up - Tea by Tina",
-    start: new Date(2024, 3, 13, 15, 30, 0),
-    end: new Date(2024, 3, 13, 16, 0, 0),
+    start: new Date(2025, 3, 13, 15, 30, 0),
+    end: new Date(2025, 3, 13, 16, 0, 0),
   },
   {
     id: 12,
     title: "Late Night Event",
-    start: new Date(2024, 3, 17, 19, 30, 0),
-    end: new Date(2024, 3, 18, 2, 0, 0),
+    start: new Date(2025, 3, 17, 19, 30, 0),
+    end: new Date(2025, 3, 18, 2, 0, 0),
   },
   {
     id: 12.5,
     title: "Late Same Night Event",
-    start: new Date(2024, 3, 17, 19, 30, 0),
-    end: new Date(2024, 3, 17, 23, 30, 0),
+    start: new Date(2025, 3, 17, 19, 30, 0),
+    end: new Date(2025, 3, 17, 23, 30, 0),
   },
   {
     id: 13,
     title: "Multi-day Event",
-    start: new Date(2024, 3, 20, 19, 30, 0),
-    end: new Date(2024, 3, 22, 2, 0, 0),
+    start: new Date(2025, 3, 20, 19, 30, 0),
+    end: new Date(2025, 3, 22, 2, 0, 0),
   },
   {
     id: 14,
@@ -306,73 +310,73 @@ const data = [
   {
     id: 16,
     title: "Video Record",
-    start: new Date(2024, 3, 14, 15, 30, 0),
-    end: new Date(2024, 3, 14, 19, 0, 0),
+    start: new Date(2025, 3, 14, 15, 30, 0),
+    end: new Date(2025, 3, 14, 19, 0, 0),
   },
   {
     id: 17,
     title: "Dutch Song Producing",
-    start: new Date(2024, 3, 14, 16, 30, 0),
-    end: new Date(2024, 3, 14, 20, 0, 0),
+    start: new Date(2025, 3, 14, 16, 30, 0),
+    end: new Date(2025, 3, 14, 20, 0, 0),
   },
   {
     id: 18,
     title: "Itaewon Meeting",
-    start: new Date(2024, 3, 14, 16, 30, 0),
-    end: new Date(2024, 3, 14, 17, 30, 0),
+    start: new Date(2025, 3, 14, 16, 30, 0),
+    end: new Date(2025, 3, 14, 17, 30, 0),
   },
   {
     id: 19,
     title: "Online Coding Test",
-    start: new Date(2024, 3, 14, 17, 30, 0),
-    end: new Date(2024, 3, 14, 20, 30, 0),
+    start: new Date(2025, 3, 14, 17, 30, 0),
+    end: new Date(2025, 3, 14, 20, 30, 0),
   },
   {
     id: 20,
     title: "An overlapped Event",
-    start: new Date(2024, 3, 14, 17, 0, 0),
-    end: new Date(2024, 3, 14, 18, 30, 0),
+    start: new Date(2025, 3, 14, 17, 0, 0),
+    end: new Date(2025, 3, 14, 18, 30, 0),
   },
   {
     id: 21,
     title: "Phone Interview",
-    start: new Date(2024, 3, 14, 17, 0, 0),
-    end: new Date(2024, 3, 14, 18, 30, 0),
+    start: new Date(2025, 3, 14, 17, 0, 0),
+    end: new Date(2025, 3, 14, 18, 30, 0),
   },
   {
     id: 22,
     title: "Cooking Class",
-    start: new Date(2024, 3, 14, 17, 30, 0),
-    end: new Date(2024, 3, 14, 19, 0, 0),
+    start: new Date(2025, 3, 14, 17, 30, 0),
+    end: new Date(2025, 3, 14, 19, 0, 0),
   },
   {
     id: 23,
     title: "Go to the gym",
-    start: new Date(2024, 3, 14, 18, 30, 0),
-    end: new Date(2024, 3, 14, 20, 0, 0),
+    start: new Date(2025, 3, 14, 18, 30, 0),
+    end: new Date(2025, 3, 14, 20, 0, 0),
   },
   {
     id: 24,
     title: "DST ends on this day (Europe)",
-    start: new Date(2024, 9, 30, 0, 0, 0),
-    end: new Date(2024, 9, 30, 4, 30, 0),
+    start: new Date(2025, 9, 30, 0, 0, 0),
+    end: new Date(2025, 9, 30, 4, 30, 0),
   },
   {
     id: 25,
     title: "DST ends on this day (America)",
-    start: new Date(2024, 10, 6, 0, 0, 0),
-    end: new Date(2024, 10, 6, 4, 30, 0),
+    start: new Date(2025, 10, 6, 0, 0, 0),
+    end: new Date(2025, 10, 6, 4, 30, 0),
   },
   {
     id: 26,
     title: "DST starts on this day (America)",
-    start: new Date(2024, 2, 12, 0, 0, 0),
-    end: new Date(2024, 2, 12, 4, 30, 0),
+    start: new Date(2025, 2, 12, 0, 0, 0),
+    end: new Date(2025, 2, 12, 4, 30, 0),
   },
   {
     id: 27,
     title: "DST starts on this day (Europe)",
-    start: new Date(2024, 2, 26, 0, 0, 0),
-    end: new Date(2024, 2, 26, 4, 30, 0),
+    start: new Date(2025, 2, 26, 0, 0, 0),
+    end: new Date(2025, 2, 26, 4, 30, 0),
   },
 ];
