@@ -3,6 +3,8 @@ import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
 import { Checkbox, useCheckboxStore, useStoreState } from "@ariakit/react";
 import { DayPicker } from "react-day-picker";
 
+import dayjs from "dayjs";
+
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
@@ -11,22 +13,73 @@ import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import JoinClasses from "../../utils/join-classes";
 import formatTime from "../../utils/format-time";
 
+import {
+  addAppointmentState,
+  options,
+} from "../../routes/appointments/appointment-state";
+
 import "react-day-picker/style.css";
 import "./date-picker.scss";
 import styles from "./date-picker.module.scss";
+import { useAtom } from "jotai";
+import { Noop } from "react-hook-form";
 
-export default function DatePicker() {
-  const [selected, setSelected] = useState<Date>();
+export default function DatePicker({
+  value,
+  onChange,
+  error,
+}: {
+  value?: { start: Date; end: Date; selectedDate: Date };
+  onChange?: (...event: any[]) => void;
+  name?: string;
+  label?: string;
+  control?: any;
+  ref?: any;
+  error?: any;
+  onBlur?: Noop;
+}) {
+  const [state, setState] = useAtom(addAppointmentState);
 
-  // console.log(selected);
+  const [calendarOptions, setCalendarOptions] = useAtom(options);
+
+  const [selected, setSelected] = useState<Date | undefined>(
+    calendarOptions.day || undefined
+  );
+
+  console.log(error, "ERROR");
+
+  function setDateSelection(date: Date) {
+    setCalendarOptions({ ...calendarOptions, day: date });
+
+    console.log("LOL");
+  }
+
+  useEffect(() => {
+    console.log(value, "RENDER");
+
+    if (
+      calendarOptions.day &&
+      calendarOptions.timeEnd &&
+      calendarOptions.timeStart
+    ) {
+    }
+    onChange!({
+      start: calendarOptions.timeStart,
+      end: calendarOptions.timeEnd,
+      selectedDate: calendarOptions.day,
+    });
+  }, [calendarOptions]);
 
   return (
     <div className={JoinClasses("", styles["day-picker-container"])}>
       <DayPicker
+        className={JoinClasses(
+          error && error.selectedDate && styles["day-picker-container-error"]
+        )}
         mode="single"
         weekStartsOn={1}
-        selected={selected}
-        onSelect={setSelected}
+        selected={calendarOptions.day}
+        onSelect={(date) => setDateSelection(date!)}
         components={{
           Chevron: (props) => {
             if (props.orientation === "left") {
@@ -52,18 +105,30 @@ export default function DatePicker() {
         }}
       />
 
+      {error && error.selectedDate && (
+        <span className="text-pink block">select a date</span>
+      )}
+
       <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
         <TimeRangeTime
           label="Start"
+          selectedTime={calendarOptions.timeStart}
+          selectedDate={calendarOptions.day}
+          classes={error && error.start && styles["time-select-error"]}
+          error={error && error.start && error.start}
           onChange={(e) => {
-            console.log(e);
+            setCalendarOptions({ ...calendarOptions, timeStart: e });
           }}
         />
 
         <TimeRangeTime
           label="End"
+          selectedTime={calendarOptions.timeEnd}
+          selectedDate={calendarOptions.day}
+          classes={error && error.end && styles["time-select-error"]}
+          error={error && error.end && error.end}
           onChange={(e) => {
-            console.log(e);
+            setCalendarOptions({ ...calendarOptions, timeEnd: e });
           }}
         />
       </div>
@@ -97,17 +162,29 @@ const timeArr = [
 function TimeRangeTime({
   label,
   onChange,
+  selectedTime,
+  selectedDate,
+  classes,
+  error,
   ...props
 }: {
   label: string;
-  onChange?: (val: string) => void;
+  selectedTime?: Date;
+  selectedDate?: Date;
+  classes?: string;
+  error?: any;
+  onChange?: (val: Date | undefined) => void;
   props?: any;
 }) {
   const [open, setOpen] = useState(false);
 
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(
+    selectedTime ? dayjs(selectedTime).format("H:mm") : ""
+  );
 
   const ref = useRef<any>(null);
+
+  console.log(selectedTime);
 
   useEffect(() => {
     function handler(e: any) {
@@ -141,7 +218,11 @@ function TimeRangeTime({
       )}
 
       <div
-        className={JoinClasses("flex items-center", styles["time-select"])}
+        className={JoinClasses(
+          "flex items-center",
+          styles["time-select"],
+          classes
+        )}
         aria-expanded={open}
       >
         <div className={JoinClasses("flex flex-col items-start")}>
@@ -168,7 +249,7 @@ function TimeRangeTime({
             onClick={() => {
               setTime("");
 
-              onChange && onChange("");
+              onChange && onChange(undefined);
 
               document.getElementById(`${label}-btn`)?.focus();
             }}
@@ -201,7 +282,12 @@ function TimeRangeTime({
 
                 setTime(time.time);
 
-                onChange && onChange(time.time);
+                const [hours, minutes] = time.time.split(":").map(Number);
+
+                onChange &&
+                  onChange(
+                    dayjs(selectedDate).hour(hours).minute(minutes).toDate()
+                  );
 
                 document.getElementById(`${label}-btn`)?.focus();
               }}
@@ -211,6 +297,12 @@ function TimeRangeTime({
           );
         })}
       </div>
+
+      {error && (
+        <span className="text-pink block">
+          select {label === "Start" ? "a start" : "an end"} time
+        </span>
+      )}
     </div>
   );
 }

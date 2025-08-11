@@ -3,6 +3,7 @@ import { atom, useAtom } from "jotai";
 import {
   Drawer,
   DrawerBody,
+  DrawerClose,
   DrawerContent,
 } from "../../components/drawer/drawer";
 
@@ -28,6 +29,8 @@ export default function AddOwner() {
             }
           }}
         >
+          <DrawerClose />
+          
           <DrawerContent
             className={JoinClasses("", styles["add-owner-content-container"])}
           >

@@ -18,7 +18,7 @@ import { matchSorter } from "match-sorter";
 
 import styles from "./combobox.module.scss";
 import JoinClasses from "../../utils/join-classes";
-import { ControllerRenderProps } from "react-hook-form";
+import { ControllerRenderProps, Noop } from "react-hook-form";
 
 export default function ComboBox({
   value,
@@ -27,10 +27,8 @@ export default function ComboBox({
   data,
   name,
   label,
-  control,
-  field,
-  ref,
   error,
+  onBlur,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
@@ -39,11 +37,12 @@ export default function ComboBox({
   name?: string;
   label?: string;
   control?: any;
-  field?: ControllerRenderProps<any, string>;
   ref?: any;
   error?: string;
+  onBlur?: Noop;
 }) {
   const [searchValue, setSearchValue] = useState("");
+  console.log(error, "AASASAS");
 
   const matches = useMemo(
     () => matchSorter(data, searchValue, { keys: ["name"] }),
@@ -52,16 +51,22 @@ export default function ComboBox({
 
   const [open, isOpen] = useState(false);
 
+  function handleSelect({ id, name }: { id: number; name: string }) {
+    setSearchValue(name);
+
+    onChange!({ id, name });
+  }
+
   useEffect(() => {
-    if (matches.length === 1) {
-      field?.onChange(matches[0].id);
-    } else {
-      field?.onChange(-1);
+    if (matches.length === 1 && !value) {
+      console.log(matches);
+
+      onChange!(matches[0]);
     }
   }, [matches]);
 
   return (
-    <div className={JoinClasses("w-full", open ? "z-20" : "")}>
+    <div className={JoinClasses("w-full", open ? "z-20" : "", "")}>
       <ComboboxProvider
         setValue={(value) => {
           startTransition(() => setSearchValue(value));
@@ -81,10 +86,15 @@ export default function ComboBox({
             className={JoinClasses("relative w-full", styles["input-wrapper"])}
           >
             <Combobox
-              name={field?.name}
-              onBlur={field?.onBlur}
-              onChange={field?.onChange}
-              className={JoinClasses("", styles["input-container"])}
+              name={name}
+              onBlur={onBlur}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className={JoinClasses(
+                "",
+                styles["input-container"],
+                error && styles["input-container-error"]
+              )}
               placeholder={placeholder}
             />
 
@@ -99,6 +109,7 @@ export default function ComboBox({
             {matches.length ? (
               matches.map((value) => (
                 <ComboboxItem
+                  onClick={() => handleSelect(value)}
                   key={value.id}
                   value={value.name}
                   className={JoinClasses(

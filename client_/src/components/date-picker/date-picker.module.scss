@@ -3,6 +3,10 @@
 .day-picker-container {
   max-width: 324px;
   width: 100%;
+
+  &-error {
+    border-color: $pink;
+  }
 }
 
 .checkbox {
@@ -36,6 +40,10 @@
   border: 1px solid $light-gray-2;
   border-radius: 6px;
   padding: 10px 15px;
+
+  &-error {
+    border-color: $pink;
+  }
 
   button {
     font-size: 12px;

@@ -90,7 +90,9 @@
     .rdp-selected {
       button {
         border-radius: 4px;
-        border-color: $light-blue;
+        border-color: rgba($blue, 0.8);
+        background-color: rgba($blue, 0.8);
+        color: white;
       }
     }
   }

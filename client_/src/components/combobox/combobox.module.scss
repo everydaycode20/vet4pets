@@ -26,6 +26,10 @@
   input:focus {
     outline: none;
   }
+
+  &-error {
+    border-color: $pink;
+  }
 }
 
 .label {
