@@ -62,9 +62,10 @@
 
   .rbc-time-slot {
     span {
-      font-size: 14px;
-      line-height: 21px;
+      font-size: 12px;
+      line-height: 18px;
       font-weight: 500;
+      color: $black;
     }
   }
 }
@@ -120,4 +121,9 @@
 .rbc-event-label,
 .rbc-event-content {
   font-size: 12px;
+}
+
+.rbc-current-time-indicator {
+  background-color: $blue;
+  height: 2px;
 }
