@@ -14,11 +14,6 @@
 
         public int TypeId { get; set; }
         public required AppointmentType Type { get; set; }
-
-        public static implicit operator object(Appointment? v)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class AppointmentType

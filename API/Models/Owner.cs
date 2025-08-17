@@ -14,7 +14,7 @@
 
         public DateTime UpdatedAt { get; set; }
 
-        public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public List<Appointment> Appointments { get; set; } = [];
     }
 
     public class Telephone
