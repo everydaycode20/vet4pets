@@ -1,6 +1,6 @@
 ﻿namespace API.Models
 {
-    public class Owner
+    public class Owner : BaseEntity
     {
         public int Id { get; set; }
 
@@ -10,14 +10,12 @@
 
         public string? Address { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
+        public List<Telephone> Telephones { get; set; } = [];
 
         public List<Appointment> Appointments { get; set; } = [];
     }
 
-    public class Telephone
+    public class Telephone : BaseEntity
     {
         public int Id { get; set; }
 
@@ -28,7 +26,7 @@
         public required string Number { get; set; }
     }
 
-    public class TelephoneType
+    public class TelephoneType : BaseEntity
     {
         public int Id { get; set; }
 

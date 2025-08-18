@@ -1,6 +1,6 @@
 ﻿namespace API.Models
 {
-    public class Appointment
+    public class Appointment : BaseEntity
     {
         public int Id { get; set; }
 
@@ -16,7 +16,7 @@
         public required AppointmentType Type { get; set; }
     }
 
-    public class AppointmentType
+    public class AppointmentType : BaseEntity
     {
         public int Id { get; set; }
 

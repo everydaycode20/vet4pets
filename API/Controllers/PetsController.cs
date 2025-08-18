@@ -5,27 +5,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OwnersController : ControllerBase
+    public class PetsController : ControllerBase
     {
         private readonly ApplicationDbContext applicationDbContext;
 
-        public OwnersController(ApplicationDbContext applicationDbContext)
+        public PetsController(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetOwnerById(int id)
+        public async Task<ActionResult<string>> GetPetById(int id)
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.FindAsync(id);
+            var data = await context.Pets.FindAsync(id);
 
             if (data == null)
             {
@@ -36,11 +35,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> GetAllOwners([FromQuery] int pageNumber = 1, int pageSize = 20)
+        public async Task<ActionResult<string>> GetAllPets([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.OrderBy(o => o.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var data = await context.Pets.OrderBy(o => o.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return Ok(new
             {
@@ -49,27 +48,40 @@ namespace API.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult<string>> AddOwner([FromBody] Owner owner)
+        [HttpGet("owner")]
+        public async Task<ActionResult<string>> GetPetByOwner([FromQuery] int ownerId)
         {
-
             await using var context = applicationDbContext;
 
-            context.Owners.Add(owner);
+            var data = await context.Pets.Where(p => p.OwnerId == ownerId).ToListAsync();
 
-            await context.SaveChangesAsync();
+            if (data == null)
+            {
+                return NotFound(new { message = "not found" });
+            }
+
+            return Ok(data);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<String>> AddPet([FromBody] Pet pet)
+        {
+            await using var context = applicationDbContext;
+
+            context.Pets.Add(pet);
 
             return Ok(new { message = "ok" });
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<string>> UpdateOwner(int id, [FromBody] JsonPatchDocument<Owner> patchDoc)
+        public async Task<ActionResult<string>> UpdatePet(int id, [FromBody] JsonPatchDocument<Pet> patchDoc)
         {
+
             if (patchDoc != null)
             {
                 await using var context = applicationDbContext;
 
-                var data = await context.Owners.FindAsync(id);
+                var data = await context.Pets.FindAsync(id);
 
                 if (data == null)
                 {
@@ -93,30 +105,22 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteOwner(int id)
+        public async Task<ActionResult<string>> DeletePet(int id)
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.FindAsync(id);
+            var data = await context.Pets.FindAsync(id);
 
             if (data == null)
             {
                 return NotFound(new { message = "not found" });
             }
 
-            context.Owners.Remove(data);
+            context.Pets.Remove(data);
 
             await context.SaveChangesAsync();
 
             return Ok(new { message = "ok" });
         }
-
-        //[HttpGet("search")]
-        //public async Task<ActionResult<string>> Search([FromQuery] string search)
-        //{
-        //    await using var context = applicationDbContext;
-
-
-        //}
     }
 }
