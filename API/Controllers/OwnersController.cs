@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.Arm;
 
 namespace API.Controllers
 {
@@ -25,7 +27,7 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.FindAsync(id);
+            var data = await context.Owners.Where(o => o.Id == id).Include(o => o.Telephones).FirstOrDefaultAsync();
 
             if (data == null)
             {
@@ -40,7 +42,39 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.OrderBy(o => o.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var query = from o in context.Owners
+                        join t in context.Telephones on o.Id equals t.OwnerId
+                        join tT in context.TelephoneTypes on t.TelephoneTypeId equals tT.Id
+                        select new
+                        {
+                            id = o.Id,
+                            name = o.Name,
+                            o.email,
+                            address = o.Address,
+                            appointments = o.Appointments.Select(a => a.Id).ToList(),
+                            telephoneId = t.Id,
+                            telephoneNumber = t.Number,
+                            telephoneTypeId = t.TelephoneType.Id,
+                            telephoneType = t.TelephoneType.Type,
+                        };
+
+            var result = await query.ToListAsync();
+
+            var data = result.
+                GroupBy(x => new { Id = x.id, Name = x.name, x.email, x.address }).
+                Select(o => new OwnerDTO
+                {
+                    Id = o.Key.Id,
+                    Name = o.Key.Name,
+                    email = o.Key.email,
+                    Address = o.Key.address,
+                    Telephones = o.GroupBy(x => x.telephoneId).Select(t => new TelephoneDTO
+                    {
+                        Id = t.Key,
+                        Number = t.First().telephoneNumber,
+                        TelephoneType = new TelephoneType { Id = t.First().telephoneTypeId, Type = t.First().telephoneType },
+                    })
+                }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
             return Ok(new
             {

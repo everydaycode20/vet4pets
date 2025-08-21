@@ -16,6 +16,10 @@ namespace API.Data
         public virtual DbSet<Appointment> Appointments { get; set; }
 
         public virtual DbSet<Owner> Owners { get; set; }
+        
+        public virtual DbSet<Telephone> Telephones { get; set; }
+
+        public virtual DbSet<TelephoneType> TelephoneTypes { get; set; }
 
         public virtual DbSet<Pet> Pets { get; set; }
 

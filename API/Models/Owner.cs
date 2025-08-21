@@ -19,8 +19,10 @@
     {
         public int Id { get; set; }
 
+        public int OwnerId { get; set; }
         public required Owner Owner { get; set; }
 
+        public int TelephoneTypeId { get; set; }
         public required TelephoneType TelephoneType { get; set; }
 
         public required string Number { get; set; }
