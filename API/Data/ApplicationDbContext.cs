@@ -41,7 +41,7 @@ namespace API.Data
 
             builder.Entity<PetType>().ToTable("petType");
 
-            builder.Entity<Breed>().ToTable("breed");
+            builder.Entity<BreedDTO>().ToTable("breed");
 
             builder.Entity<Appointment>().HasOne(a => a.Pet)
                 .WithMany(p => p.Appointments).HasForeignKey(k => k.Id)

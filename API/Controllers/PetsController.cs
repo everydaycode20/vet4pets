@@ -53,7 +53,29 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Pets.Where(p => p.OwnerId == ownerId).ToListAsync();
+            var data = await context.Owners.Where(o => o.Id == ownerId)
+                .Select(o => new OwnerDTO
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    email = o.email,
+                    Pets = o.Pets!.Select(p => new PetDTO
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Age = p.Age,
+                        PetType = new PetTypeDTO
+                        {
+                            Id = p.PetType.Id,
+                            Description = p.PetType.Description,
+                            Breed = new BreedDTO
+                            {
+                                Id = p.PetType.Breed.Id,
+                                Description = p.PetType.Description!
+                            }
+                        }
+                    }).ToList()
+                }).FirstOrDefaultAsync();
 
             if (data == null)
             {

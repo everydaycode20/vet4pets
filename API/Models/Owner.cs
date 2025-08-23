@@ -13,6 +13,8 @@
         public List<Telephone> Telephones { get; set; } = [];
 
         public List<Appointment> Appointments { get; set; } = [];
+
+        public List<Pet>? Pets { get; set; }
     }
 
     public class Telephone : BaseEntity

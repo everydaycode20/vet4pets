@@ -27,7 +27,21 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.Where(o => o.Id == id).Include(o => o.Telephones).FirstOrDefaultAsync();
+            var data = await context.Owners.Where(o => o.Id == id).
+                Select(o => new OwnerDTO
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    email = o.email,
+                    Address = o.Address,
+                    Telephones = o.Telephones.Select(t => new TelephoneDTO
+                    {
+                        Id = t.Id,
+                        Number = t.Number,
+                        TelephoneType = t.TelephoneType,
+                    }).ToList()
+
+                }).ToListAsync();
 
             if (data == null)
             {

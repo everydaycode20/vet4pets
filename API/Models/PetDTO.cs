@@ -1,6 +1,6 @@
 ﻿namespace API.Models
 {
-    public class Pet : BaseEntity
+    public class PetDTO : BaseEntity
     {
         public int Id { get; set; }
 
@@ -9,24 +9,21 @@
         public int Age { get; set; }
 
         public int PetTypeId { get; set; }
-        public required PetType PetType { get; set; }
-
-        public int OwnerId { get; set; }
-        public required Owner Owner { get; set; }
+        public required PetTypeDTO PetType { get; set; }
 
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 
-    public class PetType : BaseEntity
+    public class PetTypeDTO : BaseEntity
     {
-        public int Id{ get; set; }
+        public int Id { get; set; }
 
         public string? Description { get; set; }
 
         public required BreedDTO Breed { get; set; }
     }
 
-    public class Breed : BaseEntity
+    public class BreedDTO : BaseEntity
     {
         public int Id { get; set; }
 

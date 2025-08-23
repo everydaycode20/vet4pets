@@ -13,6 +13,8 @@
         public List<Appointment> Appointments { get; set; } = [];
 
         public IEnumerable<TelephoneDTO>? Telephones { get; set; }
+
+        public List<PetDTO>? Pets { get; set; }
     }
 
     public class TelephoneDTO
