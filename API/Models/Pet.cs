@@ -6,13 +6,13 @@
 
         public required string Name { get; set; }
 
-        public int Age { get; set; }
+        public required int Age { get; set; }
 
         public int PetTypeId { get; set; }
-        public required PetType PetType { get; set; }
+        public PetType? PetType { get; set; }
 
         public int OwnerId { get; set; }
-        public required Owner Owner { get; set; }
+        public Owner? Owner { get; set; }
 
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
     }

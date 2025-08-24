@@ -66,7 +66,7 @@ namespace API.Controllers
                         Age = p.Age,
                         PetType = new PetTypeDTO
                         {
-                            Id = p.PetType.Id,
+                            Id = p.PetType!.Id,
                             Description = p.PetType.Description,
                             Breed = new BreedDTO
                             {
@@ -74,7 +74,7 @@ namespace API.Controllers
                                 Description = p.PetType.Description!
                             }
                         }
-                    }).ToList()
+                    }).OrderBy(p => p.Name).ToList()
                 }).FirstOrDefaultAsync();
 
             if (data == null)
@@ -91,6 +91,8 @@ namespace API.Controllers
             await using var context = applicationDbContext;
 
             context.Pets.Add(pet);
+
+            await context.SaveChangesAsync();
 
             return Ok(new { message = "ok" });
         }
@@ -117,8 +119,9 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok(data);
+                await context.SaveChangesAsync();
 
+                return Ok(data);
             }
             else
             {
