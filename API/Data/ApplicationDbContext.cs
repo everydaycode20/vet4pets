@@ -44,7 +44,7 @@ namespace API.Data
             builder.Entity<BreedDTO>().ToTable("breed");
 
             builder.Entity<Appointment>().HasOne(a => a.Pet)
-                .WithMany(p => p.Appointments).HasForeignKey(k => k.Id)
+                .WithMany(p => p.Appointments).HasForeignKey(k => k.PetId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

@@ -18,8 +18,8 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
-        [HttpGet("{date}")]
-        public async Task<ActionResult<string>> GetAppointmentsByDate(string date)
+        [HttpGet]
+        public async Task<ActionResult<string>> GetAppointmentsByDate([FromQuery]string date)
         {
             await using var context = applicationDbContext;
 
@@ -69,7 +69,17 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            await context.Appointments.AddAsync(appointment);
+            var app = new Appointment
+            {
+                Date = appointment.Date,
+                OwnerId = appointment.OwnerId,
+                PetId = appointment.PetId,
+                TypeId = appointment.TypeId
+            };
+
+            await context.Appointments.AddAsync(app);
+
+            await context.SaveChangesAsync();
 
             return Ok(new { message = "ok" });
         }
