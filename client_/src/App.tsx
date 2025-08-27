@@ -1,7 +1,9 @@
 import {
   createBrowserRouter,
+  Navigate,
   redirect,
   RouterProvider,
+  useLocation,
 } from "react-router-dom";
 
 import "./App.scss";
@@ -12,6 +14,14 @@ import Dashboard from "./routes/dashboard/dashboard";
 import Appointments from "./routes/appointments/appointments";
 import Owner from "./routes/owners/owners";
 import Pets from "./routes/pets/pets";
+
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import { ReactNode, useEffect } from "react";
+import { useGetUser } from "./hooks/useGetUser";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +39,11 @@ const router = createBrowserRouter([
       // },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: (
+          <RequireAuth>
+            <Dashboard />
+          </RequireAuth>
+        ),
         handle: {
           title: "Dashboard",
         },
@@ -70,14 +84,38 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryFn: async () => {
+        return null;
+      },
+    },
+  },
+});
+
 function App() {
   return (
     <>
-      <div className="w-full">
-        <RouterProvider router={router} />
-      </div>
+      <QueryClientProvider client={queryClient}>
+        <div className="w-full">
+          <main>
+            <RouterProvider router={router} />
+          </main>
+        </div>
+      </QueryClientProvider>
     </>
   );
+}
+
+function RequireAuth({ children }: { children: ReactNode }) {
+  const { data: user } = useGetUser();
+
+  console.log(user);
+  useEffect(() => {}, []);
+
+  return user === false ? <Navigate to="/login" replace /> : children;
+  // return children;
 }
 
 export default App;

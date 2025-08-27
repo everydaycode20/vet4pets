@@ -7,6 +7,8 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./login.module.scss";
 import SubmitBtn from "../../components/submit-btn/submit-btn";
+import { Navigate, useLocation } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
 
 interface IFormInput {
   email: string;
@@ -19,8 +21,19 @@ const schema = object({
 });
 
 export default function Login() {
+  const location = useLocation();
+
+  const login = useLogin();
+
+  console.log(login);
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
+
+    login.mutate({
+      email: data.email,
+      password: data.password,
+    });
   };
 
   const {
@@ -37,8 +50,18 @@ export default function Login() {
 
   console.log(errors);
 
+  if (login.isSuccess) {
+    return <Navigate to="/dashboard" />;
+  }
+
   return (
-    <main className="flex items-center justify-center">
+    <div
+      className={JoinClasses(
+        "",
+        location.pathname === "/login" &&
+          "flex items-center justify-center h-screen"
+      )}
+    >
       <div className={JoinClasses("", styles["form-container"])}>
         <h1>Sign In</h1>
 
@@ -88,6 +111,6 @@ export default function Login() {
           </form>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

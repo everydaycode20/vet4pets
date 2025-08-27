@@ -18,4 +18,9 @@ export default defineConfig({
     }),
   ],
   resolve: {},
+  server: {
+    cors: {
+      origin: "https://localhost:7206",
+    },
+  },
 });
