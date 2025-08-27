@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> GetAppointmentsByDate([FromQuery]string date)
+        public async Task<ActionResult<string>> GetAppointmentsByDate([FromQuery] string date)
         {
             await using var context = applicationDbContext;
 
@@ -30,8 +30,8 @@ namespace API.Controllers
             return Ok(data);
         }
 
-        [HttpGet("{start}-{end}")]
-        public async Task<ActionResult<string>> GetAppointmentsByDateRange(string start, string end)
+        [HttpGet("date-range")]
+        public async Task<ActionResult<string>> GetAppointmentsByDateRange([FromQuery] string start, [FromQuery] string end)
         {
             await using var context = applicationDbContext;
 
@@ -51,7 +51,7 @@ namespace API.Controllers
 
             var data = await context.Appointments.Where(a => a.OwnerId == id).ToListAsync();
 
-            return Ok(context.Appointments);
+            return Ok(data);
         }
 
         [HttpGet("pet/{id}")]
@@ -199,6 +199,87 @@ namespace API.Controllers
                 total,
                 data = resuts,
                 pageNumber
+            });
+        }
+
+        [HttpGet("dashboard")]
+        public async Task<ActionResult<string>> GetTotalBy()
+        {
+            await using var context = applicationDbContext;
+
+            var d = DateTime.Now;
+
+            var startDate = new DateTime(d.Year, d.Month, 1);
+
+            var endDate = startDate.AddMonths(1);
+
+            var month = await context.Appointments.CountAsync(a => a.Date >= startDate && a.Date < endDate);
+
+            var year = await context.Appointments.CountAsync(a => a.Date.Year == d.Year);
+
+            var top = await context.Appointments.GroupBy(a => new { a.Type!.Name, a.Type.Id }).
+                Select(a => new
+                {
+                    a.Key.Id,
+                    a.Key.Name,
+                    Total = a.Count()
+                }).OrderBy(o => o.Total).ToListAsync();
+
+            var dateToday = new DateTime(d.Year, d.Month, 26, 8, 0, 0);
+
+            var dateTodayEnd = new DateTime(d.Year, d.Month, 26, 17, 30, 0);
+
+            var appointments = await context.Appointments.
+                Where(a => a.Date >= dateToday && a.Date <= dateToday.Add(dateTodayEnd - dateToday))
+                .Select(a => new
+                {
+                    a.Id,
+                    Type = new
+                    {
+                        a.Type!.Id,
+                        a.Type!.Name
+                    },
+                    Owner = new
+                    {
+                        a.Owner!.Id,
+                        a.Owner.Name
+                    },
+                    Pet = new
+                    {
+                        a.Pet!.Id,
+                        a.Pet!.Name
+                    },
+                    a.Date
+                })
+                .ToListAsync();
+
+            var statsWeekly = await context.AppointmentStatsWeekly.
+                FromSqlRaw(@"select format([Date], 'dddd') as 'day', 
+                    count(*) as total from appointment where YEAR([Date]) = 2025 and MONTH([Date]) = 8 
+                    group by format([Date], 'dddd'), DATEPART(WEEKDAY, [Date]) order by DATEPART(WEEKDAY, [Date])").ToListAsync();
+
+            var statsMonthly = await context.AppointmentStatsMonthly.
+                FromSqlRaw(@"select format([Date], 'MMMM') as 'month', 
+                    count(*) as total from appointment where YEAR([Date]) = 2025 
+                    group by format([Date], 'MMMM'), MONTH([Date]) order by MONTH([Date])").ToListAsync();
+
+            var statsYearly = await context.AppointmentStatsYearly.
+                FromSqlRaw(@"select format([Date], 'yyyy') as 'year', 
+                    count(*) as total from appointment 
+                    group by format([Date], 'yyyy'), YEAR([Date]) order by YEAR([Date])").ToListAsync();
+
+            return Ok(new
+            {
+                month,
+                year,
+                appointments,
+                stats = new
+                {
+                    weekly = statsWeekly,
+                    monthly = statsMonthly,
+                    yearly = statsYearly,
+                },
+                top,
             });
         }
     }

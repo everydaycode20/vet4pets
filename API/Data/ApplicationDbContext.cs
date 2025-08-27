@@ -23,6 +23,12 @@ namespace API.Data
 
         public virtual DbSet<Pet> Pets { get; set; }
 
+        public virtual DbSet<AppointmentStatsYearly> AppointmentStatsYearly { get; set; }
+
+        public virtual DbSet<AppointmentStatsMonthly> AppointmentStatsMonthly { get; set; }
+
+        public virtual DbSet<AppointmentStatsWeekly> AppointmentStatsWeekly { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,6 +52,12 @@ namespace API.Data
             builder.Entity<Appointment>().HasOne(a => a.Pet)
                 .WithMany(p => p.Appointments).HasForeignKey(k => k.PetId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<AppointmentStatsMonthly>().HasNoKey();
+
+            builder.Entity<AppointmentStatsWeekly>().HasNoKey();
+
+            builder.Entity<AppointmentStatsYearly>().HasNoKey();
         }
 
         public override int SaveChanges()
