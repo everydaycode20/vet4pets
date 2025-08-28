@@ -3,7 +3,7 @@ import { apiUrl } from "../constants/apiUrl";
 
 export async function getUser() {
   try {
-    const res = await fetch(`${apiUrl}api/user`, {
+    const res = await fetch(`${apiUrl}/user`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { ChartCard, SimpleCart } from "../../components/chart-card/chart-card";
 
 import JoinClasses from "../../utils/join-classes";
@@ -7,7 +8,10 @@ import DashboardBarChart from "../../components/dashboard-bar-chart/dashboard-ba
 import TopAppointments from "../../components/top-appointments/top-appointments";
 import LatestPatients from "../../components/latest-patients/latest-patients";
 
+import { apiUrl } from "../../constants/apiUrl";
+
 import styles from "./dashboard.module.scss";
+import { IDashboard } from "../../models/dashboard.interface";
 
 const data = [
   {
@@ -55,6 +59,23 @@ const data = [
 ];
 
 export default function Dashboard() {
+  const { data, ...rest } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: async (): Promise<IDashboard> => {
+      const res = await fetch(`${apiUrl}/Appointments/dashboard`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      });
+
+      return await res.json();
+    },
+  });
+
+  console.log(data);
+
   return (
     <div
       className={JoinClasses(
@@ -66,16 +87,16 @@ export default function Dashboard() {
         <section className="grid grid-cols-1 sm2:grid-cols-2 lg:grid-cols-1 lg2:grid-cols-2 gap-[24px] w-full h-fit">
           <ChartCard
             title="Patients this month"
-            quantity={25}
-            data={data}
+            quantity={data?.month}
+            data={data?.stats.monthly}
             fill="rgba(77,124,254,0.06)"
             stroke="#4D7CFE"
           />
 
           <ChartCard
             title="Patients this year"
-            quantity={21}
-            data={data}
+            quantity={data?.year}
+            data={data?.stats.yearly}
             fill="rgba(109,210,48,0.06)"
             stroke="#6DD230"
           />

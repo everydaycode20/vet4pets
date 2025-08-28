@@ -44,11 +44,17 @@ export default function Input({
 
     const handleClickShowPassword = () => {
       setShowPassword(!showPassword);
+
+      if (toggleUsed === false) {
+        setToggleUsed(true);
+      }
     };
 
     const handleMouseDownPassword = (event: any) => {
       event.preventDefault();
     };
+
+    const [toggleUsed, setToggleUsed] = useState(false);
 
     return (
       <div className={"w-full " + styles.input}>
@@ -73,7 +79,15 @@ export default function Input({
             >
               <IconButton
                 size="small"
-                aria-label="toggle password visibility"
+                aria-label={`${
+                  toggleUsed === false ? "toggle password visibility" : ""
+                } ${
+                  showPassword && toggleUsed
+                    ? "show password"
+                    : showPassword === false && toggleUsed
+                    ? "hide password"
+                    : ""
+                }`}
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
               >

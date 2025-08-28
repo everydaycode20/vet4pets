@@ -22,6 +22,8 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode, useEffect } from "react";
 import { useGetUser } from "./hooks/useGetUser";
+import { useAtom } from "jotai";
+import { spinnerState } from "./components/spinner/spinner-state";
 
 const router = createBrowserRouter([
   {
@@ -95,11 +97,17 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const [spState] = useAtom(spinnerState);
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <div className="w-full">
           <main>
+            <div className="sr-only" aria-live="polite">
+              {spState ? "loading dashboard" : "dashboard loaded"}
+            </div>
+
             <RouterProvider router={router} />
           </main>
         </div>

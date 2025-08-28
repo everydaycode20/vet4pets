@@ -5,13 +5,15 @@ import styles from "./chart-card.module.scss";
 
 interface IChartCard {
   title: string;
-  quantity: string | number;
-  data: Record<string, any>[];
+  quantity?: string | number;
+  data?: Record<string, any>[];
   fill: string;
   stroke: string;
 }
 
 export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
+  console.log(data);
+
   return (
     <article
       className={JoinClasses(
@@ -25,7 +27,9 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
         <p className="font-semibold">{quantity}</p>
       </div>
 
-      <AreaChart data={data} fill={fill} stroke={stroke} dataKey="uv" />
+      {data && (
+        <AreaChart data={data} fill={fill} stroke={stroke} dataKey="total" />
+      )}
     </article>
   );
 }

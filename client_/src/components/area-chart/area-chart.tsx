@@ -11,6 +11,7 @@ export default function AreaChart({
   stroke: string;
   dataKey: string;
 }) {
+  console.log(data);
   return (
     <ResponsiveContainer className="flex-1" width="100%" height={56}>
       <Chart

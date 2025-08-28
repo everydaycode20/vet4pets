@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string } from "zod";
+import { useAtom } from "jotai";
 
 import Input from "../../components/input/input";
 import JoinClasses from "../../utils/join-classes";
@@ -9,6 +11,8 @@ import styles from "./login.module.scss";
 import SubmitBtn from "../../components/submit-btn/submit-btn";
 import { Navigate, useLocation } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
+import Spinner from "../../components/spinner/spinner";
+import { spinnerState } from "../../components/spinner/spinner-state";
 
 interface IFormInput {
   email: string;
@@ -25,11 +29,17 @@ export default function Login() {
 
   const login = useLogin();
 
-  console.log(login);
+  const [spState, setSpState] = useAtom(spinnerState);
+
+  console.log(login.isPending);
+
+  useEffect(() => {
+    console.log(login.isPending, "<----");
+
+    setSpState(login.isPending);
+  }, [login.isPending]);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-
     login.mutate({
       email: data.email,
       password: data.password,
@@ -62,6 +72,16 @@ export default function Login() {
           "flex items-center justify-center h-screen"
       )}
     >
+      {login.isPending && (
+        <div className="absolute h-screen w-screen">
+          <div className="absolute left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%]">
+            <Spinner state={true} />
+          </div>
+
+          <div className="absolute bg-white h-screen w-screen opacity-40"></div>
+        </div>
+      )}
+
       <div className={JoinClasses("", styles["form-container"])}>
         <h1>Sign In</h1>
 
