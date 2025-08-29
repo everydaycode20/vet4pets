@@ -1,64 +1,54 @@
 import { useLayoutEffect, useState, useRef } from "react";
 
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./next-appointments.module.scss";
+import { IAppointments } from "../../models/appointments.interface";
+import { useQuery } from "@tanstack/react-query";
+import { apiUrl } from "../../constants/apiUrl";
 
-const data = [
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-];
+dayjs.extend(customParseFormat);
 
-const data2 = [
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-  { time: "9:00 am", owner: "Agent Smith", type: "Vaccine" },
-];
+export default function NextAppointments({ data }: { data?: IAppointments[] }) {
+  const currentDateTime = dayjs();
 
-export default function NextAppointments() {
-  const [date, setDate] = useState("Tuesday, November 30");
-
-  const [app, setApp] = useState<any>([]);
+  const [date, setDate] = useState(currentDateTime);
 
   const containerRef = useRef(null);
 
-  const [hidden, setHidden] = useState(false);
+  const newDayData = useQuery({
+    queryKey: ["dashboard-week"],
+    queryFn: async (): Promise<IAppointments[]> => {
+      const res = await fetch(
+        `${apiUrl}/Appointments/all?type=day&date=${date.format(
+          "YYYY-MM-DD HH:mm"
+        )}`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        }
+      );
+
+      return await res.json();
+    },
+  });
 
   function Prev() {
-    setDate("Monday, November 29");
+    setDate(date.subtract(1, "day"));
 
-    setApp(data2);
+    newDayData.refetch();
   }
 
   function Next() {
-    setDate("Wednesday, December 1");
-
-    setApp(data);
+    setDate(date.add(1, "day"));
   }
 
   useLayoutEffect(() => {
@@ -108,7 +98,9 @@ export default function NextAppointments() {
               styles.date
             )}
           >
-            <span className="font-medium">{date}</span>
+            <span className="font-medium">
+              {date.format("dddd, MMMM DD YYYY").toString()}
+            </span>
           </div>
 
           <button type="button" onClick={Next}>
@@ -117,13 +109,13 @@ export default function NextAppointments() {
             <NavigateNextOutlinedIcon htmlColor="#778CA2" />
           </button>
 
-          <span
+          {/* <span
             className="sr-only"
             // aria-hidden={hidden}
             // tabIndex={0}
             // onFocus={() => setHidden(true)}
             // aria-hidden="true"
-          >{`${app.length} appointments`}</span>
+          >{`${app.length} appointments`}</span> */}
         </div>
       </div>
 
@@ -135,17 +127,25 @@ export default function NextAppointments() {
         id="appointments-list"
       >
         <ul>
-          {app.map((val: any, i: any) => {
-            return (
-              <li key={i}>
-                <div>
-                  <span className="font-medium text-black">{val.type}</span>{" "}
-                  <span className="text-light-gray-4">{val.time}</span>
-                </div>
+          {data?.map((val, i) => {
+            const appointmentDate = dayjs(val.date, "YYYY-MM-DD HH:mm");
 
-                <span className="text-light-gray-4">{val.owner}</span>
-              </li>
-            );
+            if (appointmentDate.isAfter(currentDateTime)) {
+              return (
+                <li key={i}>
+                  <div>
+                    <span className="font-medium text-black">
+                      {val.type.name}
+                    </span>{" "}
+                    <span className="text-light-gray-4">
+                      {dayjs(val.date).format("HH:mm a")}
+                    </span>
+                  </div>
+
+                  <span className="text-light-gray-4">{val.owner.name}</span>
+                </li>
+              );
+            }
           })}
         </ul>
       </div>

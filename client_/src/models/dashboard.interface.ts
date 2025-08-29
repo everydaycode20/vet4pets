@@ -2,14 +2,13 @@ import { IAppointments } from "./appointments.interface";
 import { IOwner } from "./person.interface";
 import { IPet } from "./pet.interface";
 
-interface IStats {
+export interface IStats {
   weekly: {
     day: string;
     total: 14;
   }[];
   monthly: {
-    id: number;
-    name: string;
+    month: string;
     total: number;
   }[];
   yearly: {

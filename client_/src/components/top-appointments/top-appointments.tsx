@@ -4,15 +4,11 @@ import { JoinClasses } from "../../utils/utils";
 
 import styles from "./top-appointments.module.scss";
 
-const data = [
-  { name: "general checkup" },
-  { name: "vaccine" },
-  { name: "surgery" },
-  { name: "dental cleaning" },
-  { name: "blood test" },
-];
-
-export default function TopAppointments() {
+export default function TopAppointments({
+  data,
+}: {
+  data?: { id: number; name: string; total: number }[];
+}) {
   const titleRef = useRef(null);
 
   const list = useRef<HTMLUListElement>(null);
@@ -33,7 +29,7 @@ export default function TopAppointments() {
       </h2>
 
       <ul className="flex flex-col overflow-y-auto" ref={list}>
-        {data.map((app, i) => {
+        {data?.map((app, i) => {
           return (
             <li className="text-light-gray-4" key={i}>
               {app.name}

@@ -15,8 +15,11 @@ import {
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./dashboard-bar-chart.module.scss";
+import { IStats } from "../../models/dashboard.interface";
 
-export default function DashboardBarChart() {
+export default function DashboardBarChart({ stats }: { stats?: IStats }) {
+  console.log();
+
   return (
     <div className={JoinClasses("bg-white", styles.container)}>
       <h2 className="text-light-gray-4">Appointments this week</h2>
@@ -37,60 +40,60 @@ export default function DashboardBarChart() {
             </Tab>
           </TabsList>
 
+          {stats === undefined && (
+            <div className={JoinClasses("w-full", styles["panel-chart"])}></div>
+          )}
+
           <TabPanel
             className={JoinClasses("w-full", styles["panel-chart"])}
             value={1}
           >
-            <BChart />
+            <BChart data={stats?.weekly} datakeyBar="total" datakeyX="day" />
           </TabPanel>
 
-          <TabPanel value={2}>Second page</TabPanel>
+          <TabPanel
+            className={JoinClasses("w-full", styles["panel-chart"])}
+            value={2}
+          >
+            <BChart data={stats?.monthly} datakeyBar="total" datakeyX="month" />
+          </TabPanel>
 
-          <TabPanel value={3}>Third page</TabPanel>
+          <TabPanel
+            className={JoinClasses("w-full", styles["panel-chart"])}
+            value={3}
+          >
+            <BChart data={stats?.yearly} datakeyBar="total" datakeyX="year" />
+          </TabPanel>
         </Tabs>
       </div>
     </div>
   );
 }
 
-const data = [
-  {
-    name: "Monday",
-    value: 5,
-  },
-  {
-    name: "Tuesday",
-    value: 3,
-  },
-  {
-    name: "Wednesday",
-    value: 10,
-  },
-  {
-    name: "Thursday",
-    value: 12,
-  },
-  {
-    name: "Friday",
-    value: 4,
-  },
-  {
-    name: "Saturday",
-    value: 2,
-  },
-];
-
-function BChart() {
+function BChart({
+  data,
+  datakeyBar,
+  datakeyX,
+}: {
+  data?: Record<string, any>[];
+  datakeyBar: string;
+  datakeyX: string;
+}) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart width={500} height={300} data={data} margin={{}}>
-        <XAxis dataKey="name" axisLine={false} tickLine={false} dy={5} />
+        <XAxis dataKey={datakeyX} axisLine={false} tickLine={false} dy={5} />
 
         <YAxis axisLine={false} tickLine={false} />
 
         <Tooltip content={<CustomToolTip />} cursor={{ fill: "transparent" }} />
 
-        <Bar dataKey="value" fill="#4D7CFE" barSize={5} radius={[8, 8, 0, 0]} />
+        <Bar
+          dataKey={datakeyBar}
+          fill="#4D7CFE"
+          barSize={5}
+          radius={[8, 8, 0, 0]}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

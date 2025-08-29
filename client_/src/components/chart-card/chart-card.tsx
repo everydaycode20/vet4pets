@@ -12,8 +12,6 @@ interface IChartCard {
 }
 
 export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
-  console.log(data);
-
   return (
     <article
       className={JoinClasses(
@@ -25,11 +23,21 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
         <h2 className="font-medium">{title}</h2>
 
         <p className="font-semibold">{quantity}</p>
+
+        {data === undefined && (
+          <div className="skeleton h-[36px] w-11/12"></div>
+        )}
       </div>
 
-      {data && (
-        <AreaChart data={data} fill={fill} stroke={stroke} dataKey="total" />
-      )}
+      <div className="flex flex-1">
+        {data === undefined && (
+          <div className="skeleton h-[56px] w-11/12"></div>
+        )}
+
+        {data && (
+          <AreaChart data={data} fill={fill} stroke={stroke} dataKey="total" />
+        )}
+      </div>
     </article>
   );
 }

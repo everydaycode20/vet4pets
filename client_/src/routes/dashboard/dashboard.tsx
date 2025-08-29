@@ -72,9 +72,8 @@ export default function Dashboard() {
 
       return await res.json();
     },
+    // refetchInterval: 30 * 60 * 1000,
   });
-
-  console.log(data);
 
   return (
     <div
@@ -105,18 +104,18 @@ export default function Dashboard() {
         </section>
 
         <section>
-          <DashboardBarChart />
+          <DashboardBarChart stats={data?.stats} />
         </section>
 
         <section className="flex flex-col lg2:flex-row gap-[24px]">
-          <TopAppointments />
+          <TopAppointments data={data?.top} />
 
           <LatestPatients />
         </section>
       </div>
 
       <section>
-        <NextAppointments />
+        <NextAppointments data={data?.appointments} />
       </section>
     </div>
   );

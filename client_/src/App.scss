@@ -267,3 +267,15 @@ header {
     background-color: $light-gray-2;
   }
 }
+
+.skeleton {
+  background-color: #eceef1;
+  border-radius: 2px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
