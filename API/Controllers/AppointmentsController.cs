@@ -2,6 +2,7 @@
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -202,13 +203,58 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult<string>> GetAppointmentsBy([FromQuery] string type, DateTime date)
+        {
+            using var context = applicationDbContext;
+
+            var query = context.Appointments.AsQueryable();
+
+            if (type == "day")
+            {
+                Console.WriteLine(date.Month);
+
+                Console.WriteLine(date.Day);
+
+                var data = await query.Where(a => a.Date.Year == date.Year && a.Date.Month == date.Month && a.Date.Day == date.Day)
+                    .Select(a => new
+                    {
+                        a.Id,
+                        type = new
+                        {
+                            a.Type!.Id,
+                            a.Type!.Name
+                        },
+                        Owner = new
+                        {
+                            a.Owner!.Id,
+                            a.Owner.Name
+                        },
+                        Pet = new
+                        {
+                            a.Pet!.Id,
+                            a.Pet!.Name
+                        },
+                        a.Date
+                    }).OrderBy(a => a.Date).ToListAsync();
+
+                return Ok(new
+                {
+                    appointments = data
+                });
+            }
+
+            return Ok();
+        }
+
         [HttpGet("dashboard")]
         public async Task<ActionResult<string>> GetTotalBy()
         {
             await using var context = applicationDbContext;
 
             var d = DateTime.Now;
-
+            Console.WriteLine(d);
+            Console.WriteLine("SALU2");
             var startDate = new DateTime(d.Year, d.Month, 1);
 
             var endDate = startDate.AddMonths(1);
@@ -225,12 +271,12 @@ namespace API.Controllers
                     Total = a.Count()
                 }).OrderBy(o => o.Total).ToListAsync();
 
-            var dateToday = new DateTime(d.Year, d.Month, 26, 8, 0, 0);
+            var dateToday = new DateTime(d.Year, d.Month, d.Day, 8, 0, 0);
 
-            var dateTodayEnd = new DateTime(d.Year, d.Month, 26, 17, 30, 0);
+            var dateTodayEnd = new DateTime(d.Year, d.Month, d.Day, 17, 30, 0);
 
             var appointments = await context.Appointments.
-                Where(a => a.Date >= dateToday && a.Date <= dateToday.Add(dateTodayEnd - dateToday))
+                Where(a => a.Date.Year == d.Year && a.Date.Month == d.Month && a.Date.Day == d.Day)
                 .Select(a => new
                 {
                     a.Id,
@@ -250,7 +296,7 @@ namespace API.Controllers
                         a.Pet!.Name
                     },
                     a.Date
-                })
+                }).OrderBy(a => a.Date)
                 .ToListAsync();
 
             var statsWeekly = await context.AppointmentStatsWeekly.
@@ -267,6 +313,8 @@ namespace API.Controllers
                 FromSqlRaw(@"select format([Date], 'yyyy') as 'year', 
                     count(*) as total from appointment 
                     group by format([Date], 'yyyy'), YEAR([Date]) order by YEAR([Date])").ToListAsync();
+
+
 
             return Ok(new
             {
