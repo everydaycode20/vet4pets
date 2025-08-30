@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 
 export default function Debounce(
   function_: (e: any) => void,
@@ -10,11 +10,27 @@ export default function Debounce(
     throw new TypeError("should be a function");
   }
 
-  return (e: any) => {
+  return (e?: any) => {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
       function_(e);
     }, wait);
   };
+}
+
+export function useDebounce(value: any, delay = 300) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value]);
+
+  return debouncedValue;
 }

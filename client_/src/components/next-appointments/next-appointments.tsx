@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useRef } from "react";
+import { useLayoutEffect, useState, useRef, useEffect } from "react";
 
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -11,6 +11,7 @@ import styles from "./next-appointments.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
+import Debounce, { useDebounce } from "../../utils/debounce";
 
 dayjs.extend(customParseFormat);
 
@@ -19,11 +20,19 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
 
   const [date, setDate] = useState(currentDateTime);
 
+  const [isToday, setIsToday] = useState(true);
+
+  const [isClicking, setIsClicking] = useState(0);
+
+  const [loading, setLoading] = useState(false);
+
+  const debouncedClick = useDebounce(isClicking);
+
   const containerRef = useRef(null);
 
   const newDayData = useQuery({
-    queryKey: ["dashboard-week"],
-    queryFn: async (): Promise<IAppointments[]> => {
+    queryKey: ["dashboard-week", isClicking !== 0],
+    queryFn: async (): Promise<{ appointments: IAppointments[] }> => {
       const res = await fetch(
         `${apiUrl}/Appointments/all?type=day&date=${date.format(
           "YYYY-MM-DD HH:mm"
@@ -39,17 +48,40 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
 
       return await res.json();
     },
+    enabled: false,
   });
 
   function Prev() {
-    setDate(date.subtract(1, "day"));
+    const newDate = date.subtract(1, "day");
 
-    newDayData.refetch();
+    setIsToday(false);
+
+    setDate(newDate);
+
+    setIsClicking(isClicking - 1);
+
+    setLoading(true);
   }
 
   function Next() {
-    setDate(date.add(1, "day"));
+    const newDate = date.add(1, "day");
+
+    setIsToday(false);
+
+    setDate(newDate);
+
+    setIsClicking(isClicking + 1);
+
+    setLoading(true);
   }
+
+  useEffect(() => {
+    if (debouncedClick) {
+      newDayData.refetch().then(() => {
+        setLoading(false);
+      });
+    }
+  }, [debouncedClick]);
 
   useLayoutEffect(() => {
     const containerHeight = (
@@ -126,29 +158,72 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
         )}
         id="appointments-list"
       >
-        <ul>
-          {data?.map((val, i) => {
-            const appointmentDate = dayjs(val.date, "YYYY-MM-DD HH:mm");
+        <ul className={JoinClasses(loading ? "flex flex-col gap-1" : "")}>
+          {!loading && (
+            <AppointmentsList
+              data={newDayData.data?.appointments || data}
+              currentDateTime={currentDateTime}
+              isToday={isToday}
+            />
+          )}
 
-            if (appointmentDate.isAfter(currentDateTime)) {
-              return (
-                <li key={i}>
-                  <div>
-                    <span className="font-medium text-black">
-                      {val.type.name}
-                    </span>{" "}
-                    <span className="text-light-gray-4">
-                      {dayjs(val.date).format("HH:mm a")}
-                    </span>
-                  </div>
-
-                  <span className="text-light-gray-4">{val.owner.name}</span>
-                </li>
-              );
-            }
-          })}
+          {loading && (
+            <>
+              <li className="skeleton h-[71px]"></li>
+              <li className="skeleton h-[71px]"></li>
+              <li className="skeleton h-[71px]"></li>
+              <li className="skeleton h-[71px]"></li>
+            </>
+          )}
         </ul>
       </div>
     </div>
+  );
+}
+
+function AppointmentsList({
+  data,
+  currentDateTime,
+  isToday,
+}: {
+  data?: IAppointments[];
+  currentDateTime: dayjs.Dayjs;
+  isToday: boolean;
+}) {
+  return (
+    data &&
+    data.map((val, i) => {
+      const appointmentDate = dayjs(val.date, "YYYY-MM-DD HH:mm");
+
+      if (appointmentDate.isAfter(currentDateTime)) {
+        return (
+          <li key={i}>
+            <div>
+              <span className="font-medium text-black">{val.type.name}</span>{" "}
+              <span className="text-light-gray-4">
+                {dayjs(val.date).format("HH:mm a")}
+              </span>
+            </div>
+
+            <span className="text-light-gray-4">{val.owner.name}</span>
+          </li>
+        );
+      }
+
+      if (!isToday) {
+        return (
+          <li key={i}>
+            <div>
+              <span className="font-medium text-black">{val.type.name}</span>{" "}
+              <span className="text-light-gray-4">
+                {dayjs(val.date).format("HH:mm a")}
+              </span>
+            </div>
+
+            <span className="text-light-gray-4">{val.owner.name}</span>
+          </li>
+        );
+      }
+    })
   );
 }
