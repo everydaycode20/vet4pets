@@ -11,7 +11,7 @@ import styles from "./next-appointments.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
-import Debounce, { useDebounce } from "../../utils/debounce";
+import { useDebounce } from "../../utils/debounce";
 
 dayjs.extend(customParseFormat);
 
@@ -161,7 +161,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
         <ul className={JoinClasses(loading ? "flex flex-col gap-1" : "")}>
           {!loading && (
             <AppointmentsList
-              data={newDayData.data?.appointments || data}
+              data={data}
               currentDateTime={currentDateTime}
               isToday={isToday}
             />
@@ -224,6 +224,19 @@ function AppointmentsList({
           </li>
         );
       }
+
+      return (
+        <li key={i}>
+          <div>
+            <span className="font-medium text-black">{val.type.name}</span>{" "}
+            <span className="text-light-gray-4">
+              {dayjs(val.date).format("HH:mm a")}
+            </span>
+          </div>
+
+          <span className="text-light-gray-4">{val.owner.name}</span>
+        </li>
+      );
     })
   );
 }

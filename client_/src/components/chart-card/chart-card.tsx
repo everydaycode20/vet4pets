@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+
 import JoinClasses from "../../utils/join-classes";
 import AreaChart from "../area-chart/area-chart";
 
 import styles from "./chart-card.module.scss";
+import { IAppointments } from "../../models/appointments.interface";
 
 interface IChartCard {
   title: string;
@@ -42,13 +46,66 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
   );
 }
 
-export function SimpleCart({
-  finished,
-  upcoming,
-}: {
-  finished: string | number;
-  upcoming: string | number;
-}) {
+export function SimpleCart({ data }: { data?: IAppointments[] }) {
+  const currentDateTime = dayjs("2025-08-30T01:30:00");
+
+  const completedAppointments = data?.filter((a) => {
+    console.log(a.date);
+
+    const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
+
+    console.log(currentDateTime, dayjs(a.date));
+
+    if (appointmentDate.isAfter(currentDateTime)) {
+      return a;
+    }
+  });
+
+  const total = data?.length;
+
+  const [count, setCount] = useState({
+    completed: data ? completedAppointments?.length : 0,
+    upcoming:
+      data && total && completedAppointments
+        ? total - completedAppointments.length
+        : 0,
+  });
+
+  // const [count, setCount] = useState({
+  //   completed: 0,
+  //   upcoming: 0,
+  // });
+
+  useEffect(() => {
+    if (data) {
+      const total = data?.length;
+
+      // const completedAppointments = data?.filter((a) =>
+      //   dayjs(a.date, "YYYY-MM-DD HH:mm").isAfter(currentDateTime)
+      // );
+
+      const completedAppointments = data?.filter((a) => {
+        console.log(a.date);
+
+        const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
+
+        console.log(currentDateTime, a.date);
+
+        if (appointmentDate.isAfter(currentDateTime)) {
+          return a;
+        }
+      });
+
+      setCount({
+        completed: completedAppointments ? completedAppointments?.length : 0,
+        upcoming:
+          total && completedAppointments
+            ? total - completedAppointments.length
+            : 0,
+      });
+    }
+  }, [data]);
+
   return (
     <article
       className={JoinClasses(
@@ -61,17 +118,25 @@ export function SimpleCart({
 
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <span className={JoinClasses("font-semibold", styles.number)}>
-              {finished}
-            </span>
+            {!data && <div className="skeleton h-[36px]"></div>}
+
+            {data && (
+              <span className={JoinClasses("font-semibold", styles.number)}>
+                {count.completed}
+              </span>
+            )}
 
             <span className={JoinClasses("", styles.finished)}>Finished</span>
           </div>
 
           <div className="flex flex-col">
-            <span className={JoinClasses("font-semibold", styles.number)}>
-              {upcoming}
-            </span>
+            {!data && <div className="skeleton h-[36px]"></div>}
+
+            {data && (
+              <span className={JoinClasses("font-semibold", styles.number)}>
+                {count.upcoming}
+              </span>
+            )}
 
             <span className={JoinClasses("", styles.finished)}>Upcoming</span>
           </div>

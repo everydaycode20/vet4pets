@@ -8,4 +8,5 @@ export interface IAppointments {
     id: number;
     name: string;
   };
+  completed: boolean;
 }
