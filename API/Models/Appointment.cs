@@ -14,6 +14,8 @@
 
         public required int TypeId { get; set; }
         public AppointmentType? Type { get; set; }
+
+        public Boolean? Completed { get; set; } = false;
     }
 
     public class AppointmentType : BaseEntity

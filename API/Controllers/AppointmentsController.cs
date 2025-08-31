@@ -2,7 +2,6 @@
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -235,7 +234,8 @@ namespace API.Controllers
                             a.Pet!.Id,
                             a.Pet!.Name
                         },
-                        a.Date
+                        a.Date,
+                        a.Completed
                     }).OrderBy(a => a.Date).ToListAsync();
 
                 return Ok(new
@@ -295,7 +295,8 @@ namespace API.Controllers
                         a.Pet!.Id,
                         a.Pet!.Name
                     },
-                    a.Date
+                    a.Date,
+                    a.Completed
                 }).OrderBy(a => a.Date)
                 .ToListAsync();
 

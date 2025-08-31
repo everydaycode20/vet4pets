@@ -1,13 +1,8 @@
 ﻿using API.Data;
 using API.Models;
-using Azure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Intrinsics.Arm;
 
 namespace API.Controllers
 {
@@ -107,7 +102,7 @@ namespace API.Controllers
             await context.SaveChangesAsync();
 
             return Ok(new { message = "ok" });
-        }               
+        }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateOwner(int id, [FromBody] JsonPatchDocument<Owner> patchDoc)
