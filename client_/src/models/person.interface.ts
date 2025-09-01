@@ -9,4 +9,14 @@ export interface Person {
 export interface IOwner {
   id: number;
   name: string;
+  email: string;
+  address: string;
+  telephones: {
+    id: number;
+    telephoneType: {
+      id: number;
+      type: string;
+    };
+  }[];
+  createdAt: string;
 }

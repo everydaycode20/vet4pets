@@ -158,10 +158,15 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
         )}
         id="appointments-list"
       >
+        {(data === undefined ||
+          (data.length === 0 && newDayData.data === undefined) ||
+          newDayData.data?.appointments.length === 0) &&
+          loading === false && <span>no appointments today</span>}
+
         <ul className={JoinClasses(loading ? "flex flex-col gap-1" : "")}>
           {!loading && (
             <AppointmentsList
-              data={data}
+              data={newDayData.data?.appointments || data}
               currentDateTime={currentDateTime}
               isToday={isToday}
             />

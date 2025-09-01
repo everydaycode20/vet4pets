@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useAtom } from "jotai";
 
 import AddOwner from "../../components/add-owner/add-owner";
@@ -9,29 +9,33 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import JoinClasses from "../../utils/join-classes";
 
-import MockDataPerson from "../../assets/mock_data-person.json";
-
 import styles from "./table.module.scss";
 import Table from "../../components/table/table";
 
-import { Person } from "../../models/person.interface";
-
-const defaultData: Person[] = MockDataPerson;
+import { IOwner, Person } from "../../models/person.interface";
+import { useQuery } from "@tanstack/react-query";
+import { apiUrl } from "../../constants/apiUrl";
+import dayjs from "dayjs";
 
 export default function Owner() {
   const [_, setState] = useAtom(addOwnerState);
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const columns = useMemo<ColumnDef<Person>[]>(
     () => [
       {
-        accessorKey: "firstName",
+        accessorKey: "name",
         cell: (info) => info.getValue(),
         header: () => <span>First Name</span>,
       },
       {
-        accessorKey: "lastName",
+        accessorKey: "email",
         cell: (info) => info.getValue(),
-        header: () => <span>Last Name</span>,
+        header: () => <span>Email</span>,
       },
       {
         accessorKey: "phone",
@@ -46,13 +50,40 @@ export default function Owner() {
         enableSorting: false,
       },
       {
-        accessorKey: "registerDate",
-        cell: (info) => info.getValue(),
+        accessorKey: "createdAt",
+        cell: (info) =>
+          dayjs(info.getValue() as string)
+            .format("YYYY-MM-DD")
+            .toString(),
         header: () => <span>Register Date</span>,
       },
     ],
     []
   );
+
+  const d = useQuery({
+    queryKey: ["owners-table", pagination],
+    queryFn: async (): Promise<{
+      data: IOwner[];
+      total: number;
+      pageNumber: number;
+    }> => {
+      const res = await fetch(
+        `${apiUrl}/Owners?pageNumber=${pagination.pageIndex + 1}&pageSize=20`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        }
+      );
+
+      return await res.json();
+    },
+  });
+
+  console.log(pagination);
 
   return (
     <section className="h-full">
@@ -75,7 +106,13 @@ export default function Owner() {
         </button>
       </div>
 
-      <Table data={defaultData} columns={columns} pagesSize={25} />
+      <Table
+        data={d.data}
+        columns={columns}
+        pagesSize={20}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
 
       <AddOwner />
     </section>

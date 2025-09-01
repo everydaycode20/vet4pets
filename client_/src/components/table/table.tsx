@@ -1,4 +1,11 @@
-import { HTMLProps, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  HTMLProps,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import {
   flexRender,
@@ -22,25 +29,29 @@ import JoinClasses from "../../utils/join-classes";
 
 import "./table.scss";
 import styles from "./table.module.scss";
+import { IOwner } from "../../models/person.interface";
 
 interface ITable {
-  data: any[];
+  data?: { data: IOwner[]; total: number; pageNumber: number };
   columns: any;
   pagesSize?: number;
+  pagination: PaginationState;
+  setPagination: Dispatch<SetStateAction<PaginationState>>;
 }
 
-export default function Table({ data, columns, pagesSize = 25 }: ITable) {
+export default function Table({
+  data,
+  columns,
+  pagesSize = 20,
+  pagination,
+  setPagination,
+}: ITable) {
   const [rowSelection, setRowSelection] = useState({});
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: pagesSize,
-  });
-
   const table = useReactTable({
-    data,
+    data: data !== undefined && data.data,
     debugTable: true,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -54,6 +65,8 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
       pagination,
       rowSelection,
     },
+    pageCount: Math.ceil(data?.total / pagination.pageIndex),
+    manualPagination: true,
   });
 
   const { pageSize, pageIndex } = table.getState().pagination;
@@ -145,8 +158,8 @@ export default function Table({ data, columns, pagesSize = 25 }: ITable) {
 
       <div className="pagination-container" aria-label="table pagination">
         <TablePagination
-          count={table.getFilteredRowModel().rows.length}
-          rowsPerPage={25}
+          count={data?.total || 0}
+          rowsPerPage={pagesSize}
           page={pageIndex}
           onPageChange={(_, page) => {
             table.setPageIndex(page);

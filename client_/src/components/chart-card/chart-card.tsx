@@ -47,11 +47,9 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
 }
 
 export function SimpleCart({ data }: { data?: IAppointments[] }) {
-  const currentDateTime = dayjs("2025-08-30T01:30:00");
+  const currentDateTime = dayjs();
 
   const completedAppointments = data?.filter((a) => {
-    console.log(a.date);
-
     const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
 
     console.log(currentDateTime, dayjs(a.date));
@@ -71,18 +69,9 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
         : 0,
   });
 
-  // const [count, setCount] = useState({
-  //   completed: 0,
-  //   upcoming: 0,
-  // });
-
   useEffect(() => {
     if (data) {
       const total = data?.length;
-
-      // const completedAppointments = data?.filter((a) =>
-      //   dayjs(a.date, "YYYY-MM-DD HH:mm").isAfter(currentDateTime)
-      // );
 
       const completedAppointments = data?.filter((a) => {
         console.log(a.date);

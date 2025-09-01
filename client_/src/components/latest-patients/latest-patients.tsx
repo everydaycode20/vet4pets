@@ -1,76 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
+import dayjs from "dayjs";
 
 import { JoinClasses } from "../../utils/utils";
 
 import styles from "./latest-patients.module.scss";
+import { IAppointments } from "../../models/appointments.interface";
 
-const data = [
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "general checkup",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "general checkup",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "dental cleaning",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-  {
-    date: "2021-12-02",
-    time: "11:00:00",
-    petName: "akira",
-    ownerName: "new name",
-    appointmentType: "vaccine",
-  },
-];
-
-export default function LatestPatients() {
+export default function LatestPatients({ data }: { data?: IAppointments[] }) {
   const titleRef = useRef(null);
 
   const list = useRef<HTMLUListElement>(null);
@@ -91,16 +27,18 @@ export default function LatestPatients() {
       </h2>
 
       <ul className="flex flex-col overflow-y-auto" ref={list}>
-        {data.map((app, i) => {
+        {data?.map((app, i) => {
           return (
             <li className="text-light-gray-4 flex justify-between" key={i}>
               <span className="text-center">{app.date}</span>
 
-              <span className="text-center">{app.time}</span>
+              <span className="text-center">
+                {dayjs(app.date, "YYYY-MM-DD HH:mm").toString()}
+              </span>
 
-              <span className="text-center">{app.petName}</span>
+              <span className="text-center">{app.pet.name}</span>
 
-              <span className="text-center">{app.appointmentType}</span>
+              <span className="text-center">{app.type.name}</span>
             </li>
           );
         })}

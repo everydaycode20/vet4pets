@@ -1,4 +1,5 @@
 import { IOwner } from "./person.interface";
+import { IPet } from "./pet.interface";
 
 export interface IAppointments {
   id: number;
@@ -9,4 +10,5 @@ export interface IAppointments {
     name: string;
   };
   completed: boolean;
+  pet: IPet;
 }

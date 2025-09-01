@@ -65,7 +65,7 @@ export default function Dashboard() {
         <section className="flex flex-col lg2:flex-row gap-[24px]">
           <TopAppointments data={data?.top} />
 
-          <LatestPatients />
+          <LatestPatients data={data?.appointments} />
         </section>
       </div>
 
