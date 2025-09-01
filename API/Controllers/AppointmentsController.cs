@@ -253,8 +253,7 @@ namespace API.Controllers
             await using var context = applicationDbContext;
 
             var d = DateTime.Now;
-            Console.WriteLine(d);
-            Console.WriteLine("SALU2");
+            
             var startDate = new DateTime(d.Year, d.Month, 1);
 
             var endDate = startDate.AddMonths(1);

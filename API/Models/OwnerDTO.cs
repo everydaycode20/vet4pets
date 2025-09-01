@@ -1,6 +1,6 @@
 ﻿namespace API.Models
 {
-    public class OwnerDTO
+    public class OwnerDTO : BaseEntity
     {
         public int Id { get; set; }
 

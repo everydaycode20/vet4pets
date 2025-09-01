@@ -52,25 +52,27 @@ namespace API.Controllers
             await using var context = applicationDbContext;
 
             var query = from o in context.Owners
-                        join t in context.Telephones on o.Id equals t.OwnerId
-                        join tT in context.TelephoneTypes on t.TelephoneTypeId equals tT.Id
+                        join t in context.Telephones on o.Id equals t.OwnerId into tg
+                        from t in tg.DefaultIfEmpty()
+                        join tT in context.TelephoneTypes on t.TelephoneTypeId equals tT.Id into ttg
+                        from tT in ttg.DefaultIfEmpty()
                         select new
                         {
                             id = o.Id,
                             name = o.Name,
                             o.email,
                             address = o.Address,
-                            appointments = o.Appointments.Select(a => a.Id).ToList(),
                             telephoneId = t.Id,
                             telephoneNumber = t.Number,
                             telephoneTypeId = t.TelephoneType.Id,
                             telephoneType = t.TelephoneType.Type,
+                            CreatedAt = o.CreatedAt ?? new DateTime()
                         };
 
             var result = await query.ToListAsync();
 
             var data = result.
-                GroupBy(x => new { Id = x.id, Name = x.name, x.email, x.address }).
+                GroupBy(x => new { Id = x.id, Name = x.name, x.email, x.address, x.CreatedAt }).
                 Select(o => new OwnerDTO
                 {
                     Id = o.Key.Id,
@@ -82,13 +84,17 @@ namespace API.Controllers
                         Id = t.Key,
                         Number = t.First().telephoneNumber,
                         TelephoneType = new TelephoneType { Id = t.First().telephoneTypeId, Type = t.First().telephoneType },
-                    })
+                    }),
+                    CreatedAt = o.Key.CreatedAt
                 }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            var total = await context.Owners.CountAsync();
 
             return Ok(new
             {
                 data,
-                pageNumber
+                pageNumber,
+                total
             });
         }
 
