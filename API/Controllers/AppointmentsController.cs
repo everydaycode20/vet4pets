@@ -39,7 +39,10 @@ namespace API.Controllers
 
             var parseDateEnd = DateTime.Parse(end);
 
-            var data = context.Appointments.Where(a => a.Date >= parseDateStart && a.Date <= parseDateEnd).ToList();
+            var data = context.Appointments
+                .Where(a => a.Date.Date >= parseDateStart.Date && a.Date.Date <= parseDateEnd.Date || a.Date.Date == parseDateStart.Date && a.Date.Date == parseDateEnd.Date)
+                .OrderBy(a => a.Date)
+                .ToList();
 
             return Ok(data);
         }
@@ -72,6 +75,7 @@ namespace API.Controllers
             var app = new Appointment
             {
                 Date = appointment.Date,
+                EndDate = appointment.EndDate,
                 OwnerId = appointment.OwnerId,
                 PetId = appointment.PetId,
                 TypeId = appointment.TypeId

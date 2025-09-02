@@ -6,6 +6,8 @@
 
         public required DateTime Date { get; set; }
 
+        public required DateTime EndDate { get; set; }
+
         public required int PetId { get; set; }
         public Pet? Pet { get; set; }
 
