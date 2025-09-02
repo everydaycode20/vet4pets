@@ -89,8 +89,8 @@ export default function CalendarExtended() {
   const d2 = d.data?.map((a) => ({
     id: a.id,
     title: "test",
-    date: dayjs(a.date).toDate(),
-    endDate: dayjs(a.endDate).toDate(),
+    start: dayjs(a.date).toDate(),
+    end: dayjs(a.endDate).toDate(),
   }));
 
   console.log(d2);
@@ -104,7 +104,7 @@ export default function CalendarExtended() {
           calendarOptions.timeEnd &&
           calendarOptions.timeStart
             ? [
-                ...d2,
+                ...d2!,
                 {
                   id: "temp-selection",
                   start: calendarOptions.timeStart,
@@ -113,8 +113,8 @@ export default function CalendarExtended() {
               ]
             : d2
         }
-        startAccessor="date"
-        endAccessor="endDate"
+        startAccessor="start"
+        endAccessor="end"
         views={["month", "week", "day"]}
         max={maxDate}
         min={minDate}
