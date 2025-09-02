@@ -76,6 +76,12 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
   }
 
   useEffect(() => {
+    if (debouncedClick === 0) {
+      setIsToday(true);
+
+      setLoading(false);
+    }
+
     if (debouncedClick) {
       newDayData.refetch().then(() => {
         setLoading(false);
@@ -161,7 +167,13 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
         {(data === undefined ||
           (data.length === 0 && newDayData.data === undefined) ||
           newDayData.data?.appointments.length === 0) &&
-          loading === false && <span>no appointments today</span>}
+          loading === false && (
+            <span>
+              {currentDateTime.isSame(date)
+                ? "no appointments today"
+                : "no appointments this day"}
+            </span>
+          )}
 
         <ul className={JoinClasses(loading ? "flex flex-col gap-1" : "")}>
           {!loading && (
@@ -230,18 +242,20 @@ function AppointmentsList({
         );
       }
 
-      return (
-        <li key={i}>
-          <div>
-            <span className="font-medium text-black">{val.type.name}</span>{" "}
-            <span className="text-light-gray-4">
-              {dayjs(val.date).format("HH:mm a")}
-            </span>
-          </div>
+      if (isToday && appointmentDate.isAfter(currentDateTime)) {
+        return (
+          <li key={i}>
+            <div>
+              <span className="font-medium text-black">{val.type.name}</span>{" "}
+              <span className="text-light-gray-4">
+                {dayjs(val.date).format("HH:mm a")}
+              </span>
+            </div>
 
-          <span className="text-light-gray-4">{val.owner.name}</span>
-        </li>
-      );
+            <span className="text-light-gray-4">{val.owner.name}</span>
+          </li>
+        );
+      }
     })
   );
 }

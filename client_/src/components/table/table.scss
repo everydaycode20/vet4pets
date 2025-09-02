@@ -7,6 +7,10 @@ table.table-container {
   border: 1px solid $light-gray;
   overflow: hidden;
 
+  thead tr:hover {
+    background-color: white;
+  }
+
   tr th {
     color: $light-gray-4;
     font-weight: 500;

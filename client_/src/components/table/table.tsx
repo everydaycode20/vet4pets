@@ -156,6 +156,34 @@ export default function Table({
         </tbody>
       </table>
 
+      {!data && (
+        <div className="flex flex-col w-full gap-[12px] py-2">
+          <div className="flex w-full gap-[12px]">
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+          </div>
+
+          <div className="flex w-full gap-[12px]">
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+
+            <div className="skeleton h-[18px] w-full"></div>
+          </div>
+        </div>
+      )}
+
       <div className="pagination-container" aria-label="table pagination">
         <TablePagination
           count={data?.total || 0}

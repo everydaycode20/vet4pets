@@ -15,13 +15,9 @@ import {
   DrawerTitle,
 } from "../../components/drawer/drawer";
 
-import Modal from "../../components/modal/modal";
 import CalendarExtended from "../../components/calendar/calendar";
-import Select from "../../components/select/select";
 import ComboBox from "../../components/combobox/combobox";
 import DatePicker from "../../components/date-picker/date-picker";
-
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import JoinClasses from "../../utils/join-classes";
 

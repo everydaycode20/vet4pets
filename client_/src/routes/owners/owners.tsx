@@ -1,21 +1,24 @@
 import { useMemo, useState } from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useAtom } from "jotai";
+import dayjs from "dayjs";
+
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import AddOwner from "../../components/add-owner/add-owner";
 import { addOwnerState } from "../../components/add-owner/add-owner";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./table.module.scss";
 import Table from "../../components/table/table";
 
-import { IOwner, Person } from "../../models/person.interface";
+import { IOwner, ITelephones, Person } from "../../models/person.interface";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
-import dayjs from "dayjs";
 
 export default function Owner() {
   const [_, setState] = useAtom(addOwnerState);
@@ -38,8 +41,8 @@ export default function Owner() {
         header: () => <span>Email</span>,
       },
       {
-        accessorKey: "phone",
-        cell: (info) => info.getValue(),
+        accessorKey: "telephones",
+        cell: (info: any) => <PhoneList data={info.getValue()} />,
         header: () => <span>Phone</span>,
         enableSorting: false,
       },
@@ -61,7 +64,7 @@ export default function Owner() {
     []
   );
 
-  const d = useQuery({
+  const data = useQuery({
     queryKey: ["owners-table", pagination],
     queryFn: async (): Promise<{
       data: IOwner[];
@@ -82,8 +85,6 @@ export default function Owner() {
       return await res.json();
     },
   });
-
-  console.log(pagination);
 
   return (
     <section className="h-full">
@@ -107,7 +108,7 @@ export default function Owner() {
       </div>
 
       <Table
-        data={d.data}
+        data={data.data}
         columns={columns}
         pagesSize={20}
         pagination={pagination}
@@ -116,5 +117,65 @@ export default function Owner() {
 
       <AddOwner />
     </section>
+  );
+}
+
+function PhoneList({ data }: { data: ITelephones[] }) {
+  console.log(data);
+
+  if (data.length === 1) {
+    return (
+      <span className={JoinClasses("flex flex-col", styles.phone)}>
+        <span>{data[0].telephoneType.type}</span>
+
+        <a href={`tel:${data[0].number}`}>{data[0].number}</a>
+      </span>
+    );
+  }
+
+  return (
+    <span className="flex items-end gap-x-[4px]">
+      <span className={JoinClasses("flex flex-col", styles.phone)}>
+        <span>{data[0].telephoneType.type}</span>
+
+        <a href={`tel:${data[0].number}`}>{data[0].number}</a>
+      </span>
+
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <button
+            className={styles.IconButton}
+            aria-label="see more phone numbers"
+          >
+            <MoreHorizIcon />
+          </button>
+        </DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            className={JoinClasses(
+              "bg-white flex flex-col gap-y-[8px]",
+              styles.content
+            )}
+          >
+            {data.map((tel, i) => {
+              return (
+                <DropdownMenu.Item
+                  key={i}
+                  className={JoinClasses(
+                    "flex flex-col gap-y-[4px]",
+                    styles.item
+                  )}
+                >
+                  {tel.telephoneType.type}
+
+                  <a href={`tel:${data[0].number}`}>{tel.number}</a>
+                </DropdownMenu.Item>
+              );
+            })}
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+    </span>
   );
 }

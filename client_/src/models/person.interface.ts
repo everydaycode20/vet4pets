@@ -6,17 +6,20 @@ export interface Person {
   registerDate: string;
 }
 
+export interface ITelephones {
+  id: number;
+  number: string;
+  telephoneType: {
+    id: number;
+    type: string;
+  };
+}
+
 export interface IOwner {
   id: number;
   name: string;
   email: string;
   address: string;
-  telephones: {
-    id: number;
-    telephoneType: {
-      id: number;
-      type: string;
-    };
-  }[];
+  telephones: ITelephones[];
   createdAt: string;
 }

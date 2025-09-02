@@ -24,3 +24,30 @@
     }
   }
 }
+
+.phone {
+  span:first-of-type {
+    font-size: 10px;
+    line-height: 10px;
+  }
+}
+
+.item {
+  font-size: 10px;
+  line-height: 10px;
+  padding: 6px;
+
+  &:focus,
+  &:active {
+    background-color: $light-gray-3;
+  }
+
+  a {
+    font-size: 14px;
+  }
+}
+
+.content {
+  border-radius: 4px;
+  border: 1px solid $gray;
+}

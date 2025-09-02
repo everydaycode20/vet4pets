@@ -52,8 +52,6 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
   const completedAppointments = data?.filter((a) => {
     const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
 
-    console.log(currentDateTime, dayjs(a.date));
-
     if (appointmentDate.isAfter(currentDateTime)) {
       return a;
     }
@@ -74,11 +72,7 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
       const total = data?.length;
 
       const completedAppointments = data?.filter((a) => {
-        console.log(a.date);
-
         const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
-
-        console.log(currentDateTime, a.date);
 
         if (appointmentDate.isAfter(currentDateTime)) {
           return a;
@@ -86,11 +80,11 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
       });
 
       setCount({
-        completed: completedAppointments ? completedAppointments?.length : 0,
-        upcoming:
+        completed:
           total && completedAppointments
             ? total - completedAppointments.length
             : 0,
+        upcoming: completedAppointments ? completedAppointments?.length : 0,
       });
     }
   }, [data]);

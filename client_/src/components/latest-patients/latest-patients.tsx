@@ -7,6 +7,8 @@ import styles from "./latest-patients.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
 
 export default function LatestPatients({ data }: { data?: IAppointments[] }) {
+  const currentDateTime = dayjs();
+
   const titleRef = useRef(null);
 
   const list = useRef<HTMLUListElement>(null);
@@ -28,19 +30,19 @@ export default function LatestPatients({ data }: { data?: IAppointments[] }) {
 
       <ul className="flex flex-col overflow-y-auto" ref={list}>
         {data?.map((app, i) => {
-          return (
-            <li className="text-light-gray-4 flex justify-between" key={i}>
-              <span className="text-center">{app.date}</span>
+          if (dayjs(app.date).isBefore(currentDateTime)) {
+            return (
+              <li className="text-light-gray-4 flex justify-between" key={i}>
+                <span className="text-center">
+                  {dayjs(app.date).format("YYYY-MM-DD HH:mm").toString()}
+                </span>
 
-              <span className="text-center">
-                {dayjs(app.date, "YYYY-MM-DD HH:mm").toString()}
-              </span>
+                <span className="text-center">{app.pet.name}</span>
 
-              <span className="text-center">{app.pet.name}</span>
-
-              <span className="text-center">{app.type.name}</span>
-            </li>
-          );
+                <span className="text-center">{app.type.name}</span>
+              </li>
+            );
+          }
         })}
       </ul>
     </div>
