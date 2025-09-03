@@ -24,11 +24,29 @@ import JoinClasses from "../../utils/join-classes";
 import styles from "./appointments.module.scss";
 
 import { addAppointmentState, options } from "./appointment-state";
+import { useQuery } from "@tanstack/react-query";
+import { apiUrl } from "../../constants/apiUrl";
+import { IAppointmentsType } from "../../models/appointments.interface";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
 
   const [_, setCalendarOptions] = useAtom(options);
+
+  const dataAppTypes = useQuery({
+    queryKey: ["appointment-types"],
+    queryFn: async (): Promise<IAppointmentsType[]> => {
+      const res = await fetch(`${apiUrl}/appointmentType`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      });
+
+      return await res.json();
+    },
+  });
 
   return (
     <section className="h-full">
@@ -54,7 +72,7 @@ export default function Appointments() {
           <DrawerHeader />
 
           <DrawerBody>
-            <Form />
+            <Form appointmentType={dataAppTypes.data} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -104,7 +122,7 @@ interface IFormAppointment {
   };
 }
 
-function Form() {
+function Form({ appointmentType }: { appointmentType?: IAppointmentsType[] }) {
   const [_, setState] = useAtom(addAppointmentState);
 
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
@@ -146,13 +164,7 @@ function Form() {
                 onBlur={onBlur}
                 error={errors.service && "select a service"}
                 placeholder="Search or Select an appointment"
-                data={[
-                  { id: 1, name: "Durward Reynolds" },
-                  { id: 2, name: "Kenton Towne" },
-                  { id: 3, name: "Therese Wunsch" },
-                  { id: 4, name: "Benedict Kessler" },
-                  { id: 5, name: "Katelyn Rohan" },
-                ]}
+                data={appointmentType}
               />
             );
           }}

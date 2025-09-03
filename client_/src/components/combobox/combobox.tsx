@@ -33,7 +33,7 @@ export default function ComboBox({
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
   placeholder: string;
-  data: { id: number; name: string }[];
+  data?: { id: number; name: string }[] | any[];
   name?: string;
   label?: string;
   control?: any;
@@ -45,7 +45,7 @@ export default function ComboBox({
   console.log(error, "AASASAS");
 
   const matches = useMemo(
-    () => matchSorter(data, searchValue, { keys: ["name"] }),
+    () => matchSorter(data!, searchValue, { keys: ["name"] }),
     [searchValue]
   );
 

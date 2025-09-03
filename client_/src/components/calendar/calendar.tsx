@@ -16,10 +16,10 @@ import {
   addAppointmentState,
   options,
 } from "../../routes/appointments/appointment-state";
-import CalendarEvent from "./calendar-event";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
 import { IAppointments } from "../../models/appointments.interface";
+import CalendarEvent from "./calendar-event";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -45,27 +45,24 @@ export default function CalendarExtended() {
 
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
-  console.log(calendarOptions.day);
+  console.log(calendarOptions, "<//////////////////////////////");
 
   const [tempCalendarSelection, setTempCalendarSelection] = useState([]);
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
-    console.log(slotInfo);
+    console.log(slotInfo, "<*********************************");
 
     setCalendarOptions({
       mode: "calendar",
-      timeStart: slotInfo.start,
-      timeEnd: slotInfo.end,
-      day: slotInfo.start,
+      start: slotInfo.start,
+      end: slotInfo.end,
     });
 
     setState(true);
   }, []);
 
-  console.log(view);
-
-  const d = useQuery({
-    queryKey: ["calendar"],
+  const data = useQuery({
+    queryKey: ["calendar", calendarDate],
     queryFn: async (): Promise<IAppointments[]> => {
       const res = await fetch(
         `${apiUrl}/appointments/date-range?start=${calendarDate.start.format(
@@ -84,34 +81,30 @@ export default function CalendarExtended() {
     },
   });
 
-  console.log(d.data);
-
-  const d2 = d.data?.map((a) => ({
+  const data2 = data.data?.map((a) => ({
     id: a.id,
-    title: "test",
+    title: a.type.name,
     start: dayjs(a.date).toDate(),
     end: dayjs(a.endDate).toDate(),
+    color: a.type.color,
   }));
-
-  console.log(d2);
 
   return (
     <div className={JoinClasses("h-full bg-white", styles.container)}>
       <Calendar
         localizer={localizer}
         events={
-          calendarOptions.day &&
-          calendarOptions.timeEnd &&
-          calendarOptions.timeStart
+          calendarOptions.start && calendarOptions.end
             ? [
-                ...d2!,
+                ...data2!,
                 {
                   id: "temp-selection",
-                  start: calendarOptions.timeStart,
-                  end: calendarOptions.timeEnd,
+                  start: calendarOptions.start,
+                  end: calendarOptions.end,
+                  color: "",
                 },
               ]
-            : d2
+            : data2
         }
         startAccessor="start"
         endAccessor="end"
@@ -120,9 +113,7 @@ export default function CalendarExtended() {
         min={minDate}
         components={{
           toolbar: Toolbar,
-          // month: {
-          //   event: CalendarEvent,
-          // },
+          event: (props) => <CalendarEvent {...props} view={view} />,
         }}
         onView={onView}
         view={view}
@@ -146,7 +137,22 @@ export default function CalendarExtended() {
         //   console.log(e);
         // }}
         onNavigate={(e) => {
-          console.log(e);
+          if (view === "month") {
+            setCalendarDate({
+              start: dayjs(e).startOf("month"),
+              end: dayjs(e).endOf("month"),
+            });
+          } else if (view === "week") {
+            setCalendarDate({
+              start: dayjs(e).startOf("week"),
+              end: dayjs(e).endOf("week"),
+            });
+          } else if (view === "day") {
+            setCalendarDate({
+              start: dayjs(e),
+              end: dayjs(e),
+            });
+          }
         }}
       />
     </div>
@@ -254,5 +260,3 @@ function Toolbar({
     </div>
   );
 }
-
-const data: any = [];

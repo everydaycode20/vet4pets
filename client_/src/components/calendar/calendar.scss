@@ -115,7 +115,34 @@
 }
 
 .rbc-event {
-  border-radius: 4px;
+  background-color: transparent;
+  border: none !important;
+  position: relative;
+
+  &.rbc-selected {
+    filter: brightness(80%);
+    background-color: transparent;
+  }
+}
+
+.rbc-event-border {
+  width: 2px;
+  height: 53%;
+  border-radius: 1px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: brightness(0.8);
+}
+
+.rbc-event-custom {
+  border-radius: 3px;
+  padding: 3px 3px 3px 12px;
+  color: rgb(59, 59, 59);
+}
+
+.rbc-event-content-custom {
+  color: rgb(59, 59, 59);
 }
 
 .rbc-event-label,
@@ -123,7 +150,34 @@
   font-size: 12px;
 }
 
+.rbc-event-label {
+  display: none;
+}
+
 .rbc-current-time-indicator {
   background-color: $blue;
   height: 2px;
+}
+
+.rbc-button-link.rbc-show-more {
+  background-color: $light-gray-3;
+  border-radius: 3px;
+  color: #778ca2;
+  width: 100%;
+  text-align: start;
+  padding: 3px 3px 3px 12px;
+  font-weight: 600;
+  position: relative;
+  font-size: 12px;
+
+  &:before {
+    content: "";
+    width: 2px;
+    height: 53%;
+    background-color: $light-gray-4;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }

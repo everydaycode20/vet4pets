@@ -4,13 +4,13 @@ export const addAppointmentState = atom(false);
 
 interface IOptions {
   mode?: "calendar" | "button";
-  timeStart?: Date;
-  timeEnd?: Date;
-  day?: Date;
+  start?: Date;
+  end?: Date;
+  color?: string;
 }
 
 export const options = atom<IOptions>({
-  day: undefined,
-  timeEnd: undefined,
-  timeStart: undefined,
+  end: undefined,
+  start: undefined,
+  color: undefined,
 });
