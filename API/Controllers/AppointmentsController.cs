@@ -41,6 +41,29 @@ namespace API.Controllers
 
             var data = context.Appointments
                 .Where(a => a.Date.Date >= parseDateStart.Date && a.Date.Date <= parseDateEnd.Date || a.Date.Date == parseDateStart.Date && a.Date.Date == parseDateEnd.Date)
+                .Select(a => new AppointmentDTO
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    EndDate = a.EndDate,
+                    Pet = new
+                    {
+                        a.Pet!.Id,
+                        a.Pet.Name,
+                        a.Pet.Age,
+                    },
+                    Owner = new
+                    {
+                        a.Owner!.Id,
+                        a.Owner.Name
+                    },
+                    Type = new
+                    {
+                        a.Type!.Id,
+                        a.Type.Name,
+                        a.Type.Color,
+                    }
+                })
                 .OrderBy(a => a.Date)
                 .ToList();
 
@@ -215,9 +238,6 @@ namespace API.Controllers
 
             if (type == "day")
             {
-                Console.WriteLine(date.Month);
-
-                Console.WriteLine(date.Day);
 
                 var data = await query.Where(a => a.Date.Year == date.Year && a.Date.Month == date.Month && a.Date.Day == date.Day)
                     .Select(a => new
@@ -257,7 +277,7 @@ namespace API.Controllers
             await using var context = applicationDbContext;
 
             var d = DateTime.Now;
-            
+
             var startDate = new DateTime(d.Year, d.Month, 1);
 
             var endDate = startDate.AddMonths(1);

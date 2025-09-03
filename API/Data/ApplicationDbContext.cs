@@ -29,6 +29,8 @@ namespace API.Data
 
         public virtual DbSet<AppointmentStatsWeekly> AppointmentStatsWeekly { get; set; }
 
+        public virtual DbSet<AppointmentType> AppointmentType { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

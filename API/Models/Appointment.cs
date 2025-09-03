@@ -26,6 +26,6 @@
 
         public required string Name { get; set; }
 
-        public int Color { get; set; }
+        public string? Color { get; set; }
     }
 }
