@@ -98,6 +98,59 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("owner-with-pets")]
+        public async Task<ActionResult<string>> GetAllOwnersWithPets([FromQuery] int pageNumber = 1, int pageSize = 20)
+        {
+            await using var context = applicationDbContext;
+
+            var query = from o in context.Owners
+                        join t in context.Telephones on o.Id equals t.OwnerId into tg
+                        from t in tg.DefaultIfEmpty()
+                        join tT in context.TelephoneTypes on t.TelephoneTypeId equals tT.Id into ttg
+                        from tT in ttg.DefaultIfEmpty()
+                        join p in context.Pets on o.Id equals p.OwnerId
+                        select new
+                        {
+                            id = o.Id,
+                            name = o.Name,
+                            o.email,
+                            address = o.Address,
+                            telephoneId = t.Id,
+                            telephoneNumber = t.Number,
+                            telephoneTypeId = t.TelephoneType.Id,
+                            telephoneType = t.TelephoneType.Type,
+                            CreatedAt = o.CreatedAt ?? new DateTime()
+                        };
+
+            var result = await query.ToListAsync();
+
+            var data = result.
+                GroupBy(x => new { Id = x.id, Name = x.name, x.email, x.address, x.CreatedAt }).
+                Select(o => new OwnerDTO
+                {
+                    Id = o.Key.Id,
+                    Name = o.Key.Name,
+                    email = o.Key.email,
+                    Address = o.Key.address,
+                    Telephones = o.GroupBy(x => x.telephoneId).Select(t => new TelephoneDTO
+                    {
+                        Id = t.Key,
+                        Number = t.First().telephoneNumber,
+                        TelephoneType = new TelephoneType { Id = t.First().telephoneTypeId, Type = t.First().telephoneType },
+                    }),
+                    CreatedAt = o.Key.CreatedAt
+                }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            var total = await context.Owners.CountAsync();
+
+            return Ok(new
+            {
+                data,
+                pageNumber,
+                total
+            });
+        }
+
         [HttpPost]
         public async Task<ActionResult<string>> AddOwner([FromBody] Owner owner)
         {

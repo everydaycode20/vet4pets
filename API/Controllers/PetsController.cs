@@ -53,7 +53,9 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Owners.Where(o => o.Id == ownerId)
+            //var d = await context.Pets.Where(p => p.Owner.Id == p.)
+
+            var data = await context.Owners.Where(o => o.Pets!.Any() && o.Id == ownerId)
                 .Select(o => new OwnerDTO
                 {
                     Id = o.Id,
@@ -75,9 +77,9 @@ namespace API.Controllers
                             }
                         }
                     }).OrderBy(p => p.Name).ToList()
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
 
-            if (data == null)
+            if (data == null || data.Count == 0)
             {
                 return NotFound(new { message = "not found" });
             }

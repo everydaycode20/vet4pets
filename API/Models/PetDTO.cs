@@ -8,6 +8,8 @@
 
         public int Age { get; set; }
 
+        public int OwnerId { get; set; }
+
         public int PetTypeId { get; set; }
         public required PetTypeDTO PetType { get; set; }
 
