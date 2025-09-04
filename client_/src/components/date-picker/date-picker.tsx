@@ -57,15 +57,11 @@ export default function DatePicker({
   useEffect(() => {
     console.log(value, "RENDER");
 
-    if (
-      calendarOptions.day &&
-      calendarOptions.timeEnd &&
-      calendarOptions.timeStart
-    ) {
+    if (calendarOptions.day && calendarOptions.end && calendarOptions.start) {
     }
     onChange!({
-      start: calendarOptions.timeStart,
-      end: calendarOptions.timeEnd,
+      start: calendarOptions.start,
+      end: calendarOptions.end,
       selectedDate: calendarOptions.day,
     });
   }, [calendarOptions]);
@@ -112,23 +108,23 @@ export default function DatePicker({
       <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
         <TimeRangeTime
           label="Start"
-          selectedTime={calendarOptions.timeStart}
+          selectedTime={calendarOptions.start}
           selectedDate={calendarOptions.day}
           classes={error && error.start && styles["time-select-error"]}
           error={error && error.start && error.start}
           onChange={(e) => {
-            setCalendarOptions({ ...calendarOptions, timeStart: e });
+            setCalendarOptions({ ...calendarOptions, start: e });
           }}
         />
 
         <TimeRangeTime
           label="End"
-          selectedTime={calendarOptions.timeEnd}
+          selectedTime={calendarOptions.end}
           selectedDate={calendarOptions.day}
           classes={error && error.end && styles["time-select-error"]}
           error={error && error.end && error.end}
           onChange={(e) => {
-            setCalendarOptions({ ...calendarOptions, timeEnd: e });
+            setCalendarOptions({ ...calendarOptions, end: e });
           }}
         />
       </div>

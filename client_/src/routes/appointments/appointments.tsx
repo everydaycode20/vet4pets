@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { atom, useAtom } from "jotai";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
@@ -24,12 +24,19 @@ import JoinClasses from "../../utils/join-classes";
 import styles from "./appointments.module.scss";
 
 import { addAppointmentState, options } from "./appointment-state";
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
 import { IAppointmentsType } from "../../models/appointments.interface";
+import OwnerModal from "./owner-modal";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
+
+  const [owner, setOwner] = useState<{ id?: number; name?: string }>({});
 
   const [_, setCalendarOptions] = useAtom(options);
 
@@ -47,6 +54,28 @@ export default function Appointments() {
       return await res.json();
     },
   });
+
+  const dataOwnerPets = useQuery({
+    queryKey: ["owner-pets", owner.id !== undefined],
+    queryFn: async (): Promise<IAppointmentsType[]> => {
+      const res = await fetch(`${apiUrl}/pets/owner?ownerId=${owner.id}`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      });
+
+      return await res.json();
+    },
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (owner.id && owner.name) {
+      dataOwnerPets.refetch();
+    }
+  }, [owner]);
 
   return (
     <section className="h-full">
@@ -72,7 +101,7 @@ export default function Appointments() {
           <DrawerHeader />
 
           <DrawerBody>
-            <Form appointmentType={dataAppTypes.data} />
+            <Form appointmentType={dataAppTypes.data} setOwner={setOwner} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -122,7 +151,18 @@ interface IFormAppointment {
   };
 }
 
-function Form({ appointmentType }: { appointmentType?: IAppointmentsType[] }) {
+function Form({
+  appointmentType,
+  setOwner,
+}: {
+  appointmentType?: IAppointmentsType[];
+  setOwner: Dispatch<
+    SetStateAction<{
+      id?: number;
+      name?: string;
+    }>
+  >;
+}) {
   const [_, setState] = useAtom(addAppointmentState);
 
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
@@ -146,7 +186,7 @@ function Form({ appointmentType }: { appointmentType?: IAppointmentsType[] }) {
     },
   });
 
-  console.log(errors);
+  console.log(errors, ">///////////////////////////////////////");
 
   return (
     <div className={JoinClasses("", styles["form-container"])}>
@@ -170,30 +210,42 @@ function Form({ appointmentType }: { appointmentType?: IAppointmentsType[] }) {
           }}
         />
 
-        <Controller
-          name="owner"
-          control={control}
-          render={({ field: { onChange, value, onBlur } }) => {
-            return (
-              <ComboBox
-                label="Select an owner"
-                name="owner"
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                error={errors.owner && "select an owner"}
-                placeholder="Search or Select an owner"
-                data={[
-                  { id: 1, name: "Durward Reynolds" },
-                  { id: 2, name: "Kenton Towne" },
-                  { id: 3, name: "Therese Wunsch" },
-                  { id: 4, name: "Benedict Kessler" },
-                  { id: 5, name: "Katelyn Rohan" },
-                ]}
-              />
-            );
-          }}
-        />
+        <div className="flex flex-col">
+          <Controller
+            name="owner"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              if (value.id && value.name) {
+                setOwner(value);
+              }
+
+              return (
+                <OwnerModal
+                  onChange={onChange}
+                  value={value}
+                  button={
+                    <button
+                      type="button"
+                      className={JoinClasses(
+                        "",
+                        styles["select-owner-btn"],
+                        errors.owner && styles["select-owner-btn-error"]
+                      )}
+                    >
+                      {value.id ? `Change ${value.name}` : "Select an owner "}
+
+                      <span className="sr-only">opens a dialog</span>
+                    </button>
+                  }
+                />
+              );
+            }}
+          />
+
+          {errors.owner && (
+            <span className="text-pink block">select an owner</span>
+          )}
+        </div>
 
         <Controller
           name="pet"

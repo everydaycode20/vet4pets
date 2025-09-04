@@ -62,7 +62,7 @@ const DrawerOverlay = React.forwardRef<
       ref={forwardedRef}
       className={JoinClasses(
         // base
-        "fixed inset-0 z-50 overflow-y-auto",
+        "fixed inset-0 z-50 overflow-y-auto pointer-events-none",
         // background color
         "bg-black/30",
         // transition
@@ -70,10 +70,6 @@ const DrawerOverlay = React.forwardRef<
         className
       )}
       {...props}
-      style={{
-        animationDuration: "400ms",
-        animationFillMode: "backwards",
-      }}
     />
   );
 });

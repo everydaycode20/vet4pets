@@ -65,3 +65,19 @@
     }
   }
 }
+
+.select-owner-btn {
+  height: fit-content;
+  font-size: 14px;
+  line-height: 21px;
+  width: 100%;
+  padding: 14.5px 24px;
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+  text-align: start;
+  color: $gray;
+
+  &-error {
+    border-color: $pink;
+  }
+}

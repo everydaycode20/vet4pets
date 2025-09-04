@@ -7,6 +7,7 @@ interface IOptions {
   start?: Date;
   end?: Date;
   color?: string;
+  day?: any;
 }
 
 export const options = atom<IOptions>({
