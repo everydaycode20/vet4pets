@@ -50,15 +50,9 @@ export default function DatePicker({
 
   function setDateSelection(date: Date) {
     setCalendarOptions({ ...calendarOptions, day: date });
-
-    console.log("LOL");
   }
 
   useEffect(() => {
-    console.log(value, "RENDER");
-
-    if (calendarOptions.day && calendarOptions.end && calendarOptions.start) {
-    }
     onChange!({
       start: calendarOptions.start,
       end: calendarOptions.end,
@@ -224,7 +218,7 @@ function TimeRangeTime({
         <div className={JoinClasses("flex flex-col items-start")}>
           <button
             className="text-black"
-            type="submit"
+            type="button"
             onClick={() => setOpen(!open)}
             id={`${label}-btn`}
           >
@@ -241,7 +235,7 @@ function TimeRangeTime({
         {time !== "" && (
           <button
             className={JoinClasses("", styles.remove)}
-            type="submit"
+            type="button"
             onClick={() => {
               setTime("");
 

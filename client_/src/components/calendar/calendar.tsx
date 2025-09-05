@@ -1,6 +1,13 @@
-import { useMemo, useState, useCallback } from "react";
+import {
+  useMemo,
+  useState,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useAtom } from "jotai";
 import { Calendar, dayjsLocalizer, SlotInfo } from "react-big-calendar";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
@@ -16,24 +23,30 @@ import {
   addAppointmentState,
   options,
 } from "../../routes/appointments/appointment-state";
-import { useQuery } from "@tanstack/react-query";
-import { apiUrl } from "../../constants/apiUrl";
+
 import { IAppointments } from "../../models/appointments.interface";
 import CalendarEvent from "./calendar-event";
+import GetAppointments from "./appointments-fetch";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
 
-export default function CalendarExtended() {
+export default function CalendarExtended({
+  calendarDate,
+  setCalendarDate,
+  data,
+}: {
+  calendarDate: { start: dayjs.Dayjs; end: dayjs.Dayjs };
+  setCalendarDate: Dispatch<
+    SetStateAction<{
+      start: dayjs.Dayjs;
+      end: dayjs.Dayjs;
+    }>
+  >;
+  data?: IAppointments[];
+}) {
   const minDate = useMemo(() => new Date(1972, 0, 1, 8, 0, 0, 0), []);
   const maxDate = useMemo(() => new Date(1972, 0, 1, 18, 0, 0, 0), []);
-
-  const [calendarDate, setCalendarDate] = useState({
-    start: dayjs().startOf("month"),
-    end: dayjs().endOf("month"),
-  });
-
-  console.log(calendarDate);
 
   const [view, setView] = useState<
     "month" | "week" | "work_week" | "day" | "agenda"
@@ -41,17 +54,13 @@ export default function CalendarExtended() {
 
   const onView = useCallback((newView: any) => setView(newView), [setView]);
 
-  const [state, setState] = useAtom(addAppointmentState);
+  const [_, setState] = useAtom(addAppointmentState);
 
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
-  console.log(calendarOptions, "<//////////////////////////////");
-
-  const [tempCalendarSelection, setTempCalendarSelection] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState<string | number>(0);
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
-    console.log(slotInfo, "<*********************************");
-
     setCalendarOptions({
       mode: "calendar",
       start: slotInfo.start,
@@ -61,27 +70,7 @@ export default function CalendarExtended() {
     setState(true);
   }, []);
 
-  const data = useQuery({
-    queryKey: ["calendar", calendarDate],
-    queryFn: async (): Promise<IAppointments[]> => {
-      const res = await fetch(
-        `${apiUrl}/appointments/date-range?start=${calendarDate.start.format(
-          "YYYY-MM-DD"
-        )}&end=${calendarDate.end.format("YYYY-MM-DD")}`,
-        {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "GET",
-        }
-      );
-
-      return await res.json();
-    },
-  });
-
-  const data2 = data.data?.map((a) => ({
+  const data2 = data?.map((a) => ({
     id: a.id,
     title: a.type.name,
     start: dayjs(a.date).toDate(),
@@ -94,9 +83,9 @@ export default function CalendarExtended() {
       <Calendar
         localizer={localizer}
         events={
-          calendarOptions.start && calendarOptions.end
+          calendarOptions.start && calendarOptions.end && data2
             ? [
-                ...data2!,
+                ...data2,
                 {
                   id: "temp-selection",
                   start: calendarOptions.start,
@@ -113,7 +102,16 @@ export default function CalendarExtended() {
         min={minDate}
         components={{
           toolbar: Toolbar,
-          event: (props) => <CalendarEvent {...props} view={view} />,
+          event: (props) =>
+            data && (
+              <CalendarEvent
+                {...props}
+                view={view}
+                data={data}
+                selectedId={selectedEvent}
+                setSelectedEvent={setSelectedEvent}
+              />
+            ),
         }}
         onView={onView}
         view={view}
@@ -132,10 +130,9 @@ export default function CalendarExtended() {
         }}
         selectable
         onSelectSlot={handleSelectSlot}
-        // onSelectEvent={() => {}}
-        // selected={(e: any) => {
-        //   console.log(e);
-        // }}
+        onSelectEvent={(e) => {
+          setSelectedEvent(selectedEvent !== e.id ? e.id : 0);
+        }}
         onNavigate={(e) => {
           if (view === "month") {
             setCalendarDate({

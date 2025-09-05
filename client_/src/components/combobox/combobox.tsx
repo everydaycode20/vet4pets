@@ -18,7 +18,7 @@ import { matchSorter } from "match-sorter";
 
 import styles from "./combobox.module.scss";
 import JoinClasses from "../../utils/join-classes";
-import { ControllerRenderProps, Noop } from "react-hook-form";
+import { Noop } from "react-hook-form";
 
 export default function ComboBox({
   value,
@@ -42,12 +42,10 @@ export default function ComboBox({
   onBlur?: Noop;
 }) {
   const [searchValue, setSearchValue] = useState("");
-  console.log(error, "AASASAS");
 
-  const matches = useMemo(
-    () => matchSorter(data!, searchValue, { keys: ["name"] }),
-    [searchValue]
-  );
+  const matches = useMemo(() => {
+    return matchSorter(data ? data : [], searchValue, { keys: ["name"] });
+  }, [searchValue, data]);
 
   const [open, isOpen] = useState(false);
 
@@ -59,8 +57,6 @@ export default function ComboBox({
 
   useEffect(() => {
     if (matches.length === 1 && !value) {
-      console.log(matches);
-
       onChange!(matches[0]);
     }
   }, [matches]);

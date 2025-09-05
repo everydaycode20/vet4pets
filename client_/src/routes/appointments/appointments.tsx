@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, number, date } from "zod";
+import dayjs from "dayjs";
 
 import {
   Drawer,
@@ -27,11 +28,17 @@ import { addAppointmentState, options } from "./appointment-state";
 import {
   QueryObserverResult,
   RefetchOptions,
+  useMutation,
   useQuery,
 } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
-import { IAppointmentsType } from "../../models/appointments.interface";
+import {
+  IAppointments,
+  IAppointmentsType,
+} from "../../models/appointments.interface";
 import OwnerModal from "./owner-modal";
+import { IPet } from "../../models/pet.interface";
+import GetAppointments from "../../components/calendar/appointments-fetch";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
@@ -39,6 +46,11 @@ export default function Appointments() {
   const [owner, setOwner] = useState<{ id?: number; name?: string }>({});
 
   const [_, setCalendarOptions] = useAtom(options);
+
+  const [calendarDate, setCalendarDate] = useState({
+    start: dayjs().startOf("month"),
+    end: dayjs().endOf("month"),
+  });
 
   const dataAppTypes = useQuery({
     queryKey: ["appointment-types"],
@@ -57,7 +69,7 @@ export default function Appointments() {
 
   const dataOwnerPets = useQuery({
     queryKey: ["owner-pets", owner.id !== undefined],
-    queryFn: async (): Promise<IAppointmentsType[]> => {
+    queryFn: async (): Promise<{ pets: IPet[] }> => {
       const res = await fetch(`${apiUrl}/pets/owner?ownerId=${owner.id}`, {
         credentials: "include",
         headers: {
@@ -71,15 +83,30 @@ export default function Appointments() {
     enabled: false,
   });
 
+  const data = useQuery({
+    queryKey: ["calendar", calendarDate],
+    queryFn: (): Promise<IAppointments[]> =>
+      GetAppointments(
+        calendarDate.start.format("YYYY-MM-DD"),
+        calendarDate.end.format("YYYY-MM-DD")
+      ),
+  });
+
   useEffect(() => {
     if (owner.id && owner.name) {
       dataOwnerPets.refetch();
     }
   }, [owner]);
 
+  console.log(dataOwnerPets.data);
+
   return (
     <section className="h-full">
-      <CalendarExtended />
+      <CalendarExtended
+        calendarDate={calendarDate}
+        setCalendarDate={setCalendarDate}
+        data={data.data}
+      />
 
       <Drawer
         open={state}
@@ -101,7 +128,12 @@ export default function Appointments() {
           <DrawerHeader />
 
           <DrawerBody>
-            <Form appointmentType={dataAppTypes.data} setOwner={setOwner} />
+            <Form
+              appointmentType={dataAppTypes.data}
+              setOwner={setOwner}
+              petData={dataOwnerPets.data?.pets}
+              refetch={data.refetch}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -154,6 +186,8 @@ interface IFormAppointment {
 function Form({
   appointmentType,
   setOwner,
+  petData,
+  refetch,
 }: {
   appointmentType?: IAppointmentsType[];
   setOwner: Dispatch<
@@ -162,15 +196,58 @@ function Form({
       name?: string;
     }>
   >;
+  petData?: IPet[];
+  refetch: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<IAppointments[], Error>>;
 }) {
   const [_, setState] = useAtom(addAppointmentState);
+
+  const [__, setCalendarOptions] = useAtom(options);
+
+  const addAppointment = useMutation({
+    mutationFn: async (data: IFormAppointment) => {
+      console.log(data, "FETCHHHHHHHHHHHHHHHH");
+
+      const res = await fetch(`${apiUrl}/appointments`, {
+        body: JSON.stringify({
+          date: dayjs(data.date.start).format("YYYY-MM-DD HH:mm"),
+          endDate: dayjs(data.date.end).format("YYYY-MM-DD HH:mm"),
+          ownerId: data.owner.id,
+          petId: data.pet.id,
+          typeId: data.service.id,
+        }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      return res.json();
+    },
+    onSuccess: () => {
+      refetch().then(() => {
+        setCalendarOptions({
+          color: undefined,
+          day: undefined,
+          end: undefined,
+          mode: undefined,
+          start: undefined,
+        });
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
     console.log(data);
 
-    setTimeout(() => {
-      setState(false);
-    }, 1000);
+    addAppointment.mutate(data);
+
+    setState(false);
   };
 
   const {
@@ -185,8 +262,6 @@ function Form({
       pet: {},
     },
   });
-
-  console.log(errors, ">///////////////////////////////////////");
 
   return (
     <div className={JoinClasses("", styles["form-container"])}>
@@ -260,13 +335,7 @@ function Form({
                 onBlur={onBlur}
                 error={errors.pet && "select a pet"}
                 placeholder="Search or Select a pet"
-                data={[
-                  { id: 1, name: "Durward Reynolds" },
-                  { id: 2, name: "Kenton Towne" },
-                  { id: 3, name: "Therese Wunsch" },
-                  { id: 4, name: "Benedict Kessler" },
-                  { id: 5, name: "Katelyn Rohan" },
-                ]}
+                data={petData && petData}
               />
             );
           }}
