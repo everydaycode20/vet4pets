@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 
 namespace API.Controllers
 {
@@ -56,30 +57,17 @@ namespace API.Controllers
             //var d = await context.Pets.Where(p => p.Owner.Id == p.)
 
             var data = await context.Owners.Where(o => o.Pets!.Any() && o.Id == ownerId)
-                .Select(o => new OwnerDTO
+                .Select(o => new
                 {
-                    Id = o.Id,
-                    Name = o.Name,
-                    email = o.email,
-                    Pets = o.Pets!.Select(p => new PetDTO
+                    Pets = o.Pets!.Select(p => new
                     {
                         Id = p.Id,
                         Name = p.Name,
                         Age = p.Age,
-                        PetType = new PetTypeDTO
-                        {
-                            Id = p.PetType!.Id,
-                            Description = p.PetType.Description,
-                            Breed = new BreedDTO
-                            {
-                                Id = p.PetType.Breed.Id,
-                                Description = p.PetType.Description!
-                            }
-                        }
                     }).OrderBy(p => p.Name).ToList()
-                }).ToListAsync();
+                }).FirstOrDefaultAsync();
 
-            if (data == null || data.Count == 0)
+            if (data == null)
             {
                 return NotFound(new { message = "not found" });
             }
