@@ -1,19 +1,40 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import {
   Root,
   Trigger,
   Portal,
   Content,
   Close,
-  PopoverArrow,
   Arrow,
 } from "@radix-ui/react-popover";
 import dayjs from "dayjs";
 
 import CloseIcon from "@mui/icons-material/Close";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import {
+  Root as DialogRoot,
+  Trigger as DialogTrigger,
+  Overlay,
+  Description,
+  Content as DialogContent,
+  Portal as DialogPortal,
+  Title,
+} from "@radix-ui/react-dialog";
+
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 
 import styles from "./event-popover.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
+import JoinClasses from "../../utils/join-classes";
+import { apiUrl } from "../../constants/apiUrl";
+import GetAppointments from "./appointments-fetch";
 
 export default function CalendarEvent({
   event,
@@ -21,6 +42,7 @@ export default function CalendarEvent({
   data,
   selectedId,
   setSelectedEvent,
+  calendarDate,
 }: {
   event: {
     id: number | string;
@@ -33,13 +55,47 @@ export default function CalendarEvent({
   data?: IAppointments[];
   selectedId: string | number;
   setSelectedEvent: Dispatch<SetStateAction<string | number>>;
+  calendarDate: {
+    start: dayjs.Dayjs;
+    end: dayjs.Dayjs;
+  };
 }) {
   const startTime = dayjs(event.start).format("HH:mm a");
   const endTime = dayjs(event.end).format("HH:mm a");
 
   const appointmentData = data?.find((d) => d.id === event.id);
 
-  const [open, setOpen] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+
+  const deleteAppointment = useMutation({
+    mutationFn: async (appointmentId: number | string) => {
+      const res = await fetch(`${apiUrl}/appointments?id=${appointmentId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      return res.json();
+    },
+    onSuccess: () => {
+      appointmentsData.refetch().then(() => {
+        setOpenModal(false);
+      });
+    },
+    onError: () => {},
+  });
+
+  const appointmentsData = useQuery({
+    queryKey: ["calendar", calendarDate],
+    queryFn: (): Promise<IAppointments[]> =>
+      GetAppointments(
+        calendarDate.start.format("YYYY-MM-DD"),
+        calendarDate.end.format("YYYY-MM-DD")
+      ),
+    enabled: false,
+  });
 
   return (
     <>
@@ -70,9 +126,14 @@ export default function CalendarEvent({
 
         <Portal>
           <Content
+            id="event-popover"
             className={styles.Content}
             onInteractOutside={() => {
               setSelectedEvent(0);
+              console.log("outside");
+            }}
+            onPointerDownOutside={() => {
+              console.log("pot");
             }}
           >
             <div>
@@ -89,9 +150,51 @@ export default function CalendarEvent({
 
                 <p>{appointmentData?.owner.name}</p>
               </div>
+
+              <div
+                className={JoinClasses(
+                  "mt-[12px] flex gap-x-[12px]",
+                  styles.btns
+                )}
+              >
+                <button
+                  type="button"
+                  aria-label="edit appointment opens a dialog"
+                  title="edit appointment"
+                >
+                  <DriveFileRenameOutlineIcon htmlColor="#778ca2" />
+                </button>
+
+                <DeleteModal
+                  openModal={openModal}
+                  setOpenModal={setOpenModal}
+                  yesBtn={
+                    <button
+                      type="button"
+                      className=" default-button default-button-blue"
+                      onClick={() => deleteAppointment.mutate(event.id)}
+                    >
+                      yes
+                    </button>
+                  }
+                >
+                  <button
+                    type="submit"
+                    aria-label="delete appointment"
+                    title="delete appointment"
+                    onClick={() => setOpenModal(true)}
+                  >
+                    <DeleteIcon htmlColor="#778ca2" />
+                  </button>
+                </DeleteModal>
+              </div>
             </div>
 
-            <Close className={styles.Close} aria-label="Close">
+            <Close
+              className={styles.Close}
+              aria-label="Close"
+              onClick={() => setSelectedEvent(0)}
+            >
               <CloseIcon />
             </Close>
 
@@ -100,5 +203,50 @@ export default function CalendarEvent({
         </Portal>
       </Root>
     </>
+  );
+}
+
+function DeleteModal({
+  openModal,
+  setOpenModal,
+  children,
+  yesBtn,
+}: {
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
+  yesBtn: ReactNode;
+}) {
+  return (
+    <DialogRoot open={openModal} onOpenChange={setOpenModal}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
+      <DialogPortal>
+        <Overlay
+          className={styles["dialog-overlay"]}
+          onClick={() => setOpenModal(false)}
+        />
+
+        <DialogContent className={styles["dialog-content"]}>
+          <Title className="sr-only">delete appointment</Title>
+
+          <Description className="">
+            are you sure you want to delete this appointment
+          </Description>
+
+          <div className="flex gap-x-[12px] justify-center">
+            <button
+              type="button"
+              className="default-button"
+              onClick={() => setOpenModal(false)}
+            >
+              cancel
+            </button>
+
+            {yesBtn}
+          </div>
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
   );
 }

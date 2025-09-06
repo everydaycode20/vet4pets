@@ -1,3 +1,5 @@
+@import "../../assets/scss/colors/colors";
+
 .Content {
   border-radius: 6px;
   padding: 20px;
@@ -32,4 +34,51 @@
   top: 2px;
   right: 2px;
   padding: 10px;
+
+  &:hover {
+    background-color: $light-blue;
+  }
+}
+
+.btns {
+  button {
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  button:hover {
+    background-color: $light-blue;
+  }
+}
+
+.dialog {
+  &-overlay {
+    background-color: rgb(37 38 49 / 0.3);
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+  }
+
+  &-content {
+    position: fixed;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 450px;
+    max-height: 85vh;
+    z-index: 6;
+    padding: 40px 30px;
+    border-radius: 6px;
+
+    p {
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      max-width: 150px;
+    }
+  }
 }

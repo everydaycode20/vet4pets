@@ -266,6 +266,15 @@ header {
   &:hover {
     background-color: $light-gray-2;
   }
+
+  &-blue {
+    background-color: $blue;
+    color: white;
+
+    &:hover {
+      color: $light-gray-4;
+    }
+  }
 }
 
 .skeleton {

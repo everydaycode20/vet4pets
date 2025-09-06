@@ -46,7 +46,7 @@ export default function DatePicker({
     calendarOptions.day || undefined
   );
 
-  console.log(error, "ERROR");
+  // console.log(error, "ERROR");
 
   function setDateSelection(date: Date) {
     setCalendarOptions({ ...calendarOptions, day: date });
@@ -174,7 +174,7 @@ function TimeRangeTime({
 
   const ref = useRef<any>(null);
 
-  console.log(selectedTime);
+  // console.log(selectedTime);
 
   useEffect(() => {
     function handler(e: any) {

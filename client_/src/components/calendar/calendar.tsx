@@ -110,6 +110,7 @@ export default function CalendarExtended({
                 data={data}
                 selectedId={selectedEvent}
                 setSelectedEvent={setSelectedEvent}
+                calendarDate={calendarDate}
               />
             ),
         }}
@@ -130,8 +131,24 @@ export default function CalendarExtended({
         }}
         selectable
         onSelectSlot={handleSelectSlot}
-        onSelectEvent={(e) => {
-          setSelectedEvent(selectedEvent !== e.id ? e.id : 0);
+        onSelectEvent={(e, event) => {
+          console.log("A", event);
+
+          console.log(
+            document
+              .getElementById("event-popover")
+              ?.parentElement?.contains(event.target as Node)
+          );
+
+          if (
+            !document
+              .getElementById("event-popover")
+              ?.parentElement?.contains(event.target as Node)
+          ) {
+            console.log("is it false?");
+
+            setSelectedEvent(e.id);
+          }
         }}
         onNavigate={(e) => {
           if (view === "month") {

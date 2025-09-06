@@ -92,6 +92,8 @@ export default function Appointments() {
       ),
   });
 
+
+
   useEffect(() => {
     if (owner.id && owner.name) {
       dataOwnerPets.refetch();
@@ -207,8 +209,6 @@ function Form({
 
   const addAppointment = useMutation({
     mutationFn: async (data: IFormAppointment) => {
-      console.log(data, "FETCHHHHHHHHHHHHHHHH");
-
       const res = await fetch(`${apiUrl}/appointments`, {
         body: JSON.stringify({
           date: dayjs(data.date.start).format("YYYY-MM-DD HH:mm"),
