@@ -154,29 +154,14 @@ namespace API.Controllers
             appointment
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteAppointmentBy(TypeValues idType, int id)
+        [HttpDelete]
+        public async Task<ActionResult<string>> DeleteAppointmentBy([FromQuery] int id)
         {
             await using var context = applicationDbContext;
 
             var query = context.Appointments.AsQueryable();
 
-            Appointment? res = null;
-
-            if (idType == TypeValues.appointment)
-            {
-                res = await context.Appointments.FindAsync(id);
-            }
-
-            else if (idType == TypeValues.owner)
-            {
-                res = await context.Appointments.FirstOrDefaultAsync(o => o.OwnerId == id);
-            }
-
-            if (idType == TypeValues.pet)
-            {
-                res = await context.Appointments.FirstOrDefaultAsync(o => o.PetId == id);
-            }
+            var res = await context.Appointments.FindAsync(id);
 
             if (res == null)
             {
