@@ -43,14 +43,14 @@ import GetAppointments from "../../components/calendar/appointments-fetch";
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
 
-  const [owner, setOwner] = useState<{ id?: number; name?: string }>({});
-
   const [_, setCalendarOptions] = useAtom(options);
 
   const [calendarDate, setCalendarDate] = useState({
     start: dayjs().startOf("month"),
     end: dayjs().endOf("month"),
   });
+
+  console.log(_);
 
   const dataAppTypes = useQuery({
     queryKey: ["appointment-types"],
@@ -67,22 +67,6 @@ export default function Appointments() {
     },
   });
 
-  const dataOwnerPets = useQuery({
-    queryKey: ["owner-pets", owner.id !== undefined],
-    queryFn: async (): Promise<{ pets: IPet[] }> => {
-      const res = await fetch(`${apiUrl}/pets/owner?ownerId=${owner.id}`, {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      });
-
-      return await res.json();
-    },
-    enabled: false,
-  });
-
   const data = useQuery({
     queryKey: ["calendar", calendarDate],
     queryFn: (): Promise<IAppointments[]> =>
@@ -91,16 +75,6 @@ export default function Appointments() {
         calendarDate.end.format("YYYY-MM-DD")
       ),
   });
-
-
-
-  useEffect(() => {
-    if (owner.id && owner.name) {
-      dataOwnerPets.refetch();
-    }
-  }, [owner]);
-
-  console.log(dataOwnerPets.data);
 
   return (
     <section className="h-full">
@@ -113,6 +87,8 @@ export default function Appointments() {
       <Drawer
         open={state}
         onOpenChange={(modalOpened) => {
+          console.log(modalOpened);
+
           if (modalOpened === false) {
             setCalendarOptions({});
           }
@@ -130,12 +106,7 @@ export default function Appointments() {
           <DrawerHeader />
 
           <DrawerBody>
-            <Form
-              appointmentType={dataAppTypes.data}
-              setOwner={setOwner}
-              petData={dataOwnerPets.data?.pets}
-              refetch={data.refetch}
-            />
+            <Form appointmentType={dataAppTypes.data} refetch={data.refetch} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -187,25 +158,18 @@ interface IFormAppointment {
 
 function Form({
   appointmentType,
-  setOwner,
-  petData,
   refetch,
 }: {
   appointmentType?: IAppointmentsType[];
-  setOwner: Dispatch<
-    SetStateAction<{
-      id?: number;
-      name?: string;
-    }>
-  >;
-  petData?: IPet[];
   refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<IAppointments[], Error>>;
 }) {
   const [_, setState] = useAtom(addAppointmentState);
 
-  const [__, setCalendarOptions] = useAtom(options);
+  const [calendarOptions, setCalendarOptions] = useAtom(options);
+
+  const [owner, setOwner] = useState<{ id?: number; name?: string }>({});
 
   const addAppointment = useMutation({
     mutationFn: async (data: IFormAppointment) => {
@@ -242,6 +206,24 @@ function Form({
     },
   });
 
+  const dataOwnerPets = useQuery({
+    queryKey: ["owner-pets", owner.id !== undefined],
+    queryFn: async (): Promise<{ pets: IPet[] }> => {
+      const res = await fetch(`${apiUrl}/pets/owner?ownerId=${owner.id}`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      });
+
+      return await res.json();
+    },
+    enabled: owner.id !== undefined,
+  });
+
+  console.log(dataOwnerPets);
+
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
     console.log(data);
 
@@ -253,6 +235,7 @@ function Form({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<IFormAppointment>({
     resolver: zodResolver(schema),
@@ -262,6 +245,61 @@ function Form({
       pet: {},
     },
   });
+
+  const appointmentById = useQuery({
+    queryKey: ["appointment-types"],
+    queryFn: async (): Promise<IAppointments> => {
+      const res = await fetch(
+        `${apiUrl}/appointment-by-id?id=${calendarOptions.appointment?.id}`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        }
+      );
+
+      return await res.json();
+    },
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (calendarOptions.edit) {
+      setValue("pet.name", calendarOptions.appointment!.pet.name);
+      setValue("pet.id", calendarOptions.appointment!.pet.id);
+
+      setValue("owner.id", calendarOptions.appointment!.owner.id);
+      setValue("owner.name", calendarOptions.appointment!.owner.name);
+
+      setValue("service.id", calendarOptions.appointment!.type.id);
+      setValue("service.name", calendarOptions.appointment!.type.name);
+
+      setValue("date.start", calendarOptions.start!);
+      setValue("date.end", calendarOptions.end!);
+      setValue("date.selectedDate", new Date(calendarOptions.day));
+
+      setOwner({
+        id: calendarOptions.appointment?.owner.id,
+        name: calendarOptions.appointment?.owner.name,
+      });
+
+      // setCalendarOptions({ edit: false });
+    }
+
+    return () => {
+      // setCalendarOptions({ edit: false });
+    };
+  }, [calendarOptions.edit]);
+
+  useEffect(() => {
+    if (owner.id && owner.name) {
+      // dataOwnerPets.refetch();
+    }
+  }, [owner]);
+
+  console.log(calendarOptions);
 
   return (
     <div className={JoinClasses("", styles["form-container"])}>
@@ -280,6 +318,7 @@ function Form({
                 error={errors.service && "select a service"}
                 placeholder="Search or Select an appointment"
                 data={appointmentType}
+                edit
               />
             );
           }}
@@ -290,13 +329,23 @@ function Form({
             name="owner"
             control={control}
             render={({ field: { onChange, value } }) => {
-              if (value.id && value.name) {
-                setOwner(value);
+              console.log(value);
+
+              if (value.id && value.name && calendarOptions.edit) {
+                setTimeout(() => {
+                  setOwner(value); //TODO: fix
+                });
               }
 
               return (
                 <OwnerModal
-                  onChange={onChange}
+                  onChange={(e) => {
+                    if (e.id && e.name) {
+                      setOwner({ id: e.id, name: e.name });
+                    }
+
+                    onChange(e);
+                  }}
                   value={value}
                   button={
                     <button
@@ -335,7 +384,8 @@ function Form({
                 onBlur={onBlur}
                 error={errors.pet && "select a pet"}
                 placeholder="Search or Select a pet"
-                data={petData && petData}
+                data={dataOwnerPets.data && dataOwnerPets.data.pets}
+                edit={true}
               />
             );
           }}

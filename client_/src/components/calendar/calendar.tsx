@@ -83,7 +83,10 @@ export default function CalendarExtended({
       <Calendar
         localizer={localizer}
         events={
-          calendarOptions.start && calendarOptions.end && data2
+          calendarOptions.start &&
+          calendarOptions.end &&
+          data2 &&
+          calendarOptions.edit === false
             ? [
                 ...data2,
                 {
@@ -132,21 +135,11 @@ export default function CalendarExtended({
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={(e, event) => {
-          console.log("A", event);
-
-          console.log(
-            document
-              .getElementById("event-popover")
-              ?.parentElement?.contains(event.target as Node)
-          );
-
           if (
             !document
               .getElementById("event-popover")
               ?.parentElement?.contains(event.target as Node)
           ) {
-            console.log("is it false?");
-
             setSelectedEvent(e.id);
           }
         }}

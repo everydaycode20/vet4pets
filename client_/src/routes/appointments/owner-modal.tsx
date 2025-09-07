@@ -130,7 +130,7 @@ export default function OwnerModal({ button, onChange, value }: IOwnerModal) {
       <Trigger asChild>{button}</Trigger>
 
       <Portal>
-        <Overlay className={JoinClasses("yoooo wtf", styles.Overlay)} />
+        <Overlay className={JoinClasses("", styles.Overlay)} />
 
         <Content className={styles.Content}>
           <Title className="mb-[12px]">Select an owner</Title>

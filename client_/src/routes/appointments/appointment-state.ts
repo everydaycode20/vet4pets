@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { IAppointments } from "../../models/appointments.interface";
 
 export const addAppointmentState = atom(false);
 
@@ -8,6 +9,8 @@ interface IOptions {
   end?: Date;
   color?: string;
   day?: any;
+  edit?: boolean;
+  appointment?: IAppointments;
 }
 
 export const options = atom<IOptions>({

@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  startTransition,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import {
   ComboboxProvider,
   ComboboxLabel,
@@ -29,6 +22,7 @@ export default function ComboBox({
   label,
   error,
   onBlur,
+  edit = false,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
@@ -40,6 +34,7 @@ export default function ComboBox({
   ref?: any;
   error?: string;
   onBlur?: Noop;
+  edit?: boolean;
 }) {
   const [searchValue, setSearchValue] = useState("");
 
@@ -51,9 +46,12 @@ export default function ComboBox({
 
   function handleSelect({ id, name }: { id: number; name: string }) {
     setSearchValue(name);
+    console.log(id, name, "<-----------------------------------------------");
 
     onChange!({ id, name });
   }
+
+  console.log(value, "COMBOBOX");
 
   useEffect(() => {
     if (matches.length === 1 && !value) {
@@ -61,14 +59,29 @@ export default function ComboBox({
     }
   }, [matches]);
 
+  useEffect(() => {
+    if (edit) {
+      setSearchValue(value!.name);
+    }
+  }, [value]);
+
   return (
     <div className={JoinClasses("w-full", open ? "z-20" : "", "")}>
       <ComboboxProvider
         setValue={(value) => {
+          console.log(value, "<****************************");
+
           startTransition(() => setSearchValue(value));
         }}
         setOpen={(e) => {
           isOpen(e);
+        }}
+        // setSelectedValue={(e) => {
+        //   console.log(e, "////");
+
+        // }}
+        setActiveId={(e) => {
+          console.log(e, "AYOOOOO");
         }}
       >
         <div className={JoinClasses("w-full")}>

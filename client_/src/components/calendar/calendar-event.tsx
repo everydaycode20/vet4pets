@@ -23,18 +23,19 @@ import {
   Title,
 } from "@radix-ui/react-dialog";
 
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  useMutation,
-  useQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import styles from "./event-popover.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
 import JoinClasses from "../../utils/join-classes";
 import { apiUrl } from "../../constants/apiUrl";
 import GetAppointments from "./appointments-fetch";
+
+import { useAtom } from "jotai";
+import {
+  addAppointmentState,
+  options,
+} from "../../routes/appointments/appointment-state";
 
 export default function CalendarEvent({
   event,
@@ -66,6 +67,10 @@ export default function CalendarEvent({
   const appointmentData = data?.find((d) => d.id === event.id);
 
   const [openModal, setOpenModal] = useState(false);
+
+  const [state, setState] = useAtom(addAppointmentState);
+
+  const [calendarOptions, setCalendarOptions] = useAtom(options);
 
   const deleteAppointment = useMutation({
     mutationFn: async (appointmentId: number | string) => {
@@ -130,10 +135,6 @@ export default function CalendarEvent({
             className={styles.Content}
             onInteractOutside={() => {
               setSelectedEvent(0);
-              console.log("outside");
-            }}
-            onPointerDownOutside={() => {
-              console.log("pot");
             }}
           >
             <div>
@@ -161,6 +162,18 @@ export default function CalendarEvent({
                   type="button"
                   aria-label="edit appointment opens a dialog"
                   title="edit appointment"
+                  onClick={() => {
+                    setCalendarOptions({
+                      start: event.start,
+                      end: event.end,
+                      color: event.color,
+                      edit: true,
+                      appointment: appointmentData,
+                      day: event.start,
+                    });
+
+                    setState(true);
+                  }}
                 >
                   <DriveFileRenameOutlineIcon htmlColor="#778ca2" />
                 </button>
