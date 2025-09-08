@@ -5,8 +5,8 @@ export const addAppointmentState = atom(false);
 
 interface IOptions {
   mode?: "calendar" | "button";
-  start?: Date;
-  end?: Date;
+  start?: string;
+  end?: string;
   color?: string;
   day?: any;
   edit?: boolean;

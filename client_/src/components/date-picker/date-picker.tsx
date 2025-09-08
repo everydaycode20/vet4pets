@@ -42,7 +42,7 @@ export default function DatePicker({
 
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
-  const [selected, setSelected] = useState<Date | undefined>(
+  const [selected, setSelected] = useState<string | undefined>(
     calendarOptions.day || undefined
   );
 
@@ -52,10 +52,33 @@ export default function DatePicker({
     setCalendarOptions({ ...calendarOptions, day: date });
   }
 
+  console.log(calendarOptions);
+
   useEffect(() => {
+    console.log(
+      calendarOptions,
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    );
+
+    const selectedDate = dayjs(calendarOptions.day);
+
+    const startDate = dayjs(calendarOptions.start)
+      .year(selectedDate.year())
+      .month(selectedDate.month())
+      .date(selectedDate.date())
+      .format("YYYY-MM-DD HH:mm");
+
+    const endDate = dayjs(calendarOptions.end)
+      .year(selectedDate.year())
+      .month(selectedDate.month())
+      .date(selectedDate.date())
+      .format("YYYY-MM-DD HH:mm");
+
+    console.log(dayjs(startDate, "YYYY-MM-DD HH:mm").toDate());
+
     onChange!({
-      start: calendarOptions.start,
-      end: calendarOptions.end,
+      start: dayjs(startDate, "YYYY-MM-DD HH:mm").toDate(),
+      end: dayjs(endDate, "YYYY-MM-DD HH:mm").toDate(),
       selectedDate: calendarOptions.day,
     });
   }, [calendarOptions]);
@@ -103,18 +126,25 @@ export default function DatePicker({
         <TimeRangeTime
           label="Start"
           selectedTime={calendarOptions.start}
-          selectedDate={calendarOptions.day}
+          selectedDate={dayjs(calendarOptions.day, "YYYY-MM-DD HH:mm")
+            .local()
+            .toString()}
           classes={error && error.start && styles["time-select-error"]}
           error={error && error.start && error.start}
           onChange={(e) => {
-            setCalendarOptions({ ...calendarOptions, start: e });
+            setCalendarOptions({
+              ...calendarOptions,
+              start: e,
+            });
           }}
         />
 
         <TimeRangeTime
           label="End"
           selectedTime={calendarOptions.end}
-          selectedDate={calendarOptions.day}
+          selectedDate={dayjs(calendarOptions.day, "YYYY-MM-DD HH:mm")
+            .local()
+            .toString()}
           classes={error && error.end && styles["time-select-error"]}
           error={error && error.end && error.end}
           onChange={(e) => {
@@ -159,11 +189,11 @@ function TimeRangeTime({
   ...props
 }: {
   label: string;
-  selectedTime?: Date;
-  selectedDate?: Date;
+  selectedTime?: string;
+  selectedDate?: string;
   classes?: string;
   error?: any;
-  onChange?: (val: Date | undefined) => void;
+  onChange?: (val: string | undefined) => void;
   props?: any;
 }) {
   const [open, setOpen] = useState(false);
@@ -174,7 +204,7 @@ function TimeRangeTime({
 
   const ref = useRef<any>(null);
 
-  // console.log(selectedTime);
+  console.log(selectedTime, "NOCCCCC");
 
   useEffect(() => {
     function handler(e: any) {
@@ -276,7 +306,7 @@ function TimeRangeTime({
 
                 onChange &&
                   onChange(
-                    dayjs(selectedDate).hour(hours).minute(minutes).toDate()
+                    dayjs(selectedDate).hour(hours).minute(minutes).toString()
                   );
 
                 document.getElementById(`${label}-btn`)?.focus();

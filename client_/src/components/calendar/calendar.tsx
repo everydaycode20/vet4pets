@@ -63,20 +63,28 @@ export default function CalendarExtended({
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
       mode: "calendar",
-      start: slotInfo.start,
-      end: slotInfo.end,
+      start: dayjs(slotInfo.start, "YYYY-MM-DD HH:mm").toString(),
+      end: dayjs(slotInfo.end, "YYYY-MM-DD HH:mm").toString(),
     });
 
     setState(true);
   }, []);
 
-  const data2 = data?.map((a) => ({
-    id: a.id,
-    title: a.type.name,
-    start: dayjs(a.date).toDate(),
-    end: dayjs(a.endDate).toDate(),
-    color: a.type.color,
-  }));
+  const data2 = data?.map((a) => {
+    // console.log(
+    //   a,
+    //   dayjs(a.date, "YYYY-MM-DD HH:mm"),
+    //   dayjs(dayjs(a.date).format("YYYY-MM-DD HH:mm"))
+    // );
+
+    return {
+      id: a.id,
+      title: a.type.name,
+      start: dayjs(a.date).toDate(),
+      end: dayjs(a.endDate).toDate(),
+      color: a.type.color,
+    };
+  });
 
   return (
     <div className={JoinClasses("h-full bg-white", styles.container)}>
@@ -91,8 +99,12 @@ export default function CalendarExtended({
                 ...data2,
                 {
                   id: "temp-selection",
-                  start: calendarOptions.start,
-                  end: calendarOptions.end,
+                  start: dayjs(calendarOptions.start, "YYYY-MM-DD HH:mm")
+                    .local()
+                    .toDate(),
+                  end: dayjs(calendarOptions.end, "YYYY-MM-DD HH:mm")
+                    .local()
+                    .toDate(),
                   color: "",
                 },
               ]

@@ -5,6 +5,9 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, number, date } from "zod";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 import {
   Drawer,
@@ -39,6 +42,8 @@ import {
 import OwnerModal from "./owner-modal";
 import { IPet } from "../../models/pet.interface";
 import GetAppointments from "../../components/calendar/appointments-fetch";
+import IFormAppointment from "../../models/form-appointment.interface";
+import MakeJsonPatchRequest from "../../utils/json-patch-req";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
@@ -115,7 +120,7 @@ export default function Appointments() {
 }
 
 const schema = object({
-  service: object({
+  type: object({
     id: number(),
     name: string(),
   }),
@@ -135,26 +140,6 @@ const schema = object({
     ),
   }),
 });
-
-interface IFormAppointment {
-  service: {
-    id: number;
-    name: string;
-  };
-  owner: {
-    id: number;
-    name: string;
-  };
-  pet: {
-    id: number;
-    name: string;
-  };
-  date: {
-    start: Date;
-    end: Date;
-    selectedDate: Date;
-  };
-}
 
 function Form({
   appointmentType,
@@ -179,7 +164,7 @@ function Form({
           endDate: dayjs(data.date.end).format("YYYY-MM-DD HH:mm"),
           ownerId: data.owner.id,
           petId: data.pet.id,
-          typeId: data.service.id,
+          typeId: data.type.id,
         }),
         method: "POST",
         headers: {
@@ -222,14 +207,14 @@ function Form({
     enabled: owner.id !== undefined,
   });
 
-  console.log(dataOwnerPets);
-
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
     console.log(data);
 
-    addAppointment.mutate(data);
-
-    setState(false);
+    if (calendarOptions.edit) {
+      updateAppointmentById.mutate(data);
+    } else {
+      addAppointment.mutate(data);
+    }
   };
 
   const {
@@ -240,82 +225,85 @@ function Form({
   } = useForm<IFormAppointment>({
     resolver: zodResolver(schema),
     defaultValues: {
-      service: {},
+      type: {},
       owner: {},
       pet: {},
     },
   });
 
-  const appointmentById = useQuery({
-    queryKey: ["appointment-types"],
-    queryFn: async (): Promise<IAppointments> => {
+  console.log(errors, "ERRORS");
+
+  const updateAppointmentById = useMutation({
+    mutationFn: async (data: IFormAppointment) => {
+      console.log(data, "LOL");
+
+      console.log(JSON.stringify(MakeJsonPatchRequest(data)));
+
       const res = await fetch(
-        `${apiUrl}/appointment-by-id?id=${calendarOptions.appointment?.id}`,
+        `${apiUrl}/appointments/${calendarOptions.appointment?.id}`,
         {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          method: "GET",
+          method: "PATCH",
+          body: JSON.stringify(MakeJsonPatchRequest(data)),
         }
       );
 
       return await res.json();
     },
-    enabled: false,
+    onSuccess: () => {
+      setState(false);
+    },
+    onError: (e) => {
+      console.log("error", e);
+    },
   });
+
+  console.log(calendarOptions);
 
   useEffect(() => {
     if (calendarOptions.edit) {
+      console.log("ola");
+
       setValue("pet.name", calendarOptions.appointment!.pet.name);
       setValue("pet.id", calendarOptions.appointment!.pet.id);
 
       setValue("owner.id", calendarOptions.appointment!.owner.id);
       setValue("owner.name", calendarOptions.appointment!.owner.name);
 
-      setValue("service.id", calendarOptions.appointment!.type.id);
-      setValue("service.name", calendarOptions.appointment!.type.name);
+      setValue("type.id", calendarOptions.appointment!.type.id);
+      setValue("type.name", calendarOptions.appointment!.type.name);
 
-      setValue("date.start", calendarOptions.start!);
-      setValue("date.end", calendarOptions.end!);
-      setValue("date.selectedDate", new Date(calendarOptions.day));
+      setValue("date.start", dayjs(calendarOptions.start!).toDate());
+      setValue("date.end", dayjs(calendarOptions.end!).toDate());
+      setValue("date.selectedDate", dayjs(calendarOptions.day!).toDate());
+
+      console.log(dayjs(calendarOptions.end!).toDate(), calendarOptions.end);
 
       setOwner({
         id: calendarOptions.appointment?.owner.id,
         name: calendarOptions.appointment?.owner.name,
       });
-
-      // setCalendarOptions({ edit: false });
     }
-
-    return () => {
-      // setCalendarOptions({ edit: false });
-    };
   }, [calendarOptions.edit]);
-
-  useEffect(() => {
-    if (owner.id && owner.name) {
-      // dataOwnerPets.refetch();
-    }
-  }, [owner]);
-
-  console.log(calendarOptions);
 
   return (
     <div className={JoinClasses("", styles["form-container"])}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="service"
+          name="type"
           control={control}
           render={({ field: { onChange, value, onBlur } }) => {
             return (
               <ComboBox
                 label="Select an appointment type"
-                name="service"
+                name="type"
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                error={errors.service && "select a service"}
+                error={errors.type && "select a service"}
                 placeholder="Search or Select an appointment"
                 data={appointmentType}
                 edit
@@ -329,8 +317,6 @@ function Form({
             name="owner"
             control={control}
             render={({ field: { onChange, value } }) => {
-              console.log(value);
-
               if (value.id && value.name && calendarOptions.edit) {
                 setTimeout(() => {
                   setOwner(value); //TODO: fix
@@ -349,11 +335,13 @@ function Form({
                   value={value}
                   button={
                     <button
+                      disabled={calendarOptions.edit}
                       type="button"
                       className={JoinClasses(
                         "",
                         styles["select-owner-btn"],
-                        errors.owner && styles["select-owner-btn-error"]
+                        errors.owner && styles["select-owner-btn-error"],
+                        calendarOptions.edit && "cursor-not-allowed"
                       )}
                     >
                       {value.id ? `Change ${value.name}` : "Select an owner "}
