@@ -2,6 +2,7 @@
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,6 +27,44 @@ namespace API.Controllers
             var parsedDate = DateTime.Parse(date);
 
             var data = context.Appointments.Where(a => a.Date.Year == parsedDate.Year && a.Date.Month == parsedDate.Month && a.Date.Day == parsedDate.Day).ToList();
+
+            return Ok(data);
+        }
+
+        [HttpGet("appointment-by-id")]
+        public async Task<ActionResult<string>> GetAppointmentById([FromQuery] int id)
+        {
+            await using var context = applicationDbContext;
+
+            var data = await context.Appointments.Where(a => a.Id == id)
+                .Select(a => new AppointmentDTO
+                {
+                    Id = a.Id,
+                    Date = a.Date,
+                    EndDate = a.EndDate,
+                    Pet = new
+                    {
+                        a.Pet!.Id,
+                        a.Pet.Name,
+                        a.Pet.Age,
+                    },
+                    Owner = new
+                    {
+                        a.Owner!.Id,
+                        a.Owner.Name
+                    },
+                    Type = new
+                    {
+                        a.Type!.Id,
+                        a.Type.Name,
+                        a.Type.Color,
+                    }
+                }).FirstAsync();
+
+            if (data == null)
+            {
+                return NotFound(new { message = "not found" });
+            }
 
             return Ok(data);
         }
@@ -55,7 +94,7 @@ namespace API.Controllers
                     Owner = new
                     {
                         a.Owner!.Id,
-                        a.Owner.Name
+                        a.Owner.Name,
                     },
                     Type = new
                     {
@@ -122,29 +161,40 @@ namespace API.Controllers
             public int PetId { get; set; }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateAppointment(int id, [FromBody] EditAppointmentReq editAppointmentReq)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<string>> UpdateAppointment(int id, [FromBody] JsonPatchDocument<Appointment> patchDoc)
         {
-            await using var context = applicationDbContext;
-
-            var data = await context.Appointments.FindAsync(id);
-
-            if (data == null)
+            if (patchDoc != null)
             {
-                return NotFound(new { message = "not found" });
+                await using var context = applicationDbContext;
+
+                var data = await context.Appointments.FindAsync(id);
+
+                if (data == null)
+                {
+                    return NotFound(new { message = "not found" });
+                }
+
+                patchDoc.ApplyTo(data);
+
+                if (data.EndDate <= data.Date)
+                {
+                    return BadRequest(new { message = "EndDate must be later than Date" });
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await context.SaveChangesAsync();
+
+                return Ok(data);
             }
-
-            data.Date = editAppointmentReq.Date;
-
-            data.TypeId = editAppointmentReq.TypeId;
-
-            data.OwnerId = editAppointmentReq.OwnerId;
-
-            data.PetId = editAppointmentReq.PetId;
-
-            await context.SaveChangesAsync();
-
-            return Ok(data);
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         public enum TypeValues

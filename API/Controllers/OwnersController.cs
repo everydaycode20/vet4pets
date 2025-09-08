@@ -184,8 +184,9 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok(data);
+                await context.SaveChangesAsync();
 
+                return Ok(data);
             }
             else
             {
