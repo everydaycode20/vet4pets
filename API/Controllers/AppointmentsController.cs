@@ -1,8 +1,10 @@
 ﻿using API.Data;
 using API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using API.Signalr;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,9 +16,12 @@ namespace API.Controllers
     {
         private readonly ApplicationDbContext applicationDbContext;
 
-        public AppointmentsController(ApplicationDbContext applicationDbContext)
+        private readonly IHubContext<EventHub> _hubContext;
+
+        public AppointmentsController(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext)
         {
             this.applicationDbContext = applicationDbContext;
+            this._hubContext = hubContext;
         }
 
         [HttpGet]
@@ -310,6 +315,8 @@ namespace API.Controllers
         public async Task<ActionResult<string>> GetTotalBy()
         {
             await using var context = applicationDbContext;
+
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "salu2");
 
             var d = DateTime.Now;
 

@@ -1,9 +1,22 @@
 using API.Data;
+using API.Logger;
 using API.Middleware;
+using API.Models;
+using API.Signalr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsoleLogger(config =>
+{
+    config.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
+    config.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
+});
 
 // Add services to the container.
 
@@ -45,7 +58,29 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(connectionString).EnableSensitiveDataLogging().LogTo(Console.WriteLine, LogLevel.Information);
+});
 
+builder.Services.AddQuartz(q =>
+{
+    //var jobKey = new JobKey("event remainder");
+
+    //q.AddJob<ReminderJob>(o => o.WithIdentity(jobKey));
+
+    q.SchedulerId = "Scheduler-Core";
+    q.InterruptJobsOnShutdown = true;
+    q.InterruptJobsOnShutdownWithWait = true;
+    q.MaxBatchSize = 5;
+    q.UseDefaultThreadPool(tp =>
+    {
+        tp.MaxConcurrency = 10;
+    });
+
+    //q.AddTrigger(o => o.ForJob(jobKey).WithIdentity("send-remainder-event").WithCronSchedule("5/1 * * ? * * *"));
+});
+
+builder.Services.AddQuartzHostedService(o =>
+{
+    o.WaitForJobsToComplete = true;
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson();
@@ -69,6 +104,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<EventHub>("/events");
 
 app.UseMiddleware<AntiforgeryMiddleware>();
 
