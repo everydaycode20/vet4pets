@@ -63,20 +63,15 @@ export default function CalendarExtended({
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
       mode: "calendar",
-      start: dayjs(slotInfo.start, "YYYY-MM-DD HH:mm").toString(),
-      end: dayjs(slotInfo.end, "YYYY-MM-DD HH:mm").toString(),
+      start: slotInfo.start,
+      end: slotInfo.end,
+      day: slotInfo.start,
     });
 
     setState(true);
   }, []);
 
-  const data2 = data?.map((a) => {
-    // console.log(
-    //   a,
-    //   dayjs(a.date, "YYYY-MM-DD HH:mm"),
-    //   dayjs(dayjs(a.date).format("YYYY-MM-DD HH:mm"))
-    // );
-
+  const formattedData = data?.map((a) => {
     return {
       id: a.id,
       title: a.type.name,
@@ -86,29 +81,30 @@ export default function CalendarExtended({
     };
   });
 
+  const a = [
+    { id: 1, start: dayjs().toDate(), end: dayjs().toDate(), color: "" },
+  ];
+
   return (
     <div className={JoinClasses("h-full bg-white", styles.container)}>
       <Calendar
         localizer={localizer}
         events={
-          calendarOptions.start &&
           calendarOptions.end &&
-          data2 &&
-          calendarOptions.edit === false
+          calendarOptions.start &&
+          formattedData &&
+          !calendarOptions.edit
             ? [
-                ...data2,
+                ...formattedData,
                 {
                   id: "temp-selection",
-                  start: dayjs(calendarOptions.start, "YYYY-MM-DD HH:mm")
-                    .local()
-                    .toDate(),
-                  end: dayjs(calendarOptions.end, "YYYY-MM-DD HH:mm")
-                    .local()
-                    .toDate(),
+                  start: calendarOptions.start,
+                  end: calendarOptions.end,
                   color: "",
+                  title: "",
                 },
               ]
-            : data2
+            : formattedData
         }
         startAccessor="start"
         endAccessor="end"

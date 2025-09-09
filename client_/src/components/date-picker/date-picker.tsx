@@ -42,43 +42,16 @@ export default function DatePicker({
 
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
-  const [selected, setSelected] = useState<string | undefined>(
-    calendarOptions.day || undefined
-  );
-
-  // console.log(error, "ERROR");
-
   function setDateSelection(date: Date) {
     setCalendarOptions({ ...calendarOptions, day: date });
   }
 
-  console.log(calendarOptions);
-
   useEffect(() => {
-    console.log(
-      calendarOptions,
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    );
-
     const selectedDate = dayjs(calendarOptions.day);
 
-    const startDate = dayjs(calendarOptions.start)
-      .year(selectedDate.year())
-      .month(selectedDate.month())
-      .date(selectedDate.date())
-      .format("YYYY-MM-DD HH:mm");
-
-    const endDate = dayjs(calendarOptions.end)
-      .year(selectedDate.year())
-      .month(selectedDate.month())
-      .date(selectedDate.date())
-      .format("YYYY-MM-DD HH:mm");
-
-    console.log(dayjs(startDate, "YYYY-MM-DD HH:mm").toDate());
-
     onChange!({
-      start: dayjs(startDate, "YYYY-MM-DD HH:mm").toDate(),
-      end: dayjs(endDate, "YYYY-MM-DD HH:mm").toDate(),
+      start: calendarOptions.start,
+      end: calendarOptions.end,
       selectedDate: calendarOptions.day,
     });
   }, [calendarOptions]);
@@ -91,7 +64,7 @@ export default function DatePicker({
         )}
         mode="single"
         weekStartsOn={1}
-        selected={calendarOptions.day}
+        selected={dayjs(calendarOptions.day).toDate()}
         onSelect={(date) => setDateSelection(date!)}
         components={{
           Chevron: (props) => {
@@ -125,30 +98,26 @@ export default function DatePicker({
       <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
         <TimeRangeTime
           label="Start"
-          selectedTime={calendarOptions.start}
-          selectedDate={dayjs(calendarOptions.day, "YYYY-MM-DD HH:mm")
-            .local()
-            .toString()}
+          selectedTime={calendarOptions.start?.toString()}
+          selectedDate={calendarOptions.day?.toString()}
           classes={error && error.start && styles["time-select-error"]}
           error={error && error.start && error.start}
           onChange={(e) => {
             setCalendarOptions({
               ...calendarOptions,
-              start: e,
+              start: dayjs(e).toDate(),
             });
           }}
         />
 
         <TimeRangeTime
           label="End"
-          selectedTime={calendarOptions.end}
-          selectedDate={dayjs(calendarOptions.day, "YYYY-MM-DD HH:mm")
-            .local()
-            .toString()}
+          selectedTime={calendarOptions.end?.toString()}
+          selectedDate={calendarOptions.day?.toString()}
           classes={error && error.end && styles["time-select-error"]}
           error={error && error.end && error.end}
           onChange={(e) => {
-            setCalendarOptions({ ...calendarOptions, end: e });
+            setCalendarOptions({ ...calendarOptions, end: dayjs(e).toDate() });
           }}
         />
       </div>
@@ -203,8 +172,6 @@ function TimeRangeTime({
   );
 
   const ref = useRef<any>(null);
-
-  console.log(selectedTime, "NOCCCCC");
 
   useEffect(() => {
     function handler(e: any) {
@@ -284,7 +251,7 @@ function TimeRangeTime({
       </div>
 
       <div
-        aria-role="listbox"
+        // aria-role="listbox"
         className={JoinClasses(
           "absolute overflow-y-scroll cursor-pointer bg-white z-10",
           styles["option-list"],
@@ -296,13 +263,13 @@ function TimeRangeTime({
             <div
               className={JoinClasses("", styles.option)}
               key={index}
-              aria-role="option"
+              // aria-role="option"
               onClick={() => {
                 setOpen(false);
 
                 setTime(time.time);
 
-                const [hours, minutes] = time.time.split(":").map(Number);
+                const [hours, minutes] = time.hourTime24.split(":").map(Number);
 
                 onChange &&
                   onChange(

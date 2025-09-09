@@ -163,22 +163,13 @@ export default function CalendarEvent({
                   aria-label="edit appointment opens a dialog"
                   title="edit appointment"
                   onClick={() => {
-                    console.log(
-                      event,
-                      "||||||||||||||||||||||||||||||||||||||||||||||||>",
-                      event.start,
-                      dayjs(event.start.toString(), "YYYY-MM-DD HH:mm").local(),
-                      dayjs(event.start, "YYYY-MM-DD HH:mm").local().toDate(),
-                      event.start
-                    );
-
                     setCalendarOptions({
-                      start: event.start.toString(),
-                      end: event.end.toString(),
+                      start: event.start,
+                      end: event.end,
                       color: event.color,
                       edit: true,
                       appointment: appointmentData,
-                      day: event.start.toString(),
+                      day: event.start,
                     });
 
                     setState(true);

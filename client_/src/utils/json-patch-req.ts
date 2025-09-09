@@ -21,8 +21,6 @@ export default function MakeJsonPatchRequest(data: IFormAppointment) {
                 : dayjs(data[key].end).format("YYYY-MM-DD HH:mm"),
           };
 
-          console.log(dayjs(data[key].start).format("YYYY-MM-DD HH:mm"));
-
           arr.push(obj);
         }
       }

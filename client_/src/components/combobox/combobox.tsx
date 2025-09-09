@@ -46,12 +46,9 @@ export default function ComboBox({
 
   function handleSelect({ id, name }: { id: number; name: string }) {
     setSearchValue(name);
-    console.log(id, name, "<-----------------------------------------------");
 
     onChange!({ id, name });
   }
-
-  console.log(value, "COMBOBOX");
 
   useEffect(() => {
     if (matches.length === 1 && !value) {
@@ -69,19 +66,10 @@ export default function ComboBox({
     <div className={JoinClasses("w-full", open ? "z-20" : "", "")}>
       <ComboboxProvider
         setValue={(value) => {
-          console.log(value, "<****************************");
-
           startTransition(() => setSearchValue(value));
         }}
         setOpen={(e) => {
           isOpen(e);
-        }}
-        // setSelectedValue={(e) => {
-        //   console.log(e, "////");
-
-        // }}
-        setActiveId={(e) => {
-          console.log(e, "AYOOOOO");
         }}
       >
         <div className={JoinClasses("w-full")}>

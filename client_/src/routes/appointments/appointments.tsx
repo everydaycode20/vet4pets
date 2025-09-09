@@ -12,11 +12,10 @@ dayjs.extend(utc);
 import {
   Drawer,
   DrawerBody,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
+  DrawerDescription,
 } from "../../components/drawer/drawer";
 
 import CalendarExtended from "../../components/calendar/calendar";
@@ -55,8 +54,6 @@ export default function Appointments() {
     end: dayjs().endOf("month"),
   });
 
-  console.log(_);
-
   const dataAppTypes = useQuery({
     queryKey: ["appointment-types"],
     queryFn: async (): Promise<IAppointmentsType[]> => {
@@ -92,8 +89,6 @@ export default function Appointments() {
       <Drawer
         open={state}
         onOpenChange={(modalOpened) => {
-          console.log(modalOpened);
-
           if (modalOpened === false) {
             setCalendarOptions({});
           }
@@ -109,6 +104,12 @@ export default function Appointments() {
           )}
         >
           <DrawerHeader />
+
+          <DrawerTitle className="sr-only">add appointment</DrawerTitle>
+
+          <DrawerDescription className="sr-only">
+            add a new appointment by selecting type, owner, pet and date
+          </DrawerDescription>
 
           <DrawerBody>
             <Form appointmentType={dataAppTypes.data} refetch={data.refetch} />
@@ -184,6 +185,8 @@ function Form({
           mode: undefined,
           start: undefined,
         });
+
+        setState(false);
       });
     },
     onError: (error) => {
@@ -208,8 +211,6 @@ function Form({
   });
 
   const onSubmit: SubmitHandler<IFormAppointment> = (data) => {
-    console.log(data);
-
     if (calendarOptions.edit) {
       updateAppointmentById.mutate(data);
     } else {
@@ -231,14 +232,8 @@ function Form({
     },
   });
 
-  console.log(errors, "ERRORS");
-
   const updateAppointmentById = useMutation({
     mutationFn: async (data: IFormAppointment) => {
-      console.log(data, "LOL");
-
-      console.log(JSON.stringify(MakeJsonPatchRequest(data)));
-
       const res = await fetch(
         `${apiUrl}/appointments/${calendarOptions.appointment?.id}`,
         {
@@ -254,6 +249,8 @@ function Form({
       return await res.json();
     },
     onSuccess: () => {
+      refetch();
+
       setState(false);
     },
     onError: (e) => {
@@ -261,26 +258,17 @@ function Form({
     },
   });
 
-  console.log(calendarOptions);
-
   useEffect(() => {
     if (calendarOptions.edit) {
-      console.log("ola");
-
       setValue("pet.name", calendarOptions.appointment!.pet.name);
       setValue("pet.id", calendarOptions.appointment!.pet.id);
-
       setValue("owner.id", calendarOptions.appointment!.owner.id);
       setValue("owner.name", calendarOptions.appointment!.owner.name);
-
       setValue("type.id", calendarOptions.appointment!.type.id);
       setValue("type.name", calendarOptions.appointment!.type.name);
-
       setValue("date.start", dayjs(calendarOptions.start!).toDate());
       setValue("date.end", dayjs(calendarOptions.end!).toDate());
       setValue("date.selectedDate", dayjs(calendarOptions.day!).toDate());
-
-      console.log(dayjs(calendarOptions.end!).toDate(), calendarOptions.end);
 
       setOwner({
         id: calendarOptions.appointment?.owner.id,
@@ -306,7 +294,7 @@ function Form({
                 error={errors.type && "select a service"}
                 placeholder="Search or Select an appointment"
                 data={appointmentType}
-                edit
+                edit={calendarOptions.edit}
               />
             );
           }}
@@ -373,7 +361,7 @@ function Form({
                 error={errors.pet && "select a pet"}
                 placeholder="Search or Select a pet"
                 data={dataOwnerPets.data && dataOwnerPets.data.pets}
-                edit={true}
+                edit={calendarOptions.edit}
               />
             );
           }}
