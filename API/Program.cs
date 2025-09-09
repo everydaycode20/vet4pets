@@ -2,6 +2,7 @@ using API.Data;
 using API.Logger;
 using API.Middleware;
 using API.Models;
+using API.Jobs;
 using API.Signalr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -62,9 +63,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddQuartz(q =>
 {
-    //var jobKey = new JobKey("event remainder");
+    var jobKey = new JobKey("daily-event-remainder");
 
-    //q.AddJob<ReminderJob>(o => o.WithIdentity(jobKey));
+    q.AddJob<DailyJob>(o => o.WithIdentity(jobKey));
 
     q.SchedulerId = "Scheduler-Core";
     q.InterruptJobsOnShutdown = true;
@@ -75,7 +76,13 @@ builder.Services.AddQuartz(q =>
         tp.MaxConcurrency = 10;
     });
 
-    //q.AddTrigger(o => o.ForJob(jobKey).WithIdentity("send-remainder-event").WithCronSchedule("5/1 * * ? * * *"));
+    q.AddTrigger(o => o.ForJob(jobKey).WithIdentity("send-remainder-event").WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(8, 00)));
+
+    TriggerBuilder.Create()
+    .WithIdentity("every-day", "remainder")
+    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(8, 00))
+    .ForJob("daily-remainder")
+    .build();
 });
 
 builder.Services.AddQuartzHostedService(o =>
