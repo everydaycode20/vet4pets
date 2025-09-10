@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.Jobs;
 using API.Models;
 using API.Signalr;
 using Microsoft.AspNetCore.JsonPatch;
@@ -18,10 +19,15 @@ namespace API.Controllers
 
         private readonly IHubContext<EventHub> _hubContext;
 
-        public AppointmentsController(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext)
+        private readonly AppointmentScheduler appointmentScheduler;
+
+        public AppointmentsController(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext, AppointmentScheduler appointmentScheduler)
         {
             this.applicationDbContext = applicationDbContext;
+
             this._hubContext = hubContext;
+
+            this.appointmentScheduler = appointmentScheduler;
         }
 
         [HttpGet]
@@ -152,6 +158,8 @@ namespace API.Controllers
 
             await context.SaveChangesAsync();
 
+            await appointmentScheduler.ScheduleAppointment(app);
+
             return Ok(new { message = "ok" });
         }
 
@@ -194,6 +202,8 @@ namespace API.Controllers
 
                 await context.SaveChangesAsync();
 
+                await appointmentScheduler.UpdateScheduledApointment(data);
+
                 return Ok(data);
             }
             else
@@ -225,7 +235,9 @@ namespace API.Controllers
 
             context.Appointments.Remove(res);
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+
+            await appointmentScheduler.RemoveScheduledAppointment(id);
 
             return Ok(new { message = "ok" });
         }

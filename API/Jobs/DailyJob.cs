@@ -1,7 +1,9 @@
-﻿using System;
-using API.Data;
+﻿using API.Data;
 using API.Models;
 using API.Signalr;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
+using Quartz;
 
 namespace API.Jobs
 {
@@ -11,23 +13,27 @@ namespace API.Jobs
 
         private readonly IHubContext<EventHub> _hubContext;
 
-        public DailyJob(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext)
+        private readonly IScheduler scheduler;
+
+        public DailyJob(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext, IScheduler scheduler)
         {
             this.applicationDbContext = applicationDbContext;
 
             this._hubContext = hubContext;
+
+            this.scheduler = scheduler;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             try
             {
-                await using var context = applicationDbContext;
+                var ctx = applicationDbContext;
 
                 var date = DateTime.Now;
 
-                var data = context.Appointments
-                    .Where(a => a.Date.Month == date.Month && a.Date.Date == date.Date)
+                var data = ctx.Appointments
+                    .Where(a => a.Date.Date == date.Date)
                     .Select(a => new AppointmentDTO
                     {
                         Id = a.Id,
@@ -54,24 +60,36 @@ namespace API.Jobs
                 .OrderBy(a => a.Date)
                 .ToList();
 
-                if (data.Any())
+                if (data.Count == 0)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 foreach (var item in data)
                 {
-                    await eventHub.SendMessageToCaller(a);
-                }
+                    var jobKey = new JobKey(item.Id.ToString(), "appointments");
 
-                return Task.CompletedTask;
+                    var job = JobBuilder.Create<AppointmentJob>()
+                        .WithIdentity(jobKey)
+                        .UsingJobData("appointment", JsonConvert.SerializeObject(item))
+                        .Build();
+
+                    var trigger = TriggerBuilder.Create()
+                    .WithIdentity(item.Id.ToString(), "appointments")
+                    .StartAt(item.Date.AddMinutes(-5))
+                    .WithSimpleSchedule(x => x
+                    .WithIntervalInMinutes(5)
+                    .WithRepeatCount(1))
+                    .Build();
+
+                    await scheduler.ScheduleJob(job, trigger);
+                }
             }
             catch (Exception ex)
             {
                 throw new JobExecutionException(ex, refireImmediately: true)
                 {
-                    UnscheduleFiringTrigger = true,
-                    UnscheduleAllTriggers = true,
+                    UnscheduleFiringTrigger = true
                 };
             }
         }
