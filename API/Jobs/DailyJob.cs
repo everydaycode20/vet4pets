@@ -13,27 +13,29 @@ namespace API.Jobs
 
         private readonly IHubContext<EventHub> _hubContext;
 
-        private readonly IScheduler scheduler;
+        private readonly ISchedulerFactory schedulerFactory;
 
-        public DailyJob(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext, IScheduler scheduler)
+        public DailyJob(ApplicationDbContext applicationDbContext, IHubContext<EventHub> hubContext, ISchedulerFactory schedulerFactory)
         {
             this.applicationDbContext = applicationDbContext;
 
             this._hubContext = hubContext;
 
-            this.scheduler = scheduler;
+            this.schedulerFactory = schedulerFactory;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             try
             {
+                var scheduler = await schedulerFactory.GetScheduler();
+
                 var ctx = applicationDbContext;
 
                 var date = DateTime.Now;
 
                 var data = ctx.Appointments
-                    .Where(a => a.Date.Date == date.Date)
+                    .Where(a => a.Date.Date == DateTime.Today)
                     .Select(a => new AppointmentDTO
                     {
                         Id = a.Id,
@@ -67,6 +69,8 @@ namespace API.Jobs
 
                 foreach (var item in data)
                 {
+                    Console.WriteLine(item.Date);
+
                     var jobKey = new JobKey(item.Id.ToString(), "appointments");
 
                     var job = JobBuilder.Create<AppointmentJob>()
@@ -74,19 +78,32 @@ namespace API.Jobs
                         .UsingJobData("appointment", JsonConvert.SerializeObject(item))
                         .Build();
 
-                    var trigger = TriggerBuilder.Create()
-                    .WithIdentity(item.Id.ToString(), "appointments")
-                    .StartAt(item.Date.AddMinutes(-5))
-                    .WithSimpleSchedule(x => x
-                    .WithIntervalInMinutes(5)
-                    .WithRepeatCount(1))
-                    .Build();
+                    var bTrigger = TriggerBuilder.Create()
+                        .WithIdentity(item.Id.ToString(), "appointments")
+                        .ForJob(jobKey)
+                        .StartAt(item.Date.AddMinutes(-5))
+                        .Build();
 
-                    await scheduler.ScheduleJob(job, trigger);
+                    var aTrigger = TriggerBuilder.Create()
+                        .WithIdentity(item.Id.ToString(), "appointments")
+                        .ForJob(jobKey)
+                        .StartAt(item.Date)
+                        .Build();
+
+                    if (await scheduler.CheckExists(jobKey))
+                    {
+                        await scheduler.DeleteJob(jobKey);
+                    }
+
+                    Console.WriteLine("schedule working");
+
+                    await scheduler.ScheduleJob(job, [bTrigger, aTrigger], replace: false);
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
+
                 throw new JobExecutionException(ex, refireImmediately: true)
                 {
                     UnscheduleFiringTrigger = true

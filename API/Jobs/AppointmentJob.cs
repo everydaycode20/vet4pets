@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using API.Signalr;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Quartz;
 
@@ -6,9 +7,9 @@ namespace API.Models
 {
     public class AppointmentJob : IJob
     {
-        private readonly IHubContext _hubContext;
+        private readonly IHubContext<EventHub> _hubContext;
 
-        public AppointmentJob(IHubContext hubContext)
+        public AppointmentJob(IHubContext<EventHub> hubContext)
         {
             this._hubContext = hubContext;
         }

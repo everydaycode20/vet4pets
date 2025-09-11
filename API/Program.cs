@@ -12,12 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
-builder.Logging.ClearProviders();
-builder.Logging.AddConsoleLogger(config =>
-{
-    config.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
-    config.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
-});
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsoleLogger(config =>
+//{
+//    config.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
+//    config.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
+//});
 
 // Add services to the container.
 
@@ -79,7 +79,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(o => o
         .ForJob(jobKey)
         .WithIdentity("every-day", "remainder")
-        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(8, 00))
+        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(19, 1))
     );
 });
 

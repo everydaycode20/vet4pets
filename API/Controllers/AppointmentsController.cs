@@ -328,8 +328,6 @@ namespace API.Controllers
         {
             await using var context = applicationDbContext;
 
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "salu2");
-
             var d = DateTime.Now;
 
             var startDate = new DateTime(d.Year, d.Month, 1);
@@ -391,8 +389,6 @@ namespace API.Controllers
                 FromSqlRaw(@"select format([Date], 'yyyy') as 'year', 
                     count(*) as total from appointment 
                     group by format([Date], 'yyyy'), YEAR([Date]) order by YEAR([Date])").ToListAsync();
-
-
 
             return Ok(new
             {
