@@ -1,6 +1,89 @@
+@import "../../assets/scss/colors/colors";
+
 .notification-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   right: 0;
+  animation: scaleDot 0.8s 1s ease-out forwards;
+  opacity: 0;
+}
+
+.new-notification {
+  animation: ring 1s ease-in-out forwards;
+}
+
+.notifications-content {
+  width: 264px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 6px;
+  z-index: 10;
+  color: $black;
+
+  &-item {
+    width: 100%;
+    padding: 5px;
+    border-radius: 6px;
+
+    &:focus,
+    &:hover {
+      background-color: $light-gray-2;
+    }
+  }
+}
+
+@keyframes ring {
+  0% {
+    transform: rotate(35deg);
+  }
+  12.5% {
+    transform: rotate(-30deg);
+  }
+  25% {
+    transform: rotate(25deg);
+  }
+  37.5% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  62.5% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes scaleDot {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+
+  25% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
+
+  75% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

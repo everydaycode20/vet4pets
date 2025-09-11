@@ -1,3 +1,5 @@
 const apiUrl = "https://localhost:7206/api";
 
-export { apiUrl };
+const socketUrl = "https://localhost:7206";
+
+export { apiUrl, socketUrl };

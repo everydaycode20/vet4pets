@@ -6,6 +6,8 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import { HubConnectionBuilder } from "@microsoft/signalr";
+
 import "./App.scss";
 
 import Login from "./routes/login/login";
