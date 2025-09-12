@@ -7,17 +7,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using API.Models;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
-//builder.Logging.ClearProviders();
-//builder.Logging.AddConsoleLogger(config =>
-//{
-//    config.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
-//    config.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
-//});
+builder.Logging.ClearProviders();
+builder.Logging.AddConsoleLogger(config =>
+{
+    config.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
+    config.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
+});
 
 // Add services to the container.
 
@@ -79,7 +80,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(o => o
         .ForJob(jobKey)
         .WithIdentity("every-day", "remainder")
-        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(19, 1))
+        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18, 7))
     );
 });
 
@@ -90,7 +91,15 @@ builder.Services.AddQuartzHostedService(o =>
 
 builder.Services.AddScoped<AppointmentScheduler>();
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+});
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

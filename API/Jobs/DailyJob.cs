@@ -3,6 +3,7 @@ using API.Models;
 using API.Signalr;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Quartz;
 
 namespace API.Jobs
@@ -43,20 +44,20 @@ namespace API.Jobs
                         EndDate = a.EndDate,
                         Pet = new
                         {
-                            a.Pet!.Id,
-                            a.Pet.Name,
-                            a.Pet.Age,
+                            id = a.Pet!.Id,
+                            name = a.Pet.Name,
+                            age = a.Pet.Age,
                         },
                         Owner = new
                         {
-                            a.Owner!.Id,
-                            a.Owner.Name,
+                            id = a.Owner!.Id,
+                            name = a.Owner.Name,
                         },
                         Type = new
                         {
-                            a.Type!.Id,
-                            a.Type.Name,
-                            a.Type.Color,
+                            id = a.Type!.Id,
+                            name = a.Type.Name,
+                            color = a.Type.Color,
                         }
                     })
                 .OrderBy(a => a.Date)
@@ -69,13 +70,11 @@ namespace API.Jobs
 
                 foreach (var item in data)
                 {
-                    Console.WriteLine(item.Date);
-
                     var jobKey = new JobKey(item.Id.ToString(), "appointments");
 
                     var job = JobBuilder.Create<AppointmentJob>()
                         .WithIdentity(jobKey)
-                        .UsingJobData("appointment", JsonConvert.SerializeObject(item))
+                        .UsingJobData("appointment", JsonConvert.SerializeObject(item, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }))
                         .Build();
 
                     var bTrigger = TriggerBuilder.Create()
