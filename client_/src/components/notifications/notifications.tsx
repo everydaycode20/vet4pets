@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
-import { Dropdown } from "@mui/base/Dropdown";
-import { MenuButton } from "@mui/base/MenuButton";
-import { Menu } from "@mui/base/Menu";
-import { MenuItem } from "@mui/base/MenuItem";
+import { useEffect, useRef, useState } from "react";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import {
-  DropdownMenu,
   Root,
   Trigger,
   Portal,
   Item,
   Content,
 } from "@radix-ui/react-dropdown-menu";
+import dayjs from "dayjs";
 
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
@@ -19,11 +15,24 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./notifications.module.scss";
 import { socketUrl } from "../../constants/apiUrl";
+import { IAppointments } from "../../models/appointments.interface";
+
+interface AppointmentNotification extends IAppointments {
+  read?: boolean;
+}
 
 export default function Notifications() {
   const [notification, setNotification] = useState(false);
 
+  const [appointments, setAppointments] = useState<AppointmentNotification[]>(
+    []
+  );
+
+  const initialized = useRef(false);
+
   function connect() {
+    const appointmentJson = sessionStorage.getItem("next-appointments");
+
     const conn = new HubConnectionBuilder()
       .withUrl(`${socketUrl}/events`)
       .build();
@@ -31,11 +40,25 @@ export default function Notifications() {
     conn.on("ReceiveMessage", (receiveMessage) => {
       console.log(receiveMessage);
 
-      setNotification(true);
+      const appointment: AppointmentNotification = JSON.parse(receiveMessage);
 
-      setTimeout(() => {
-        setNotification(false);
-      }, 2000);
+      appointment.read = false;
+
+      const appArr = [appointment, ...appointments].reverse();
+
+      setAppointments((prev) => [appointment, ...prev]);
+
+      if (appointmentJson === null) {
+        sessionStorage.setItem("next-appointments", JSON.stringify(appArr));
+      } else {
+        const arr: AppointmentNotification[] = JSON.parse(appointmentJson);
+
+        arr.unshift(appointment);
+
+        sessionStorage.setItem("next-appointments", JSON.stringify(arr));
+      }
+
+      setNotification(true);
     });
 
     conn.start().then(() => {
@@ -44,12 +67,42 @@ export default function Notifications() {
   }
 
   useEffect(() => {
-    connect();
+    if (!initialized.current) {
+      initialized.current = true;
+
+      const appointmentJson = sessionStorage.getItem("next-appointments");
+
+      if (appointmentJson) {
+        setAppointments(JSON.parse(appointmentJson));
+      }
+
+      try {
+        connect();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }, []);
 
+  function changeRead(appointment: AppointmentNotification) {
+    if (appointments) {
+      const app = appointments.map((a) => {
+        if (a.read === false && a.id === appointment.id) {
+          a.read = true;
+        }
+
+        return a;
+      });
+
+      setAppointments(app);
+
+      sessionStorage.setItem("next-appointments", JSON.stringify(app));
+    }
+  }
+
   return (
-    <div className="">
-      <Root>
+    <div className="" aria-live="polite">
+      <Root onOpenChange={() => setNotification(false)}>
         <Trigger
           className={JoinClasses(
             "relative",
@@ -74,59 +127,58 @@ export default function Notifications() {
           <Content
             className={JoinClasses("shadow-1", styles["notifications-content"])}
           >
-            <Item className={styles["notifications-content-item"]}>
-              <div className="flex flex-col gap-x-[5px]">
-                <span className="font-bold">appointment type</span>
+            {appointments.length === 0 && (
+              <span className="text-black p-[2px]">
+                no new appointments coming up
+              </span>
+            )}
 
-                <span className="font-semibold">Sep 10, 10:00am</span>
-              </div>
+            {appointments.length > 0 &&
+              appointments.map((appointment) => {
+                return (
+                  <Item
+                    onMouseEnter={() => changeRead(appointment)}
+                    onFocus={() => changeRead(appointment)}
+                    key={appointment.id}
+                    className={JoinClasses(
+                      "relative",
+                      styles["notifications-content-item"]
+                    )}
+                  >
+                    {!appointment.read && (
+                      <div
+                        className={JoinClasses(
+                          "absolute bg-blue",
+                          styles["notifications-content-item-read"]
+                        )}
+                      ></div>
+                    )}
 
-              <div className="flex flex-col">
-                <span>
-                  <span>Pet:</span> Ancalagon
-                </span>
+                    <div
+                      className={JoinClasses(
+                        "flex flex-col gap-x-[6px]",
+                        styles["notifications-content-item-type"]
+                      )}
+                    >
+                      <span className="font-bold">{appointment.type?.name}</span>
 
-                <span>
-                  <span>Owner</span> Morgoth
-                </span>
-              </div>
-            </Item>
+                      <span className="">
+                        {dayjs(appointment.date).format("MMM D, h:mm a")}
+                      </span>
+                    </div>
 
-            <Item className={styles["notifications-content-item"]}>
-              <div className="flex flex-col gap-x-[5px]">
-                <span className="font-bold">appointment type</span>
+                    <div className="flex gap-x-[8px]">
+                      <span>
+                        <span>Pet:</span> {appointment.pet?.name}
+                      </span>
 
-                <span className="font-semibold">Sep 10, 10:00am</span>
-              </div>
-
-              <div className="flex flex-col">
-                <span>
-                  <span>Pet:</span> Ancalagon
-                </span>
-
-                <span>
-                  <span>Owner</span> Morgoth
-                </span>
-              </div>
-            </Item>
-
-            <Item className={styles["notifications-content-item"]}>
-              <div className="flex flex-col gap-x-[5px]">
-                <span className="font-bold">appointment type</span>
-
-                <span className="font-semibold">Sep 10, 10:00am</span>
-              </div>
-
-              <div className="flex flex-col">
-                <span>
-                  <span className="font-semibold">Pet:</span> Ancalagon
-                </span>
-
-                <span>
-                  <span className="font-semibold">Owner:</span> Morgoth
-                </span>
-              </div>
-            </Item>
+                      <span>
+                        <span>Owner:</span> {appointment.owner?.name}
+                      </span>
+                    </div>
+                  </Item>
+                );
+              })}
           </Content>
         </Portal>
       </Root>

@@ -19,8 +19,8 @@ export interface ITelephones {
 export interface IOwner {
   id: number;
   name: string;
-  email: string;
-  address: string;
-  telephones: ITelephones[];
-  createdAt: string;
+  email?: string;
+  address?: string;
+  telephones?: ITelephones[];
+  createdAt?: string;
 }

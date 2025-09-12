@@ -7,7 +7,11 @@ import {
 } from "react";
 import { useAtom } from "jotai";
 import { Calendar, dayjsLocalizer, SlotInfo } from "react-big-calendar";
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
@@ -60,6 +64,8 @@ export default function CalendarExtended({
 
   const [selectedEvent, setSelectedEvent] = useState<string | number>(0);
 
+  const [currentDate, setCurrentDate] = useState<Date>();
+
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
       mode: "calendar",
@@ -71,6 +77,16 @@ export default function CalendarExtended({
     setState(true);
   }, []);
 
+  const { refetch } = useQuery({
+    queryKey: ["calendar", calendarDate],
+    queryFn: (): Promise<IAppointments[]> =>
+      GetAppointments(
+        calendarDate.start.format("YYYY-MM-DD"),
+        calendarDate.end.format("YYYY-MM-DD")
+      ),
+    enabled: false,
+  });
+
   const formattedData = data?.map((a) => {
     return {
       id: a.id,
@@ -80,10 +96,6 @@ export default function CalendarExtended({
       color: a.type.color,
     };
   });
-
-  const a = [
-    { id: 1, start: dayjs().toDate(), end: dayjs().toDate(), color: "" },
-  ];
 
   return (
     <div className={JoinClasses("h-full bg-white", styles.container)}>
@@ -112,7 +124,16 @@ export default function CalendarExtended({
         max={maxDate}
         min={minDate}
         components={{
-          toolbar: Toolbar,
+          toolbar: ({ onNavigate, label, onView, view }) => (
+            <Toolbar
+              label={label}
+              onNavigate={onNavigate}
+              onView={onView}
+              view={view}
+              setCalendarDate={setCalendarDate}
+              currentDate={currentDate}
+            />
+          ),
           event: (props) =>
             data && (
               <CalendarEvent
@@ -152,7 +173,11 @@ export default function CalendarExtended({
           }
         }}
         onNavigate={(e) => {
+          setCurrentDate(e);
+
           if (view === "month") {
+            console.log("A");
+
             setCalendarDate({
               start: dayjs(e).startOf("month"),
               end: dayjs(e).endOf("month"),
@@ -179,11 +204,20 @@ function Toolbar({
   label,
   onView,
   view,
+  setCalendarDate,
+  currentDate,
 }: {
   onNavigate: (action: "PREV" | "TODAY" | "NEXT") => void;
   onView: (view: "month" | "week" | "work_week" | "day" | "agenda") => void;
   label: string;
   view: string;
+  setCalendarDate: Dispatch<
+    SetStateAction<{
+      start: dayjs.Dayjs;
+      end: dayjs.Dayjs;
+    }>
+  >;
+  currentDate?: Date;
 }) {
   const views = ["Month", "Week", "Day"];
 
@@ -204,6 +238,13 @@ function Toolbar({
   const goToView = (
     view: "month" | "week" | "work_week" | "day" | "agenda"
   ) => {
+    if (view === "month") {
+      setCalendarDate({
+        start: dayjs(currentDate).startOf("month"),
+        end: dayjs(currentDate).endOf("month"),
+      });
+    }
+
     onView(view);
   };
 

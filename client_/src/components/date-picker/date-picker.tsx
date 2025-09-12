@@ -146,6 +146,9 @@ const timeArr = [
   { time: "4:30", hourTime24: "16:30" },
   { time: "5:00", hourTime24: "17:00" },
   { time: "5:30", hourTime24: "17:30" },
+  { time: "6:30", hourTime24: "18:30" },
+  { time: "7:00", hourTime24: "19:00" },
+  { time: "8:30", hourTime24: "20:30" },
 ];
 
 function TimeRangeTime({
