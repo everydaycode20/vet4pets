@@ -2,6 +2,7 @@
 using API.Jobs;
 using API.Models;
 using API.Signalr;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -30,6 +31,7 @@ namespace API.Controllers
             this.appointmentScheduler = appointmentScheduler;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAppointmentsByDate([FromQuery] string date)
         {
@@ -42,6 +44,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet("appointment-by-id")]
         public async Task<ActionResult<string>> GetAppointmentById([FromQuery] int id)
         {
@@ -80,6 +83,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet("date-range")]
         public async Task<ActionResult<string>> GetAppointmentsByDateRange([FromQuery] string start, [FromQuery] string end)
         {
@@ -120,6 +124,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet("owner/{id}")]
         public async Task<ActionResult<string>> GetAppointmentsByOwner(int id)
         {
@@ -130,6 +135,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet("pet/{id}")]
         public async Task<ActionResult<string>> GetAppointmentsByPet(int id)
         {
@@ -140,6 +146,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<string>> AddAppointment([FromBody] Appointment appointment)
         {
@@ -174,6 +181,7 @@ namespace API.Controllers
             public int PetId { get; set; }
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateAppointment(int id, [FromBody] JsonPatchDocument<Appointment> patchDoc)
         {
@@ -219,6 +227,7 @@ namespace API.Controllers
             appointment
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult<string>> DeleteAppointmentBy([FromQuery] int id)
         {
@@ -242,6 +251,7 @@ namespace API.Controllers
             return Ok(new { message = "ok" });
         }
 
+        [Authorize]
         [HttpGet("search")]
         public async Task<ActionResult<string>> SearchBy([FromQuery] DateTime? date, [FromQuery] int? ownerId, [FromQuery] int? petId, [FromQuery] int? typeId, int pageNumber = 1, int pageSize = 20)
         {
@@ -281,6 +291,7 @@ namespace API.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet("all")]
         public async Task<ActionResult<string>> GetAppointmentsBy([FromQuery] string type, DateTime date)
         {
@@ -323,6 +334,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet("dashboard")]
         public async Task<ActionResult<string>> GetTotalBy()
         {

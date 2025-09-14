@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAllAppointmentTypes()
         {

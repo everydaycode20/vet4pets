@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> GetOwnerById(int id)
         {
@@ -46,6 +48,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAllOwners([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
@@ -98,6 +101,7 @@ namespace API.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet("owner-with-pets")]
         public async Task<ActionResult<string>> GetAllOwnersWithPets([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
@@ -151,6 +155,7 @@ namespace API.Controllers
             });
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<string>> AddOwner([FromBody] Owner owner)
         {
@@ -194,6 +199,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteOwner(int id)
         {

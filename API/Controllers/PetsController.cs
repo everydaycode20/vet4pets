@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Models;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAllPets([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
@@ -49,6 +51,7 @@ namespace API.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet("owner")]
         public async Task<ActionResult<string>> GetPetByOwner([FromQuery] int ownerId)
         {
@@ -75,6 +78,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<String>> AddPet([FromBody] Pet pet)
         {
@@ -87,6 +91,7 @@ namespace API.Controllers
             return Ok(new { message = "ok" });
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdatePet(int id, [FromBody] JsonPatchDocument<Pet> patchDoc)
         {
@@ -119,6 +124,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeletePet(int id)
         {
