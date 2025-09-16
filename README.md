@@ -1,39 +1,37 @@
-# Vet4Pets-React-Sass-Express-MySQL
+# Vet4Pets-Veterinary Management Dashboard
 
-https://user-images.githubusercontent.com/63354464/144470134-6d6d86f3-a22e-440a-82b8-2d530a070f15.mp4
+This project is a revamp of a veterinary management system I had built before. I decided to rebuild it from scratch this time with better architecture, maintainability, and modern tooling.
 
-Vet4Pets is a dashboard for a veterinary shop. With it, you can make appointments, add owners and pets. The project consists of three folders: client, server, and sql. The client holds the frontend, the server the backend, and in the SQL folder the script to create the database.
+## Features
 
-## Technologies
+* Appointments Management: Schedule, update, and track appointments.
+* Authentication and Authorization: implemented ASP.NET Identity for access.
+* Owners and Pet records: manage clients and their pets with their medical and personal data.
+* Real-time notifications: using SignalR for instant updates (appointments reminders).
+* Task scheduling: automated reminders with Quarttz.NET.
+* Analytics and reporting: basic stats such as appointments per week, day, or type.
+* Responsive frontend: built with React, Tailwind, Sass, React Query and Typescript.
+* Accessibility: accessible headless components.
 
-* React
-* Sass
-* Express
-* MySQL
+## Tech Stack
+### Backend
+* C#, ASP.NET Core (.NET 8)
+* SQL Server (Entity Framework)
+* ASP.NET Identity
+* SignaR
+* Quartz.NET
 
-## Usage
+### Frontend
+* React + Vite
+* React Query
+* Typescript
+* Tailwind CSS
 
-To be able to run this project, you have to have installed MySQL and Node previously.
+## Why a revamp?
+* I could write cleaner and more maintainable code.
+* I had learned modern frontend practices.
+* I have improved my backend knowledge and wanted to make a better API.
 
-```bash
-
-    # on both client and server folders
-    
-    # install dependencies
-    npm install
-
-    # start server and client
-    npm start
-
-```
-
-## Project Status
-
-This project is in progress.
-
-## To do
-
-* Authentication
-* ~~Complete sidebar~~
-* Improve design
-* Improve DB schema
+### Future improvements
+* Role-based access (Admin, Vet, Receptionist).
+* More detailed reporting and charts.
