@@ -121,9 +121,6 @@ function App() {
 function RequireAuth({ children }: { children: ReactNode }) {
   const { data: user } = useGetUser();
 
-  // console.log(user);
-  useEffect(() => {}, []);
-
   return user === false ? <Navigate to="/login" replace /> : children;
   // return children;
 }

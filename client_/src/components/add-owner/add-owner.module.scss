@@ -24,7 +24,6 @@
     display: flex;
     flex-direction: column;
     row-gap: 12px;
-
   }
 
   &-row {
@@ -32,6 +31,33 @@
 
     @include media-down(sm2) {
       flex-direction: column;
+    }
+  }
+}
+
+.phone-type {
+  &-content {
+    width: 200px;
+    z-index: 9999;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 6px;
+    color: $black;
+    border: 1px solid $light-gray;
+
+    &-item {
+      width: 100%;
+      padding: 5px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: default;
+
+      &:focus,
+      &:hover {
+        background-color: $light-gray-2;
+      }
     }
   }
 }

@@ -5,6 +5,8 @@ import {
   DrawerBody,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
+  DrawerTitle
 } from "../../components/drawer/drawer";
 
 import AddOwnerContent from "./add-owner-content";
@@ -30,10 +32,16 @@ export default function AddOwner() {
           }}
         >
           <DrawerClose />
-          
+
           <DrawerContent
             className={JoinClasses("", styles["add-owner-content-container"])}
           >
+            <DrawerTitle className="sr-only">add a new owner</DrawerTitle>
+
+            <DrawerDescription className="sr-only">
+              fill in the form to add a new owner
+            </DrawerDescription>
+
             <DrawerBody>
               <AddOwnerContent />
             </DrawerBody>

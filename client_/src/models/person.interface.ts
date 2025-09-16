@@ -7,13 +7,15 @@ export interface Person {
   registerDate: string;
 }
 
+export interface ITelephoneType {
+  id: number;
+  type: string;
+}
+
 export interface ITelephones {
   id: number;
   number: string;
-  telephoneType: {
-    id: number;
-    type: string;
-  };
+  telephoneType: ITelephoneType;
 }
 
 export interface IOwner {
