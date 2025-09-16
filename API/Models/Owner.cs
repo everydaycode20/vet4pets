@@ -10,9 +10,9 @@
 
         public string? Address { get; set; }
 
-        public List<Telephone> Telephones { get; set; } = [];
+        public List<Telephone>? Telephones { get; set; } = [];
 
-        public List<Appointment> Appointments { get; set; } = [];
+        public List<Appointment>? Appointments { get; set; } = [];
 
         public List<Pet>? Pets { get; set; }
     }
