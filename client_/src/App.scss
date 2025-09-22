@@ -302,5 +302,9 @@ header {
 
   &-error {
     border-color: $pink;
+
+    &:focus {
+      outline: 2px solid $pink;
+    }
   }
 }

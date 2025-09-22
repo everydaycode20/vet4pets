@@ -1,6 +1,12 @@
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { number, object, string } from "zod";
+import { array, number, object, string } from "zod";
 import {
   Root,
   Trigger,
@@ -8,6 +14,9 @@ import {
   Content,
   Item,
 } from "@radix-ui/react-dropdown-menu";
+
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import Input from "../input/input";
 import JoinClasses from "../../utils/join-classes";
@@ -17,13 +26,13 @@ import SubmitBtn from "../submit-btn/submit-btn";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
 import { ITelephoneType } from "../../models/person.interface";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { addOwnerState } from "./add-owner";
 
 interface IFormInput {
   firstName: string;
   lastName: string;
-  phone: string;
-  phoneType: number;
+  telephones?: { number: string; telephoneTypeId: number }[];
   address: string;
   email: string;
 }
@@ -31,19 +40,27 @@ interface IFormInput {
 const schema = object({
   firstName: string().min(1, { message: "Enter a name" }),
   lastName: string().min(1, { message: "Enter a last name" }),
-  phone: string()
-    .min(1, { message: "Enter a phone" })
-    .regex(/^\d+$/, { message: "Invalid phone. Numbers only" }),
-  phoneType: number().nonnegative(),
+  telephones: array(
+    object({
+      number: string()
+        .min(1, { message: "Enter a phone" })
+        .regex(/^\d+$/, { message: "Invalid phone. Numbers only" }),
+      telephoneTypeId: number().nonnegative(),
+    })
+  ).min(1),
   address: string().min(1, { message: "Enter an address" }),
   email: string().email(),
 });
 
 export default function AddOwnerContent() {
-  const [phoneType, setPhoneType] = useState("");
+  const [phoneType, setPhoneType] = useState<{ type: string; index: number }[]>(
+    []
+  );
+
+  const [state, setState] = useAtom(addOwnerState);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+    addNewOwner.mutate(data);
   };
 
   const phoneTypes = useQuery({
@@ -62,19 +79,26 @@ export default function AddOwnerContent() {
   });
 
   const addNewOwner = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (data: any) => {
+      const { firstName, lastName, ...rest } = data;
+
+      const obj = { ...rest, name: `${firstName} ${lastName}` };
+
       const res = await fetch(`${apiUrl}/owners`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify(obj),
       });
 
       return res.json();
     },
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      setState(false);
+    },
+    onError: () => {}, //TODO
   });
 
   const {
@@ -86,14 +110,16 @@ export default function AddOwnerContent() {
     defaultValues: {
       firstName: "",
       lastName: "",
-      phone: "",
+      telephones: [{ number: "", telephoneTypeId: -1 }],
       address: "",
       email: "",
-      phoneType: -1,
     },
   });
 
-  console.log(errors);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "telephones",
+  });
 
   return (
     <div
@@ -167,88 +193,169 @@ export default function AddOwnerContent() {
               />
             </div>
 
-            <div className="flex items-center gap-x-[12px]">
-              <div className="flex-1">
-                <Controller
-                  name="phone"
-                  control={control}
-                  rules={{ required: true }}
-                  defaultValue=""
-                  render={({ field, fieldState }) => {
-                    return (
-                      <Input
-                        id="phone"
-                        label="Phone"
-                        placeholder="Phone"
-                        field={field}
-                        invalid={fieldState.invalid}
-                        error={fieldState?.error?.message}
+            {fields.map((phone, index) => {
+              return (
+                <div key={index} className="flex items-center gap-x-[12px]">
+                  <div className="self-baseline" key={phone.id}>
+                    <div className="flex-1">
+                      <Controller
+                        name={`telephones.${index}.number`}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field, fieldState }) => {
+                          return (
+                            <Input
+                              id={phone.id}
+                              label="Phone"
+                              placeholder="Phone"
+                              field={field}
+                              invalid={fieldState.invalid}
+                              error={fieldState?.error?.message}
+                            />
+                          );
+                        }}
                       />
-                    );
-                  }}
-                />
-              </div>
+                    </div>
+                  </div>
 
-              <div className="flex-1">
-                <Controller
-                  name="phoneType"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => {
-                    return (
-                      <Root>
-                        <Trigger
-                          className={JoinClasses(
-                            "dropdown-button",
-                            errors.phoneType &&
-                              "dropdown-button-error mt-[30px]"
-                          )}
-                          asChild
-                        >
-                          <button type="button">
-                            {phoneType ? phoneType : "Select a phone type"}
-                          </button>
-                        </Trigger>
+                  <div className="flex-1 flex items-center ">
+                    <div className={JoinClasses("", styles["select-type"])}>
+                      <span
+                        aria-hidden="false"
+                        className="text-[12px] mb-[12px] block leading-[18px] invisible"
+                      >
+                        Type
+                      </span>
 
-                        <Portal>
-                          <Content
-                            className={JoinClasses(
-                              "",
-                              styles["phone-type-content"]
-                            )}
-                          >
-                            {phoneTypes.data?.map((type) => {
-                              return (
-                                <Item
+                      <Controller
+                        name={`telephones.${index}.telephoneTypeId`}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => {
+                          return (
+                            <Root>
+                              <Trigger
+                                className={JoinClasses(
+                                  "dropdown-button",
+                                  errors.telephones &&
+                                    errors.telephones[index]?.telephoneTypeId &&
+                                    "dropdown-button-error"
+                                )}
+                                asChild
+                              >
+                                <button type="button">
+                                  {phoneType[index]
+                                    ? phoneType[index]?.type
+                                    : "Select a phone type"}
+                                </button>
+                              </Trigger>
+
+                              <Portal>
+                                <Content
                                   className={JoinClasses(
                                     "",
-                                    styles["phone-type-content-item"]
+                                    styles["phone-type-content"]
                                   )}
-                                  key={type.id}
-                                  onSelect={() => {
-                                    field.onChange(type.id);
-
-                                    setPhoneType(type.type);
-                                  }}
                                 >
-                                  {type.type}
-                                </Item>
-                              );
-                            })}
-                          </Content>
-                        </Portal>
-                      </Root>
-                    );
-                  }}
-                />
+                                  {phoneTypes.data?.map((type) => {
+                                    return (
+                                      <Item
+                                        className={JoinClasses(
+                                          "",
+                                          styles["phone-type-content-item"]
+                                        )}
+                                        key={type.id}
+                                        onSelect={() => {
+                                          field.onChange(type.id);
 
-                {errors.phoneType && (
-                  <span className="text-pink mt-[5px] block">
-                    Select a phone type
-                  </span>
-                )}
-              </div>
-            </div>
+                                          const existingType = phoneType.find(
+                                            (p) => p.index === index
+                                          );
+
+                                          setPhoneType((prev) => {
+                                            if (existingType) {
+                                              return prev.map((p) => {
+                                                if (p.index === index) {
+                                                  return {
+                                                    ...p,
+                                                    type: type.type,
+                                                  };
+                                                }
+
+                                                return p;
+                                              });
+                                            } else {
+                                              return [
+                                                ...prev,
+                                                { index, type: type.type },
+                                              ];
+                                            }
+                                          });
+                                        }}
+                                      >
+                                        {type.type}
+                                      </Item>
+                                    );
+                                  })}
+                                </Content>
+                              </Portal>
+                            </Root>
+                          );
+                        }}
+                      />
+
+                      <span
+                        className={JoinClasses(
+                          "text-pink mt-[5px] block",
+                          errors.telephones &&
+                            errors.telephones[index]?.telephoneTypeId
+                            ? "visible"
+                            : "invisible"
+                        )}
+                      >
+                        Select a phone type
+                      </span>
+                    </div>
+
+                    {index === 0 && (
+                      <button
+                        className={JoinClasses(
+                          "flex flex-1 p-2 justify-center"
+                        )}
+                        type="button"
+                        aria-label="add another phone number"
+                        onClick={() => {
+                          append({ number: "", telephoneTypeId: -1 });
+                        }}
+                      >
+                        <AddCircleOutlineIcon htmlColor="#4d7cfe" />
+                      </button>
+                    )}
+
+                    {index > 0 && (
+                      <button
+                        className={JoinClasses(
+                          "flex flex-1 p-2 justify-center"
+                        )}
+                        type="button"
+                        aria-label="remove phone number"
+                        onClick={() => {
+                          const arr = phoneType.filter(
+                            (p) => p.index !== index
+                          );
+
+                          remove(index);
+
+                          setPhoneType(arr);
+                        }}
+                      >
+                        <HighlightOffIcon htmlColor="#fe4d97" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
 
             <div>
               <Controller

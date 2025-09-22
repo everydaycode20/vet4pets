@@ -182,3 +182,8 @@
     transform: translateY(-50%);
   }
 }
+
+.rbc-month-row .rbc-today {
+  border: 1px solid $light-gray-2;
+  background-color: $light-gray;
+}

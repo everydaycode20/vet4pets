@@ -101,7 +101,7 @@ export default function Input({
           }
         />
 
-        <span className="text-pink">{error}</span>
+        {error && <span className="text-pink">{error}</span>}
       </div>
     );
   }
@@ -160,7 +160,7 @@ export default function Input({
           }}
         />
 
-        <span className="text-pink">{error}</span>
+        {error && <span className="text-pink">{error}</span>}
       </div>
     );
   }
@@ -191,7 +191,7 @@ export default function Input({
           // {...field}
         />
 
-        <span className="text-pink">{error}</span>
+        {error && <span className="text-pink">{error}</span>}
       </div>
     );
   }
@@ -213,7 +213,7 @@ export default function Input({
         {...field}
       />
 
-      <span className="text-pink">{error}</span>
+      {error && <span className="text-pink">{error}</span>}
     </div>
   );
 }

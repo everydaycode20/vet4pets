@@ -121,8 +121,6 @@ export default function Owner() {
 }
 
 function PhoneList({ data }: { data: ITelephones[] }) {
-  console.log(data);
-
   if (data.length === 1) {
     return (
       <span className={JoinClasses("flex flex-col", styles.phone)}>
