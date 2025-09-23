@@ -36,18 +36,39 @@ namespace API.Controllers
             return Ok(data);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAllPets([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
             await using var context = applicationDbContext;
 
-            var data = await context.Pets.OrderBy(o => o.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var data = await context.Pets.Select(p => new PetDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Age = p.Age,
+                PetType = new PetTypeDTO
+                {
+                    Id = p.PetType!.Id,
+                    Breed = p.PetType.Breed,
+                    Description = p.PetType.Description
+                },
+                Owner = new OwnerDTO
+                {
+                    Id = p.Owner!.Id,
+                    Name = p.Owner.Name,
+                    email = p.Owner.email
+                },
+                CreatedAt = p.CreatedAt
+            }).OrderBy(o => o.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var total = await context.Pets.CountAsync();
 
             return Ok(new
             {
                 data,
-                pageNumber
+                pageNumber,
+                total
             });
         }
 
@@ -64,9 +85,9 @@ namespace API.Controllers
                 {
                     Pets = o.Pets!.Select(p => new
                     {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Age = p.Age,
+                        p.Id,
+                        p.Name,
+                        p.Age,
                     }).OrderBy(p => p.Name).ToList()
                 }).FirstOrDefaultAsync();
 
@@ -142,6 +163,26 @@ namespace API.Controllers
             await context.SaveChangesAsync();
 
             return Ok(new { message = "ok" });
+        }
+
+        //[Authorize]
+        [HttpGet("types")]
+        public async Task<ActionResult<string>> GetPetTypes() {
+            await using var context = applicationDbContext;
+
+            var data = await context.PetTypes.Select(t => new PetType
+            {
+                Id = t.Id,
+                Description = t.Description,
+                Breed = new BreedDTO
+                {
+                    Id = t.Breed.Id,
+                    Description = t.Breed.Description
+                }
+            }).OrderBy(p => p.Description).ToListAsync();
+            
+
+            return Ok(data);
         }
     }
 }

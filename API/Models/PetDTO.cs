@@ -10,6 +10,8 @@
 
         public int OwnerId { get; set; }
 
+        public OwnerDTO? Owner { get; set; }
+
         public int PetTypeId { get; set; }
         public required PetTypeDTO PetType { get; set; }
 

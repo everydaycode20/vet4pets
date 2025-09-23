@@ -31,6 +31,8 @@ namespace API.Data
 
         public virtual DbSet<AppointmentType> AppointmentType { get; set; }
 
+        public virtual DbSet<PetType> PetTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

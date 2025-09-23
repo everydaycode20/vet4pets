@@ -155,7 +155,7 @@ namespace API.Controllers
             });
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<string>> AddOwner([FromBody] Owner owner)
         {
