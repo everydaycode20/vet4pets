@@ -1,8 +1,8 @@
-import { startTransition, useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { date, number, object, string } from "zod";
+import { number, object, string } from "zod";
+import { NavLink } from "react-router-dom";
 
 import JoinClasses from "../../utils/join-classes";
 import Input from "../input/input";
@@ -13,9 +13,7 @@ import Modal from "../modal/modal";
 
 import styles from "./add-pet.module.scss";
 
-import MockDataPerson from "../../assets/mock_data-person.json";
-
-interface IFormInput {
+export interface IFormInput {
   name: string;
   owner: number;
   age: string | null | number | undefined;
@@ -23,19 +21,18 @@ interface IFormInput {
   // registerDate: Date;
 }
 
-const schema = object({
+export const schema = object({
   name: string().min(1, { message: "Enter a name" }),
   owner: number().positive({ message: "Must select an owner" }),
   age: number({ message: "Enter an age" }).positive({
     message: "Enter an age",
   }),
   type: number().positive({ message: "Select a type" }),
-  // registerDate: date(),
 });
 
-import { Person } from "../../models/person.interface";
 
-const defaultData: Person[] = MockDataPerson;
+
+const defaultData:any = [];
 
 export default function AddPetContent() {
   const [open, setOpen] = useState(false);
@@ -56,7 +53,6 @@ export default function AddPetContent() {
       owner: -1,
       age: 0,
       type: -1,
-      // registerDate: new Date(),
     },
   });
 

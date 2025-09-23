@@ -1,18 +1,21 @@
-import { HTMLProps, useEffect, useMemo, useRef } from "react";
-import { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useAtom } from "jotai";
+import { NavLink } from "react-router-dom";
 
 import { addPetState } from "../../components/add-pet/add-pet";
-import AddPet from "../../components/add-pet/add-pet";
+// import AddPet from "../../components/add-pet/add-pet";
 
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 
 import JoinClasses from "../../utils/join-classes";
 
-import MockDataPet from "../../assets/mock_data-pet.json";
-
 import styles from "./table.module.scss";
 import Table from "../../components/table/table";
+import { useQuery } from "@tanstack/react-query";
+import { IPet } from "../../models/pet.interface";
+import { apiUrl } from "../../constants/apiUrl";
+import dayjs from "dayjs";
 
 interface Pet {
   name: string;
@@ -22,10 +25,13 @@ interface Pet {
   registerDate: string;
 }
 
-const defaultData: Pet[] = MockDataPet;
-
 export default function Pets() {
   const [_, setState] = useAtom(addPetState);
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
 
   const columns = useMemo<ColumnDef<Pet>[]>(
     () => [
@@ -35,8 +41,8 @@ export default function Pets() {
         header: () => <span>Name</span>,
       },
       {
-        accessorKey: "ownerName",
-        cell: (info) => info.getValue(),
+        accessorKey: "owner",
+        cell: (info: any) => info.getValue().name,
         header: () => <span>Owner Name</span>,
       },
       {
@@ -46,19 +52,44 @@ export default function Pets() {
         enableSorting: false,
       },
       {
-        accessorKey: "type",
-        cell: (info) => info.getValue(),
+        accessorKey: "petType",
+        cell: (info: any) => info.getValue().breed.description,
         header: () => <span>Type</span>,
         enableSorting: false,
       },
       {
-        accessorKey: "registerDate",
-        cell: (info) => info.getValue(),
+        accessorKey: "createdAt",
+        cell: (info) =>
+          dayjs(info.getValue() as string)
+            .format("YYYY-MM-DD")
+            .toString(),
         header: () => <span>Register Date</span>,
       },
     ],
     []
   );
+
+  const data = useQuery({
+    queryKey: ["pets-table", pagination],
+    queryFn: async (): Promise<{
+      data: IPet[];
+      total: number;
+      pageNumber: number;
+    }> => {
+      const res = await fetch(
+        `${apiUrl}/pets?pageNumber=${pagination.pageIndex + 1}&pageSize=20`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        }
+      );
+
+      return await res.json();
+    },
+  });
 
   return (
     <section className="h-full">
@@ -68,22 +99,24 @@ export default function Pets() {
           styles["add-owner-container"]
         )}
       >
-        <button
-          className="flex items-center"
-          type="button"
-          onClick={() => setState(true)}
-        >
+        <NavLink className="flex items-center" to="add">
           <div>
             <PetsOutlinedIcon htmlColor="#778CA2" />
           </div>
 
           <span className="font-medium text-black">Add new pet</span>
-        </button>
+        </NavLink>
       </div>
 
-      <Table data={defaultData} columns={columns} pagesSize={25} />
+      <Table
+        data={data.data}
+        columns={columns}
+        pagesSize={25}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
 
-      <AddPet />
+      {/* <AddPet /> */}
     </section>
   );
 }

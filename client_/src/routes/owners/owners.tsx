@@ -50,7 +50,7 @@ export default function Owner() {
         accessorKey: "address",
         cell: (info) => info.getValue(),
         header: () => <span>Address</span>,
-        enableSorting: false,
+        enableSorting: false, 
       },
       {
         accessorKey: "createdAt",

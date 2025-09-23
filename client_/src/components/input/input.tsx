@@ -116,6 +116,7 @@ export default function Input({
         )}
 
         <BaseNumberInput
+          placeholder={placeholder}
           onChange={(_, v) => {
             field.onChange(v);
           }}
@@ -124,6 +125,7 @@ export default function Input({
           ref={field.ref}
           id={id}
           error={invalid}
+          value={value}
           className={JoinClasses(
             "w-full flex rounded-5 input-text",
             styles["input-container"]

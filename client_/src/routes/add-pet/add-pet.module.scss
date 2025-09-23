@@ -1,0 +1,111 @@
+@import "../../assets/scss/colors/colors";
+@import "../../assets/scss/variables";
+@import "../../assets/scss/breakpoints";
+
+.add-owner-content-container {
+  max-width: 550px;
+  width: 100%;
+  border-right: 1px solid $light-gray;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 22px;
+  line-height: 32px;
+  padding: 16px 0 16px 24px;
+  border-bottom: 1px solid $light-gray;
+}
+
+.form-container {
+  padding: 24px;
+  height: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+  }
+
+  &-row {
+    column-gap: 12px;
+
+    @include media-down(sm2) {
+      flex-direction: column;
+    }
+  }
+}
+
+.modal-container {
+  max-width: 900px;
+  width: 100%;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.select-owner-btn {
+  // margin-top: 25px;
+
+  &:focus,
+  &:focus-visible {
+    box-shadow: $light-gray-4 0px 0px 0px 3px;
+    outline: none;
+  }
+
+  @include media-down(lg) {
+    max-width: 100%;
+  }
+}
+
+.type {
+  &-content {
+    width: 300px;
+    z-index: 9999;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 6px;
+    color: $black;
+    border: 1px solid $light-gray;
+
+    &-item {
+      width: 100%;
+      padding: 5px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: default;
+
+      &:focus,
+      &:hover {
+        background-color: $light-gray-2;
+      }
+    }
+  }
+}
+
+.form {
+  width: 100%;
+  max-width: 700px;
+}
+
+.select-owner-btn {
+  height: fit-content;
+  font-size: 14px;
+  line-height: 21px;
+  width: 100%;
+  padding: 14.5px 24px;
+  border: 1px solid $light-gray;
+  border-radius: 6px;
+  text-align: start;
+  color: $gray;
+
+  &-error {
+    border-color: $pink;
+  }
+}
+
+.form-main-container {
+    border-radius: 6px;
+}

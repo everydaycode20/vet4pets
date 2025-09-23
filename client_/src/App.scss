@@ -308,3 +308,7 @@ header {
     }
   }
 }
+
+.base-NumberInput-root.base--error {
+  border: 1px solid $pink;
+}

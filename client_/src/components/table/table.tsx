@@ -30,9 +30,10 @@ import JoinClasses from "../../utils/join-classes";
 import "./table.scss";
 import styles from "./table.module.scss";
 import { IOwner } from "../../models/person.interface";
+import { IPet } from "../../models/pet.interface";
 
 interface ITable {
-  data?: { data: IOwner[]; total: number; pageNumber: number };
+  data?: { data: IOwner[] | IPet[]; total: number; pageNumber: number };
   columns: any;
   pagesSize?: number;
   pagination: PaginationState;

@@ -3,10 +3,7 @@ import {
   Navigate,
   redirect,
   RouterProvider,
-  useLocation,
 } from "react-router-dom";
-
-import { HubConnectionBuilder } from "@microsoft/signalr";
 
 import "./App.scss";
 
@@ -17,15 +14,12 @@ import Appointments from "./routes/appointments/appointments";
 import Owner from "./routes/owners/owners";
 import Pets from "./routes/pets/pets";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
-import { ReactNode, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactNode } from "react";
 import { useGetUser } from "./hooks/useGetUser";
 import { useAtom } from "jotai";
 import { spinnerState } from "./components/spinner/spinner-state";
+import AddPet from "./routes/add-pet/add-pet";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +27,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: (
       <>
-        <h1>404</h1>
+        <Navigate to="/dashboard" replace />
       </>
     ),
     children: [
@@ -71,6 +65,13 @@ const router = createBrowserRouter([
         element: <Pets />,
         handle: {
           title: "Pets",
+        },
+      },
+      {
+        path: "pets/add",
+        element: <AddPet />,
+        handle: {
+          title: "Add new pet",
         },
       },
       {
