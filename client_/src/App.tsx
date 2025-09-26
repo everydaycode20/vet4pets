@@ -20,6 +20,7 @@ import { useGetUser } from "./hooks/useGetUser";
 import { useAtom } from "jotai";
 import { spinnerState } from "./components/spinner/spinner-state";
 import AddPet from "./routes/add-pet/add-pet";
+import Settings from "./routes/settings/settings";
 
 const router = createBrowserRouter([
   {
@@ -48,35 +49,51 @@ const router = createBrowserRouter([
       },
       {
         path: "appointments",
-        element: <Appointments />,
+        element: (
+          <RequireAuth>
+            <Appointments />
+          </RequireAuth>
+        ),
         handle: {
           title: "Appointments",
         },
       },
       {
         path: "owners",
-        element: <Owner />,
+        element: (
+          <RequireAuth>
+            <Owner />
+          </RequireAuth>
+        ),
         handle: {
           title: "Pet Owners",
         },
       },
       {
         path: "pets",
-        element: <Pets />,
+        element: (
+          <RequireAuth>
+            <Pets />
+          </RequireAuth>
+        ),
         handle: {
           title: "Pets",
         },
       },
       {
         path: "pets/add",
-        element: <AddPet />,
+        element: (
+          <RequireAuth>
+            <AddPet />
+          </RequireAuth>
+        ),
         handle: {
           title: "Add new pet",
         },
       },
       {
         path: "settings",
-        element: <div>settings</div>,
+        element: <Settings />,
         handle: {
           title: "Settings",
         },

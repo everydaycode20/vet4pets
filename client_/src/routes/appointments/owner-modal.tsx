@@ -71,13 +71,16 @@ export default function OwnerModal({ button, onChange, value }: IOwnerModal) {
         id: "select",
         cell: ({ row }) => {
           return (
-            <input
-              type="checkbox"
-              value={value}
-              checked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-              aria-selected={row.getIsSelected()}
-            />
+            <div className="">
+              <input
+                className=""
+                type="checkbox"
+                value={value}
+                checked={row.getIsSelected()}
+                onChange={row.getToggleSelectedHandler()}
+                aria-selected={row.getIsSelected()}
+              />
+            </div>
           );
         },
       },

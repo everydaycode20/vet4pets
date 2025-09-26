@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { atom, useAtom } from "jotai";
 
 import {
@@ -6,7 +7,7 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerTitle
+  DrawerTitle,
 } from "../../components/drawer/drawer";
 
 import AddOwnerContent from "./add-owner-content";
@@ -14,11 +15,14 @@ import AddOwnerContent from "./add-owner-content";
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./add-owner.module.scss";
+import Toast from "../toast/toast";
 
 export const addOwnerState = atom(false);
 
 export default function AddOwner() {
   const [state, setState] = useAtom(addOwnerState);
+
+  const [openToast, setOpenToast] = useState(false);
 
   return (
     <>
@@ -43,11 +47,19 @@ export default function AddOwner() {
             </DrawerDescription>
 
             <DrawerBody>
-              <AddOwnerContent />
+              <AddOwnerContent setOpenToast={setOpenToast} />
             </DrawerBody>
           </DrawerContent>
         </Drawer>
       </div>
+
+      <Toast
+        type="success"
+        title="Owner added"
+        description="A new owner has been saved"
+        open={openToast}
+        setOpen={setOpenToast}
+      />
     </>
   );
 }

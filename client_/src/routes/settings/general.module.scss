@@ -1,0 +1,30 @@
+@import "../../assets/scss/colors/colors";
+
+.settings {
+  h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    color: $black;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.radio {
+  &:focus-within {
+    outline: 2px dashed $black;
+  }
+}
+
+.language-dropdown {
+  width: 100%;
+  max-width: 264px;
+
+  &-content {
+    width: 264px;
+  }
+}

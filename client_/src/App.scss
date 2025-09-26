@@ -181,6 +181,7 @@ h5 {
   max-width: 1200px;
   padding-top: 24px;
   padding-bottom: 24px;
+  height: 100%;
 }
 
 .dashboard-chart.base--selected {
@@ -309,6 +310,59 @@ header {
   }
 }
 
+.dropdown-content {
+  width: 200px;
+  z-index: 9999;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 6px;
+  color: $black;
+  border: 1px solid $light-gray;
+
+  &-item {
+    width: 100%;
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: default;
+
+    &:focus,
+    &:hover {
+      background-color: $light-gray-2;
+    }
+  }
+}
+
 .base-NumberInput-root.base--error {
   border: 1px solid $pink;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: $light-gray;
+  margin: 0;
+  font: inherit;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  place-content: center;
+
+  &:checked {
+    border: 6px solid $blue;
+    background-color: white;
+
+    & + label {
+      font-weight: 500;
+      color: $black;
+    }
+  }
+
+  & + label {
+    font-size: 14px;
+    line-height: 21px;
+    color: $light-gray-4;
+  }
 }

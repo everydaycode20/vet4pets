@@ -43,6 +43,7 @@ import { IPet } from "../../models/pet.interface";
 import GetAppointments from "../../components/calendar/appointments-fetch";
 import IFormAppointment from "../../models/form-appointment.interface";
 import MakeJsonPatchRequest from "../../utils/json-patch-req";
+import Toast from "../../components/toast/toast";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
@@ -53,6 +54,8 @@ export default function Appointments() {
     start: dayjs().startOf("month"),
     end: dayjs().endOf("month"),
   });
+
+  const [openToast, setOpenToast] = useState(false);
 
   const dataAppTypes = useQuery({
     queryKey: ["appointment-types"],
@@ -112,10 +115,22 @@ export default function Appointments() {
           </DrawerDescription>
 
           <DrawerBody>
-            <Form appointmentType={dataAppTypes.data} refetch={data.refetch} />
+            <Form
+              appointmentType={dataAppTypes.data}
+              refetch={data.refetch}
+              setOpenToast={setOpenToast}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+
+      <Toast
+        type="success"
+        title="Appointment added"
+        description="A new appointment has been saved"
+        open={openToast}
+        setOpen={setOpenToast}
+      />
     </section>
   );
 }
@@ -145,11 +160,13 @@ const schema = object({
 function Form({
   appointmentType,
   refetch,
+  setOpenToast,
 }: {
   appointmentType?: IAppointmentsType[];
   refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<IAppointments[], Error>>;
+  setOpenToast: Dispatch<SetStateAction<boolean>>;
 }) {
   const [_, setState] = useAtom(addAppointmentState);
 
@@ -187,6 +204,8 @@ function Form({
         });
 
         setState(false);
+
+        setOpenToast(true);
       });
     },
     onError: (error) => {
@@ -278,123 +297,125 @@ function Form({
   }, [calendarOptions.edit]);
 
   return (
-    <div className={JoinClasses("", styles["form-container"])}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="type"
-          control={control}
-          render={({ field: { onChange, value, onBlur } }) => {
-            return (
-              <ComboBox
-                label="Select an appointment type"
-                name="type"
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                error={errors.type && "select a service"}
-                placeholder="Search or Select an appointment"
-                data={appointmentType}
-                edit={calendarOptions.edit}
-              />
-            );
-          }}
-        />
-
-        <div className="flex flex-col">
+    <>
+      <div className={JoinClasses("", styles["form-container"])}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
-            name="owner"
+            name="type"
             control={control}
-            render={({ field: { onChange, value } }) => {
-              if (value.id && value.name && calendarOptions.edit) {
-                setTimeout(() => {
-                  setOwner(value); //TODO: fix
-                });
-              }
-
+            render={({ field: { onChange, value, onBlur } }) => {
               return (
-                <OwnerModal
-                  onChange={(e) => {
-                    if (e.id && e.name) {
-                      setOwner({ id: e.id, name: e.name });
-                    }
-
-                    onChange(e);
-                  }}
+                <ComboBox
+                  label="Select an appointment type"
+                  name="type"
                   value={value}
-                  button={
-                    <button
-                      disabled={calendarOptions.edit}
-                      type="button"
-                      className={JoinClasses(
-                        "",
-                        styles["select-owner-btn"],
-                        errors.owner && styles["select-owner-btn-error"],
-                        calendarOptions.edit && "cursor-not-allowed"
-                      )}
-                    >
-                      {value.id ? `Change ${value.name}` : "Select an owner "}
-
-                      <span className="sr-only">opens a dialog</span>
-                    </button>
-                  }
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={errors.type && "select a service"}
+                  placeholder="Search or Select an appointment"
+                  data={appointmentType}
+                  edit={calendarOptions.edit}
                 />
               );
             }}
           />
 
-          {errors.owner && (
-            <span className="text-pink block">select an owner</span>
-          )}
-        </div>
+          <div className="flex flex-col">
+            <Controller
+              name="owner"
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                if (value.id && value.name && calendarOptions.edit) {
+                  setTimeout(() => {
+                    setOwner(value); //TODO: fix
+                  });
+                }
 
-        <Controller
-          name="pet"
-          control={control}
-          render={({ field: { onChange, value, onBlur } }) => {
-            return (
-              <ComboBox
-                label="Select a pet"
-                name="pet"
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                error={errors.pet && "select a pet"}
-                placeholder="Search or Select a pet"
-                data={dataOwnerPets.data && dataOwnerPets.data.pets}
-                edit={calendarOptions.edit}
-              />
-            );
-          }}
-        />
+                return (
+                  <OwnerModal
+                    onChange={(e) => {
+                      if (e.id && e.name) {
+                        setOwner({ id: e.id, name: e.name });
+                      }
 
-        <div>
-          <div>
-            <label htmlFor="">Add date and time</label>
+                      onChange(e);
+                    }}
+                    value={value}
+                    button={
+                      <button
+                        disabled={calendarOptions.edit}
+                        type="button"
+                        className={JoinClasses(
+                          "",
+                          styles["select-owner-btn"],
+                          errors.owner && styles["select-owner-btn-error"],
+                          calendarOptions.edit && "cursor-not-allowed"
+                        )}
+                      >
+                        {value.id ? `Change ${value.name}` : "Select an owner "}
+
+                        <span className="sr-only">opens a dialog</span>
+                      </button>
+                    }
+                  />
+                );
+              }}
+            />
+
+            {errors.owner && (
+              <span className="text-pink block">select an owner</span>
+            )}
           </div>
 
           <Controller
-            name="date"
+            name="pet"
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={({ field: { onChange, value, onBlur } }) => {
               return (
-                <DatePicker
-                  onChange={onChange}
+                <ComboBox
+                  label="Select a pet"
+                  name="pet"
                   value={value}
-                  error={errors.date}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={errors.pet && "select a pet"}
+                  placeholder="Search or Select a pet"
+                  data={dataOwnerPets.data && dataOwnerPets.data.pets}
+                  edit={calendarOptions.edit}
                 />
               );
             }}
           />
-        </div>
 
-        <div
-          className={JoinClasses("flex justify-center", styles["submit-btn"])}
-        >
-          <button className="blue-btn" type="submit">
-            submit
-          </button>
-        </div>
-      </form>
-    </div>
+          <div>
+            <div>
+              <label htmlFor="">Add date and time</label>
+            </div>
+
+            <Controller
+              name="date"
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <DatePicker
+                    onChange={onChange}
+                    value={value}
+                    error={errors.date}
+                  />
+                );
+              }}
+            />
+          </div>
+
+          <div
+            className={JoinClasses("flex justify-center", styles["submit-btn"])}
+          >
+            <button className="blue-btn" type="submit">
+              submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

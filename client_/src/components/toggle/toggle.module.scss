@@ -1,0 +1,58 @@
+@import "../../assets/scss/colors/colors";
+@import "../../assets/scss/variables";
+
+.toggle {
+  display: flex;
+  user-select: none;
+  margin-top: 12px;
+  width: fit-content;
+  padding: 2px 4px;
+
+  &:focus-within {
+    outline: 2px dashed $black;
+  }
+
+  .label {
+    font-size: 16px;
+    color: $black;
+  }
+
+  input[role="switch"] {
+    opacity: 0;
+    width: 12px;
+
+    & ~ .state {
+      > .state-container {
+        background-color: $light-gray-2;
+        position: relative;
+        display: block;
+        width: 40px;
+        height: 22px;
+        border-radius: 12px;
+        border: 1px solid $light-gray;
+
+        > .state-position {
+          position: absolute;
+          top: 50%;
+          border-radius: 9px;
+          width: 16px;
+          height: 16px;
+          background: $gray;
+          transform: translate(3px, -50%);
+        }
+      }
+    }
+
+    &:checked ~ .state {
+      > .state-container {
+        background-color: $blue;
+        border-color: $blue;
+
+        > .state-position {
+          transform: translate(20px, -50%);
+          background-color: white;
+        }
+      }
+    }
+  }
+}

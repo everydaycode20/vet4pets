@@ -160,7 +160,9 @@ export default function Notifications() {
                         styles["notifications-content-item-type"]
                       )}
                     >
-                      <span className="font-bold">{appointment.type?.name}</span>
+                      <span className="font-bold">
+                        {appointment.type?.name}
+                      </span>
 
                       <span className="">
                         {dayjs(appointment.date).format("MMM D, h:mm a")}
