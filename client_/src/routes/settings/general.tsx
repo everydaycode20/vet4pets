@@ -11,6 +11,8 @@ import JoinClasses from "../../utils/join-classes";
 import styles from "./general.module.scss";
 import { useState } from "react";
 import Toggle from "../../components/toggle/toggle";
+import GenerateHours from "../../utils/generate-hours";
+import dayjs from "dayjs";
 
 const timeFormat = [
   { id: "12-hour", value: "12" },
@@ -59,6 +61,16 @@ export default function GeneralSettings() {
 
   const [length, setLength] = useState(30);
 
+  console.log(GenerateHours(false, 15));
+
+  const [hoursList, setHoursList] = useState(GenerateHours(false, 30));
+
+  const [workingHours, setWorkingHours] = useState({
+    start: "",
+    end: "",
+    is12H: false,
+  });
+
   return (
     <div className={styles.settings}>
       <form className="flex flex-col gap-y-[12px]">
@@ -72,6 +84,7 @@ export default function GeneralSettings() {
               {timeFormat.map((time) => {
                 return (
                   <div
+                    key={time.id}
                     className={JoinClasses(
                       "flex items-center gap-x-[12px] p-[2px] px-[4px]",
                       styles["radio"]
@@ -98,6 +111,7 @@ export default function GeneralSettings() {
               {dateFormat.map((date) => {
                 return (
                   <div
+                    key={date.id}
                     className={JoinClasses(
                       "flex items-center gap-x-[12px] p-[2px] px-[4px]",
                       styles["radio"]
@@ -167,6 +181,7 @@ export default function GeneralSettings() {
               {themes.map((theme) => {
                 return (
                   <div
+                    key={theme.id}
                     className={JoinClasses(
                       "flex items-center gap-x-[12px] p-[2px] px-[4px]",
                       styles["radio"]
@@ -195,7 +210,9 @@ export default function GeneralSettings() {
           <h2 className="">Preferences</h2>
 
           <div className="flex flex-col">
-            <span className="mb-[12px] font-semibold">Default Appointment Length</span>
+            <span className="mb-[12px] font-semibold">
+              Default Appointment Length
+            </span>
 
             <Root>
               <Trigger
@@ -233,8 +250,106 @@ export default function GeneralSettings() {
             </Root>
           </div>
 
-          <div>
-            <h3>Hours</h3>
+          <div className="mt-[12px]">
+            <h3 className="mb-[12px]">Working hours</h3>
+
+            <span className="sr-only">select start time first</span>
+
+            <div className="flex items-center gap-x-[12px]">
+              <Root>
+                <Trigger
+                  asChild
+                  className={JoinClasses(
+                    "dropdown-button",
+                    styles["language-dropdown"]
+                  )}
+                >
+                  <button type="button">
+                    {workingHours.start
+                      ? workingHours.start
+                      : "Select start time"}
+                  </button>
+                </Trigger>
+
+                <Portal>
+                  <Content
+                    className={JoinClasses(
+                      "dropdown-content h-[300px] overflow-y-auto",
+                      styles["language-dropdown-content"]
+                    )}
+                  >
+                    {hoursList.map((hour) => {
+                      return (
+                        <Item
+                          className="dropdown-content-item"
+                          key={hour}
+                          onSelect={() =>
+                            setWorkingHours((prev) => ({
+                              ...prev,
+                              start: hour,
+                            }))
+                          }
+                        >
+                          {hour}
+                        </Item>
+                      );
+                    })}
+                  </Content>
+                </Portal>
+              </Root>
+
+              <span aria-hidden="true">-</span>
+
+              <Root>
+                <Trigger
+                  disabled={workingHours.start === ""}
+                  asChild
+                  className={JoinClasses(
+                    "dropdown-button",
+                    styles["language-dropdown"],
+                    workingHours.start === "" && "cursor-not-allowed"
+                  )}
+                >
+                  <button type="button">
+                    {workingHours.end ? workingHours.end : "Select end time"}
+                  </button>
+                </Trigger>
+
+                <Portal>
+                  <Content
+                    className={JoinClasses(
+                      "dropdown-content h-[300px] overflow-y-auto",
+                      styles["language-dropdown-content"]
+                    )}
+                  >
+                    {hoursList.map((hour) => {
+                      const today = dayjs().format("YYYY-MM-DD");
+
+                      const startHour = dayjs(`${today} ${workingHours.start}`);
+
+                      const endHour = dayjs(`${today} ${hour}`);
+
+                      if (endHour.isAfter(startHour)) {
+                        return (
+                          <Item
+                            className="dropdown-content-item"
+                            key={hour}
+                            onSelect={() =>
+                              setWorkingHours((prev) => ({
+                                ...prev,
+                                end: hour,
+                              }))
+                            }
+                          >
+                            {hour}
+                          </Item>
+                        );
+                      }
+                    })}
+                  </Content>
+                </Portal>
+              </Root>
+            </div>
           </div>
         </section>
 
