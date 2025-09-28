@@ -33,6 +33,8 @@ namespace API.Data
 
         public virtual DbSet<PetType> PetTypes { get; set; }
 
+        public virtual DbSet<Settings> Settings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -52,6 +54,12 @@ namespace API.Data
             builder.Entity<PetType>().ToTable("petType");
 
             builder.Entity<BreedDTO>().ToTable("breed");
+
+            builder.Entity<Settings>().ToTable("settings");
+
+            builder.Entity<Language>().ToTable("languages");
+
+            builder.Entity<Appearance>().ToTable("appearance");
 
             builder.Entity<Appointment>().HasOne(a => a.Pet)
                 .WithMany(p => p.Appointments).HasForeignKey(k => k.PetId)
