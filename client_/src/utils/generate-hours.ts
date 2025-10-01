@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
 
-export default function GenerateHours(is12h: boolean, intervalMinutes: number) {
+export default function GenerateHours(
+  is12h: boolean,
+  intervalMinutes: number = 30
+) {
   const hours = [];
 
   const intervalHours = (24 * 60) / intervalMinutes;

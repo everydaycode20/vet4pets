@@ -28,7 +28,6 @@ import { apiUrl } from "../../constants/apiUrl";
 import { ITelephoneType } from "../../models/person.interface";
 import { useAtom } from "jotai";
 import { addOwnerState } from "./add-owner";
-import Toast from "../toast/toast";
 
 interface IFormInput {
   firstName: string;

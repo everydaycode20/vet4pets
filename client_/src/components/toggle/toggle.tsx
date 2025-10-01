@@ -1,15 +1,19 @@
+import { forwardRef, Ref } from "react";
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./toggle.module.scss";
 
-export default function Toggle({ label, ...props }: { label: string }) {
+function ToggleComponent(
+  { label, ...props }: { label: string },
+  ref: Ref<HTMLInputElement>
+) {
   return (
     <label className={styles.toggle}>
       <span className={JoinClasses("font-semibold", styles.label)}>
         {label}
       </span>
 
-      <input id="toggle" type="checkbox" role="switch" {...props} />
+      <input id="toggle" type="checkbox" role="switch" {...props} ref={ref} />
 
       <span className={styles.state}>
         <span className={styles["state-container"]}>
@@ -19,3 +23,7 @@ export default function Toggle({ label, ...props }: { label: string }) {
     </label>
   );
 }
+
+const Toggle = forwardRef<HTMLInputElement, { label: string }>(ToggleComponent);
+
+export default Toggle;

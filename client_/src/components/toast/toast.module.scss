@@ -34,19 +34,6 @@
   &[data-state="open"] {
     animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  //   &[data-state="closed"] {
-  //     animation: hide 100ms ease-in;
-  //   }
-  //   &[data-swipe="move"] {
-  //     transform: translateX(var(--radix-toast-swipe-move-x));
-  //   }
-  //   &[data-swipe="cancel"] {
-  //     transform: translateX(0);
-  //     transition: transform 200ms ease-out;
-  //   }
-  //   &[data-swipe="end"] {
-  //     animation: swipeOut 100ms ease-out;
-  //   }
 }
 
 @keyframes hide {
@@ -106,4 +93,9 @@
 .success {
   background-color: #f0fdf4;
   border-left: 4px solid #6dd230;
+}
+
+.warning {
+  background-color: #fefce8;
+  border-left: 4px solid #facc15;
 }

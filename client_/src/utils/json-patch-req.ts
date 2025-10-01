@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import IFormAppointment from "../models/form-appointment.interface";
+import ISettings from "../models/settings.interface";
 
 export default function MakeJsonPatchRequest(data: IFormAppointment) {
   const arr = [];
@@ -31,3 +32,26 @@ export default function MakeJsonPatchRequest(data: IFormAppointment) {
 
   return arr;
 }
+
+function MakeSettingsJsonPatchRequest(
+  data: ISettings,
+  dirtyFields: Partial<Readonly<any>>
+) {
+  const arr = [];
+
+  for (const key in data) {
+    if (dirtyFields[key]) {
+      let obj = {
+        op: "replace",
+        path: `/${key}`,
+        value: data[key as keyof ISettings],
+      };
+
+      arr.push(obj);
+    }
+  }
+
+  return arr;
+}
+
+export { MakeSettingsJsonPatchRequest };
