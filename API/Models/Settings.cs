@@ -8,10 +8,10 @@
 
         public string? DateFormat { get; set; }
 
-        public int LanguageId { get; set; }
+        //public int LanguageId { get; set; }
         public Language? Language { get; set; }
 
-        public int AppearanceId { get; set; }
+        //public int AppearanceId { get; set; }
         public Appearance? Appearance { get; set; }
 
         public bool ReduceMotion { get; set; }

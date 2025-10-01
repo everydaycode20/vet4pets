@@ -39,7 +39,10 @@ namespace API.Controllers
                 {
                     Id = s.Appearance!.Id,
                     Name = s.Appearance.Name
-                }
+                },
+                WorkingHoursStart = s.WorkingHoursStart,
+                WorkingHoursEnd = s.WorkingHoursEnd,
+                AppointmentLength = s.AppointmentLength
             }).ToListAsync();
 
             if (data == null)
