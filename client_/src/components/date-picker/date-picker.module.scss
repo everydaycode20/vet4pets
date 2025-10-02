@@ -24,7 +24,7 @@
     font-size: 14px;
     line-height: 21px;
     font-weight: 400;
-    color: $light-gray-4;
+    color: var(--text);
     padding: 4px 15px;
   }
 }
@@ -37,7 +37,7 @@
 .time-select {
   column-gap: 20px;
   font-weight: 600;
-  border: 1px solid $light-gray-2;
+  border: 1px solid var(--border-sidebar);
   border-radius: 6px;
   padding: 10px 15px;
 
@@ -57,15 +57,16 @@
 .option-list {
   max-height: 200px;
   width: 100%;
-  border: 1px solid $light-gray-2;
+  border: 1px solid var(--border-sidebar);
   border-radius: 6px;
   margin-top: 2px;
 
   .option {
     padding: 10px 15px;
+    color: var(--text);
 
     &:hover {
-      background-color: $light-gray-2;
+      background-color: var(--bg-button-appointments);
     }
   }
 }

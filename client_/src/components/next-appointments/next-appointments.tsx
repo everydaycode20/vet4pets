@@ -115,7 +115,9 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
       ref={containerRef}
     >
       <div id="controls">
-        <h2 className="text-light-gray-4">Next appointments</h2>
+        <h2 className="text-light-gray-4 dark:text-dark-text">
+          Next appointments
+        </h2>
 
         <div
           className={JoinClasses(
@@ -132,11 +134,11 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
 
           <div
             className={JoinClasses(
-              "flex items-center justify-center w-full",
+              "flex items-center justify-center w-full dark:bg-dark",
               styles.date
             )}
           >
-            <span className="font-medium">
+            <span className="font-medium dark:text-dark-text">
               {date.format("dddd, MMMM DD YYYY").toString()}
             </span>
           </div>
@@ -159,7 +161,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
 
       <div
         className={JoinClasses(
-          "bg-white overflow-y-auto",
+          "bg-white dark:bg-dark-3 overflow-y-auto",
           styles["container-appointment-list"]
         )}
         id="appointments-list"
@@ -214,45 +216,55 @@ function AppointmentsList({
 
       if (appointmentDate.isAfter(currentDateTime)) {
         return (
-          <li key={i}>
+          <li className="dark:bg-dark-3" key={i}>
             <div>
               <span className="font-medium text-black">{val.type.name}</span>{" "}
-              <span className="text-light-gray-4">
+              <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
               </span>
             </div>
 
-            <span className="text-light-gray-4">{val.owner.name}</span>
+            <span className="text-light-gray-4 dark:text-dark-text">
+              {val.owner.name}
+            </span>
           </li>
         );
       }
 
       if (!isToday) {
         return (
-          <li key={i}>
+          <li className="dark:bg-dark-3" key={i}>
             <div>
-              <span className="font-medium text-black">{val.type.name}</span>{" "}
-              <span className="text-light-gray-4">
+              <span className="font-medium text-black dark:text-dark-text">
+                {val.type.name}
+              </span>{" "}
+              <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
               </span>
             </div>
 
-            <span className="text-light-gray-4">{val.owner.name}</span>
+            <span className="text-light-gray-4 dark:text-dark-text">
+              {val.owner.name}
+            </span>
           </li>
         );
       }
 
       if (isToday && appointmentDate.isAfter(currentDateTime)) {
         return (
-          <li key={i}>
+          <li className="dark:bg-dark-3" key={i}>
             <div>
-              <span className="font-medium text-black">{val.type.name}</span>{" "}
-              <span className="text-light-gray-4">
+              <span className="font-medium text-black dark:text-dark-text">
+                {val.type.name}
+              </span>{" "}
+              <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
               </span>
             </div>
 
-            <span className="text-light-gray-4">{val.owner.name}</span>
+            <span className="text-light-gray-4 dark:text-dark-text">
+              {val.owner.name}
+            </span>
           </li>
         );
       }

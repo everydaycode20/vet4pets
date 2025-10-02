@@ -64,7 +64,7 @@ export default function AddPetContent() {
     >
       <div className="h-full w-full flex flex-col">
         <div className={JoinClasses("w-full", styles.title)}>
-          <span className="font-semibold text-black ">Add new Pet</span>
+          <span className="font-semibold text-black dark:text-dark-text">Add new Pet</span>
         </div>
 
         <div className={JoinClasses("", styles["form-container"])}>

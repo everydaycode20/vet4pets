@@ -99,12 +99,12 @@ export default function Pets() {
           styles["add-owner-container"]
         )}
       >
-        <NavLink className="flex items-center" to="add">
+        <NavLink className="flex items-center bg-white dark:bg-dark-3" to="add">
           <div>
             <PetsOutlinedIcon htmlColor="#778CA2" />
           </div>
 
-          <span className="font-medium text-black">Add new pet</span>
+          <span className="font-medium text-black dark:text-dark-text">Add new pet</span>
         </NavLink>
       </div>
 

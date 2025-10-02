@@ -169,7 +169,7 @@ export default function Preferences({
                           <Item
                             className={JoinClasses(
                               "dropdown-content-item",
-                              hour === workingHours.start && "bg-light-gray-2"
+                              hour === workingHours.start && "bg-light-gray-2 dark:bg-dark-4"
                             )}
                             key={hour}
                             onSelect={() => {
@@ -240,7 +240,7 @@ export default function Preferences({
                             <Item
                               className={JoinClasses(
                                 "dropdown-content-item",
-                                hour === workingHours.end && "bg-light-gray-2"
+                                hour === workingHours.end && "bg-light-gray-2 dark:bg-dark-4"
                               )}
                               key={hour}
                               onSelect={() => {

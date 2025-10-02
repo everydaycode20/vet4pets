@@ -1,12 +1,12 @@
 .Overlay {
-  background-color: rgb(37 38 49 / 0.3);
+  background-color: var(--overlay-dialog);
   position: fixed;
   inset: 0;
   z-index: 50;
 }
 
 .Content {
-  background-color: white;
+  background-color: var(--calendar-off-range);
   border-radius: 4px;
   position: fixed;
   top: 50%;

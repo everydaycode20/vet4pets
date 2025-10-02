@@ -5,7 +5,7 @@
 .add-owner-content-container {
   max-width: 550px;
   width: 100%;
-  border-right: 1px solid $light-gray;
+  border-right: 1px solid var(--border-sidebar);
   border-radius: 10px;
 }
 
@@ -13,7 +13,7 @@
   font-size: 22px;
   line-height: 32px;
   padding: 16px 0 16px 24px;
-  border-bottom: 1px solid $light-gray;
+  border-bottom: 1px solid var(--border-sidebar);
 }
 
 .form-container {
@@ -62,13 +62,13 @@
   &-content {
     width: 300px;
     z-index: 9999;
-    background-color: white;
+    background-color: var(--calendar-off-range);
     display: flex;
     flex-direction: column;
     padding: 10px;
     border-radius: 6px;
     color: $black;
-    border: 1px solid $light-gray;
+    border: 1px solid var(--border-sidebar);
 
     &-item {
       width: 100%;
@@ -76,10 +76,11 @@
       border-radius: 6px;
       font-size: 14px;
       cursor: default;
+      color: var(--text);
 
       &:focus,
       &:hover {
-        background-color: $light-gray-2;
+        background-color: var(--bg-active-link);
       }
     }
   }
@@ -88,6 +89,10 @@
 .form {
   width: 100%;
   max-width: 700px;
+
+  label {
+    color: var(--text);
+  }
 }
 
 .select-owner-btn {
@@ -96,10 +101,10 @@
   line-height: 21px;
   width: 100%;
   padding: 14.5px 24px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   border-radius: 6px;
   text-align: start;
-  color: $gray;
+  color: var(--text);
 
   &-error {
     border-color: $pink;
@@ -107,5 +112,9 @@
 }
 
 .form-main-container {
-    border-radius: 6px;
+  border-radius: 6px;
+
+  a svg {
+    fill: var(--button-svg);
+  }
 }

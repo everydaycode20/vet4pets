@@ -217,7 +217,7 @@ function TimeRangeTime({
       >
         <div className={JoinClasses("flex flex-col items-start")}>
           <button
-            className="text-black"
+            className="text-black dark:text-dark-text"
             type="button"
             onClick={() => setOpen(!open)}
             id={`${label}-btn`}
@@ -226,10 +226,14 @@ function TimeRangeTime({
           </button>
 
           {time === "" && (
-            <span className="text-light-gray-4">Select time</span>
+            <span className="text-light-gray-4  dark:text-dark-text">
+              Select time
+            </span>
           )}
 
-          {time !== "" && <span className="text-blue">{time}</span>}
+          {time !== "" && (
+            <span className="text-blue  dark:text-dark-text">{time}</span>
+          )}
         </div>
 
         {time !== "" && (
@@ -256,7 +260,7 @@ function TimeRangeTime({
       <div
         // aria-role="listbox"
         className={JoinClasses(
-          "absolute overflow-y-scroll cursor-pointer bg-white z-10",
+          "absolute overflow-y-scroll cursor-pointer z-10 bg-white dark:bg-dark",
           styles["option-list"],
           open ? "block" : "hidden"
         )}

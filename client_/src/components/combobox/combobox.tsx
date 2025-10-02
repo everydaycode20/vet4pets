@@ -101,7 +101,7 @@ export default function ComboBox({
           <ComboboxPopover
             gutter={8}
             sameWidth
-            className={JoinClasses("bg-white flex flex-col", styles.options)}
+            className={JoinClasses("bg-white dark:bg-dark flex flex-col", styles.options)}
           >
             {matches.length ? (
               matches.map((value) => (

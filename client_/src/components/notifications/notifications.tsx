@@ -128,7 +128,7 @@ export default function Notifications() {
             className={JoinClasses("shadow-1", styles["notifications-content"])}
           >
             {appointments.length === 0 && (
-              <span className="text-black p-[2px]">
+              <span className="text-black dark:text-dark-text p-[2px]">
                 no new appointments coming up
               </span>
             )}

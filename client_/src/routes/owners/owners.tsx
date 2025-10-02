@@ -50,7 +50,7 @@ export default function Owner() {
         accessorKey: "address",
         cell: (info) => info.getValue(),
         header: () => <span>Address</span>,
-        enableSorting: false, 
+        enableSorting: false,
       },
       {
         accessorKey: "createdAt",
@@ -95,7 +95,7 @@ export default function Owner() {
         )}
       >
         <button
-          className="flex items-center"
+          className="flex items-center bg-white dark:bg-dark-3"
           type="button"
           onClick={() => setState(true)}
         >
@@ -103,7 +103,9 @@ export default function Owner() {
             <PersonAddAlt1Icon htmlColor="#778CA2" />
           </div>
 
-          <span className="font-medium text-black">Add new owner</span>
+          <span className="font-medium text-black dark:text-dark-text">
+            Add new owner
+          </span>
         </button>
       </div>
 
@@ -152,7 +154,7 @@ function PhoneList({ data }: { data: ITelephones[] }) {
         <DropdownMenu.Portal>
           <DropdownMenu.Content
             className={JoinClasses(
-              "bg-white flex flex-col gap-y-[8px]",
+              "bg-white dark:bg-dark flex flex-col gap-y-[8px]",
               styles.content
             )}
           >

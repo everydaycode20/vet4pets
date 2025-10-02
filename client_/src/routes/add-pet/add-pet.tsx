@@ -4,7 +4,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { number, object, string } from "zod";
-import { PaginationState } from "@tanstack/react-table";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import Input from "../../components/input/input";
@@ -120,7 +119,7 @@ export default function AddPet() {
   return (
     <div
       className={JoinClasses(
-        "container h-full bg-white",
+        "container h-full bg-white dark:bg-dark",
         styles["form-main-container"]
       )}
     >

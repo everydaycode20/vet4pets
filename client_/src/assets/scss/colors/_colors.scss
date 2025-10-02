@@ -17,24 +17,37 @@ $light-gray-4: #778ca2;
 $black: #252631;
 $light-black: #25263126;
 
+$dark: #0d1117;
+$dark-2: #11161c;
+$dark-3: #161b22;
+$dark-4: #2d333b;
+$dark-5: #1f242c;
+$dark-text: #e6edf3;
+$dark-text-2: #8b949e;
+$dark-text-disabled: #6e7681;
+$dark-accent-blue: #4d7cfe;
+$dark-accent-green: #07db1a;
+$dark-accent-red: #db074f;
+$dark-accent-yellow: #db9f07;
+
 // $colors: (
-//   "blue": #4d7cfe,
-//   "light-blue": #4d7cfe26,
-//   "cyan": #2ce5f6,
-//   "light-cyan": #2ce5f626,
-//   "pink": #fe4d97,
-//   "light-pink": #fe4d9726,
-//   "orange": #ffab2b,
-//   "light-orange": #ffab2b26,
-//   "green": #6dd230,
-//   "light-green": #6dd23026,
-//   "gray-dark": #273444,
-//   "gray": #98a9bc,
-//   "light-gray": #e8ecef,
-//   "light-gray-2": #f2f4f6,
-//   "light-gray-3": #f8fafb,
-//   "black": #252631,
-//   "light-black": #25263126,
+//   blue: #4d7cfe,
+//   light-blue: #4d7cfe26,
+//   cyan: #2ce5f6,
+//   light-cyan: #2ce5f626,
+//   pink: #fe4d97,
+//   light-pink: #fe4d9726,
+//   orange: #ffab2b,
+//   light-orange: #ffab2b26,
+//   green: #6dd230,
+//   light-green: #6dd23026,
+//   gray-dark: #273444,
+//   gray: #98a9bc,
+//   light-gray: #e8ecef,
+//   light-gray-2: #f2f4f6,
+//   light-gray-3: #f8fafb,
+//   black: #252631,
+//   light-black: #25263126,
 // );
 
 // @each $color, $i in $colors {

@@ -23,7 +23,7 @@ export default function TopBar() {
   const [_, setState] = useAtom(mobileSidebarState);
 
   return (
-    <header className={JoinClasses("bg-light-gray-3")}>
+    <header className={JoinClasses("bg-light-gray-3 dark:bg-dark")}>
       <div
         className={JoinClasses(
           "flex items-center justify-between flex-wrap lg:flex-nowrap",
@@ -31,7 +31,7 @@ export default function TopBar() {
         )}
       >
         <div className="w-full flex justify-between items-center">
-          <h1 className="mb-0 font-semibold">
+          <h1 className="mb-0 font-semibold dark:text-dark-text">
             {matches[matches.length - 1].handle?.title}
           </h1>
 

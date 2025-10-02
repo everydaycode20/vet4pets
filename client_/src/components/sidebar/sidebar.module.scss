@@ -4,19 +4,13 @@
 .sidebar {
   max-width: $sidebar-width;
   width: 100%;
-  border-right: 1px solid $light-gray;
-
-  aside {
-  }
+  border-right: 1px solid var(--border-sidebar);
 
   &__title {
     font-size: 22px;
     line-height: 32px;
     padding: 16px 0 16px 24px;
-    border-bottom: 1px solid $light-gray;
-
-    span {
-    }
+    border-bottom: 1px solid var(--border-sidebar);
   }
 }
 

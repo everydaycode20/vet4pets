@@ -3,7 +3,7 @@
 
 .container {
   margin-top: 24px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   border-radius: 8px;
   width: 50%;
   max-height: 416px;
@@ -25,7 +25,7 @@
     row-gap: 5px;
 
     li {
-      background-color: $light-gray-3;
+      background-color: var(--patients-list);
       font-size: 14px;
       line-height: 21px;
       padding: 12px 12px;

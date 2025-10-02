@@ -4,7 +4,7 @@ table.table-container-modal {
   border-radius: 8px 8px 0 0;
   border-spacing: 0px;
   border-collapse: separate;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   overflow: hidden;
   // position: relative;
   // max-width: 350px;
@@ -14,25 +14,29 @@ table.table-container-modal {
     color: $light-gray-4;
     font-weight: 500;
     text-align: left;
+
+    svg {
+      fill: var(--button-svg);
+    }
   }
 
   tr th,
   tr td {
     padding: 18px;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid var(--border-sidebar);
   }
 
   tr td {
     font-size: 14px;
     font-weight: 300;
-    color: $black;
+    color: var(--text);
   }
 
   tr {
-    background-color: white;
+    background-color: var(--calendar-off-range);
 
     &:hover {
-      background-color: $light-gray-3;
+      background-color: var(--bg-button-appointments);
     }
 
     &:last-of-type td {
@@ -62,10 +66,15 @@ table.table-container-modal {
 .pagination-container {
   position: sticky;
   bottom: 0;
-  background-color: white;
+  background-color: var(--calendar-off-range);
   border-radius: 0 0 8px 8px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   padding: 12px 0;
+  color: var(--text);
+
+  svg {
+    fill: var(--button-svg);
+  }
 
   &:before {
     content: "";

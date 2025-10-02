@@ -72,10 +72,11 @@
   line-height: 21px;
   width: 100%;
   padding: 14.5px 24px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   border-radius: 6px;
   text-align: start;
-  color: $gray;
+  color: var(--text);
+  background-color: var(--bg-button-appointments);
 
   &-error {
     border-color: $pink;

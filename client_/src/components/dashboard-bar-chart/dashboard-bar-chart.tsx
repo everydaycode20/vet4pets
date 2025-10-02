@@ -21,21 +21,28 @@ export default function DashboardBarChart({ stats }: { stats?: IStats }) {
   console.log();
 
   return (
-    <div className={JoinClasses("bg-white", styles.container)}>
-      <h2 className="text-light-gray-4">Appointments this week</h2>
+    <div className={JoinClasses("bg-white dark:bg-dark-3", styles.container)}>
+      <h2 className="text-light-gray-4 dark:text-dark-text">
+        Appointments this week
+      </h2>
 
-      <div className={JoinClasses("bg-white", styles["bar-chart-container"])}>
+      <div
+        className={JoinClasses(
+          "bg-white dark:bg-dark-3",
+          styles["bar-chart-container"]
+        )}
+      >
         <Tabs defaultValue={1}>
           <TabsList className={JoinClasses("flex", styles["tab-list"])}>
-            <Tab className="dashboard-chart" value={1}>
+            <Tab className="dashboard-chart dark:text-dark-text" value={1}>
               Weekly
             </Tab>
 
-            <Tab className="dashboard-chart" value={2}>
+            <Tab className="dashboard-chart dark:text-dark-text" value={2}>
               Monthly
             </Tab>
 
-            <Tab className="dashboard-chart" value={3}>
+            <Tab className="dashboard-chart dark:text-dark-text" value={3}>
               Yearly
             </Tab>
           </TabsList>

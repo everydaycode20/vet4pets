@@ -56,12 +56,14 @@ export default function Sidebar() {
 export function SidebarContent() {
   return (
     <nav
-      className={JoinClasses("fixed h-full", styles["sidebar"])}
+      className={JoinClasses("fixed h-full dark:bg-dark-2", styles["sidebar"])}
       aria-label="left side navigation"
     >
       <aside className="h-full flex flex-col">
         <div className={JoinClasses("", styles.sidebar__title)}>
-          <span className="font-semibold text-black">Vet4Pets</span>
+          <span className="font-semibold text-black dark:text-dark-text">
+            Vet4Pets
+          </span>
         </div>
 
         <div className={JoinClasses("navigation-container", styles.navigation)}>
@@ -69,7 +71,7 @@ export function SidebarContent() {
             <AccordionItem value="item-1">
               <AccordionTrigger
                 className={JoinClasses(
-                  "flex items-center w-full text-light-gray-4 font-light",
+                  "flex items-center w-full text-light-gray-4 font-light dark:text-dark-text",
                   styles["navigation__collapse"]
                 )}
               >
@@ -86,7 +88,9 @@ export function SidebarContent() {
                             <div className="flex items-center">
                               {route.icon(isActive ? "4D7CFE" : "#778CA2")}
 
-                              <span>{route.text}</span>
+                              <span className="dark:text-dark-text">
+                                {route.text}
+                              </span>
                             </div>
                           )}
                         </NavLink>
@@ -107,7 +111,7 @@ export function SidebarContent() {
                   htmlColor={isActive ? "4D7CFE" : "#778CA2"}
                 />
 
-                <span>Settings</span>
+                <span className="dark:text-dark-text">Settings</span>
               </div>
             )}
           </NavLink>

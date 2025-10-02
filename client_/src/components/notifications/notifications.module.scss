@@ -15,14 +15,14 @@
 
 .notifications-content {
   width: 318px;
-  background-color: white;
+  background-color: var(--bg-button-appointments);
   display: flex;
   flex-direction: column;
   padding: 10px;
   border-radius: 6px;
   z-index: 10;
-  color: $black;
-  border: 1px solid $light-gray;
+  color: var(--text);
+  border: 1px solid var(--border-sidebar);
 
   &-item {
     width: 100%;
@@ -32,7 +32,7 @@
 
     &:focus,
     &:hover {
-      background-color: $light-gray-2;
+      background-color: var(--bg-active-link);
     }
   }
 

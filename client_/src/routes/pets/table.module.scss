@@ -6,8 +6,7 @@
   a {
     font-size: 14px;
     line-height: 21px;
-    border: 1px solid $light-gray;
-    background-color: white;
+    border: 1px solid var(--border-sidebar);
     border-radius: 6px;
 
     div {
@@ -16,11 +15,11 @@
 
     span {
       padding: 6px 12px;
-      border-left: 1px solid $light-gray;
+      border-left: 1px solid var(--border-sidebar);
     }
 
     &:active {
-      background-color: $light-gray-3;
+      background-color: var(--bg-button-appointments);
     }
   }
 }

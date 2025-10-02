@@ -4,36 +4,40 @@ table.table-container {
   border-radius: 8px 8px 0 0;
   border-spacing: 0px;
   border-collapse: separate;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   overflow: hidden;
 
   thead tr:hover {
-    background-color: white;
+    background-color: var(--bg-button-appointments);
   }
 
   tr th {
-    color: $light-gray-4;
+    color: var(--text);
     font-weight: 500;
     text-align: left;
+
+    svg {
+      fill: var(--button-svg);
+    }
   }
 
   tr th,
   tr td {
     padding: 18px;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid var(--border-sidebar);
   }
 
   tr td {
     font-size: 14px;
     font-weight: 300;
-    color: $black;
+    color: var(--text);
   }
 
   tr {
-    background-color: white;
+    background-color: var(--calendar-off-range);
 
     &:hover {
-      background-color: $light-gray-3;
+      background-color: var(--bg-button-appointments);
     }
 
     &:last-of-type td {
@@ -63,10 +67,20 @@ table.table-container {
 .pagination-container {
   position: sticky;
   bottom: 0;
-  background-color: white;
+  background-color: var(--calendar-off-range);
   border-radius: 0 0 8px 8px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   padding: 12px 0;
+
+  &:after {
+    content: "";
+    width: calc(100% + 50px);
+    height: 50px;
+    background-color: var(--calendar-off-range);
+    position: absolute;
+    top: calc(100% + 2px);
+    left: -25px;
+  }
 
   &:before {
     content: "";

@@ -98,7 +98,12 @@ export default function CalendarExtended({
   });
 
   return (
-    <div className={JoinClasses("h-full bg-white", styles.container)}>
+    <div
+      className={JoinClasses(
+        "h-full bg-white dark:bg-dark-3",
+        styles.container
+      )}
+    >
       <Calendar
         localizer={localizer}
         events={
@@ -263,7 +268,11 @@ function Toolbar({
             <NavigateBeforeOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
           </button>
 
-          <button className="text-light-gray-4" type="button" onClick={today}>
+          <button
+            className="text-light-gray-4 dark:text-dark-text"
+            type="button"
+            onClick={today}
+          >
             Today
           </button>
 
@@ -274,14 +283,14 @@ function Toolbar({
           </button>
         </div>
 
-        <span className="font-semibold">{label}</span>
+        <span className="font-semibold dark:text-dark-text">{label}</span>
 
         <div className={JoinClasses("flex", styles["tab-list"])}>
           {views.map((v, index) => {
             return (
               <button
                 className={JoinClasses(
-                  "",
+                  "dark:text-dark-text",
                   v.toLocaleLowerCase() === view ? styles["active-view"] : ""
                 )}
                 type="button"
@@ -297,7 +306,7 @@ function Toolbar({
 
       <div
         className={JoinClasses(
-          "flex justify-end",
+          "flex justify-end bg-white dark:bg-dark-3",
           styles["add-appointment-container"]
         )}
       >
@@ -310,7 +319,9 @@ function Toolbar({
             <CalendarMonthIcon htmlColor="#778CA2" />
           </div>
 
-          <span className="font-medium text-black">Add new appointment</span>
+          <span className="font-medium text-black dark:text-dark-text">
+            Add new appointment
+          </span>
         </button>
       </div>
     </div>

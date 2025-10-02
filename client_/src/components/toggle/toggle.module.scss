@@ -14,7 +14,7 @@
 
   .label {
     font-size: 16px;
-    color: $black;
+    color: var(--text);
   }
 
   input[role="switch"] {

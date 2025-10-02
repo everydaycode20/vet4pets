@@ -120,7 +120,7 @@ export default function Settings() {
   }, [settings.data]);
 
   return (
-    <div className="h-full bg-white p-[24px]">
+    <div className="h-full p-[24px]">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-y-[12px]"

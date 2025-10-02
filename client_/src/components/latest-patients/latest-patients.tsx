@@ -23,8 +23,8 @@ export default function LatestPatients({ data }: { data?: IAppointments[] }) {
   }, []);
 
   return (
-    <div className={JoinClasses("bg-white", styles.container)}>
-      <h2 className="text-light-gray-4" ref={titleRef}>
+    <div className={JoinClasses("bg-white dark:bg-dark-3", styles.container)}>
+      <h2 className="text-light-gray-4 dark:text-dark-text" ref={titleRef}>
         Latest patients
       </h2>
 
@@ -32,7 +32,10 @@ export default function LatestPatients({ data }: { data?: IAppointments[] }) {
         {data?.map((app, i) => {
           if (dayjs(app.date).isBefore(currentDateTime)) {
             return (
-              <li className="text-light-gray-4 flex justify-between" key={i}>
+              <li
+                className="text-light-gray-4 dark:text-dark-text flex justify-between"
+                key={i}
+              >
                 <span className="text-center">
                   {dayjs(app.date).format("YYYY-MM-DD HH:mm").toString()}
                 </span>

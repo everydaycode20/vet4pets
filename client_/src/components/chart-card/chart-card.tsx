@@ -19,14 +19,14 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
   return (
     <article
       className={JoinClasses(
-        "chart-card flex flex-col sm:flex-row",
+        "chart-card flex flex-col sm:flex-row dark:bg-dark-3",
         styles.card
       )}
     >
       <div className="flex flex-col-reverse flex-1">
-        <h2 className="font-medium">{title}</h2>
+        <h2 className="font-medium dark:text-dark-text">{title}</h2>
 
-        <p className="font-semibold">{quantity}</p>
+        <p className="font-semibold dark:text-dark-text">{quantity}</p>
 
         {data === undefined && (
           <div className="skeleton h-[36px] w-11/12"></div>
@@ -92,36 +92,54 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
   return (
     <article
       className={JoinClasses(
-        "chart-card flex flex-col sm:flex-row",
+        "chart-card flex flex-col sm:flex-row dark:bg-dark-3",
         styles.card
       )}
     >
       <div className="w-full">
-        <h2 className="font-medium">Appointments</h2>
+        <h2 className="font-medium dark:text-dark-text">Appointments</h2>
 
         <div className="flex justify-between">
           <div className="flex flex-col">
             {!data && <div className="skeleton h-[36px]"></div>}
 
             {data && (
-              <span className={JoinClasses("font-semibold", styles.number)}>
+              <span
+                className={JoinClasses(
+                  "font-semibold dark:text-dark-text",
+                  styles.number
+                )}
+              >
                 {count.completed}
               </span>
             )}
 
-            <span className={JoinClasses("", styles.finished)}>Finished</span>
+            <span
+              className={JoinClasses("dark:text-dark-text", styles.finished)}
+            >
+              Finished
+            </span>
           </div>
 
           <div className="flex flex-col">
             {!data && <div className="skeleton h-[36px]"></div>}
 
             {data && (
-              <span className={JoinClasses("font-semibold", styles.number)}>
+              <span
+                className={JoinClasses(
+                  "font-semibold dark:text-dark-text",
+                  styles.number
+                )}
+              >
                 {count.upcoming}
               </span>
             )}
 
-            <span className={JoinClasses("", styles.finished)}>Upcoming</span>
+            <span
+              className={JoinClasses("dark:text-dark-text", styles.finished)}
+            >
+              Upcoming
+            </span>
           </div>
         </div>
       </div>

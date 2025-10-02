@@ -2,7 +2,7 @@
 
 .container {
   margin-top: 24px;
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   border-radius: 8px;
 
   h2 {
@@ -15,6 +15,10 @@
 
 .panel-chart {
   height: 200px;
+
+  tspan {
+    fill: var(--text);
+  }
 }
 
 .bar-chart-container {
@@ -22,20 +26,20 @@
 }
 
 .tooltip {
-  border: 1px solid $light-gray;
-  background-color: #fff;
+  border: 1px solid var(--border-sidebar);
+  background-color: var(--bg-active-link);
   padding: 3px 16px;
   border-radius: 100px;
 
   span {
     font-size: 14px;
     line-height: 21px;
-    color: $light-gray-4;
+    color: var(--text);
   }
 }
 
 .tab-list {
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
   border-radius: 6px;
   font-size: 14px;
   line-height: 21px;
@@ -49,8 +53,8 @@
     padding: 4px 12px;
 
     &:nth-of-type(2) {
-      border-left: 1px solid $light-gray;
-      border-right: 1px solid $light-gray;
+      border-left: 1px solid var(--border-sidebar);
+      border-right: 1px solid var(--border-sidebar);
     }
   }
 }

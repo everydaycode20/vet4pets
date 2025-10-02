@@ -6,7 +6,7 @@
     line-height: 18px;
     font-weight: 400;
     margin-bottom: 12px;
-    color: $black;
+    color: var(--text);
   }
 
   span {
@@ -24,11 +24,13 @@
     padding: 15px 24px;
     border-radius: 5px;
     width: 100%;
+    background-color: var(--bg-buttons-appointments);
   }
 }
 
 .input-container input {
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
+  color: var(--text);
 }
 
 .input-container {
@@ -37,11 +39,15 @@
   }
 
   button {
-    background-color: $light-gray-2;
+    background-color: var(--patients-list);
     border-radius: 4px;
 
+    svg {
+      fill: var(--button-svg);
+    }
+
     &:active {
-      background-color: $light-gray;
+      background-color: var(--bg-active-link);
     }
 
     &:first-of-type {
@@ -67,7 +73,7 @@
 }
 
 .input-container-password {
-  border: 1px solid $light-gray;
+  border: 1px solid var(--border-sidebar);
 
   input {
     padding-right: 12px;

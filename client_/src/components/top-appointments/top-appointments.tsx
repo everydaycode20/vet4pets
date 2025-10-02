@@ -23,15 +23,15 @@ export default function TopAppointments({
   }, []);
 
   return (
-    <div className={JoinClasses("bg-white", styles.container)}>
-      <h2 className="text-light-gray-4" ref={titleRef}>
+    <div className={JoinClasses("bg-white dark:bg-dark-3", styles.container)}>
+      <h2 className="text-light-gray-4 dark:text-dark-text" ref={titleRef}>
         Top appointments
       </h2>
 
       <ul className="flex flex-col overflow-y-auto" ref={list}>
         {data?.map((app, i) => {
           return (
-            <li className="text-light-gray-4" key={i}>
+            <li className="text-light-gray-4 dark:text-dark-text" key={i}>
               {app.name}
             </li>
           );

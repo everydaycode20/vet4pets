@@ -16,7 +16,7 @@ export default function Root() {
       <div className={JoinClasses("w-full", styles["main-container"])}>
         <TopBar />
 
-        <main className="w-full bg-light-gray-3 overflow-y-auto">
+        <main className="w-full bg-light-gray-3 overflow-y-auto dark:bg-dark">
           <div
             className={JoinClasses(
               "container",

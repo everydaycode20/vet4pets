@@ -1,3 +1,4 @@
+import { ReactNode, useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
@@ -15,7 +16,6 @@ import Owner from "./routes/owners/owners";
 import Pets from "./routes/pets/pets";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
 import { useGetUser } from "./hooks/useGetUser";
 import { useAtom } from "jotai";
 import { spinnerState } from "./components/spinner/spinner-state";
