@@ -21,6 +21,7 @@ import { useAtom } from "jotai";
 import { spinnerState } from "./components/spinner/spinner-state";
 import AddPet from "./routes/add-pet/add-pet";
 import Settings from "./routes/settings/settings";
+import useSystemTheme from "./hooks/use-system-theme";
 
 const router = createBrowserRouter([
   {
@@ -93,7 +94,11 @@ const router = createBrowserRouter([
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: (
+          <RequireAuth>
+            <Settings />
+          </RequireAuth>
+        ),
         handle: {
           title: "Settings",
         },
@@ -138,6 +143,8 @@ function App() {
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { data: user } = useGetUser();
+
+  useSystemTheme();
 
   return user === false ? <Navigate to="/login" replace /> : children;
   // return children;

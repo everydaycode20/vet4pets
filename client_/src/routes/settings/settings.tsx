@@ -85,8 +85,28 @@ export default function Settings() {
 
       return await res.json();
     },
-    onSuccess: () => {
-      // settings.refetch();
+    onSuccess: (data) => {
+      if (dirtyFields.appearance) {
+        if (data.appearance.name === "Auto (match system)") {
+          const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+          localStorage.setItem("color-theme", media.matches ? "dark" : "light");
+
+          if (media.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } else if (data.appearance.name === "Dark") {
+          localStorage.setItem("color-theme", "dark");
+
+          document.documentElement.classList.add("dark");
+        } else {
+          localStorage.setItem("color-theme", "light");
+
+          document.documentElement.classList.remove("dark");
+        }
+      }
 
       setSuccessToast(true);
     },

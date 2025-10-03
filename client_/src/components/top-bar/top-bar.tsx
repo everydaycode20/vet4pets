@@ -50,7 +50,7 @@ export default function TopBar() {
           className="flex items-center w-full justify-end"
           aria-label="top navigation"
         >
-          <Search />
+          {/* <Search /> */}
 
           <Notifications />
 
@@ -62,9 +62,9 @@ export default function TopBar() {
                 <div className={JoinClasses("bg-gray", styles.profile)}></div>
               </MenuButton>
 
-              <Menu>
+              {/* <Menu>
                 <MenuItem>Profile</MenuItem>
-              </Menu>
+              </Menu> */}
             </Dropdown>
           </div>
         </nav>
