@@ -29,7 +29,7 @@ export default function Login() {
 
   const login = useLogin();
 
-  const [spState, setSpState] = useAtom(spinnerState);
+  const [_, setSpState] = useAtom(spinnerState);
 
   console.log(login.isPending);
 

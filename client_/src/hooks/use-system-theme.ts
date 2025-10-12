@@ -1,15 +1,9 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import ISettings from "../models/settings.interface";
 import { apiUrl } from "../constants/apiUrl";
 
-import { useAtom, atom } from "jotai";
-
-const isDarkMode = atom<string | undefined>(undefined);
-
 export default function useSystemTheme() {
-  const [isDark, setIsDark] = useAtom<string | undefined>(isDarkMode);
-
   const settings = useQuery({
     queryKey: ["settings"],
     queryFn: async (): Promise<ISettings[]> => {

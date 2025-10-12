@@ -106,7 +106,7 @@ function BChart({
   );
 }
 
-function CustomToolTip({ active, payload, label }: any) {
+function CustomToolTip({ active, payload }: any) {
   if (active && payload && payload.length) {
     return (
       <div className={JoinClasses("", styles.tooltip)}>

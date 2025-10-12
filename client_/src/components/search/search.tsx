@@ -1,4 +1,4 @@
-import { startTransition, useMemo, useState, useEffect } from "react";
+import { startTransition, useMemo, useState } from "react";
 import {
   ComboboxProvider,
   Combobox,

@@ -50,7 +50,7 @@ export default function Settings() {
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors, isDirty, dirtyFields, touchedFields },
+    formState: { dirtyFields, touchedFields },
   } = useForm<ISettings>({
     resolver: zodResolver(schema),
     defaultValues: {},

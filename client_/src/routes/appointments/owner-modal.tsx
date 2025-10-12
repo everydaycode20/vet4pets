@@ -12,8 +12,6 @@ import {
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useQuery } from "@tanstack/react-query";
 
-import { Controller } from "react-hook-form";
-
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 

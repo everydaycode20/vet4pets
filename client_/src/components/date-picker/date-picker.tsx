@@ -1,6 +1,5 @@
-import { MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { Checkbox, useCheckboxStore, useStoreState } from "@ariakit/react";
 import { DayPicker } from "react-day-picker";
 
 import dayjs from "dayjs";
@@ -11,12 +10,8 @@ import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlin
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 
 import JoinClasses from "../../utils/join-classes";
-import formatTime from "../../utils/format-time";
 
-import {
-  addAppointmentState,
-  options,
-} from "../../routes/appointments/appointment-state";
+import { options } from "../../routes/appointments/appointment-state";
 
 import "react-day-picker/style.css";
 import "./date-picker.scss";
@@ -25,7 +20,6 @@ import { useAtom } from "jotai";
 import { Noop } from "react-hook-form";
 
 export default function DatePicker({
-  value,
   onChange,
   error,
 }: {
@@ -38,8 +32,6 @@ export default function DatePicker({
   error?: any;
   onBlur?: Noop;
 }) {
-  const [state, setState] = useAtom(addAppointmentState);
-
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
   function setDateSelection(date: Date) {
@@ -47,8 +39,6 @@ export default function DatePicker({
   }
 
   useEffect(() => {
-    const selectedDate = dayjs(calendarOptions.day);
-
     onChange!({
       start: calendarOptions.start,
       end: calendarOptions.end,

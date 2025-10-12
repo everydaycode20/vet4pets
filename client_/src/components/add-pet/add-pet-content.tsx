@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { number, object, string } from "zod";
-import { NavLink } from "react-router-dom";
 
 import JoinClasses from "../../utils/join-classes";
 import Input from "../input/input";
@@ -30,9 +29,7 @@ export const schema = object({
   type: number().positive({ message: "Select a type" }),
 });
 
-
-
-const defaultData:any = [];
+const defaultData: any = [];
 
 export default function AddPetContent() {
   const [open, setOpen] = useState(false);
@@ -64,7 +61,9 @@ export default function AddPetContent() {
     >
       <div className="h-full w-full flex flex-col">
         <div className={JoinClasses("w-full", styles.title)}>
-          <span className="font-semibold text-black dark:text-dark-text">Add new Pet</span>
+          <span className="font-semibold text-black dark:text-dark-text">
+            Add new Pet
+          </span>
         </div>
 
         <div className={JoinClasses("", styles["form-container"])}>
@@ -156,12 +155,11 @@ export default function AddPetContent() {
               <Controller
                 name="type"
                 control={control}
-                render={({ field, fieldState }) => {
+                render={({ fieldState }) => {
                   return (
                     <ComboBox
                       label="Select a type"
                       name="type"
-                      field={field}
                       placeholder="Search or Select a type"
                       error={fieldState?.error?.message}
                       data={[

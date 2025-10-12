@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
-import { useAtom } from "jotai";
+
 import { NavLink } from "react-router-dom";
 
-import { addPetState } from "../../components/add-pet/add-pet";
 // import AddPet from "../../components/add-pet/add-pet";
 
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
@@ -26,8 +25,6 @@ interface Pet {
 }
 
 export default function Pets() {
-  const [_, setState] = useAtom(addPetState);
-
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 20,
@@ -104,7 +101,9 @@ export default function Pets() {
             <PetsOutlinedIcon htmlColor="#778CA2" />
           </div>
 
-          <span className="font-medium text-black dark:text-dark-text">Add new pet</span>
+          <span className="font-medium text-black dark:text-dark-text">
+            Add new pet
+          </span>
         </NavLink>
       </div>
 

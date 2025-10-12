@@ -61,7 +61,7 @@ export default function AddOwnerContent({
     []
   );
 
-  const [state, setState] = useAtom(addOwnerState);
+  const [_, setState] = useAtom(addOwnerState);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     addNewOwner.mutate(data);

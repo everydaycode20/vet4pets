@@ -68,9 +68,9 @@ export default function CalendarEvent({
 
   const [openModal, setOpenModal] = useState(false);
 
-  const [state, setState] = useAtom(addAppointmentState);
+  const [_, setState] = useAtom(addAppointmentState);
 
-  const [calendarOptions, setCalendarOptions] = useAtom(options);
+  const [__, setCalendarOptions] = useAtom(options);
 
   const deleteAppointment = useMutation({
     mutationFn: async (appointmentId: number | string) => {

@@ -8,13 +8,11 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./add-pet.module.scss";
 
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-import ComboBox from "../../components/combobox/combobox";
 import { date, number, object, string } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Example from "../combobox/combobox";
 
 export const addPetState = atom(false);
 interface IFormInput {
@@ -42,11 +40,7 @@ const schema = object({
 export default function AddPet() {
   const [state, setState] = useAtom(addPetState);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>({
+  const {} = useForm<IFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",

@@ -2,8 +2,6 @@ import { useMatches } from "react-router-dom";
 
 import { Dropdown } from "@mui/base/Dropdown";
 import { MenuButton } from "@mui/base/MenuButton";
-import { Menu } from "@mui/base/Menu";
-import { MenuItem } from "@mui/base/MenuItem";
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
@@ -12,7 +10,7 @@ import JoinClasses from "../../utils/join-classes";
 import Notifications from "../notifications/notifications";
 
 import styles from "./top-bar.module.scss";
-import Search from "../search/search";
+// import Search from "../search/search";
 
 import { mobileSidebarState } from "../sidebar/mobile-sidebar";
 import { useAtom } from "jotai";

@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  HTMLProps,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import {
   flexRender,
@@ -66,7 +59,7 @@ export default function Table({
   }, [rowSelection]);
 
   const table = useReactTable({
-    data: data !== undefined ? data.data : undefined,
+    data: data?.data ?? [],
     debugTable: true,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -85,9 +78,10 @@ export default function Table({
     enableRowSelection: rowSelect,
     enableMultiRowSelection: false,
     getRowId: (row) => row.id.toString(),
+    filterFns: {} as any,
   });
 
-  const { pageSize, pageIndex } = table.getState().pagination;
+  const { pageIndex } = table.getState().pagination;
 
   if (data) {
     return (

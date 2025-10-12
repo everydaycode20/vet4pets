@@ -7,11 +7,7 @@ import {
 } from "react";
 import { useAtom } from "jotai";
 import { Calendar, dayjsLocalizer, SlotInfo } from "react-big-calendar";
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  useQuery,
-} from "@tanstack/react-query";
+
 import dayjs from "dayjs";
 
 import NavigateBeforeOutlinedIcon from "@mui/icons-material/NavigateBeforeOutlined";
@@ -30,7 +26,6 @@ import {
 
 import { IAppointments } from "../../models/appointments.interface";
 import CalendarEvent from "./calendar-event";
-import GetAppointments from "./appointments-fetch";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -77,15 +72,15 @@ export default function CalendarExtended({
     setState(true);
   }, []);
 
-  const { refetch } = useQuery({
-    queryKey: ["calendar", calendarDate],
-    queryFn: (): Promise<IAppointments[]> =>
-      GetAppointments(
-        calendarDate.start.format("YYYY-MM-DD"),
-        calendarDate.end.format("YYYY-MM-DD")
-      ),
-    enabled: false,
-  });
+  // const { refetch } = useQuery({
+  //   queryKey: ["calendar", calendarDate],
+  //   queryFn: (): Promise<IAppointments[]> =>
+  //     GetAppointments(
+  //       calendarDate.start.format("YYYY-MM-DD"),
+  //       calendarDate.end.format("YYYY-MM-DD")
+  //     ),
+  //   enabled: false,
+  // });
 
   const formattedData = data?.map((a) => {
     return {
@@ -226,7 +221,7 @@ function Toolbar({
 }) {
   const views = ["Month", "Week", "Day"];
 
-  const [state, setState] = useAtom(addAppointmentState);
+  const [_, setState] = useAtom(addAppointmentState);
 
   const back = () => {
     onNavigate("PREV");

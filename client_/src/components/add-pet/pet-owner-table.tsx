@@ -23,8 +23,6 @@ import {
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { TablePagination } from "@mui/base/TablePagination";
 
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-
 import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";

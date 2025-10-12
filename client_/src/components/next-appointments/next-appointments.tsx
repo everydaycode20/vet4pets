@@ -170,7 +170,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
           (data.length === 0 && newDayData.data === undefined) ||
           newDayData.data?.appointments.length === 0) &&
           loading === false && (
-            <span>
+            <span className="text-dark dark:text-dark-text">
               {currentDateTime.isSame(date)
                 ? "no appointments today"
                 : "no appointments this day"}
@@ -218,7 +218,7 @@ function AppointmentsList({
         return (
           <li className="dark:bg-dark-3" key={i}>
             <div>
-              <span className="font-medium text-black">{val.type.name}</span>{" "}
+              <span className="font-medium text-black dark:text-dark-text">{val.type.name}</span>{" "}
               <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
               </span>
