@@ -2,6 +2,8 @@
 
 This project is a revamp of a veterinary management system I had built before. I decided to rebuild it from scratch this time with better architecture, maintainability, and modern tooling.
 
+https://github.com/user-attachments/assets/73cbcd73-ff04-4ed6-936b-6b8e25069624
+
 ## Features
 
 * Appointments Management: Schedule, update, and track appointments.
