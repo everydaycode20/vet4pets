@@ -1,0 +1,18 @@
+{
+  "surgery": "Cirugía",
+  "vaccination": "Vacunación",
+  "dental": "Dental",
+  "urgent care": "Atención urgente",
+  "sick visit": "Consulta médica",
+  "wellness checkup": "Chequeo general",
+  "neuter/spay": "Esterilización / Castración",
+  "latestPatients": "Últimos pacientes",
+  "addNewApp": "Agregar nueva cita",
+  "selectApp": "Selecciona un tipo de cita",
+  "searchSelect": "Busca o selecciona una cita",
+  "selectOwner": "Selecciona un dueño",
+  "selectPet": "Selecciona una mascota",
+  "addDateTime": "Agrega fecha y hora",
+  "submit": "Agregar",
+  "change": "Cambiar"
+}

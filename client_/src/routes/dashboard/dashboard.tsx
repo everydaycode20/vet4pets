@@ -12,8 +12,11 @@ import { apiUrl } from "../../constants/apiUrl";
 
 import styles from "./dashboard.module.scss";
 import { IDashboard } from "../../models/dashboard.interface";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation("dashboard");
+
   const { data } = useQuery({
     queryKey: ["dashboard"],
     queryFn: async (): Promise<IDashboard> => {
@@ -40,7 +43,7 @@ export default function Dashboard() {
       <div className="w-full">
         <section className="grid grid-cols-1 sm2:grid-cols-2 lg:grid-cols-1 lg2:grid-cols-2 gap-[24px] w-full h-fit">
           <ChartCard
-            title="Patients this month"
+            title={t("patientsMonth")}
             quantity={data?.month}
             data={data?.stats.monthly}
             fill="rgba(77,124,254,0.06)"
@@ -48,7 +51,7 @@ export default function Dashboard() {
           />
 
           <ChartCard
-            title="Patients this year"
+            title={t("patientsYear")}
             quantity={data?.year}
             data={data?.stats.yearly}
             fill="rgba(109,210,48,0.06)"

@@ -12,10 +12,13 @@ import { IAppointments } from "../../models/appointments.interface";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
 import { useDebounce } from "../../utils/debounce";
+import { useTranslation } from "react-i18next";
 
 dayjs.extend(customParseFormat);
 
 export default function NextAppointments({ data }: { data?: IAppointments[] }) {
+  const { t } = useTranslation(["dashboard"]);
+
   const currentDateTime = dayjs();
 
   const [date, setDate] = useState(currentDateTime);
@@ -116,7 +119,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
     >
       <div id="controls">
         <h2 className="text-light-gray-4 dark:text-dark-text">
-          Next appointments
+          {t("nextApp")}
         </h2>
 
         <div
@@ -127,7 +130,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
           aria-live="polite"
         >
           <button type="button" onClick={Prev}>
-            <span className="sr-only">previous date</span>
+            <span className="sr-only">{t("prevDate")}</span>
 
             <NavigateNextOutlinedIcon htmlColor="#778CA2" />
           </button>
@@ -144,7 +147,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
           </div>
 
           <button type="button" onClick={Next}>
-            <span className="sr-only">next date</span>
+            <span className="sr-only">{t("nextDate")}</span>
 
             <NavigateNextOutlinedIcon htmlColor="#778CA2" />
           </button>
@@ -171,9 +174,7 @@ export default function NextAppointments({ data }: { data?: IAppointments[] }) {
           newDayData.data?.appointments.length === 0) &&
           loading === false && (
             <span className="text-dark dark:text-dark-text">
-              {currentDateTime.isSame(date)
-                ? "no appointments today"
-                : "no appointments this day"}
+              {currentDateTime.isSame(date) ? t("noAppToday") : t("noApp")}
             </span>
           )}
 
@@ -209,6 +210,8 @@ function AppointmentsList({
   currentDateTime: dayjs.Dayjs;
   isToday: boolean;
 }) {
+  const { t } = useTranslation("appointments");
+
   return (
     data &&
     data.map((val, i) => {
@@ -218,7 +221,9 @@ function AppointmentsList({
         return (
           <li className="dark:bg-dark-3" key={i}>
             <div>
-              <span className="font-medium text-black dark:text-dark-text">{val.type.name}</span>{" "}
+              <span className="font-medium text-black dark:text-dark-text">
+                {t(val.type.name.toLowerCase())}
+              </span>{" "}
               <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
               </span>
@@ -236,7 +241,7 @@ function AppointmentsList({
           <li className="dark:bg-dark-3" key={i}>
             <div>
               <span className="font-medium text-black dark:text-dark-text">
-                {val.type.name}
+                {t(val.type.name.toLowerCase())}
               </span>{" "}
               <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}
@@ -255,7 +260,7 @@ function AppointmentsList({
           <li className="dark:bg-dark-3" key={i}>
             <div>
               <span className="font-medium text-black dark:text-dark-text">
-                {val.type.name}
+                {t(val.type.name.toLowerCase())}
               </span>{" "}
               <span className="text-light-gray-4 dark:text-dark-text">
                 {dayjs(val.date).format("HH:mm a")}

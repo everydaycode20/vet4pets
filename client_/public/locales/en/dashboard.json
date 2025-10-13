@@ -1,0 +1,14 @@
+{
+  "patientsMonth": "Patients this month",
+  "patientsYear": "Patients this year",
+  "appFinished": "Finished",
+  "appUpcoming": "Upcoming",
+  "nextApp": "Next appointments",
+  "noApp": "no appointments this day",
+  "noAppToday": "no appointments today",
+  "appThisWeek": "Appointments this week",
+  "appThisMonth": "Appointments this month",
+  "appThisYear": "Appointments this year",
+  "prevDate": "previous date",
+  "nextDate": "next date"
+}

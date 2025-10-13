@@ -26,6 +26,7 @@ import {
 
 import { IAppointments } from "../../models/appointments.interface";
 import CalendarEvent from "./calendar-event";
+import { useTranslation } from "react-i18next";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -60,6 +61,10 @@ export default function CalendarExtended({
   const [selectedEvent, setSelectedEvent] = useState<string | number>(0);
 
   const [currentDate, setCurrentDate] = useState<Date>();
+
+  const { i18n } = useTranslation();
+
+  const { t } = useTranslation("calendar");
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
@@ -146,9 +151,12 @@ export default function CalendarExtended({
               />
             ),
         }}
+        messages={{
+          showMore: (total) => `+${total} ${t("more")}`,
+        }}
         onView={onView}
         view={view}
-        culture="es"
+        culture={i18n.language}
         eventPropGetter={(event: any) => {
           if (event.id === "temp-selection") {
             return {
@@ -223,6 +231,8 @@ function Toolbar({
 
   const [_, setState] = useAtom(addAppointmentState);
 
+  const { t } = useTranslation(["calendar", "appointments"]);
+
   const back = () => {
     onNavigate("PREV");
   };
@@ -268,7 +278,7 @@ function Toolbar({
             type="button"
             onClick={today}
           >
-            Today
+            {t("today")}
           </button>
 
           <button type="button" onClick={next}>
@@ -292,7 +302,7 @@ function Toolbar({
                 key={index}
                 onClick={() => goToView(v.toLocaleLowerCase() as any)}
               >
-                {v}
+                {t(v.toLowerCase(), { ns: "calendar" })}
               </button>
             );
           })}
@@ -315,7 +325,7 @@ function Toolbar({
           </div>
 
           <span className="font-medium text-black dark:text-dark-text">
-            Add new appointment
+            {t("addNewApp", { ns: "appointments" })}
           </span>
         </button>
       </div>

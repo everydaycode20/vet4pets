@@ -1,0 +1,18 @@
+{
+  "surgery": "Surgery",
+  "vaccination": "Vaccination",
+  "dental": "Dental",
+  "urgent care": "Urgent Care",
+  "sick visit": "Sick Visit",
+  "wellness checkup": "Wellness Checkup",
+  "neuter/spay": "Neuter/Spay",
+  "latestPatients": "Latest Patients",
+  "addNewApp": "Add new appointment",
+  "selectApp": "Select an appointment type",
+  "searchSelect": "Search or Select an appointment",
+  "selectOwner": "Select an owner",
+  "selectPet": "Select a pet",
+  "addDateTime": "Add date and time",
+  "submit": "Submit",
+  "change": "Change"
+}

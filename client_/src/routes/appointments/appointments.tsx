@@ -44,6 +44,7 @@ import GetAppointments from "../../components/calendar/appointments-fetch";
 import IFormAppointment from "../../models/form-appointment.interface";
 import MakeJsonPatchRequest from "../../utils/json-patch-req";
 import Toast from "../../components/toast/toast";
+import { useTranslation } from "react-i18next";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
@@ -173,6 +174,8 @@ function Form({
   const [calendarOptions, setCalendarOptions] = useAtom(options);
 
   const [owner, setOwner] = useState<{ id?: number; name?: string }>({});
+
+  const { t } = useTranslation("appointments");
 
   const addAppointment = useMutation({
     mutationFn: async (data: IFormAppointment) => {
@@ -306,13 +309,13 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
-                  label="Select an appointment type"
+                  label={t("selectApp")}
                   name="type"
                   value={value}
                   onChange={onChange}
                   onBlur={onBlur}
                   error={errors.type && "select a service"}
-                  placeholder="Search or Select an appointment"
+                  placeholder={t("searchSelect")}
                   data={appointmentType}
                   edit={calendarOptions.edit}
                 />
@@ -352,7 +355,9 @@ function Form({
                           calendarOptions.edit && "cursor-not-allowed"
                         )}
                       >
-                        {value.id ? `Change ${value.name}` : "Select an owner "}
+                        {value.id
+                          ? `${t("change")} ${value.name}`
+                          : t("selectOwner")}
 
                         <span className="sr-only">opens a dialog</span>
                       </button>
@@ -373,7 +378,7 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
-                  label="Select a pet"
+                  label={t("selectPet")}
                   name="pet"
                   value={value}
                   onChange={onChange}

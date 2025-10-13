@@ -23,6 +23,9 @@ import AddPet from "./routes/add-pet/add-pet";
 import Settings from "./routes/settings/settings";
 import useSystemTheme from "./hooks/use-system-theme";
 
+import "dayjs/locale/es";
+import "dayjs/locale/en";
+
 const router = createBrowserRouter([
   {
     path: "/",

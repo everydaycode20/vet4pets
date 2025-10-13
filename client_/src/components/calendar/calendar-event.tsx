@@ -36,6 +36,7 @@ import {
   addAppointmentState,
   options,
 } from "../../routes/appointments/appointment-state";
+import { useTranslation } from "react-i18next";
 
 export default function CalendarEvent({
   event,
@@ -71,6 +72,8 @@ export default function CalendarEvent({
   const [_, setState] = useAtom(addAppointmentState);
 
   const [__, setCalendarOptions] = useAtom(options);
+
+  const { t } = useTranslation("appointments");
 
   const deleteAppointment = useMutation({
     mutationFn: async (appointmentId: number | string) => {
@@ -124,7 +127,9 @@ export default function CalendarEvent({
             )}
 
             <div className="rbc-event-content-custom">
-              <span className="font-semibold">{event.title}</span>
+              <span className="font-semibold">
+                {event.title && t(event.title?.toLowerCase())}
+              </span>
             </div>
           </div>
         </Trigger>
@@ -139,7 +144,9 @@ export default function CalendarEvent({
           >
             <div>
               <div className="flex gap-x-[12px] mb-[4px]">
-                <p className="font-semibold">{event.title}</p>
+                <p className="font-semibold">
+                  {event.title && t(event.title?.toLowerCase())}
+                </p>
 
                 <p>
                   {startTime}-{endTime}

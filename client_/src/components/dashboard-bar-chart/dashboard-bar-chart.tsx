@@ -16,9 +16,10 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./dashboard-bar-chart.module.scss";
 import { IStats } from "../../models/dashboard.interface";
+import { useTranslation } from "react-i18next";
 
 export default function DashboardBarChart({ stats }: { stats?: IStats }) {
-  console.log();
+  const { t } = useTranslation("calendar");
 
   return (
     <div className={JoinClasses("bg-white dark:bg-dark-3", styles.container)}>
@@ -35,15 +36,15 @@ export default function DashboardBarChart({ stats }: { stats?: IStats }) {
         <Tabs defaultValue={1}>
           <TabsList className={JoinClasses("flex", styles["tab-list"])}>
             <Tab className="dashboard-chart dark:text-dark-text" value={1}>
-              Weekly
+              {t("weekly")}
             </Tab>
 
             <Tab className="dashboard-chart dark:text-dark-text" value={2}>
-              Monthly
+              {t("monthly")}
             </Tab>
 
             <Tab className="dashboard-chart dark:text-dark-text" value={3}>
-              Yearly
+              {t("yearly")}
             </Tab>
           </TabsList>
 
@@ -86,10 +87,20 @@ function BChart({
   datakeyBar: string;
   datakeyX: string;
 }) {
+  const { t } = useTranslation("calendar");
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart width={500} height={300} data={data} margin={{}}>
-        <XAxis dataKey={datakeyX} axisLine={false} tickLine={false} dy={5} />
+        <XAxis
+          dataKey={datakeyX}
+          axisLine={false}
+          tickLine={false}
+          dy={5}
+          tickFormatter={(tick) => {
+            return t(tick.toLowerCase());
+          }}
+        />
 
         <YAxis axisLine={false} tickLine={false} />
 
@@ -107,10 +118,14 @@ function BChart({
 }
 
 function CustomToolTip({ active, payload }: any) {
+  const { t } = useTranslation("sidebar");
+
   if (active && payload && payload.length) {
     return (
       <div className={JoinClasses("", styles.tooltip)}>
-        <span>{payload[0].value} appointments</span>
+        <span>
+          {payload[0].value} {t("appointments").toLowerCase()}
+        </span>
       </div>
     );
   }

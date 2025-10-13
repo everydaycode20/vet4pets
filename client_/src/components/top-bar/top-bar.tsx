@@ -14,11 +14,14 @@ import styles from "./top-bar.module.scss";
 
 import { mobileSidebarState } from "../sidebar/mobile-sidebar";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 
 export default function TopBar() {
   const matches: any = useMatches();
 
   const [_, setState] = useAtom(mobileSidebarState);
+
+    const { t } = useTranslation();
 
   return (
     <header className={JoinClasses("bg-light-gray-3 dark:bg-dark")}>
@@ -30,7 +33,7 @@ export default function TopBar() {
       >
         <div className="w-full flex justify-between items-center">
           <h1 className="mb-0 font-semibold dark:text-dark-text">
-            {matches[matches.length - 1].handle?.title}
+            {t(matches[matches.length - 1].handle?.title.toLowerCase())}
           </h1>
 
           <button

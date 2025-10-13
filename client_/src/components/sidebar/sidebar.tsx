@@ -6,6 +6,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
+import { useTranslation } from "react-i18next";
+
 import JoinClasses from "../../utils/join-classes";
 
 import styles from "./sidebar.module.scss";
@@ -54,6 +56,8 @@ export default function Sidebar() {
 }
 
 export function SidebarContent() {
+  const { t } = useTranslation();
+
   return (
     <nav
       className={JoinClasses("fixed h-full dark:bg-dark-2", styles["sidebar"])}
@@ -89,7 +93,7 @@ export function SidebarContent() {
                               {route.icon(isActive ? "4D7CFE" : "#778CA2")}
 
                               <span className="dark:text-dark-text">
-                                {route.text}
+                                {t(route.text.toLowerCase())}
                               </span>
                             </div>
                           )}
@@ -111,7 +115,7 @@ export function SidebarContent() {
                   htmlColor={isActive ? "4D7CFE" : "#778CA2"}
                 />
 
-                <span className="dark:text-dark-text">Settings</span>
+                <span className="dark:text-dark-text">{t("settings")}</span>
               </div>
             )}
           </NavLink>

@@ -6,6 +6,7 @@ import AreaChart from "../area-chart/area-chart";
 
 import styles from "./chart-card.module.scss";
 import { IAppointments } from "../../models/appointments.interface";
+import { useTranslation } from "react-i18next";
 
 interface IChartCard {
   title: string;
@@ -48,6 +49,8 @@ export function ChartCard({ title, quantity, data, fill, stroke }: IChartCard) {
 
 export function SimpleCart({ data }: { data?: IAppointments[] }) {
   const currentDateTime = dayjs();
+
+  const { t } = useTranslation(["sidebar", "dashboard"]);
 
   const completedAppointments = data?.filter((a) => {
     const appointmentDate = dayjs(a.date, "YYYY-MM-DD HH:mm");
@@ -97,7 +100,7 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
       )}
     >
       <div className="w-full">
-        <h2 className="font-medium dark:text-dark-text">Appointments</h2>
+        <h2 className="font-medium dark:text-dark-text">{t("appointments")}</h2>
 
         <div className="flex justify-between">
           <div className="flex flex-col">
@@ -117,7 +120,7 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
             <span
               className={JoinClasses("dark:text-dark-text", styles.finished)}
             >
-              Finished
+              {t("appFinished", { ns: "dashboard" })}
             </span>
           </div>
 
@@ -138,7 +141,7 @@ export function SimpleCart({ data }: { data?: IAppointments[] }) {
             <span
               className={JoinClasses("dark:text-dark-text", styles.finished)}
             >
-              Upcoming
+              {t("appUpcoming", { ns: "dashboard" })}
             </span>
           </div>
         </div>

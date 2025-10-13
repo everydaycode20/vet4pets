@@ -23,7 +23,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "i18n"],
   "paths": {
     "@mui/material": ["./node_modules/@mui/system"],
     "@/*": ["./src/*"]
