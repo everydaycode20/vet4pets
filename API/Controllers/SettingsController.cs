@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Models;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetSettings([FromQuery] int id)
         {
@@ -53,6 +55,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateSettings(int id, [FromBody] JsonPatchDocument<Settings> patchDoc)
         {
