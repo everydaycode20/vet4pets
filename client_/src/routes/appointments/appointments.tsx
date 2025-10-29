@@ -309,6 +309,7 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
+                  required={true}
                   label={t("selectApp")}
                   name="type"
                   value={value}
@@ -378,6 +379,7 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
+                  required={true}
                   label={t("selectPet")}
                   name="pet"
                   value={value}
@@ -394,7 +396,7 @@ function Form({
 
           <div>
             <div>
-              <label htmlFor="">Add date and time</label>
+              <span id="date-picker-form">Add date and time</span>
             </div>
 
             <Controller

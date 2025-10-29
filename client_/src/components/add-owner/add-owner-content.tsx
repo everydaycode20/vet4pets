@@ -150,6 +150,7 @@ export default function AddOwnerContent({
                   render={({ field, fieldState }) => {
                     return (
                       <Input
+                        required
                         id="firstName"
                         label="First Name"
                         placeholder="Owner Name"
@@ -169,6 +170,7 @@ export default function AddOwnerContent({
                   render={({ field, fieldState }) => {
                     return (
                       <Input
+                        required
                         id="lastName"
                         label="Last Name"
                         placeholder="Owner Last Name"
@@ -190,6 +192,7 @@ export default function AddOwnerContent({
                   render={({ field, fieldState }) => {
                     return (
                       <Input
+                        required
                         id="email"
                         label="Email"
                         placeholder="Email"
@@ -214,6 +217,7 @@ export default function AddOwnerContent({
                           render={({ field, fieldState }) => {
                             return (
                               <Input
+                                required
                                 id={phone.id}
                                 label="Phone"
                                 placeholder="Phone"
@@ -253,7 +257,10 @@ export default function AddOwnerContent({
                                   )}
                                   asChild
                                 >
-                                  <button type="button">
+                                  <button
+                                    type="button"
+                                    aria-describedby="tel-types-desc"
+                                  >
                                     {phoneType[index]
                                       ? phoneType[index]?.type
                                       : "Select a phone type"}
@@ -315,6 +322,7 @@ export default function AddOwnerContent({
                         />
 
                         <span
+                          id="tel-types-desc"
                           className={JoinClasses(
                             "text-pink mt-[5px] block",
                             errors.telephones &&
@@ -376,6 +384,7 @@ export default function AddOwnerContent({
                   render={({ field, fieldState }) => {
                     return (
                       <Input
+                        required
                         id="address"
                         label="Address"
                         placeholder="Address  "

@@ -23,6 +23,7 @@ export default function ComboBox({
   error,
   onBlur,
   edit = false,
+  required = true,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
@@ -35,6 +36,7 @@ export default function ComboBox({
   error?: string;
   onBlur?: Noop;
   edit?: boolean;
+  required: boolean;
 }) {
   const [searchValue, setSearchValue] = useState("");
 
@@ -83,6 +85,8 @@ export default function ComboBox({
             className={JoinClasses("relative w-full", styles["input-wrapper"])}
           >
             <Combobox
+              aria-required={required}
+              aria-describedby={`${name}-desc`}
               name={name}
               onBlur={onBlur}
               value={searchValue}
@@ -101,7 +105,10 @@ export default function ComboBox({
           <ComboboxPopover
             gutter={8}
             sameWidth
-            className={JoinClasses("bg-white dark:bg-dark flex flex-col", styles.options)}
+            className={JoinClasses(
+              "bg-white dark:bg-dark flex flex-col",
+              styles.options
+            )}
           >
             {matches.length ? (
               matches.map((value) => (
@@ -122,7 +129,11 @@ export default function ComboBox({
         </div>
       </ComboboxProvider>
 
-      {error && <span className="text-pink block">{error}</span>}
+      {error && (
+        <span id={`${name}-desc`} className="text-pink block">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

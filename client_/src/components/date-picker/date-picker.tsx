@@ -47,7 +47,11 @@ export default function DatePicker({
   }, [calendarOptions]);
 
   return (
-    <div className={JoinClasses("", styles["day-picker-container"])}>
+    <div
+      aria-labelledby="date-picker-form"
+      aria-describedby="date-picker-desc"
+      className={JoinClasses("", styles["day-picker-container"])}
+    >
       <DayPicker
         className={JoinClasses(
           error && error.selectedDate && styles["day-picker-container-error"]
@@ -82,7 +86,9 @@ export default function DatePicker({
       />
 
       {error && error.selectedDate && (
-        <span className="text-pink block">select a date</span>
+        <span id="date-picker-desc" className="text-pink block">
+          select a date
+        </span>
       )}
 
       <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
@@ -191,6 +197,7 @@ function TimeRangeTime({
           type="text"
           // name=""
           // id=""
+          aria-describedby={`${label}-desc`}
           aria-hidden={true}
           className="sr-only"
           {...props}
@@ -283,7 +290,7 @@ function TimeRangeTime({
       </div>
 
       {error && (
-        <span className="text-pink block">
+        <span id={`${label}-desc`} className="text-pink block">
           select {label === "Start" ? "a start" : "an end"} time
         </span>
       )}

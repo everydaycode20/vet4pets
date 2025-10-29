@@ -25,6 +25,7 @@ interface IInput {
   withDebounce?: boolean;
   value?: any;
   onChange?: (value: any) => void;
+  required: boolean;
 }
 
 export default function Input({
@@ -38,6 +39,7 @@ export default function Input({
   withDebounce,
   onChange,
   value,
+  required = true,
 }: IInput) {
   if (type === "password") {
     const [showPassword, setShowPassword] = useState(false);
@@ -63,6 +65,8 @@ export default function Input({
         </label>
 
         <MuiInput
+          aria-required={required}
+          aria-describedby={`${id}-desc`}
           autoComplete="true"
           error={invalid}
           type={showPassword ? "text" : "password"}
@@ -101,7 +105,11 @@ export default function Input({
           }
         />
 
-        {error && <span className="text-pink">{error}</span>}
+        {error && (
+          <span id={`${id}-desc`} className="text-pink">
+            {error}
+          </span>
+        )}
       </div>
     );
   }

@@ -77,6 +77,7 @@ export default function AddPetContent() {
                 render={({ field, fieldState }) => {
                   return (
                     <Input
+                      required
                       id="name"
                       label="Pet name"
                       placeholder="Pet name"
@@ -99,6 +100,7 @@ export default function AddPetContent() {
                 </span>
 
                 <button
+                  aria-describedby="select-owner-desc"
                   id="select-owner-btn"
                   type="button"
                   className={JoinClasses(
@@ -124,7 +126,10 @@ export default function AddPetContent() {
                 </button>
 
                 {errors.owner && (
-                  <span className="text-pink mt-[5px] block">
+                  <span
+                    id="select-owner-desc"
+                    className="text-pink mt-[5px] block"
+                  >
                     {errors.owner.message}
                   </span>
                 )}
@@ -140,6 +145,7 @@ export default function AddPetContent() {
                 render={({ field, fieldState }) => {
                   return (
                     <Input
+                      required
                       type="number"
                       id="age"
                       label="Age"
@@ -158,6 +164,7 @@ export default function AddPetContent() {
                 render={({ fieldState }) => {
                   return (
                     <ComboBox
+                      required
                       label="Select a type"
                       name="type"
                       placeholder="Search or Select a type"
