@@ -405,3 +405,20 @@ fieldset {
     color: var(--text);
   }
 }
+
+.main-container-page {
+  height: calc(100% - $top-bar-width);
+}
+
+.skip-to-main {
+  background-color: white;
+  border: 2px solid $black;
+  padding: 5px;
+  z-index: 1;
+  top: -50px;
+
+  &:focus {
+    top: 0;
+    outline: 4px solid inherit;
+  }
+}

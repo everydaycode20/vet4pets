@@ -131,6 +131,15 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <div className="w-full">
+          <button
+            className="absolute skip-to-main"
+            onClick={() =>
+              document.getElementById("main-content-container")?.focus()
+            }
+          >
+            skip to main content
+          </button>
+
           <main>
             <div className="sr-only" aria-live="polite">
               {spState ? "loading dashboard" : "dashboard loaded"}
