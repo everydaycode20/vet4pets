@@ -10,6 +10,8 @@ import "dayjs/locale/es";
 import "dayjs/locale/en";
 
 i18n.on("languageChanged", () => {
+  console.log("language changed");
+
   dayjs.locale(i18n.language);
 });
 

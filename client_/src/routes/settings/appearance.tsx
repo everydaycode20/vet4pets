@@ -5,6 +5,7 @@ import JoinClasses from "../../utils/join-classes";
 
 import styles from "./appearance.module.scss";
 import ISettings from "../../models/settings.interface";
+import { useTranslation } from "react-i18next";
 
 const themes = [
   {
@@ -27,12 +28,14 @@ export default function Appearance({
   control: Control<ISettings, any>;
   getValues?: UseFormGetValues<ISettings>;
 }) {
+  const { t } = useTranslation("settings");
+
   return (
     <section>
-      <h2 className="">Appearance</h2>
+      <h2 className="">{t("appearance")}</h2>
 
       <fieldset className="">
-        <legend className="font-medium mb-[12px]">Theme</legend>
+        <legend className="font-medium mb-[12px]">{t("theme")}</legend>
 
         <div className="flex gap-x-[12px]">
           {themes.map((theme) => {
@@ -51,7 +54,7 @@ export default function Appearance({
                   {...control.register("appearance.name")}
                 />
 
-                <label htmlFor={theme.id}>{theme.name}</label>
+                <label htmlFor={theme.id}>{t(theme.name.toLowerCase())}</label>
               </div>
             );
           })}
@@ -59,7 +62,10 @@ export default function Appearance({
       </fieldset>
 
       <div>
-        <Toggle label="Reduced Motion" {...control.register("reduceMotion")} />
+        <Toggle
+          label={t("reduced_motion")}
+          {...control.register("reduceMotion")}
+        />
       </div>
     </section>
   );

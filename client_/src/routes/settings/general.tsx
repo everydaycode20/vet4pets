@@ -12,6 +12,7 @@ import JoinClasses from "../../utils/join-classes";
 import styles from "./general.module.scss";
 import { Control, Controller, UseFormGetValues } from "react-hook-form";
 import ISettings from "../../models/settings.interface";
+import { useTranslation } from "react-i18next";
 
 const timeFormat = [
   { id: "12-hour", value: "12" },
@@ -45,6 +46,8 @@ export default function GeneralSettings({
 }) {
   const [language, setLanguage] = useState<string | undefined>(undefined);
 
+  const { t } = useTranslation("settings");
+
   useEffect(() => {
     if (language === undefined) {
       getValues().language && setLanguage(getValues().language?.isoCode);
@@ -54,10 +57,10 @@ export default function GeneralSettings({
   return (
     <div className={styles.settings}>
       <section>
-        <h2 className="">General Settings</h2>
+        <h2 className="">{t("general_settings")}</h2>
 
         <fieldset className="">
-          <legend className="font-medium mb-[12px]">Time Format</legend>
+          <legend className="font-medium mb-[12px]">{t("time_format")}</legend>
 
           <div className="flex gap-x-[12px]">
             {timeFormat.map((time) => {
@@ -76,7 +79,7 @@ export default function GeneralSettings({
                     {...control.register("timeFormat")}
                   />
 
-                  <label htmlFor={time.id}>{time.id}</label>
+                  <label htmlFor={time.id}>{t(time.id)}</label>
                 </div>
               );
             })}
@@ -103,7 +106,7 @@ export default function GeneralSettings({
                     {...control.register("dateFormat")}
                   />
 
-                  <label htmlFor={date.id}>{date.id}</label>
+                  <label htmlFor={date.id}>{t(date.id)}</label>
                 </div>
               );
             })}
@@ -111,7 +114,7 @@ export default function GeneralSettings({
         </fieldset>
 
         <div className="flex flex-col">
-          <span className="my-[12px]">Language</span>
+          <span className="my-[12px]">{t("language")}</span>
 
           <Controller
             name="language"
@@ -134,7 +137,11 @@ export default function GeneralSettings({
                     )}
                   >
                     <button type="button">
-                      {languages.find((l) => l.isoCode === language)?.name}
+                      {t(
+                        languages
+                          .find((l) => l.isoCode === language)
+                          ?.name.toLowerCase() || ""
+                      )}
                     </button>
                   </Trigger>
 
@@ -158,7 +165,7 @@ export default function GeneralSettings({
                               field.onBlur();
                             }}
                           >
-                            {language.name}
+                            {t(language.name.toLowerCase())}
                           </Item>
                         );
                       })}

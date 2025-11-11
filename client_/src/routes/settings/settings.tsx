@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../../constants/apiUrl";
 import Toast from "../../components/toast/toast";
 import { MakeSettingsJsonPatchRequest } from "../../utils/json-patch-req";
+import { useTranslation } from "react-i18next";
 
 const schema = object({
   timeFormat: string({ message: "Select a time format" }),
@@ -33,6 +34,8 @@ export default function Settings() {
   const [open, setOpen] = useState(false);
 
   const [openSuccessToast, setSuccessToast] = useState(false);
+
+  const { t, i18n } = useTranslation("appointments");
 
   const onSubmit: SubmitHandler<ISettings> = (data) => {
     if (
@@ -106,6 +109,12 @@ export default function Settings() {
 
           document.documentElement.classList.remove("dark");
         }
+      }
+
+      if (dirtyFields.language) {
+        console.log(data.language);
+
+        i18n.changeLanguage(data.language.isoCode);
       }
 
       setSuccessToast(true);
