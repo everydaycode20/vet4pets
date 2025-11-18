@@ -45,6 +45,7 @@ import IFormAppointment from "../../models/form-appointment.interface";
 import MakeJsonPatchRequest from "../../utils/json-patch-req";
 import Toast from "../../components/toast/toast";
 import { useTranslation } from "react-i18next";
+import { useGetUser } from "../../hooks/useGetUser";
 
 export default function Appointments() {
   const [state, setState] = useAtom(addAppointmentState);
@@ -81,6 +82,10 @@ export default function Appointments() {
         calendarDate.end.format("YYYY-MM-DD")
       ),
   });
+
+  const { data: user } = useGetUser();
+
+  // console.log(user?.settings);
 
   return (
     <section className="h-full">

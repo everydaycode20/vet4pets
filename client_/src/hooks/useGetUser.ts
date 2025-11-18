@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "../constants/apiUrl";
+import IUser from "../models/user.interface";
 
-export async function getUser() {
+export async function getUser(): Promise<IUser | false> {
   try {
     const res = await fetch(`${apiUrl}/user`, {
       method: "GET",

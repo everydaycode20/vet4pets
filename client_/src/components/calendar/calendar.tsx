@@ -27,6 +27,7 @@ import {
 import { IAppointments } from "../../models/appointments.interface";
 import CalendarEvent from "./calendar-event";
 import { useTranslation } from "react-i18next";
+import { useGetUser } from "../../hooks/useGetUser";
 
 dayjs.Ls.en.weekStart = 1;
 const localizer = dayjsLocalizer(dayjs);
@@ -65,6 +66,10 @@ export default function CalendarExtended({
   const { i18n } = useTranslation();
 
   const { t } = useTranslation("calendar");
+
+  const { data: user } = useGetUser();
+
+  console.log(user !== false && user?.settings.appointmentLength);
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
@@ -106,6 +111,7 @@ export default function CalendarExtended({
     >
       <Calendar
         localizer={localizer}
+        step={user !== false ? user?.settings.appointmentLength : 30}
         events={
           calendarOptions.end &&
           calendarOptions.start &&
@@ -184,8 +190,6 @@ export default function CalendarExtended({
           setCurrentDate(e);
 
           if (view === "month") {
-            console.log("A");
-
             setCalendarDate({
               start: dayjs(e).startOf("month"),
               end: dayjs(e).endOf("month"),

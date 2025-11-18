@@ -18,11 +18,8 @@
   "auto (match system)": "Automático (según el sistema)",
   "preferences": "Preferencias",
   "default_appointment_length": "Duración predeterminada de la cita",
-  "30_min": "30 min",
   "working_hours": "Horario laboral",
   "select_start_time_first": "selecciona primero la hora de inicio",
-  "07_30_am": "07:30 a.m.",
-  "05_30_pm": "05:30 p.m.",
   "save_settings": "Guardar configuración",
   "reduced_motion": "Reducir movimiento"
 }

@@ -14,6 +14,7 @@ import GenerateHours from "../../utils/generate-hours";
 import dayjs from "dayjs";
 import { Control, Controller, UseFormGetValues } from "react-hook-form";
 import ISettings from "../../models/settings.interface";
+import { useTranslation } from "react-i18next";
 
 const appointmentLength = [
   { name: "15 min", value: 15 },
@@ -40,6 +41,8 @@ export default function Preferences({
   });
 
   const [hoursList, setHoursList] = useState<string[]>([]);
+
+  const { t } = useTranslation("settings");
 
   useEffect(() => {
     if (length === 0) {
@@ -68,11 +71,14 @@ export default function Preferences({
 
   return (
     <section>
-      <h2 className="">Preferences</h2>
+      <h2 className="">{t("preferences")}</h2>
 
       <div className="flex flex-col">
-        <span className="mb-[12px] font-semibold">
-          Default Appointment Length
+        <span
+          className="mb-[12px] font-semibold"
+          id="default_appointment_length"
+        >
+          {t("default_appointment_length")}
         </span>
 
         <Controller
@@ -82,6 +88,7 @@ export default function Preferences({
             return (
               <Root>
                 <Trigger
+                  aria-describedby="default_appointment_length"
                   onBlur={() => {
                     field.onBlur();
                   }}
@@ -129,9 +136,9 @@ export default function Preferences({
       </div>
 
       <div className="mt-[12px]">
-        <h3 className="mb-[12px]">Working hours</h3>
+        <h3 className="mb-[12px]">{t("working_hours")}</h3>
 
-        <span className="sr-only">select start time first</span>
+        <span className="sr-only">{t("select_start_time_first")}</span>
 
         <div className="flex items-center gap-x-[12px]">
           <Controller
@@ -169,7 +176,8 @@ export default function Preferences({
                           <Item
                             className={JoinClasses(
                               "dropdown-content-item",
-                              hour === workingHours.start && "bg-light-gray-2 dark:bg-dark-4"
+                              hour === workingHours.start &&
+                                "bg-light-gray-2 dark:bg-dark-4"
                             )}
                             key={hour}
                             onSelect={() => {
@@ -214,9 +222,7 @@ export default function Preferences({
                       workingHours.start === "" && "cursor-not-allowed"
                     )}
                   >
-                    <button type="button">
-                      {workingHours.end ? workingHours.end : "Select end time"}
-                    </button>
+                    <button type="button">{workingHours.end}</button>
                   </Trigger>
 
                   <Portal>
@@ -240,7 +246,8 @@ export default function Preferences({
                             <Item
                               className={JoinClasses(
                                 "dropdown-content-item",
-                                hour === workingHours.end && "bg-light-gray-2 dark:bg-dark-4"
+                                hour === workingHours.end &&
+                                  "bg-light-gray-2 dark:bg-dark-4"
                               )}
                               key={hour}
                               onSelect={() => {

@@ -155,6 +155,7 @@ function App() {
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { data: user } = useGetUser();
+  console.log(user, "<--->");
 
   useSystemTheme();
 

@@ -18,11 +18,8 @@
   "auto (match system)": "Auto (match system)",
   "preferences": "Preferences",
   "default_appointment_length": "Default Appointment Length",
-  "30_min": "30 min",
   "working_hours": "Working hours",
   "select_start_time_first": "select start time first",
-  "07_30_am": "07:30 am",
-  "05_30_pm": "05:30 pm",
   "save_settings": "Save settings",
   "reduced_motion": "Reduced Motion"
 }

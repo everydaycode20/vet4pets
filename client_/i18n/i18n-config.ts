@@ -18,7 +18,7 @@ i18n
       caches: ["localStorage"],
     },
     interpolation: { escapeValue: false },
-    ns: ["sidebar", "calendar", "dashboard"],
+    ns: ["sidebar", "calendar", "dashboard", "settings"],
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",
     },

@@ -12,6 +12,7 @@ import { apiUrl } from "../../constants/apiUrl";
 import Toast from "../../components/toast/toast";
 import { MakeSettingsJsonPatchRequest } from "../../utils/json-patch-req";
 import { useTranslation } from "react-i18next";
+import { useGetUser } from "../../hooks/useGetUser";
 
 const schema = object({
   timeFormat: string({ message: "Select a time format" }),
@@ -35,7 +36,7 @@ export default function Settings() {
 
   const [openSuccessToast, setSuccessToast] = useState(false);
 
-  const { t, i18n } = useTranslation("appointments");
+  const { i18n } = useTranslation("appointments");
 
   const onSubmit: SubmitHandler<ISettings> = (data) => {
     if (
@@ -75,6 +76,8 @@ export default function Settings() {
     },
   });
 
+  const { refetch } = useGetUser();
+
   const updateSettings = useMutation({
     mutationFn: async (data: ISettings) => {
       const res = await fetch(`${apiUrl}/settings/2`, {
@@ -112,12 +115,12 @@ export default function Settings() {
       }
 
       if (dirtyFields.language) {
-        console.log(data.language);
-
         i18n.changeLanguage(data.language.isoCode);
       }
 
       setSuccessToast(true);
+
+      refetch();
     },
     onError: (error) => {
       console.log(error);
@@ -154,11 +157,11 @@ export default function Settings() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-y-[12px]"
       >
-        {settings.data && (
+        {!settings.isLoading && settings.data !== undefined && (
           <GeneralSettings control={control} getValues={getValues} />
         )}
 
-        <Appearance control={control} />
+        {settings.data && <Appearance control={control} />}
 
         {settings.data && (
           <Preferences control={control} getValues={getValues} />

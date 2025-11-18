@@ -49,10 +49,12 @@ export default function GeneralSettings({
   const { t } = useTranslation("settings");
 
   useEffect(() => {
-    if (language === undefined) {
-      getValues().language && setLanguage(getValues().language?.isoCode);
+    const currentLng = getValues("language");
+
+    if (language === undefined && currentLng) {
+      setLanguage(currentLng.isoCode);
     }
-  }, [getValues()]);
+  }, [getValues, language]);
 
   return (
     <div className={styles.settings}>
@@ -114,19 +116,18 @@ export default function GeneralSettings({
         </fieldset>
 
         <div className="flex flex-col">
-          <span className="my-[12px]">{t("language")}</span>
+          <span className="my-[12px]" id="language-descby">
+            {t("language")}
+          </span>
 
           <Controller
             name="language"
             control={control}
             render={({ field }) => {
               return (
-                <Root
-                  onOpenChange={(o) => {
-                    console.log(o);
-                  }}
-                >
+                <Root>
                   <Trigger
+                    aria-describedby="language-descby"
                     onBlur={() => {
                       field.onBlur();
                     }}
@@ -137,11 +138,13 @@ export default function GeneralSettings({
                     )}
                   >
                     <button type="button">
-                      {t(
-                        languages
-                          .find((l) => l.isoCode === language)
-                          ?.name.toLowerCase() || ""
-                      )}
+                      {language
+                        ? t(
+                            languages
+                              .find((l) => l.isoCode === language)
+                              ?.name.toLowerCase() ?? ""
+                          )
+                        : ""}
                     </button>
                   </Trigger>
 
