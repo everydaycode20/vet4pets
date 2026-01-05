@@ -65,11 +65,11 @@ export default function CalendarExtended({
 
   const { i18n } = useTranslation();
 
-  const { t } = useTranslation("calendar");
+  const { t } = useTranslation("calendar", { useSuspense: false });
 
   const { data: user } = useGetUser();
 
-  console.log(user !== false && user?.settings.appointmentLength);
+  // console.log(user !== false && user?.settings.appointmentLength);
 
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
     setCalendarOptions({
@@ -320,6 +320,7 @@ function Toolbar({
         )}
       >
         <button
+          data-testid="add-new-appointment"
           className="flex items-center"
           type="button"
           onClick={() => setState(true)}

@@ -26,6 +26,7 @@ interface IInput {
   value?: any;
   onChange?: (value: any) => void;
   required: boolean;
+  testId?: string;
 }
 
 export default function Input({
@@ -40,6 +41,7 @@ export default function Input({
   onChange,
   value,
   required = true,
+  testId,
 }: IInput) {
   if (type === "password") {
     const [showPassword, setShowPassword] = useState(false);
@@ -65,6 +67,11 @@ export default function Input({
         </label>
 
         <MuiInput
+          slotProps={{
+            input: {
+              "data-testid": testId,
+            },
+          }}
           aria-required={required}
           aria-describedby={`${id}-desc`}
           autoComplete="true"
@@ -124,6 +131,11 @@ export default function Input({
         )}
 
         <BaseNumberInput
+          slotProps={{
+            input: {
+              "data-testid": testId || `${id}-input`,
+            } as any,
+          }}
           placeholder={placeholder}
           onChange={(_, v) => {
             field.onChange(v);
@@ -189,6 +201,11 @@ export default function Input({
         )}
 
         <MuiInput
+          slotProps={{
+            input: {
+              "data-testid": testId,
+            } as any,
+          }}
           // value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) => change(e)}
           error={invalid}
@@ -213,6 +230,11 @@ export default function Input({
       </label>
 
       <MuiInput
+        slotProps={{
+          input: {
+            "data-testid": testId,
+          },
+        }}
         error={invalid}
         className={JoinClasses(
           "w-full flex rounded-5 input-text",

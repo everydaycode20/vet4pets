@@ -25,21 +25,25 @@ const routes = [
     path: "dashboard",
     text: "Dashboard",
     icon: (color: string) => <DashboardIcon htmlColor={color} />,
+    testid: "route-dashboard",
   },
   {
     path: "appointments",
     text: "Appointments",
     icon: (color: string) => <CalendarMonthIcon htmlColor={color} />,
+    testid: "route-appointments",
   },
   {
     path: "owners",
     text: "Owners",
     icon: (color: string) => <PersonIcon htmlColor={color} />,
+    testid: "route-owners",
   },
   {
     path: "pets",
     text: "Pets",
     icon: (color: string) => <PetsOutlinedIcon htmlColor={color} />,
+    testid: "route-pets",
   },
 ];
 
@@ -60,6 +64,7 @@ export function SidebarContent() {
 
   return (
     <nav
+      data-testid="sidebar-nav"
       className={JoinClasses("fixed h-full dark:bg-dark-2", styles["sidebar"])}
       aria-label="left side navigation"
     >
@@ -87,7 +92,11 @@ export function SidebarContent() {
                   {routes.map((route, index) => {
                     return (
                       <li key={index}>
-                        <NavLink to={route.path} className="">
+                        <NavLink
+                          to={route.path}
+                          className=""
+                          data-testid={route.testid}
+                        >
                           {({ isActive }) => (
                             <div className="flex items-center">
                               {route.icon(isActive ? "4D7CFE" : "#778CA2")}
@@ -108,7 +117,7 @@ export function SidebarContent() {
         </div>
 
         <div className={JoinClasses("lg:mt-auto", styles.settings)}>
-          <NavLink to="settings">
+          <NavLink to="settings" data-testid="route-settings">
             {({ isActive }) => (
               <div className="flex items-center">
                 <SettingsOutlinedIcon

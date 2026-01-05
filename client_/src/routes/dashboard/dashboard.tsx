@@ -15,7 +15,10 @@ import { IDashboard } from "../../models/dashboard.interface";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
-  const { t } = useTranslation("dashboard");
+  const { t, ready } = useTranslation(
+    ["dashboard", "appointments", "sidebar"],
+    { useSuspense: false }
+  );
 
   const { data } = useQuery({
     queryKey: ["dashboard"],
@@ -32,6 +35,10 @@ export default function Dashboard() {
     },
     refetchInterval: 30 * 60 * 1000,
   });
+
+  if (!ready) {
+    return null;
+  }
 
   return (
     <div

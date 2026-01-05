@@ -48,6 +48,10 @@ import { useTranslation } from "react-i18next";
 import { useGetUser } from "../../hooks/useGetUser";
 
 export default function Appointments() {
+  const { ready } = useTranslation(["calendar", "appointments"], {
+    useSuspense: false,
+  });
+
   const [state, setState] = useAtom(addAppointmentState);
 
   const [_, setCalendarOptions] = useAtom(options);
@@ -89,11 +93,13 @@ export default function Appointments() {
 
   return (
     <section className="h-full">
-      <CalendarExtended
-        calendarDate={calendarDate}
-        setCalendarDate={setCalendarDate}
-        data={data.data}
-      />
+      {ready && (
+        <CalendarExtended
+          calendarDate={calendarDate}
+          setCalendarDate={setCalendarDate}
+          data={data.data}
+        />
+      )}
 
       <Drawer
         open={state}

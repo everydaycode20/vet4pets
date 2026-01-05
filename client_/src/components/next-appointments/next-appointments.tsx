@@ -210,7 +210,7 @@ function AppointmentsList({
   currentDateTime: dayjs.Dayjs;
   isToday: boolean;
 }) {
-  const { t } = useTranslation("appointments");
+  const { t } = useTranslation("appointments", { useSuspense: false });
 
   return (
     data &&

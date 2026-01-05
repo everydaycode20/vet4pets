@@ -14,16 +14,22 @@ export default function TopAppointments({
 
   const list = useRef<HTMLUListElement>(null);
 
-  const { t } = useTranslation(["appointments", "sidebar"]);
+  const { t } = useTranslation(["appointments", "sidebar"], {
+    useSuspense: false,
+  });
+  console.log(data, "<---");
 
   useLayoutEffect(() => {
-    const titleHeight = (
-      titleRef.current as unknown as HTMLDivElement
-    ).getBoundingClientRect().height;
-
-    list.current &&
-      (list.current.style.height = `calc(100% - ${titleHeight}px)`);
+    // const titleHeight = (
+    //   titleRef.current as unknown as HTMLDivElement
+    // ).getBoundingClientRect().height;
+    // list.current &&
+    //   (list.current.style.height = `calc(100% - ${titleHeight}px)`);
   }, []);
+
+  if (data === undefined) {
+    return null;
+  }
 
   return (
     <div className={JoinClasses("bg-white dark:bg-dark-3", styles.container)}>

@@ -12,6 +12,10 @@ export async function getUser(): Promise<IUser | false> {
       credentials: "include",
     });
 
+    if (!res.ok) {
+      return false;
+    }
+
     const json = await res.json();
 
     return json;

@@ -13,6 +13,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import Spinner from "../../components/spinner/spinner";
 import { spinnerState } from "../../components/spinner/spinner-state";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IFormInput {
   email: string;
@@ -28,6 +29,8 @@ export default function Login() {
   const location = useLocation();
 
   const login = useLogin();
+
+  const queryClient = useQueryClient();
 
   const [_, setSpState] = useAtom(spinnerState);
 
@@ -61,6 +64,8 @@ export default function Login() {
   console.log(errors);
 
   if (login.isSuccess) {
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+
     return <Navigate to="/dashboard" />;
   }
 
@@ -98,6 +103,8 @@ export default function Login() {
               render={({ field, fieldState }) => {
                 return (
                   <Input
+                    required
+                    testId="email"
                     id="email"
                     label="Your email"
                     placeholder="Enter your email"
@@ -116,6 +123,8 @@ export default function Login() {
               defaultValue=""
               render={({ field, fieldState }) => (
                 <Input
+                  required
+                  testId="password"
                   id="password"
                   label="Password"
                   placeholder="Enter your password"
@@ -127,7 +136,11 @@ export default function Login() {
               )}
             />
 
-            <SubmitBtn text="Sign In" classes={styles["submit-btn"]} />
+            <SubmitBtn
+              testId="submit-btn"
+              text="Sign In"
+              classes={styles["submit-btn"]}
+            />
           </form>
         </div>
       </div>

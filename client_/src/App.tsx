@@ -36,10 +36,10 @@ const router = createBrowserRouter([
       </>
     ),
     children: [
-      {
-        index: true,
-        loader: async () => redirect("/dashboard"),
-      },
+      // {
+      //   index: true,
+      //   loader: async () => redirect("/dashboard"),
+      // },
       {
         path: "dashboard",
         element: (
@@ -154,12 +154,19 @@ function App() {
 }
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { data: user } = useGetUser();
-  console.log(user, "<--->");
+  const { data: user, isLoading } = useGetUser();
 
   useSystemTheme();
 
-  return user === false ? <Navigate to="/login" replace /> : children;
+  if (isLoading) {
+    return null;
+  }
+
+  return user === undefined || user === false ? (
+    <Navigate to="/login" replace />
+  ) : (
+    children
+  );
   // return children;
 }
 

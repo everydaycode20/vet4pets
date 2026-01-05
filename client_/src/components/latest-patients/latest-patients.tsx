@@ -8,7 +8,7 @@ import { IAppointments } from "../../models/appointments.interface";
 import { useTranslation } from "react-i18next";
 
 export default function LatestPatients({ data }: { data?: IAppointments[] }) {
-  const { t } = useTranslation("appointments");
+  const { t } = useTranslation("appointments", { useSuspense: false });
 
   const currentDateTime = dayjs();
 
