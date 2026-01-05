@@ -17,7 +17,7 @@ export default defineConfig({
     specPattern: "cypress/component/**/*.cy.{js,jsx,ts,tsx}",
   },
   viewportWidth: 1280,
-  viewportHeight: 720,
+  viewportHeight: 1200,
   video: false,
   screenshotOnRunFailure: true,
 });

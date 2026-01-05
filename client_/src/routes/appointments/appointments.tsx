@@ -320,6 +320,8 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
+                  testIdCombobox="select-appointment-combobox"
+                  testIdItem="select-appointment-combobox-item"
                   required={true}
                   label={t("selectApp")}
                   name="type"
@@ -348,6 +350,7 @@ function Form({
 
                 return (
                   <OwnerModal
+                    tableTestId="owner-table"
                     onChange={(e) => {
                       if (e.id && e.name) {
                         setOwner({ id: e.id, name: e.name });
@@ -358,6 +361,7 @@ function Form({
                     value={value}
                     button={
                       <button
+                        data-testid="select-owner"
                         disabled={calendarOptions.edit}
                         type="button"
                         className={JoinClasses(
@@ -390,6 +394,8 @@ function Form({
             render={({ field: { onChange, value, onBlur } }) => {
               return (
                 <ComboBox
+                  testIdCombobox="select-pet-combobox"
+                  testIdItem="select-pet-combobox-item"
                   required={true}
                   label={t("selectPet")}
                   name="pet"
@@ -428,7 +434,11 @@ function Form({
           <div
             className={JoinClasses("flex justify-center", styles["submit-btn"])}
           >
-            <button className="blue-btn" type="submit">
+            <button
+              className="blue-btn"
+              type="submit"
+              data-testid="submit-appointment-btn"
+            >
               submit
             </button>
           </div>

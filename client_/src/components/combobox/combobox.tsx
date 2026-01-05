@@ -24,6 +24,8 @@ export default function ComboBox({
   onBlur,
   edit = false,
   required = true,
+  testIdCombobox,
+  testIdItem,
 }: {
   value?: { id: number; name: string };
   onChange?: (...event: any[]) => void;
@@ -37,6 +39,8 @@ export default function ComboBox({
   onBlur?: Noop;
   edit?: boolean;
   required: boolean;
+  testIdCombobox?: string;
+  testIdItem?: string;
 }) {
   const [searchValue, setSearchValue] = useState("");
 
@@ -85,6 +89,7 @@ export default function ComboBox({
             className={JoinClasses("relative w-full", styles["input-wrapper"])}
           >
             <Combobox
+              data-testid={testIdCombobox}
               aria-required={required}
               aria-describedby={`${name}-desc`}
               name={name}
@@ -113,6 +118,7 @@ export default function ComboBox({
             {matches.length ? (
               matches.map((value) => (
                 <ComboboxItem
+                  data-testid={testIdItem}
                   onClick={() => handleSelect(value)}
                   key={value.id}
                   value={value.name}

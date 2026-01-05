@@ -33,6 +33,7 @@ interface ITable {
   setPagination: Dispatch<SetStateAction<PaginationState>>;
   rowSelect?: boolean;
   onRowSelection?: (e: any) => void;
+  tableTestId?: string;
 }
 
 export default function Table({
@@ -43,6 +44,7 @@ export default function Table({
   setPagination,
   rowSelect = false,
   onRowSelection,
+  tableTestId,
 }: ITable) {
   const [rowSelection, setRowSelection] = useState({});
 
@@ -86,7 +88,10 @@ export default function Table({
   if (data) {
     return (
       <div>
-        <table className="w-full max-h-full table-container">
+        <table
+          className="w-full max-h-full table-container"
+          data-testid={tableTestId}
+        >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>

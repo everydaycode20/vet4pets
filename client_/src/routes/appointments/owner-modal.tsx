@@ -29,11 +29,17 @@ interface IOwnerModal {
   button: ReactNode;
   onChange: (...event: any[]) => void;
   value: any;
+  tableTestId?: string;
 }
 
 //TODO: use just one component for this and owner page
 
-export default function OwnerModal({ button, onChange, value }: IOwnerModal) {
+export default function OwnerModal({
+  button,
+  onChange,
+  value,
+  tableTestId,
+}: IOwnerModal) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 20,
@@ -140,6 +146,7 @@ export default function OwnerModal({ button, onChange, value }: IOwnerModal) {
 
           {data.data && (
             <Table
+              tableTestId={tableTestId}
               data={data.data}
               columns={columns}
               pagesSize={20}

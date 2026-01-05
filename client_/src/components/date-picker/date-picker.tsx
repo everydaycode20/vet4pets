@@ -93,6 +93,7 @@ export default function DatePicker({
 
       <div className="mt-[12px] flex flex-col md:flex-row gap-[12px]">
         <TimeRangeTime
+          testId="time-range-start"
           label="Start"
           selectedTime={calendarOptions.start?.toString()}
           selectedDate={calendarOptions.day?.toString()}
@@ -107,6 +108,7 @@ export default function DatePicker({
         />
 
         <TimeRangeTime
+          testId="time-range-end"
           label="End"
           selectedTime={calendarOptions.end?.toString()}
           selectedDate={calendarOptions.day?.toString()}
@@ -154,6 +156,7 @@ function TimeRangeTime({
   selectedDate,
   classes,
   error,
+  testId,
   ...props
 }: {
   label: string;
@@ -163,6 +166,7 @@ function TimeRangeTime({
   error?: any;
   onChange?: (val: string | undefined) => void;
   props?: any;
+  testId?: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -214,6 +218,7 @@ function TimeRangeTime({
       >
         <div className={JoinClasses("flex flex-col items-start")}>
           <button
+            data-testid={testId}
             className="text-black dark:text-dark-text"
             type="button"
             onClick={() => setOpen(!open)}
@@ -255,6 +260,7 @@ function TimeRangeTime({
       </div>
 
       <div
+        data-testid="time-options-list"
         // aria-role="listbox"
         className={JoinClasses(
           "absolute overflow-y-scroll cursor-pointer z-10 bg-white dark:bg-dark",
@@ -265,6 +271,7 @@ function TimeRangeTime({
         {timeArr.map((time, index) => {
           return (
             <div
+              data-testid="time-range-option"
               className={JoinClasses("", styles.option)}
               key={index}
               // aria-role="option"
