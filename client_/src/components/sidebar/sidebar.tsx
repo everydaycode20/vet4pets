@@ -68,7 +68,7 @@ export function SidebarContent() {
       className={JoinClasses("fixed h-full dark:bg-dark-2", styles["sidebar"])}
       aria-label="left side navigation"
     >
-      <aside className="h-full flex flex-col">
+      <div className="h-full flex flex-col">
         <div className={JoinClasses("", styles.sidebar__title)}>
           <span className="font-semibold text-black dark:text-dark-text">
             Vet4Pets
@@ -129,7 +129,7 @@ export function SidebarContent() {
             )}
           </NavLink>
         </div>
-      </aside>
+      </div>
     </nav>
   );
 }

@@ -36,10 +36,10 @@ const router = createBrowserRouter([
       </>
     ),
     children: [
-      // {
-      //   index: true,
-      //   loader: async () => redirect("/dashboard"),
-      // },
+      {
+        index: true,
+        loader: async () => redirect("/dashboard"),
+      },
       {
         path: "dashboard",
         element: (

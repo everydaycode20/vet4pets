@@ -70,9 +70,9 @@ export default function Input({
           slotProps={{
             input: {
               "data-testid": testId,
+              "aria-required": required,
             },
           }}
-          aria-required={required}
           aria-describedby={`${id}-desc`}
           autoComplete="true"
           error={invalid}

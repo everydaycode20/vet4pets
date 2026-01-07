@@ -4,6 +4,9 @@ import {
   useCallback,
   Dispatch,
   SetStateAction,
+  MouseEvent,
+  memo,
+  useEffect,
 } from "react";
 import { useAtom } from "jotai";
 import { Calendar, dayjsLocalizer, SlotInfo } from "react-big-calendar";
@@ -211,129 +214,143 @@ export default function CalendarExtended({
   );
 }
 
-function Toolbar({
-  onNavigate,
-  label,
-  onView,
-  view,
-  setCalendarDate,
-  currentDate,
-}: {
-  onNavigate: (action: "PREV" | "TODAY" | "NEXT") => void;
-  onView: (view: "month" | "week" | "work_week" | "day" | "agenda") => void;
-  label: string;
-  view: string;
-  setCalendarDate: Dispatch<
-    SetStateAction<{
-      start: dayjs.Dayjs;
-      end: dayjs.Dayjs;
-    }>
-  >;
-  currentDate?: Date;
-}) {
-  const views = ["Month", "Week", "Day"];
+const views = ["Month", "Week", "Day"];
 
-  const [_, setState] = useAtom(addAppointmentState);
+const Toolbar = memo(
+  ({
+    onNavigate,
+    label,
+    onView,
+    view,
+    setCalendarDate,
+    currentDate,
+  }: {
+    onNavigate: (action: "PREV" | "TODAY" | "NEXT") => void;
+    onView: (view: "month" | "week" | "work_week" | "day" | "agenda") => void;
+    label: string;
+    view: string;
+    setCalendarDate: Dispatch<
+      SetStateAction<{
+        start: dayjs.Dayjs;
+        end: dayjs.Dayjs;
+      }>
+    >;
+    currentDate?: Date;
+  }) => {
+    const [_, setState] = useAtom(addAppointmentState);
 
-  const { t } = useTranslation(["calendar", "appointments"]);
+    const { t } = useTranslation(["calendar", "appointments"]);
 
-  const back = () => {
-    onNavigate("PREV");
-  };
+    const back = () => {
+      onNavigate("PREV");
+    };
 
-  const next = () => {
-    onNavigate("NEXT");
-  };
+    const next = () => {
+      onNavigate("NEXT");
+    };
 
-  const today = () => {
-    onNavigate("TODAY");
-  };
+    const today = () => {
+      onNavigate("TODAY");
+    };
 
-  const goToView = (
-    view: "month" | "week" | "work_week" | "day" | "agenda"
-  ) => {
-    if (view === "month") {
-      setCalendarDate({
-        start: dayjs(currentDate).startOf("month"),
-        end: dayjs(currentDate).endOf("month"),
-      });
-    }
+    const goToView = (
+      view: "month" | "week" | "work_week" | "day" | "agenda"
+    ) => {
+      if (view === "month") {
+        setCalendarDate({
+          start: dayjs(currentDate).startOf("month"),
+          end: dayjs(currentDate).endOf("month"),
+        });
+      }
 
-    onView(view);
-  };
+      onView(view);
+    };
 
-  return (
-    <div
-      className={JoinClasses(
-        "flex justify-between items-center",
-        styles["toolbar-container"]
-      )}
-    >
-      <div className={JoinClasses("flex items-center", styles.toolbar)}>
-        <div className={JoinClasses("flex", styles["buttons-container"])}>
-          <button type="button" onClick={back}>
-            <span className="sr-only">back</span>
-
-            <NavigateBeforeOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
-          </button>
-
-          <button
-            className="text-light-gray-4 dark:text-dark-text"
-            type="button"
-            onClick={today}
-          >
-            {t("today")}
-          </button>
-
-          <button type="button" onClick={next}>
-            <span className="sr-only">next</span>
-
-            <NavigateNextOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
-          </button>
-        </div>
-
-        <span className="font-semibold dark:text-dark-text">{label}</span>
-
-        <div className={JoinClasses("flex", styles["tab-list"])}>
-          {views.map((v, index) => {
-            return (
-              <button
-                className={JoinClasses(
-                  "dark:text-dark-text",
-                  v.toLocaleLowerCase() === view ? styles["active-view"] : ""
-                )}
-                type="button"
-                key={index}
-                onClick={() => goToView(v.toLocaleLowerCase() as any)}
-              >
-                {t(v.toLowerCase(), { ns: "calendar" })}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
+    return (
       <div
         className={JoinClasses(
-          "flex justify-end bg-white dark:bg-dark-3",
-          styles["add-appointment-container"]
+          "flex justify-between items-center",
+          styles["toolbar-container"]
         )}
       >
-        <button
-          data-testid="add-new-appointment"
-          className="flex items-center"
-          type="button"
-          onClick={() => setState(true)}
-        >
-          <div>
-            <CalendarMonthIcon htmlColor="#778CA2" />
+        <div className={JoinClasses("flex items-center", styles.toolbar)}>
+          <div className={JoinClasses("flex", styles["buttons-container"])}>
+            <button type="button" onClick={back}>
+              <span className="sr-only">back</span>
+
+              <NavigateBeforeOutlinedIcon
+                htmlColor="#778CA2"
+                fontSize="medium"
+              />
+            </button>
+
+            <button
+              className="text-light-gray-4 dark:text-dark-text"
+              type="button"
+              onClick={today}
+            >
+              {t("today")}
+            </button>
+
+            <button type="button" onClick={next}>
+              <span className="sr-only">next</span>
+
+              <NavigateNextOutlinedIcon htmlColor="#778CA2" fontSize="medium" />
+            </button>
           </div>
 
-          <span className="font-medium text-black dark:text-dark-text">
-            {t("addNewApp", { ns: "appointments" })}
-          </span>
-        </button>
+          <span className="font-semibold dark:text-dark-text">{label}</span>
+
+          <div className={JoinClasses("flex", styles["tab-list"])}>
+            {views.map((v, index) => {
+              return (
+                <button
+                  id={v.toLowerCase() + "-button-view"}
+                  className={JoinClasses(
+                    "dark:text-dark-text",
+                    v.toLocaleLowerCase() === view ? styles["active-view"] : ""
+                  )}
+                  type="button"
+                  key={index}
+                  onClick={() => {
+                    goToView(v.toLocaleLowerCase() as any);
+
+                    setTimeout(() => {
+                      document
+                        .getElementById(v.toLowerCase() + "-button-view")
+                        ?.focus();
+                    });
+                  }}
+                >
+                  {t(v.toLowerCase(), { ns: "calendar" })}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          className={JoinClasses(
+            "flex justify-end bg-white dark:bg-dark-3",
+            styles["add-appointment-container"]
+          )}
+        >
+          <button
+            data-testid="add-new-appointment"
+            className="flex items-center"
+            type="button"
+            onClick={() => setState(true)}
+          >
+            <div>
+              <CalendarMonthIcon htmlColor="#778CA2" />
+            </div>
+
+            <span className="font-medium text-black dark:text-dark-text">
+              {t("addNewApp", { ns: "appointments" })}
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
