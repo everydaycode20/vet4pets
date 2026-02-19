@@ -159,19 +159,26 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AddOwner([FromBody] Owner owner)
         {
-            await using var context = applicationDbContext;
 
-            context.Owners.Add(owner);
+            if (ModelState.IsValid)
+            {
+                await using var context = applicationDbContext;
 
-            await context.SaveChangesAsync();
+                context.Owners.Add(owner);
 
-            return Ok(new { message = "ok" });
+                await context.SaveChangesAsync();
+
+                return Ok(new { message = "ok" });
+            }
+
+            return BadRequest(ModelState);
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateOwner(int id, [FromBody] JsonPatchDocument<Owner> patchDoc)
         {
-            if (patchDoc != null)
+            if (patchDoc != null && ModelState.IsValid)
             {
                 await using var context = applicationDbContext;
 
@@ -183,11 +190,6 @@ namespace API.Controllers
                 }
 
                 patchDoc.ApplyTo(data);
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
 
                 await context.SaveChangesAsync();
 

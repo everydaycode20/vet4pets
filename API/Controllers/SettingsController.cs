@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateSettings(int id, [FromBody] JsonPatchDocument<Settings> patchDoc)
         {
-            if (patchDoc != null)
+            if (patchDoc != null && ModelState.IsValid)
             {
                 await using var context = applicationDbContext;
 

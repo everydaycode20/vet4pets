@@ -35,13 +35,21 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAppointmentsByDate([FromQuery] string date)
         {
-            await using var context = applicationDbContext;
+            try
+            {
 
-            var parsedDate = DateTime.Parse(date);
+                await using var context = applicationDbContext;
 
-            var data = context.Appointments.Where(a => a.Date.Year == parsedDate.Year && a.Date.Month == parsedDate.Month && a.Date.Day == parsedDate.Day).ToList();
+                var parsedDate = DateTime.Parse(date);
 
-            return Ok(data);
+                var data = context.Appointments.Where(a => a.Date.Year == parsedDate.Year && a.Date.Month == parsedDate.Month && a.Date.Day == parsedDate.Day).ToList();
+
+                return Ok(data);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(new { message = "bad format" });
+            }
         }
 
         [Authorize]
@@ -87,41 +95,57 @@ namespace API.Controllers
         [HttpGet("date-range")]
         public async Task<ActionResult<string>> GetAppointmentsByDateRange([FromQuery] string start, [FromQuery] string end)
         {
-            await using var context = applicationDbContext;
-
-            var parseDateStart = DateTime.Parse(start);
-
-            var parseDateEnd = DateTime.Parse(end);
-
-            var data = context.Appointments
-                .Where(a => a.Date.Date >= parseDateStart.Date && a.Date.Date <= parseDateEnd.Date || a.Date.Date == parseDateStart.Date && a.Date.Date == parseDateEnd.Date)
-                .Select(a => new AppointmentDTO
+            try
+            {
+                if (ModelState.IsValid)
                 {
-                    Id = a.Id,
-                    Date = a.Date,
-                    EndDate = a.EndDate,
-                    Pet = new
-                    {
-                        a.Pet!.Id,
-                        a.Pet.Name,
-                        a.Pet.Age,
-                    },
-                    Owner = new
-                    {
-                        a.Owner!.Id,
-                        a.Owner.Name,
-                    },
-                    Type = new
-                    {
-                        a.Type!.Id,
-                        a.Type.Name,
-                        a.Type.Color,
-                    }
-                })
-                .OrderBy(a => a.Date)
-                .ToList();
 
-            return Ok(data);
+                    await using var context = applicationDbContext;
+
+                    var parseDateStart = DateTime.Parse(start);
+
+                    var parseDateEnd = DateTime.Parse(end);
+
+                    var data = context.Appointments
+                        .Where(a => a.Date.Date >= parseDateStart.Date && a.Date.Date <= parseDateEnd.Date || a.Date.Date == parseDateStart.Date && a.Date.Date == parseDateEnd.Date)
+                        .Select(a => new AppointmentDTO
+                        {
+                            Id = a.Id,
+                            Date = a.Date,
+                            EndDate = a.EndDate,
+                            Pet = new
+                            {
+                                a.Pet!.Id,
+                                a.Pet.Name,
+                                a.Pet.Age,
+                            },
+                            Owner = new
+                            {
+                                a.Owner!.Id,
+                                a.Owner.Name,
+                            },
+                            Type = new
+                            {
+                                a.Type!.Id,
+                                a.Type.Name,
+                                a.Type.Color,
+                            }
+                        })
+                        .OrderBy(a => a.Date)
+                        .ToList();
+
+                    return Ok(data);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(new { message = "bad format" });
+            }
         }
 
         [Authorize]
@@ -150,24 +174,30 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> AddAppointment([FromBody] Appointment appointment)
         {
-            await using var context = applicationDbContext;
-
-            var app = new Appointment
+            if (ModelState.IsValid)
             {
-                Date = appointment.Date,
-                EndDate = appointment.EndDate,
-                OwnerId = appointment.OwnerId,
-                PetId = appointment.PetId,
-                TypeId = appointment.TypeId
-            };
+                await using var context = applicationDbContext;
 
-            await context.Appointments.AddAsync(app);
+                var app = new Appointment
+                {
+                    Date = appointment.Date,
+                    EndDate = appointment.EndDate,
+                    OwnerId = appointment.OwnerId,
+                    PetId = appointment.PetId,
+                    TypeId = appointment.TypeId
+                };
 
-            await context.SaveChangesAsync();
+                await context.Appointments.AddAsync(app);
 
-            await appointmentScheduler.ScheduleAppointment(app);
+                await context.SaveChangesAsync();
 
-            return Ok(new { message = "ok" });
+                await appointmentScheduler.ScheduleAppointment(app);
+
+                return Ok(new { message = "ok" });
+
+            }
+
+            return BadRequest(ModelState);
         }
 
         public class EditAppointmentReq
@@ -185,7 +215,7 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<string>> UpdateAppointment(int id, [FromBody] JsonPatchDocument<Appointment> patchDoc)
         {
-            if (patchDoc != null)
+            if (patchDoc != null && ModelState.IsValid)
             {
                 await using var context = applicationDbContext;
 
@@ -201,11 +231,6 @@ namespace API.Controllers
                 if (data.EndDate <= data.Date)
                 {
                     return BadRequest(new { message = "EndDate must be later than Date" });
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
                 }
 
                 await context.SaveChangesAsync();
@@ -388,19 +413,13 @@ namespace API.Controllers
                 .ToListAsync();
 
             var statsWeekly = await context.AppointmentStatsWeekly.
-                FromSqlRaw(@"select format([Date], 'dddd') as 'day', 
-                    count(*) as total from appointment where YEAR([Date]) = 2025 and MONTH([Date]) = 8 
-                    group by format([Date], 'dddd'), DATEPART(WEEKDAY, [Date]) order by DATEPART(WEEKDAY, [Date])").ToListAsync();
+                FromSqlInterpolated($"select format([Date], 'dddd') as 'day', count(*) as total from appointment where YEAR([Date]) = 2025 and MONTH([Date]) = 8 group by format([Date], 'dddd'), DATEPART(WEEKDAY, [Date]) order by DATEPART(WEEKDAY, [Date])").ToListAsync();
 
             var statsMonthly = await context.AppointmentStatsMonthly.
-                FromSqlRaw(@"select format([Date], 'MMMM') as 'month', 
-                    count(*) as total from appointment where YEAR([Date]) = 2025 
-                    group by format([Date], 'MMMM'), MONTH([Date]) order by MONTH([Date])").ToListAsync();
+                FromSqlInterpolated($"select format([Date], 'MMMM') as 'month', count(*) as total from appointment where YEAR([Date]) = 2025 group by format([Date], 'MMMM'), MONTH([Date]) order by MONTH([Date])").ToListAsync();
 
             var statsYearly = await context.AppointmentStatsYearly.
-                FromSqlRaw(@"select format([Date], 'yyyy') as 'year', 
-                    count(*) as total from appointment 
-                    group by format([Date], 'yyyy'), YEAR([Date]) order by YEAR([Date])").ToListAsync();
+                FromSqlInterpolated($"select format([Date], 'yyyy') as 'year', count(*) as total from appointment group by format([Date], 'yyyy'), YEAR([Date]) order by YEAR([Date])").ToListAsync();
 
             return Ok(new
             {

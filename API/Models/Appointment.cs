@@ -1,4 +1,6 @@
-﻿namespace API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Models
 {
     public class Appointment : BaseEntity
     {
@@ -24,8 +26,10 @@
     {
         public int Id { get; set; }
 
+        [StringLength(255)]
         public required string Name { get; set; }
 
+        [StringLength(50)]
         public string? Color { get; set; }
     }
 }

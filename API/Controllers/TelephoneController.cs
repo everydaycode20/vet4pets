@@ -16,7 +16,7 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("types")]
         public async Task<ActionResult<string>> GetTelephoneTypes()
         {

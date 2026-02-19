@@ -21,6 +21,7 @@ namespace API.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> GetPetById(int id)
         {
@@ -36,7 +37,7 @@ namespace API.Controllers
             return Ok(data);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<string>> GetAllPets([FromQuery] int pageNumber = 1, int pageSize = 20)
         {
@@ -103,13 +104,21 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<String>> AddPet([FromBody] Pet pet)
         {
-            await using var context = applicationDbContext;
+            if (ModelState.IsValid)
+            {
+                await using var context = applicationDbContext;
 
-            context.Pets.Add(pet);
+                context.Pets.Add(pet);
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            return Ok(new { message = "ok" });
+                return Ok(new { message = "ok" });
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [Authorize]
@@ -165,9 +174,10 @@ namespace API.Controllers
             return Ok(new { message = "ok" });
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("types")]
-        public async Task<ActionResult<string>> GetPetTypes() {
+        public async Task<ActionResult<string>> GetPetTypes()
+        {
             await using var context = applicationDbContext;
 
             var data = await context.PetTypes.Select(t => new PetType
@@ -180,7 +190,7 @@ namespace API.Controllers
                     Description = t.Breed.Description
                 }
             }).OrderBy(p => p.Description).ToListAsync();
-            
+
 
             return Ok(data);
         }

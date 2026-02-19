@@ -1,9 +1,12 @@
-﻿namespace API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Models
 {
     public class PetDTO : BaseEntity
     {
         public int Id { get; set; }
 
+        [StringLength(255)]
         public required string Name { get; set; }
 
         public int Age { get; set; }
@@ -22,6 +25,7 @@
     {
         public int Id { get; set; }
 
+        [StringLength(255)]
         public string? Description { get; set; }
 
         public required BreedDTO Breed { get; set; }
@@ -31,6 +35,7 @@
     {
         public int Id { get; set; }
 
+        [StringLength(255)]
         public required string Description { get; set; }
     }
 }
