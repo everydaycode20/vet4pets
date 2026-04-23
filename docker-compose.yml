@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_db
+    environment:
+      SA_PASSWORD: Vet4Pets!2026
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - db_data:/var/opt/mssql
+
+  backend:
+    build: ./API
+    container_name: dotnet_api
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=vet4pets;User Id=sa;Password=Vet4Pets!2026;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    ports:
+      - "5000:8080"
+
+  frontend:
+    build: ./client_
+    container_name: app
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+volumes:
+  db_data:
